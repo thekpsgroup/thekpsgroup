@@ -1,0 +1,923 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+
+// SEO-optimized metadata for homepage targeting primary keywords
+const title = 'The KPS Group | Complete Back-Office Solutions for Small Businesses';
+const description = 'Comprehensive business support for growing companies in the trades and service industries. QuickBooks consulting, payroll services, branding, and operational consulting nationwide. Call (469) 534-3392 for a free consultation.';
+const keywords = [
+  'business back office solutions',
+  'QuickBooks consulting services',
+  'payroll services small business',
+  'business operations consulting',
+  'contractor bookkeeping services',
+  'small business branding',
+  'business support services',
+  'trade business consulting',
+  'professional service providers',
+  'business process improvement',
+  'financial consulting services',
+  'operational efficiency consulting',
+  'business infrastructure solutions',
+  'contractor business support',
+  'small business management',
+  'business administration services',
+  'professional business consulting',
+  'business optimization services',
+  'comprehensive business solutions'
+];
+
+// Enhanced SEO properties for local targeting
+const seoProps = {
+  location: 'Austin, Texas with nationwide reach',
+  service: 'complete back-office solutions and business consulting',
+  canonical: 'https://thekpsgroup.com/',
+};
+---
+<BaseLayout {title} {description} {keywords} {...seoProps}>
+  <Hero />
+  
+  <!-- Service Ecosystem Section -->
+  <!-- <ServiceEcosystem /> -->
+  
+  <!-- Business Solutions Section -->
+  <section class="relative py-24 lg:py-32 bg-gradient-to-b from-black to-gray-950" role="region" aria-labelledby="business-services-heading">
+    <div class="container mx-auto px-6">
+      <!-- Section Header -->
+      <div class="text-center mb-20 animate-fade-in">
+        <div class="inline-flex items-center gap-3 glass-card px-6 py-3 mb-8">
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></div>
+          <span class="text-sm font-medium text-gold/90 tracking-wide uppercase">Our Services</span>
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse" aria-hidden="true"></div>
+        </div>
+
+        <h2 id="business-services-heading" class="text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-gold mb-8 leading-tight">
+          Complete Business Solutions
+        </h2>
+        
+        <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+          We handle your back-office operations so you can focus on growing your business and serving your customers.
+        </p>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-20">
+        <div class="card-premium hover-lift group animate-fade-in">
+          <div class="mb-6">
+            <!-- Modern Ledger Logo Placeholder -->
+            <div class="w-20 h-16 mx-auto mb-4 bg-gradient-to-br from-gold/20 to-gold/10 rounded-xl flex items-center justify-center">
+              <div class="text-gold font-bold text-lg">ML</div>
+            </div>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-gradient-gold transition-all duration-300">
+            Modern Ledger
+          </h3>
+          <p class="text-white/70 leading-relaxed mb-6 text-sm sm:text-base">
+            Complete financial management solutions designed for modern businesses who need professional bookkeeping without the complexity.
+          </p>
+          <ul class="space-y-2 text-xs sm:text-sm text-white/60">
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full flex-shrink-0"></div>
+              QuickBooks setup & cleanup
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full flex-shrink-0"></div>
+              Monthly bookkeeping services
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full flex-shrink-0"></div>
+              Financial reporting & tax prep
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.1s;">
+          <div class="mb-6">
+            <!-- Modern HR Logo Placeholder -->
+            <div class="w-20 h-16 mx-auto mb-4 bg-gradient-to-br from-gold/20 to-gold/10 rounded-xl flex items-center justify-center">
+              <div class="text-gold font-bold text-lg">MH</div>
+            </div>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-gradient-gold transition-all duration-300">
+            Modern HR
+          </h3>
+          <p class="text-white/70 leading-relaxed mb-6 text-sm sm:text-base">
+            Comprehensive workforce management solutions that handle everything from payroll to compliance, so you can focus on your people.
+          </p>
+          <ul class="space-y-2 text-xs sm:text-sm text-white/60">
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full flex-shrink-0"></div>
+              Full-service payroll processing
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full flex-shrink-0"></div>
+              Benefits administration & PEO
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full flex-shrink-0"></div>
+              HR compliance & support
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in md:col-span-2 lg:col-span-1" style="animation-delay: 0.2s;">
+          <div class="mb-6">
+            <!-- Modern Brands Logo -->
+            <div class="w-20 h-16 mx-auto mb-4 bg-gradient-to-br from-gold/20 to-gold/10 rounded-xl flex items-center justify-center">
+              <div class="text-gold font-bold text-lg">MB</div>
+            </div>
+          </div>
+          <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-gradient-gold transition-all duration-300">
+            Modern Brands
+          </h3>
+          <p class="text-white/70 leading-relaxed mb-6">
+            Professional branding and digital presence solutions that help your business make a lasting impression and attract quality customers.
+          </p>
+          <ul class="space-y-2 text-sm text-white/60">
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full"></div>
+              Website design & development
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full"></div>
+              Logo & brand identity design
+            </li>
+            <li class="flex items-center gap-2">
+              <div class="w-1 h-1 bg-gold rounded-full"></div>
+              Marketing materials & assets
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- CTA Section -->
+      <div class="text-center">
+        <a href="/services" class="btn-primary group inline-flex items-center gap-3">
+          <span>Discover Our Approach</span>
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Companies Portfolio Section -->
+  <section id="companies" class="relative py-24 lg:py-32 bg-gradient-to-b from-gray-950 to-black">
+    <div class="container mx-auto px-6">
+      <!-- Section Header with Premium Styling -->
+      <div class="text-center mb-20 animate-fade-in">
+        <div class="inline-flex items-center gap-3 glass-card px-6 py-3 mb-8">
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+          <span class="text-sm font-medium text-gold/90 tracking-wide uppercase">Our Portfolio</span>
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-gold mb-8 leading-tight">
+          The Modern Suite
+        </h2>
+        
+        <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed mb-8">
+          Six specialized companies, unified under one leadership vision. Each delivering world-class expertise with operational excellence.
+        </p>
+
+        <!-- Value proposition pillars -->
+        <div class="flex flex-wrap justify-center gap-8 text-sm text-white/60">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span class="font-medium">Unified Leadership</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="font-medium">Enterprise Excellence</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+            </svg>
+            <span class="font-medium">Scalable Infrastructure</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workforce Leadership Services Section -->
+      <div class="mt-12 sm:mt-16 mb-8 sm:mb-12">
+        <div class="text-center mb-8">
+          <p class="text-gold/60 text-sm sm:text-base mb-4">Trusted by businesses across multiple industries</p>
+          <div class="flex items-center justify-center gap-1 mb-2">
+            {[...Array(5)].map(() => (
+              <svg class="w-5 h-5 text-gold fill-current" viewBox="0 0 24 24">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </div>
+          <p class="text-gold/80 text-sm">Average 4.9/5 rating from client reviews</p>
+        </div>
+
+        <!-- Client testimonials grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
+          <div class="p-4 sm:p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
+            <div class="flex items-center gap-1 mb-3">
+              {[...Array(5)].map(() => (
+                <svg class="w-4 h-4 text-gold fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
+            <p class="text-gold/80 text-sm mb-3">"The operational infrastructure and compliance support from KPS Group allows us to focus on growth while they handle the backend complexity."</p>
+            <p class="text-gold text-xs font-medium">— Partner Company CEO</p>
+          </div>
+          
+          <div class="p-4 sm:p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
+            <div class="flex items-center gap-1 mb-3">
+              {[...Array(5)].map(() => (
+                <svg class="w-4 h-4 text-gold fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
+            <p class="text-gold/80 text-sm mb-3">"Having a unified parent company with proven leadership gives our clients confidence in our stability and long-term commitment."</p>
+            <p class="text-gold text-xs font-medium">— Strategic Partner</p>
+          </div>
+          
+          <div class="p-4 sm:p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
+            <div class="flex items-center gap-1 mb-3">
+              {[...Array(5)].map(() => (
+                <svg class="w-4 h-4 text-gold fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
+            <p class="text-gold/80 text-sm mb-3">"The KPS Group's systematic approach to business excellence and scalable operations is exactly what growing companies need."</p>
+            <p class="text-gold text-xs font-medium">— Industry Consultant</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enhanced Bottom About Section -->
+      <div class="mt-8 sm:mt-12 p-6 sm:p-8 bg-gradient-to-r from-gold/10 to-goldLight/10 border border-gold/20 rounded-2xl backdrop-blur-sm relative overflow-hidden">
+        <div class="text-center mb-6">
+          <h3 class="text-xl sm:text-2xl font-bold text-goldLight mb-3 sm:mb-4">Leading Through Excellence</h3>
+          <p class="text-gold/80 mb-4 max-w-2xl mx-auto">
+            The KPS Group provides the backbone infrastructure that allows high-growth service brands to scale with confidence and operational excellence.
+          </p>
+          
+          <!-- Benefits list -->
+          <div class="flex flex-wrap justify-center gap-4 sm:gap-6 mb-6 text-sm">
+            <div class="flex items-center gap-2 text-gold/70">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>No upfront payment</span>
+            </div>
+            <div class="flex items-center gap-2 text-gold/70">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>100% satisfaction guarantee</span>
+            </div>
+            <div class="flex items-center gap-2 text-gold/70">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span>Rush delivery available</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a
+            href="/contact"
+            class="inline-flex items-center gap-2 bg-gold text-black px-8 py-4 rounded-full font-semibold hover:bg-goldLight hover:scale-105 transition-all duration-300 shadow-lg"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            Get Your Free Consultation
+          </a>
+          
+          <div class="text-xs text-gold/60 text-center sm:text-left">
+            <div>🔥 Only 3 consultation spots left this week</div>
+            <div>⏰ Book within 24hrs for priority treatment</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business Operations Section -->
+  <section class="py-20 px-6 max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-12 lg:gap-16">
+      <!-- Business Operations Focus -->
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold text-goldLight mb-6">
+          Complete Business Operations Solutions
+        </h2>
+        <div class="space-y-4 text-gray-300 leading-relaxed">
+          <p>
+            Need help running your business operations? The KPS Group transforms small businesses from front office to back office, especially in the trades. We fix what's broken and build systems that actually work.
+          </p>
+          <p>
+            Our <strong class="text-gold">complete business solutions</strong> include Modern Ledger for accounting and payroll, Modern HR for employee management, and Modern Brands for marketing. We serve businesses across the country with simple, effective solutions.
+          </p>
+          <p>
+            From <strong class="text-gold">accounting and payroll setup</strong> to employee management and marketing strategies, we handle the business operations so you can focus on what you do best. Real solutions for real businesses.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coverage Areas -->
+    <div class="mt-16 pt-16 border-t border-gold/20">
+      <h2 class="text-2xl md:text-3xl font-bold text-goldLight mb-8 text-center">
+        Nationwide Business Operations Support
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+        <div class="bg-gray-900/50 rounded-xl p-4 border border-gold/20">
+          <h3 class="font-semibold text-gold mb-2">Texas</h3>
+          <p class="text-sm text-gray-400">Modern Ledger<br>Modern HR</p>
+        </div>
+        <div class="bg-gray-900/50 rounded-xl p-4 border border-gold/20">
+          <h3 class="font-semibold text-gold mb-2">California</h3>
+          <p class="text-sm text-gray-400">Business Operations<br>Modern Brands</p>
+        </div>
+        <div class="bg-gray-900/50 rounded-xl p-4 border border-gold/20">
+          <h3 class="font-semibold text-gold mb-2">New York</h3>
+          <p class="text-sm text-gray-400">Leadership Consulting<br>QuickBooks Optimization</p>
+        </div>
+        <div class="bg-gray-900/50 rounded-xl p-4 border border-gold/20">
+          <h3 class="font-semibold text-gold mb-2">Florida</h3>
+          <p class="text-sm text-gray-400">Business Infrastructure<br>HR Compliance</p>
+        </div>
+      </div>
+      
+      <!-- Local Business Info -->
+      <div class="mt-12 text-center">
+        <p class="text-gray-400 mb-4">
+          <strong class="text-gold">Local Dallas Business</strong> • Licensed & Insured • Free Consultations
+        </p>
+        <div class="flex flex-wrap justify-center gap-6 text-sm text-gold/80">
+          <span>📍 Serving DFW Metroplex</span>
+          <span>📞 (469) 534-3392</span>
+          <span>✉️ sales@thekpsgroup.com</span>
+          <span>🕒 Mon-Fri 9AM-6PM CST</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comprehensive Local SEO Content Section -->
+  <section class="py-16 px-6 max-w-6xl mx-auto">
+    <div class="bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-3xl p-8 md:p-12 border border-gold/20">
+      <!-- Workforce Leadership Authority Content -->
+      <div class="mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-goldLight mb-6 text-center">
+          Elite Workforce Leadership & Business Infrastructure Serving All 50 States
+        </h2>
+        <div class="prose prose-lg max-w-none text-gray-300">
+          <p class="text-xl leading-relaxed mb-6">
+            <strong class="text-gold">The KPS Group</strong> is your trusted national partner for comprehensive workforce leadership and business infrastructure services. As experienced <strong class="text-goldLight">organizational development specialists</strong>, we specialize in creating high-performing teams and systems that drive exceptional business results across all industries.
+          </p>
+          
+          <div class="grid md:grid-cols-2 gap-8 mt-8">
+            <div>
+              <h3 class="text-2xl font-semibold text-gold mb-4">Workforce Leadership Excellence</h3>
+              <p class="mb-4">
+                Our <strong>workforce leadership consultants</strong> develop organizational systems that transform culture and drive measurable performance improvements. Every engagement we deliver is grounded in organizational psychology and provides sustainable competitive advantage.
+              </p>
+              <ul class="text-gray-300 space-y-2">
+                <li>✅ <strong>Leadership Development Programs</strong> - Build exceptional leaders</li>
+                <li>✅ <strong>Organizational Psychology Systems</strong> - Optimize team performance</li>
+                <li>✅ <strong>Rapid Implementation</strong> - Results within 90 days</li>
+                <li>✅ <strong>Measurable ROI</strong> - Track performance improvements</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 class="text-2xl font-semibold text-gold mb-4">Business Infrastructure Mastery</h3>
+              <p class="mb-4">
+                Our <strong>business infrastructure specialists</strong> build comprehensive systems that scale with your organization. From payroll optimization to QuickBooks mastery, we ensure your operations run seamlessly while you focus on strategic growth.
+              </p>
+              <ul class="text-gray-300 space-y-2">
+                <li>✅ <strong>PEO Services</strong> - Complete payroll and HR management</li>
+                <li>✅ <strong>QuickBooks Optimization</strong> - Financial systems excellence</li>
+                <li>✅ <strong>Operational Excellence</strong> - Streamlined business processes</li>
+                <li>✅ <strong>Strategic Support</strong> - Ongoing partnership and guidance</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Call-to-Action -->
+      <div class="text-center">
+        <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
+          Ready to partner with The KPS Group? Contact us today at <strong class="text-gold">sales@thekpsgroup.com</strong> or call <strong class="text-gold">469-534-3392</strong> to discover how our back-office solutions can accelerate your business growth.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium QuickBooks Expertise Section -->
+  <section id="quickbooks" class="relative py-24 lg:py-32 bg-gradient-to-b from-black to-gray-950">
+    <div class="container mx-auto px-6">
+      <!-- Section Header -->
+      <div class="text-center mb-20 animate-fade-in">
+        <div class="inline-flex items-center gap-3 glass-card px-6 py-3 mb-8">
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+          <span class="text-sm font-medium text-gold/90 tracking-wide uppercase">Financial Mastery</span>
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+        </div>
+        
+        <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-gradient-gold mb-8 leading-tight">
+          QuickBooks Expertise<br/>You Can Actually Rely On
+        </h2>
+        
+        <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+          Where many firms simply use QuickBooks, we master it. Modern Ledger is built around deep knowledge of the full Intuit ecosystem.
+        </p>
+      </div>
+
+      <!-- Premium Services Grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.1s;">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">QuickBooks Cleanups</h3>
+          <p class="text-white/70 leading-relaxed">For businesses in financial disarray—we fix months of backed-up books with precision and speed</p>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.2s;">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Full Migrations</h3>
+          <p class="text-white/70 leading-relaxed">From paper, spreadsheets, or legacy systems into QuickBooks Online with complete data integrity</p>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.3s;">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Multi-Entity Consolidation</h3>
+          <p class="text-white/70 leading-relaxed">For franchises, investors, and holding companies requiring unified financial oversight</p>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.4s;">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Job Costing Optimization</h3>
+          <p class="text-white/70 leading-relaxed">For contractors and trades to understand true profitability with advanced analytics</p>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.5s;">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Executive Coaching</h3>
+          <p class="text-white/70 leading-relaxed">QuickBooks mastery training for owners, administrators, and financial teams</p>
+        </div>
+
+        <div class="card-premium hover-lift group animate-fade-in" style="animation-delay: 0.6s;">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gold/20 to-gold/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Custom Workflows</h3>
+          <p class="text-white/70 leading-relaxed">Invoice automations, bank rule optimization, and seamless integrations</p>
+        </div>
+      </div>
+
+      <!-- Premium Client Examples -->
+      <div class="glass-card p-12 animate-fade-in" style="animation-delay: 0.7s;">
+        <h3 class="text-3xl lg:text-4xl font-bold text-gradient-gold text-center mb-12">We Meet You Where You Are</h3>
+        
+        <div class="grid lg:grid-cols-2 gap-12">
+          <div class="space-y-6">
+            <h4 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span class="w-3 h-3 bg-gold rounded-full"></span>
+              Enterprise-Grade Projects
+            </h4>
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-medium">$5M HVAC company trying to understand job profitability</p>
+                  <p class="text-white/60 text-sm mt-1">Complete financial restructure with advanced analytics</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-medium">Multi-entity consolidation for franchise operations</p>
+                  <p class="text-white/60 text-sm mt-1">Unified reporting across 12 franchise locations</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-medium">Full financial stack with unified back-office systems</p>
+                  <p class="text-white/60 text-sm mt-1">End-to-end operational transformation</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="space-y-6">
+            <h4 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+              <span class="w-3 h-3 bg-gold rounded-full"></span>
+              Bite-Sized Wins
+            </h4>
+            <div class="space-y-4">
+              <div class="flex items-start gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-medium">Solo service provider needing their first financial dashboard</p>
+                  <p class="text-white/60 text-sm mt-1">Simple setup with powerful insights</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-medium">Family business drowning in uncategorized expenses</p>
+                  <p class="text-white/60 text-sm mt-1">Quick cleanup and organization strategy</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start gap-4 p-4 bg-gray-800/30 rounded-xl border border-gray-700">
+                <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0 mt-1">
+                  <svg class="w-4 h-4 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-white font-medium">60-minute QuickBooks coaching sessions</p>
+                  <p class="text-white/60 text-sm mt-1">Focused training for immediate impact</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-12">
+          <p class="text-2xl text-gold/90 font-medium italic mb-6">
+            Because your growth doesn't start with a giant contract. It starts with trust.
+          </p>
+          <a href="/contact" class="btn-primary">
+            <span>Start Your Financial Transformation</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+                <div class="w-2 h-2 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                <span>60-minute QuickBooks coaching sessions</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="text-center mt-8">
+          <p class="text-gold/80 text-lg">
+            Because your growth doesn't start with a giant contract. It starts with trust.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The KPS Way Philosophy Section -->
+  <section class="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32 text-center max-w-7xl mx-auto">
+    <div class="bg-gradient-to-r from-gold/5 to-gold/10 rounded-2xl p-8 lg:p-12 border border-gold/20">
+      <h2 class="text-3xl lg:text-4xl font-bold text-goldLight mb-8">The KPS Way</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-goldLight mb-3">Financials Are Everything</h3>
+          <p class="text-gray-400 text-sm">If your books are off, everything else is too</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-goldLight mb-3">Operational Clarity</h3>
+          <p class="text-gray-400 text-sm">The greatest gift you can give a founder</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-goldLight mb-3">QuickBooks Mastery</h3>
+          <p class="text-gray-400 text-sm">It's not "just software"—it's your business in numbers</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-goldLight mb-3">Clean Foundations</h3>
+          <p class="text-gray-400 text-sm">Automation is only helpful when built on solid ground</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-goldLight mb-3">Enterprise-Grade Tools</h3>
+          <p class="text-gray-400 text-sm">Every small business deserves clarity—without the bloat</p>
+        </div>
+        <div class="text-center">
+          <h3 class="text-lg font-semibold text-goldLight mb-3">No Fluff</h3>
+          <p class="text-gray-400 text-sm">Modern infrastructure, not duct tape solutions</p>
+        </div>
+      </div>
+    </div>
+
+  <!-- Leadership Team Section -->
+  <section id="leadership" class="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 md:px-10 lg:px-20 xl:px-32 bg-gray-900/50">
+    <div class="max-w-7xl mx-auto">
+      <!-- Section Header -->
+      <div class="text-center mb-12 sm:mb-16 lg:mb-20">
+        <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+          <span class="text-xs sm:text-sm font-medium text-gold">Leadership Team</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-goldLight mb-6 sm:mb-8 leading-tight">
+          Meet the Leadership
+        </h2>
+        <p class="text-lg sm:text-xl text-gold/80 max-w-4xl mx-auto leading-relaxed">
+          Our leadership team brings decades of operational excellence, strategic vision, and hands-on experience building scalable business infrastructure.
+        </p>
+      </div>
+
+      <!-- Leadership Grid -->
+      <div class="grid md:grid-cols-3 gap-8 lg:gap-12 mb-16">
+        <!-- Karson Lawrence -->
+        <div class="bg-gray-800/40 rounded-2xl p-8 border border-gold/20 hover:border-gold/40 transition-all duration-300">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-gold to-gold/60 flex items-center justify-center text-2xl font-bold text-black mb-6">
+            KL
+          </div>
+          <h3 class="text-2xl font-bold text-goldLight mb-2">Karson Lawrence</h3>
+          <p class="text-gold/80 font-medium mb-4">Founder & CEO</p>
+          <p class="text-gray-300 mb-6 leading-relaxed">
+            As both a systems architect and financial strategist, Karson built The KPS Group to fill the massive gap between what small business owners have and what they need to scale. With years of experience fixing broken operations from the inside out, he blends branding, software engineering, and financial ops into one cohesive vision.
+          </p>
+          <div class="space-y-2 text-sm text-gray-400">
+            <div>• Expert in QuickBooks architecture & integrations</div>
+            <div>• Designed full-stack ERP/CRM systems</div>
+            <div>• Advisor to founders navigating financial messes</div>
+            <div>• Can fix P&L issues and deploy custom systems</div>
+          </div>
+        </div>
+
+        <!-- Brandon Gibson -->
+        <div class="bg-gray-800/40 rounded-2xl p-8 border border-gold/20 hover:border-gold/40 transition-all duration-300">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-gold to-gold/60 flex items-center justify-center text-2xl font-bold text-black mb-6">
+            BG
+          </div>
+          <h3 class="text-2xl font-bold text-goldLight mb-2">Brandon Gibson</h3>
+          <p class="text-gold/80 font-medium mb-4">Chief Revenue Officer</p>
+          <p class="text-gray-300 mb-6 leading-relaxed">
+            With a background in business development and a knack for strategic growth, Brandon ensures that the systems we build actually translate to revenue. He understands client acquisition, channel partnerships, and how to make sure the operational backend serves the front line.
+          </p>
+          <div class="space-y-2 text-sm text-gray-400">
+            <div>• Sales strategist aligning go-to-market with finance</div>
+            <div>• Deep knowledge of trades and field operations</div>
+            <div>• Focused on repeatable, scalable systems</div>
+            <div>• Ensures KPS systems grow with your business</div>
+          </div>
+        </div>
+
+        <!-- Allie Banks -->
+        <div class="bg-gray-800/40 rounded-2xl p-8 border border-gold/20 hover:border-gold/40 transition-all duration-300">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-gold to-gold/60 flex items-center justify-center text-2xl font-bold text-black mb-6">
+            AB
+          </div>
+          <h3 class="text-2xl font-bold text-goldLight mb-2">Allie Banks</h3>
+          <p class="text-gold/80 font-medium mb-4">Chief Administrative Officer</p>
+          <p class="text-gray-300 mb-6 leading-relaxed">
+            Allie spent nearly a decade inside ADP, overseeing PEO operations, HR compliance, onboarding, and payroll for thousands of employees. She brings serious administrative horsepower to The KPS Group, combining compliance, process, and people with unmatched precision.
+          </p>
+          <div class="space-y-2 text-sm text-gray-400">
+            <div>• QuickBooks Payroll and Gusto expert</div>
+            <div>• Leads internal systems & onboarding playbooks</div>
+            <div>• Gold-standard operations practices</div>
+            <div>• Fluent in HRIS workflows & benefits compliance</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Philosophy Section -->
+      <div class="mb-16 lg:mb-20 text-center">
+        <div class="bg-gradient-to-r from-gold/10 to-gold/5 rounded-2xl p-8 lg:p-12 border border-gold/20">
+          <h3 class="text-2xl lg:text-3xl font-bold text-goldLight mb-6">Our Philosophy</h3>
+          <blockquote class="text-xl lg:text-2xl text-gold/90 font-medium italic leading-relaxed max-w-4xl mx-auto">
+            "Your brand should look like you've already won. Your systems should act like you've already scaled. And your operations should never hold you back."
+          </blockquote>
+          <p class="text-gold/70 mt-4">— Karson Lawrence, Founder & CEO</p>
+        </div>
+      </div>
+
+      <!-- Karson's Consulting Methodology -->
+      <div class="mb-16 lg:mb-20">
+        <div class="bg-gray-800/50 rounded-2xl p-8 lg:p-12 border border-gold/20">
+          <div class="text-center mb-8">
+            <h3 class="text-2xl lg:text-3xl font-bold text-goldLight mb-4">The Karson Lawrence Approach</h3>
+            <p class="text-lg text-gold/80 italic">"Hate me now, love me later."</p>
+          </div>
+          
+          <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
+            <div>
+              <h4 class="text-xl font-semibold text-goldLight mb-4">The Reality Check</h4>
+              <p class="text-gray-300 mb-6 leading-relaxed">
+                As the main consultant at Modern Consulting, Karson's relationship with clients can get rocky. He's a straightforward, pragmatic thinker who believes in uncomfortable truths over comfortable lies. The process starts with learning everything about your business—from finances to sales, operations to marketing.
+              </p>
+              <div class="space-y-3 text-sm">
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Deep Business Analysis:</span>
+                    <p class="text-gray-400">Complete financial, operational, and marketing audit</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Overhead Analysis:</span>
+                    <p class="text-gray-400">Are you profitable? Where are you bleeding money?</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Honest Assessment:</span>
+                    <p class="text-gray-400">The truth hurts, but it's necessary for real growth</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <h4 class="text-xl font-semibold text-goldLight mb-4">The Transformation</h4>
+              <p class="text-gray-300 mb-6 leading-relaxed">
+                After 10+ years in big tech and deep involvement in service-based companies, Karson sees things from the outside looking in. The focus shifts to building, streamlining, and connecting everything to improve both your top line and bottom line.
+              </p>
+              <div class="space-y-3 text-sm">
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Operations Streamlining:</span>
+                    <p class="text-gray-400">Build efficient systems that scale with growth</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Custom App Development:</span>
+                    <p class="text-gray-400">Technology solutions that actually help your business</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Customer Acquisition Cost Reduction:</span>
+                    <p class="text-gray-400">Sales training + operational excellence = lower CAC</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center mt-0.5">
+                    <div class="w-2 h-2 bg-gold rounded-full"></div>
+                  </div>
+                  <div>
+                    <span class="text-goldLight font-medium">Full-Service Support:</span>
+                    <p class="text-gray-400">From payroll to software development—we do it all</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-8 pt-8 border-t border-gold/20 text-center">
+            <p class="text-gold/80 italic text-lg mb-4">
+              "I would be doing you a disservice if I told you everything you're doing is right. My focus is solely on helping you grow and sustain."
+            </p>
+            <div class="bg-gray-900/50 rounded-xl p-6 mt-6">
+              <p class="text-gray-300 text-base leading-relaxed">
+                "To be honest, I am making way less money, doing way harder work + dedicating way longer hours for less money. I founded this business because this is my passion, and I genuinely care deeply about every single client I have."
+              </p>
+              <p class="text-gold/70 mt-3 text-sm">— Karson Lawrence on why he chose consulting over big tech</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- What Powers Us -->
+      <div>
+        <h3 class="text-3xl font-bold text-goldLight text-center mb-12">What Powers Us</h3>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-gray-800/30 rounded-xl p-6 border border-gold/20">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+              </svg>
+            </div>
+            <h4 class="text-lg font-semibold text-goldLight mb-2">Custom Tech Stack</h4>
+            <p class="text-gray-400 text-sm">We build and use real software. Astro, Next.js, Stripe, Supabase, Vercel, Zapier, and Railway power our ecosystem.</p>
+          </div>
+
+          <div class="bg-gray-800/30 rounded-xl p-6 border border-gold/20">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <h4 class="text-lg font-semibold text-goldLight mb-2">Deep Operational Playbooks</h4>
+            <p class="text-gray-400 text-sm">Our systems are codified from real-world experience, not SaaS feature sets.</p>
+          </div>
+
+          <div class="bg-gray-800/30 rounded-xl p-6 border border-gold/20">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+              </svg>
+            </div>
+            <h4 class="text-lg font-semibold text-goldLight mb-2">Brand-First Mindset</h4>
+            <p class="text-gray-400 text-sm">Every client touchpoint is obsessively designed—from logos to live chat.</p>
+          </div>
+
+          <div class="bg-gray-800/30 rounded-xl p-6 border border-gold/20">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </div>
+            <h4 class="text-lg font-semibold text-goldLight mb-2">Founder Empathy</h4>
+            <p class="text-gray-400 text-sm">We don't pitch to CEOs. We are the CEOs. That changes everything.</p>
+          </div>
+
+          <div class="bg-gray-800/30 rounded-xl p-6 border border-gold/20">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+            </div>
+            <h4 class="text-lg font-semibold text-goldLight mb-2">Single Source of Truth</h4>
+            <p class="text-gray-400 text-sm">We remove vendor sprawl by owning the entire back office under one roof.</p>
+          </div>
+
+          <div class="bg-gray-800/30 rounded-xl p-6 border border-gold/20">
+            <div class="w-12 h-12 rounded-lg bg-gold/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <h4 class="text-lg font-semibold text-goldLight mb-2">Leverage & Excellence</h4>
+            <p class="text-gray-400 text-sm">We don't believe in duct tape. We believe in leverage and operational excellence for businesses ready to scale.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

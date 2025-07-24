@@ -1,0 +1,131 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Privacy Policy | The KPS Group | Data Protection & User Rights';
+const description = 'The KPS Group privacy policy explains how we collect, use, protect, and respect your personal information. Learn about data security, cookies, user rights, and contact information for privacy concerns.';
+const keywords = [
+  'privacy policy',
+  'data protection',
+  'user privacy',
+  'information security',
+  'personal data',
+  'GDPR compliance',
+  'data collection',
+  'user rights'
+];
+---
+<BaseLayout {title} {description} {keywords}>
+  <section class="py-20 sm:py-32 px-6 max-w-4xl mx-auto text-goldLight min-h-screen bg-black">
+    <!-- Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gold/3 via-transparent to-goldLight/3 rounded-3xl"></div>
+    
+    <div class="relative z-10">
+      <!-- Enhanced header -->
+      <div class="text-center mb-12 sm:mb-16">
+        <div class="inline-flex items-center gap-2 bg-gradient-to-r from-gold/10 to-goldLight/10 border border-gold/30 rounded-full px-4 sm:px-6 py-2 sm:py-3 mb-6 backdrop-blur-sm">
+          <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+          <span class="text-sm sm:text-base font-medium text-gold">Legal Information</span>
+        </div>
+        
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-goldLight mb-6 leading-tight animate-fade-in">Privacy Policy</h1>
+        <p class="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
+          Your privacy matters to us. Here's how we collect, use, and protect your information.
+        </p>
+      </div>
+
+      <!-- Enhanced content -->
+      <div class="bg-gradient-to-br from-gray-900/90 to-gray-800/90 border border-goldDark/30 rounded-2xl p-8 sm:p-12 backdrop-blur-sm">
+        <div class="prose prose-invert prose-gold max-w-none">
+          <div class="mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gold mb-4 flex items-center gap-3">
+              <div class="p-2 bg-gold/20 rounded-lg">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              Our Commitment
+            </h2>
+            <p class="text-gray-300 leading-relaxed">
+              At The KPS Group, your privacy is important to us. We collect minimal information necessary to respond to inquiries and deliver workforce leadership services. This policy outlines our practices regarding the collection, use, and protection of your personal information.
+            </p>
+          </div>
+
+          <div class="space-y-8">
+            <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-lg font-semibold text-goldLight mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Information We Collect
+              </h3>
+              <ul class="space-y-2 text-gray-300">
+                <li class="flex items-start gap-2">
+                  <div class="w-1.5 h-1.5 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Name, Email, and Phone Number when you submit a contact form</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <div class="w-1.5 h-1.5 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Service interest and project details you provide</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <div class="w-1.5 h-1.5 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Basic analytics data through Google Analytics for website optimization</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50">
+              <h3 class="text-lg font-semibold text-goldLight mb-4 flex items-center gap-2">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                How We Protect Your Data
+              </h3>
+              <ul class="space-y-2 text-gray-300">
+                <li class="flex items-start gap-2">
+                  <div class="w-1.5 h-1.5 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                  <span>All form data is transmitted securely using HTTPS encryption</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <div class="w-1.5 h-1.5 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                  <span>Data is stored securely by Router.so's encrypted API</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <div class="w-1.5 h-1.5 bg-gold rounded-full mt-2 flex-shrink-0"></div>
+                  <span>We never sell or share your personal information with third parties</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="bg-gradient-to-r from-gold/10 to-goldLight/10 rounded-xl p-6 border border-gold/30">
+              <h3 class="text-lg font-semibold text-gold mb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                Questions About Privacy?
+              </h3>
+              <p class="text-gray-300 mb-4">
+                If you have any questions about this privacy policy or how we handle your data, please don't hesitate to reach out.
+              </p>
+              <a 
+                href="mailto:sales@thekpsgroup.com" 
+                class="inline-flex items-center gap-2 text-gold hover:text-goldLight transition-colors duration-300 font-medium"
+              >
+                security@thekpsgroup.com
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-gray-700/50 text-center">
+            <p class="text-sm text-gray-400">
+              Last updated: July 2025
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { BUSINESS } from '../../data/constants';
+
+const title = 'Business Consulting Services | Modern Consulting | The KPS Group';
+const description = 'Strategic business consulting and operational excellence solutions. From process optimization to growth strategy, we help businesses scale efficiently and profitably.';
+const keywords = 'business consulting, operational consulting, strategy consulting, process optimization, business growth, management consulting, Austin consulting';
+---
+
+<BaseLayout {title} {description} {keywords}>
+  <!-- Hero Section -->
+  <section class="relative py-20 sm:py-32 px-6 bg-gradient-to-br from-black via-gray-950 to-black min-h-[70vh] flex items-center">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-transparent to-purple-900/20"></div>
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+    
+    <div class="container mx-auto relative z-10 text-center">
+      <div class="inline-flex items-center gap-3 bg-blue-500/10 border border-blue-500/30 rounded-full px-6 py-3 mb-8">
+        <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+        <span class="text-sm font-medium text-blue-400 tracking-wide uppercase">Strategic Consulting</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+        Business Consulting
+        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">That Delivers Results</span>
+      </h1>
+      
+      <p class="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-12">
+        Transform your business operations with data-driven strategies and proven methodologies. Our consulting team helps you optimize processes, scale efficiently, and achieve sustainable growth.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" class="btn-primary">
+          Get Strategy Session
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+          </svg>
+        </a>
+        <a href="tel:4695343392" class="btn-secondary">
+          Call (469) 534-3392
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="py-20 bg-gray-950">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Comprehensive Consulting Solutions</h2>
+        <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+          From strategic planning to operational optimization, we provide end-to-end consulting services.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="card-premium">
+          <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">Strategic Planning</h3>
+          <p class="text-gray-400">Long-term vision and roadmap development to guide your business growth and market positioning.</p>
+        </div>
+
+        <div class="card-premium">
+          <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">Process Optimization</h3>
+          <p class="text-gray-400">Streamline operations, eliminate inefficiencies, and implement automation for maximum productivity.</p>
+        </div>
+
+        <div class="card-premium">
+          <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">Financial Analysis</h3>
+          <p class="text-gray-400">Deep-dive financial reviews, cost optimization, and profitability improvement strategies.</p>
+        </div>
+
+        <div class="card-premium">
+          <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">Organizational Development</h3>
+          <p class="text-gray-400">Team structure optimization, leadership development, and culture transformation initiatives.</p>
+        </div>
+
+        <div class="card-premium">
+          <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">Performance Management</h3>
+          <p class="text-gray-400">KPI development, measurement systems, and continuous improvement frameworks.</p>
+        </div>
+
+        <div class="card-premium">
+          <div class="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-3">Market Expansion</h3>
+          <p class="text-gray-400">Growth strategies, market analysis, and expansion planning for new opportunities.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+        Ready to Transform Your Business?
+      </h2>
+      <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        Schedule a free consultation to discuss your challenges and discover how our consulting expertise can drive your success.
+      </p>
+      <a href="/contact" class="btn-primary bg-white text-blue-600 hover:bg-gray-100">
+        Get Free Consultation
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Business Consulting Services",
+  "provider": {
+    "@type": "Organization",
+    "name": "The KPS Group",
+    "url": "https://thekpsgroup.com"
+  },
+  "description": "Strategic business consulting and operational excellence solutions for growing businesses.",
+  "areaServed": {
+    "@type": "State",
+    "name": "Texas"
+  },
+  "serviceType": "Business Consulting"
+}
+</script>

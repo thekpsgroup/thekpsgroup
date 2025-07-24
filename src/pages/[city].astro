@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/BaseLayout.astro';
+import { BUSINESS, CITIES } from '../data/constants';
+import { slugify } from '../utils/slug';
+import { getLatLngForCity } from '../utils/geodata';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return CITIES.map((c) => ({
+    params: { city: slugify(c) },
+    props: { city: c },
+  }));
+}
+
+const { city } = Astro.props;
+
+const slug = slugify(city);
+const title = `Logo & Website Design in ${city} | ${BUSINESS.brand}`;
+const description = `Get a premium logo or website in ${city} without premium agency prices. ${BUSINESS.brand} delivers luxury-grade branding fast.`;
+const canonical = `${import.meta.env.SITE_URL ?? 'https://thekpsgroup.com'}/${slug}`;
+
+const coords = getLatLngForCity(city); // Fully expanded geodata in new file
+---
+<Base {title} {description}>
+  <section class="py-32 px-6 max-w-5xl mx-auto text-center">
+    <h1 class="text-5xl mb-6">Logo & Web Design • {city}</h1>
+    <p class="text-xl text-goldLight max-w-3xl mx-auto">
+      Serving {city} with bespoke branding that looks like you spent six figures—starting at $495.
+    </p>
+    <a
+      href="/contact"
+      class="inline-block mt-10 rounded-full bg-gold px-10 py-4 text-black font-semibold"
+    >
+      See Packages
+    </a>
+  </section>
+
+  <!-- LocalBusiness Schema JSON-LD -->
+  <script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      name: BUSINESS.brand,
+      description: BUSINESS.blurb,
+      image: `${import.meta.env.SITE_URL ?? 'https://thekpsgroup.com'}/img/branding/kps-group-logo.png`,
+      url: canonical,
+      telephone: BUSINESS.phone,
+      email: BUSINESS.email,
+      priceRange: '$$$',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: BUSINESS.street,
+        addressLocality: 'Royse City',
+        addressRegion: 'TX',
+        postalCode: '75189',
+        addressCountry: 'US',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: coords?.latitude ?? '32.9767',
+        longitude: coords?.longitude ?? '-96.3339',
+      },
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: [
+          'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'
+        ],
+        opens: '08:00',
+        closes: '20:00',
+        timeZone: 'America/Chicago',
+      },
+      areaServed: city,
+      sameAs: ['https://www.facebook.com/OGKPSGroup']
+    })}
+  </script>
+</Base>

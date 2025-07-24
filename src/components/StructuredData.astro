@@ -1,0 +1,165 @@
+---
+// Enhanced JSON-LD structured data for The KPS Group
+import { BUSINESS } from '../data/constants';
+
+const siteUrl = 'https://thekpsgroup.com';
+
+// Organization Schema
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': `${siteUrl}#organization`,
+  'name': BUSINESS.brand,
+  'legalName': 'The KPS Group LLC',
+  'url': siteUrl,
+  'logo': `${siteUrl}/img/branding/kps-group-logo.png`,
+  'image': `${siteUrl}/img/branding/kps-group-logo.png`,
+  'description': BUSINESS.blurb,
+  'foundingDate': '2020',
+  'founder': {
+    '@type': 'Person',
+    'name': 'Karson Lawrence',
+    'jobTitle': 'Founder & CEO',
+    'description': 'Visionary systems architect and pragmatic operator with 10+ years in big tech'
+  },
+  'address': {
+    '@type': 'PostalAddress',
+    'streetAddress': BUSINESS.street,
+    'addressLocality': 'Austin',
+    'addressRegion': 'TX',
+    'postalCode': '78701',
+    'addressCountry': 'US'
+  },
+  'contactPoint': {
+    '@type': 'ContactPoint',
+    'telephone': BUSINESS.phone,
+    'email': BUSINESS.email,
+    'contactType': 'customer service',
+    'availableLanguage': 'English',
+    'areaServed': 'Texas'
+  },
+  'sameAs': [
+    'https://www.linkedin.com/company/thekpsgroup'
+  ],
+  'hasOfferCatalog': {
+    '@type': 'OfferCatalog',
+    'name': 'KPS Back Office Suite',
+    'itemListElement': [
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Service',
+          'name': 'Modern Pay',
+          'description': 'Payroll, HR compliance, and white-labeled PEO infrastructure'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Service',
+          'name': 'KPS Financial Advisory',
+          'description': 'QuickBooks optimization, financial management, and controller services'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Service',
+          'name': 'KPS Brand Development',
+          'description': 'Professional branding and workforce leadership positioning'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Service',
+          'name': 'KPS Technology Solutions',
+          'description': 'IT support, software integration, and business systems optimization'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Service',
+          'name': 'Modern Consulting',
+          'description': 'Pragmatic operational consulting with uncomfortable truths and real results'
+        }
+      }
+    ]
+  }
+};
+
+// Local Business Schema
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${siteUrl}#localbusiness`,
+  'name': BUSINESS.brand,
+  'image': `${siteUrl}/img/branding/kps-group-logo.png`,
+  'description': BUSINESS.blurb,
+  'telephone': BUSINESS.phone,
+  'email': BUSINESS.email,
+  'url': siteUrl,
+  'address': {
+    '@type': 'PostalAddress',
+    'streetAddress': BUSINESS.street,
+    'addressLocality': 'Austin',
+    'addressRegion': 'TX',
+    'postalCode': '78701',
+    'addressCountry': 'US'
+  },
+  'geo': {
+    '@type': 'GeoCoordinates',
+    'latitude': 30.2672,
+    'longitude': -97.7431
+  },
+  'areaServed': [
+    {
+      '@type': 'State',
+      'name': 'Texas'
+    },
+    {
+      '@type': 'City',
+      'name': 'Austin'
+    }
+  ],
+  'serviceType': [
+    'Business Infrastructure Engine',
+    'Back Office Solutions',
+    'Operational Consulting',
+    'Business Process Optimization',
+    'Payroll HR Compliance',
+    'Bookkeeping Controller Services',
+    'Website Marketing Infrastructure',
+    'IT Support Software Tooling'
+  ],
+  'priceRange': '$$',
+  'openingHours': 'Mo-Fr 08:00-20:00'
+};
+
+// Person Schema for Karson Lawrence
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  'name': 'Karson Lawrence',
+  'jobTitle': 'Founder & CEO',
+  'worksFor': {
+    '@id': `${siteUrl}#organization`
+  },
+  'description': 'Visionary systems architect and pragmatic operator with 10+ years in big tech and deep involvement in service-based companies.',
+  'knowsAbout': [
+    'Business Infrastructure',
+    'Operational Consulting',
+    'Business Process Optimization',
+    'System Architecture',
+    'Business Automation'
+  ]
+};
+
+const jsonLdData = {
+  '@context': 'https://schema.org',
+  '@graph': [organizationSchema, localBusinessSchema, personSchema]
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLdData)} />

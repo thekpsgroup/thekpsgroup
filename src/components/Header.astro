@@ -1,0 +1,216 @@
+---
+import { BUSINESS } from '../data/constants';
+---
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.querySelector('header');
+    const mobileMenu = document.querySelector('#mobileMenu');
+    const toggleBtn = document.querySelector('#menuToggle');
+    const hamburgerIcon = document.querySelector('#hamburgerIcon');
+    const closeIcon = document.querySelector('#closeIcon');
+    let isMenuOpen = false;
+
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (header) {
+        if (scrollY > 50) {
+          header.classList.add('bg-black/95', 'backdrop-blur-lg', 'shadow-xl');
+          header.classList.remove('bg-transparent');
+        } else {
+          header.classList.remove('bg-black/95', 'backdrop-blur-lg', 'shadow-xl');
+          header.classList.add('bg-transparent');
+        }
+      }
+    });
+
+    // Mobile menu toggle functionality
+    function toggleMobileMenu() {
+      isMenuOpen = !isMenuOpen;
+      
+      if (isMenuOpen) {
+        // Open menu
+        mobileMenu?.classList.remove('hidden', 'opacity-0', 'scale-95');
+        mobileMenu?.classList.add('opacity-100', 'scale-100');
+        hamburgerIcon?.classList.add('hidden');
+        closeIcon?.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        toggleBtn?.setAttribute('aria-expanded', 'true');
+      } else {
+        // Close menu
+        mobileMenu?.classList.add('opacity-0', 'scale-95');
+        mobileMenu?.classList.remove('opacity-100', 'scale-100');
+        setTimeout(() => {
+          mobileMenu?.classList.add('hidden');
+        }, 200);
+        hamburgerIcon?.classList.remove('hidden');
+        closeIcon?.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        toggleBtn?.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    // Toggle button event
+    toggleBtn?.addEventListener('click', toggleMobileMenu);
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (isMenuOpen && !header?.contains(e.target as Node)) {
+        toggleMobileMenu();
+      }
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isMenuOpen) {
+        toggleMobileMenu();
+        (toggleBtn as HTMLElement)?.focus();
+      }
+    });
+
+    // Enhanced keyboard navigation for mobile menu
+    mobileMenu?.addEventListener('keydown', (e) => {
+      const keyEvent = e as KeyboardEvent;
+      const focusableElements = mobileMenu.querySelectorAll('a, button');
+      const focusableArray = Array.from(focusableElements);
+      const currentIndex = focusableArray.indexOf(document.activeElement as HTMLElement);
+      
+      if (keyEvent.key === 'Tab') {
+        if (keyEvent.shiftKey) {
+          // Shift + Tab (backward)
+          if (currentIndex <= 0) {
+            keyEvent.preventDefault();
+            (focusableArray[focusableArray.length - 1] as HTMLElement)?.focus();
+          }
+        } else {
+          // Tab (forward)
+          if (currentIndex >= focusableArray.length - 1) {
+            keyEvent.preventDefault();
+            (focusableArray[0] as HTMLElement)?.focus();
+          }
+        }
+      }
+    });
+
+    // Close menu when clicking nav links
+    const mobileNavLinks = mobileMenu?.querySelectorAll('a');
+    mobileNavLinks?.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isMenuOpen) {
+          toggleMobileMenu();
+        }
+      });
+    });
+  });
+</script>
+
+<header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent" role="banner">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Main header flex container -->
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      
+      <!-- Logo section -->
+      <div class="flex-shrink-0">
+        <a href="/" class="flex items-center space-x-3 group" aria-label="The KPS Group home">
+          <div class="relative">
+            <img
+              src="/img/branding/kps-group-logo.png"
+              alt=""
+              aria-hidden="true"
+              class="h-8 lg:h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+              loading="eager"
+              decoding="async"
+            />
+            <div class="absolute inset-0 bg-gold/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+          </div>
+          <span class="hidden sm:block text-lg lg:text-xl font-bold text-gold group-hover:text-goldLight transition-colors duration-300">
+            {BUSINESS.brand}
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop navigation - hidden on mobile (md:768px+) -->
+      <nav class="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/services" class="nav-link">Services</a>
+        <a href="/contact" class="nav-link">Contact</a>
+        
+        <!-- CTA Button -->
+        <a href="/contact" class="btn-primary ml-4" aria-label="Get started with The KPS Group">
+          Get Started
+        </a>
+      </nav>
+
+      <!-- Mobile menu button - shown only on mobile -->
+      <div class="md:hidden">
+        <button
+          id="menuToggle"
+          type="button"
+          class="relative p-2 text-gold hover:text-goldLight focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black rounded-lg transition-colors duration-200"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Toggle navigation menu"
+        >
+          <!-- Hamburger icon -->
+          <svg id="hamburgerIcon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <!-- Close icon -->
+          <svg id="closeIcon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile navigation menu -->
+  <nav
+    id="mobileMenu"
+    class="md:hidden hidden fixed inset-x-0 top-16 lg:top-20 opacity-0 scale-95 transform transition-all duration-200 ease-in-out bg-black/95 backdrop-blur-lg border-t border-gold/20 shadow-xl"
+    role="navigation"
+    aria-label="Mobile navigation"
+  >
+    <div class="px-4 pt-4 pb-6 space-y-3 max-w-7xl mx-auto">
+      <a href="/" class="mobile-nav-link">Home</a>
+      <a href="/about" class="mobile-nav-link">About</a>
+      <a href="/services" class="mobile-nav-link">Services</a>
+      <a href="/contact" class="mobile-nav-link">Contact</a>
+      
+      <!-- Mobile CTA -->
+      <div class="pt-4">
+        <a href="/contact" class="btn-primary w-full text-center block" aria-label="Get started with The KPS Group">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Header spacer to prevent content overlap -->
+<div class="h-16 lg:h-20" aria-hidden="true"></div>
+
+<style>
+  .nav-link {
+    @apply relative px-3 py-2 text-sm font-medium text-gold/90 hover:text-gold transition-all duration-300;
+  }
+  
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold to-goldLight transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+  
+  .mobile-nav-link {
+    @apply block px-4 py-3 text-base font-medium text-gold/90 hover:text-gold hover:bg-gold/10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-gold to-goldLight text-black font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black;
+  }
+</style>

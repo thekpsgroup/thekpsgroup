@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import PricingCard from '../../components/PricingCard.astro';
+import StructuredData from '../../components/StructuredData.astro';
+import { BUSINESS } from '../../data/constants';
+
+const title = 'IT Support & Technology Solutions | The KPS Group';
+const description = 'Professional IT support, software integration, and technology consulting for small businesses nationwide. Modern Tech division of The KPS Group.';
+const keywords = ['IT support small business', 'technology consulting', 'software integration', 'system setup', 'tech support', 'business technology', 'IT solutions', 'Modern Tech'];
+
+const heroData = {
+  title: 'IT Support & Technology Solutions',
+  subtitle: 'Modern Tech Division',
+  description: 'Professional technology solutions and IT support designed for small businesses. From software integration to system optimization.',
+  ctaText: 'Get IT Support',
+  ctaUrl: '/contact',
+  backgroundImage: '/img/ui/hero-bg.svg'
+};
+
+const itServices = [
+  {
+    title: 'Managed IT Support',
+    description: 'Comprehensive IT support including helpdesk, system monitoring, and proactive maintenance.',
+    features: ['24/7 Monitoring', 'Helpdesk Support', 'System Maintenance', 'Security Updates'],
+    price: 'Starting at $150/month'
+  },
+  {
+    title: 'Software Integration',
+    description: 'Seamless integration of business software including CRM, accounting, and project management tools.',
+    features: ['CRM Setup', 'API Integrations', 'Workflow Automation', 'Data Migration'],
+    price: 'Starting at $2,500'
+  },
+  {
+    title: 'System Setup & Optimization',
+    description: 'Complete system setup, network configuration, and performance optimization for growing businesses.',
+    features: ['Network Setup', 'Server Configuration', 'Cloud Migration', 'Performance Tuning'],
+    price: 'Starting at $1,500'
+  }
+];
+
+const structuredDataProps = {
+  type: 'Service',
+  name: 'IT Support and Technology Solutions',
+  description: description,
+  provider: BUSINESS.name,
+  areaServed: 'United States',
+  serviceType: 'Technology Consulting'
+};
+---
+
+<BaseLayout 
+  title={title} 
+  description={description} 
+  keywords={keywords}
+  service="IT Support"
+>
+  <!-- Hero Section -->
+  <Hero 
+    title={heroData.title}
+    subtitle={heroData.subtitle}
+    description={heroData.description}
+    ctaText={heroData.ctaText}
+    ctaUrl={heroData.ctaUrl}
+    backgroundImage={heroData.backgroundImage}
+  />
+
+  <!-- Services Overview -->
+  <section class="py-20 px-6 max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-3 glass-card px-6 py-3 mb-8">
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+        <span class="text-sm font-medium text-gold/90 tracking-wide uppercase">Modern Tech</span>
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+      </div>
+      
+      <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
+        Technology Solutions That
+        <span class="text-gradient-gold block">Drive Growth</span>
+      </h2>
+      
+      <p class="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed">
+        From IT support to software integration, we provide the technology infrastructure 
+        your business needs to operate efficiently and scale confidently.
+      </p>
+    </div>
+
+    <!-- IT Services Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {itServices.map((service) => (
+        <div class="glass-card p-8 rounded-2xl border border-gold/20 hover:border-gold/40 transition-all duration-300">
+          <h3 class="text-2xl font-bold text-white mb-4">{service.title}</h3>
+          <p class="text-white/80 mb-6 leading-relaxed">{service.description}</p>
+          
+          <ul class="space-y-3 mb-8">
+            {service.features.map((feature) => (
+              <li class="flex items-center gap-3 text-white/90">
+                <svg class="w-5 h-5 text-gold flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+          
+          <div class="text-gold font-semibold text-lg mb-4">{service.price}</div>
+          
+          <a 
+            href="/contact" 
+            class="inline-flex items-center justify-center w-full px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold-light transition-colors duration-300"
+          >
+            Get Started
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Technology Stack -->
+  <section class="py-20 px-6 bg-gray-900/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
+          Enterprise-Grade Technology
+          <span class="text-gradient-gold block">For Small Business</span>
+        </h2>
+        <p class="text-xl text-white/80 max-w-4xl mx-auto">
+          We work with industry-leading platforms and tools to ensure your technology 
+          infrastructure is reliable, secure, and scalable.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+        {[
+          'Microsoft 365',
+          'Google Workspace',
+          'Salesforce',
+          'HubSpot',
+          'QuickBooks',
+          'Slack',
+          'Zoom',
+          'DocuSign',
+          'Dropbox',
+          'LastPass',
+          'CloudFlare',
+          'AWS'
+        ].map((tech) => (
+          <div class="glass-card p-6 rounded-xl text-center">
+            <span class="text-white/80 font-medium">{tech}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Modern Tech -->
+  <section class="py-20 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
+          Why Businesses Choose
+          <span class="text-gradient-gold block">Modern Tech</span>
+        </h2>
+        
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Proactive Support</h3>
+              <p class="text-white/80">We monitor and maintain your systems before problems occur, minimizing downtime and maximizing productivity.</p>
+            </div>
+          </div>
+          
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Custom Integrations</h3>
+              <p class="text-white/80">We build custom integrations between your software systems to streamline workflows and eliminate data silos.</p>
+            </div>
+          </div>
+          
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white mb-2">Security First</h3>
+              <p class="text-white/80">Enterprise-grade security measures protect your data and systems from threats while ensuring compliance.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="glass-card p-8 rounded-2xl">
+        <div class="text-center mb-8">
+          <h3 class="text-2xl font-bold text-white mb-4">Ready to Optimize Your Technology?</h3>
+          <p class="text-white/80 mb-6">
+            Let's discuss how Modern Tech can streamline your operations and support your growth.
+          </p>
+        </div>
+        
+        <div class="space-y-4">
+          <a 
+            href="/contact" 
+            class="block w-full text-center px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold-light transition-colors duration-300"
+          >
+            Schedule Consultation
+          </a>
+          <a 
+            href={`tel:${BUSINESS.phone}`}
+            class="block w-full text-center px-6 py-3 border border-gold text-gold font-semibold rounded-lg hover:bg-gold/10 transition-colors duration-300"
+          >
+            Call {BUSINESS.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Structured Data -->
+  <StructuredData {...structuredDataProps} />
+</BaseLayout>

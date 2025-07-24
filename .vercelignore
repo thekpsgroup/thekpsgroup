@@ -1,0 +1,24 @@
+# Exclude large files and development tools from deployment
+public/team/*.exe
+public/team/*.msi
+public/team/*.zip
+public/team/*.pdf
+public/team/debug.log
+
+# Exclude development files
+node_modules/
+.DS_Store
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Exclude build artifacts that aren't needed
+dist/
+.astro/
+.vercel/
+
+# Exclude unnecessary files
+*.md
+!README.md

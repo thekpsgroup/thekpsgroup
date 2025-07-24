@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Block admin and private areas
+Disallow: /admin/
+Disallow: /.netlify/
+Disallow: /.vercel/
+Disallow: /dist/
+
+# Allow important pages
+Allow: /services/
+Allow: /locations/
+Allow: /about
+Allow: /contact
+Allow: /team
+
+# Point to sitemap
+Sitemap: https://thekpsgroup.com/sitemap.xml
+
+# Crawl delay for polite behavior
+Crawl-delay: 1

@@ -1,0 +1,38 @@
+---
+import { getImage } from 'astro:assets';
+
+interface Props {
+  src: any; // image import from /assets
+  alt: string;
+  className?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+}
+
+const {
+  src,
+  alt,
+  className = '',
+  width = 1200,
+  height = 630,
+  loading = 'lazy',
+} = Astro.props as Props;
+
+const image = await getImage({
+  src,
+  width,
+  height,
+  format: 'avif',
+});
+---
+
+<img
+  src={image.src}
+  width={image.options.width}
+  height={image.options.height}
+  alt={alt}
+  loading={loading}
+  decoding="async"
+  class={className}
+/>

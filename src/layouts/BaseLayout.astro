@@ -1,0 +1,665 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { BUSINESS, CITIES } from '../data/constants';
+
+const {
+  title = 'The KPS Group | Modern Business Infrastructure Engine | Austin TX',
+  description = BUSINESS.blurb,
+  canonical,
+  noindex = false,
+  ogImage = '/img/branding/og-default.jpg',
+  keywords,
+  location = 'Austin, Texas',
+  service = 'business infrastructure',
+  pageType = 'website',
+  isServicePage = false,
+  isLocationPage = false,
+  serviceName,
+  cityName,
+} = Astro.props;
+
+const siteUrl = Astro.site?.href ?? 'https://thekpsgroup.com';
+const currentUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
+
+// Aggressive nationwide SEO keyword strategy
+const defaultKeywords = [
+  // PRIMARY BRAND DOMINANCE - Beat Birmingham KPS Group
+  'The KPS Group LLC',
+  'The KPS Group Austin Texas',
+  'The KPS Group business infrastructure',
+  'KPS Group back office solutions',
+  'KPS Group QuickBooks experts',
+  'KPS Group payroll services',
+  'Karson Lawrence KPS Group',
+  'Modern business infrastructure KPS',
+  
+  // QUICKBOOKS DOMINATION (HIGH VALUE TARGET)
+  'QuickBooks consulting nationwide',
+  'QuickBooks cleanup services',
+  'QuickBooks migration experts',
+  'QuickBooks job costing contractors',
+  'QuickBooks multi-entity consolidation',
+  'QuickBooks coaching training',
+  'QuickBooks workflow automation',
+  'QuickBooks ProAdvisor certified',
+  'QuickBooks disaster recovery',
+  'QuickBooks for HVAC contractors',
+  'QuickBooks for plumbing companies',
+  'QuickBooks for electrical contractors',
+  'QuickBooks for construction companies',
+  
+  // PAYROLL PEO SERVICES (MONTHLY REVENUE DRIVER)
+  'PEO services small business',
+  'payroll processing nationwide',
+  'HR compliance consulting',
+  'employee benefits administration',
+  'workers compensation management',
+  'payroll tax compliance',
+  'Modern Pay payroll services',
+  'PEO for contractors',
+  'payroll for trades businesses',
+  'HR outsourcing small business',
+  
+  // ENHANCED WORKFORCE LEADERSHIP SERVICES (PRIMARY FOCUS)
+  'workforce leadership development',
+  'organizational psychology consulting',
+  'positive reinforcement systems',
+  'next generation workforce management',
+  'contractor website development',
+  'trades business branding',
+  'professional service websites',
+  'local business web design',
+  
+  // HIGH-VALUE CONSULTING (LONG TERM PLAY)
+  'business operations consulting',
+  'SOP development consulting',
+  'business process optimization',
+  'operational excellence consulting',
+  'business systems integration',
+  'ERP implementation consulting',
+  'CRM setup and optimization',
+  'business automation consulting',
+  'scalability consulting services',
+  'Modern Consulting business advisory',
+  
+  // TEXAS MARKET DOMINATION
+  'business services Austin Texas',
+  'back office solutions Dallas TX',
+  'QuickBooks consulting Houston TX',
+  'payroll services San Antonio TX',
+  'business consulting Fort Worth TX',
+  'operational consulting Texas',
+  'business infrastructure Austin',
+  'Modern infrastructure Texas',
+  
+  // NATIONWIDE SERVICE AREAS
+  'business consulting United States',
+  'QuickBooks support nationwide',
+  'payroll services all 50 states',
+  'remote business consulting',
+  'virtual back office solutions',
+  'nationwide business infrastructure',
+  
+  // INDUSTRY-SPECIFIC LONG TAILS
+  'HVAC business consulting',
+  'plumbing company back office',
+  'electrical contractor QuickBooks',
+  'construction company payroll',
+  'home services business systems',
+  'professional services automation',
+  'trades business infrastructure',
+  'service business scaling',
+  'contractor business consulting',
+  
+  // COMPETITIVE KEYWORDS
+  'best QuickBooks consultants',
+  'top business consultants Austin',
+  'premier back office solutions',
+  'leading business infrastructure',
+  'trusted payroll providers',
+  'expert business advisors',
+  'proven business systems',
+  'enterprise-grade solutions SMB'
+];
+
+const metaKeywords = keywords ? keywords.join(', ') : defaultKeywords.join(', ');
+
+// Dynamic title optimization
+let optimizedTitle = title;
+if (isServicePage && serviceName) {
+  optimizedTitle = `${serviceName} | Nationwide Experts | The KPS Group`;
+} else if (isLocationPage && cityName) {
+  optimizedTitle = `Business Services ${cityName} TX | QuickBooks & Payroll | The KPS Group`;
+}
+
+// Enhanced meta description with CTAs
+let optimizedDescription = description;
+if (isServicePage) {
+  optimizedDescription = `Expert ${serviceName || service} nationwide. Call 469-534-3392 for consultation. ${description.substring(0, 100)}...`;
+} else if (isLocationPage) {
+  optimizedDescription = `Professional business services in ${cityName || location}. QuickBooks, payroll, branding & consulting. Call 469-534-3392 today.`;
+}
+---
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- PRIMARY SEO META -->
+    <meta charset="utf-8" />
+    <title>{optimizedTitle}</title>
+    <meta name="description" content={optimizedDescription} />
+    <meta name="keywords" content={metaKeywords} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#D4AF37" />
+    <meta name="author" content="The KPS Group LLC - Karson Lawrence, CEO" />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
+    
+    <!-- CANONICAL & ALTERNATES -->
+    <link rel="canonical" href={currentUrl} />
+    <link rel="alternate" hreflang="en-us" href={currentUrl} />
+    <link rel="alternate" hreflang="x-default" href={siteUrl} />
+    
+    <!-- BRAND DISAMBIGUATION (BEAT BIRMINGHAM KPS) -->
+    <meta name="company" content="The KPS Group LLC" />
+    <meta name="location" content="Austin, Texas, United States" />
+    <meta name="industry" content="Business Infrastructure, Back Office Solutions" />
+    <meta name="founder" content="Karson Lawrence" />
+    <meta name="established" content="2020" />
+    <meta name="business-type" content="Business Infrastructure Engine" />
+    
+    <!-- ENHANCED GEOGRAPHIC TARGETING -->
+    <meta name="geo.region" content="US-TX" />
+    <meta name="geo.placename" content="Austin, Texas" />
+    <meta name="geo.position" content="30.3916;-97.7416" />
+    <meta name="ICBM" content="30.3916, -97.7416" />
+    <meta name="DC.title" content={optimizedTitle} />
+    <meta name="DC.subject" content={`Professional ${service} services nationwide from Austin, Texas`} />
+    <meta name="DC.description" content={optimizedDescription} />
+    <meta name="DC.creator" content="The KPS Group LLC" />
+    <meta name="DC.publisher" content="The KPS Group LLC" />
+    <meta name="DC.rights" content={`© ${new Date().getFullYear()} The KPS Group LLC. All rights reserved.`} />
+    
+    <!-- LOCAL BUSINESS TARGETING -->
+    <meta name="city" content="Austin" />
+    <meta name="state" content="Texas" />
+    <meta name="country" content="United States" />
+    <meta name="zipcode" content="78731" />
+    <meta name="areacode" content="469" />
+    <meta name="region" content="Central Texas" />
+    <meta name="coverage" content="Nationwide" />
+    
+    <!-- BUSINESS CONTACT & VERIFICATION -->
+    <meta name="business:contact_data:street_address" content="5900 Balcones Drive, Suite 15292" />
+    <meta name="business:contact_data:locality" content="Austin" />
+    <meta name="business:contact_data:region" content="Texas" />
+    <meta name="business:contact_data:postal_code" content="78731" />
+    <meta name="business:contact_data:country_name" content="United States" />
+    <meta name="business:contact_data:email" content={BUSINESS.email} />
+    <meta name="business:contact_data:phone_number" content={`+1-${BUSINESS.phone}`} />
+    <meta name="business:contact_data:website" content={siteUrl} />
+    <meta name="contact" content={BUSINESS.email} />
+    <meta name="reply-to" content={BUSINESS.email} />
+    
+    <!-- SEARCH ENGINE VERIFICATION PLACEHOLDERS -->
+    <meta name="google-site-verification" content="" />
+    <meta name="msvalidate.01" content="" />
+    <meta name="yandex-verification" content="" />
+    <meta name="p:domain_verify" content="" />
+    <meta name="alexaVerifyID" content="" />
+    
+    <!-- ENHANCED SEO META -->
+    <meta name="revisit-after" content="1 days" />
+    <meta name="expires" content="never" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+    <meta name="language" content="English" />
+    <meta name="copyright" content={`© ${new Date().getFullYear()} The KPS Group LLC. All rights reserved.`} />
+    <meta name="subject" content={`Professional ${service} services nationwide`} />
+    <meta name="abstract" content="The KPS Group LLC - Modern business infrastructure engine for high-growth service businesses." />
+    <meta name="summary" content="QuickBooks consulting, payroll services, branding, and operational consulting nationwide." />
+    <meta name="classification" content="Business Services" />
+    <meta name="url" content={currentUrl} />
+    <meta name="identifier-URL" content={currentUrl} />
+    <meta name="directory" content="submission" />
+    <meta name="category" content="Business and Economy" />
+    <meta name="coverage" content="Worldwide" />
+    
+    <!-- FAVICON & BRAND ICONS -->
+    <link rel="icon" type="image/png" href="/img/branding/kps-group-logo.png" />
+    <link rel="apple-touch-icon" href="/img/branding/kps-group-logo.png" sizes="180x180" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/branding/kps-group-logo.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/branding/kps-group-logo.png" />
+    <link rel="shortcut icon" href="/img/branding/kps-group-logo.png" />
+    <link rel="icon" sizes="192x192" href="/img/branding/kps-group-logo.png" />
+    <link rel="icon" sizes="512x512" href="/img/branding/kps-group-logo.png" />
+
+    <!-- ENHANCED OPENGRAPH META -->
+    <meta property="og:title" content={optimizedTitle} />
+    <meta property="og:description" content={optimizedDescription} />
+    <meta property="og:type" content={pageType} />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:image" content={new URL(ogImage, siteUrl).href} />
+    <meta property="og:image:secure_url" content={new URL(ogImage, siteUrl).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The KPS Group - Modern Business Infrastructure Engine" />
+    <meta property="og:site_name" content={BUSINESS.brand} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:updated_time" content={new Date().toISOString()} />
+    <meta property="article:publisher" content={BUSINESS.brand} />
+    
+    <!-- ENHANCED TWITTER CARD META -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@thekpsgroup" />
+    <meta name="twitter:creator" content="@karsonlawrence" />
+    <meta name="twitter:title" content={optimizedTitle} />
+    <meta name="twitter:description" content={optimizedDescription} />
+    <meta name="twitter:image" content={new URL(ogImage, siteUrl).href} />
+    <meta name="twitter:image:alt" content="The KPS Group - Modern Business Infrastructure Engine" />
+    
+    <!-- LINKEDIN CARD META -->
+    <meta property="linkedin:card" content="summary_large_image" />
+    <meta property="linkedin:title" content={optimizedTitle} />
+    <meta property="linkedin:description" content={optimizedDescription} />
+    <meta property="linkedin:image" content={new URL(ogImage, siteUrl).href} />
+    
+    <!-- LOCAL BUSINESS STRUCTURED DATA -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "The KPS Group LLC",
+        "alternateName": "The KPS Group",
+        "description": "${optimizedDescription}",
+        "url": "${siteUrl}",
+        "logo": "${new URL('/img/branding/kps-group-logo.png', siteUrl).href}",
+        "image": "${new URL(ogImage, siteUrl).href}",
+        "telephone": "${BUSINESS.phone}",
+        "email": "${BUSINESS.email}",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "5900 Balcones Drive, Suite 15292",
+          "addressLocality": "Austin",
+          "addressRegion": "TX",
+          "postalCode": "78731",
+          "addressCountry": "US"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 30.3916,
+          "longitude": -97.7416
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "United States"
+        },
+        "serviceType": ["Business Infrastructure", "QuickBooks Consulting", "PEO Services", "Workforce Leadership"],
+        "priceRange": "$$",
+        "openingHours": "Mo-Fr 08:00-20:00",
+        "foundingDate": "2020",
+        "founder": {
+          "@type": "Person",
+          "name": "Karson Lawrence",
+          "jobTitle": "CEO & Founder"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/company/thekpsgroup",
+          "https://twitter.com/thekpsgroup"
+        ]
+      }
+    </script>
+    <meta property="article:author" content="Karson Lawrence" />
+    <meta property="business:contact_data:street_address" content="5900 Balcones Drive, Suite 15292" />
+    <meta property="business:contact_data:locality" content="Austin" />
+    <meta property="business:contact_data:region" content="Texas" />
+    <meta property="business:contact_data:postal_code" content="78731" />
+    <meta property="business:contact_data:country_name" content="United States" />
+    <meta property="business:contact_data:email" content={BUSINESS.email} />
+    <meta property="business:contact_data:phone_number" content={`+1-${BUSINESS.phone}`} />
+    <meta property="business:contact_data:website" content={siteUrl} />
+    
+    <!-- ENHANCED TWITTER CARD -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={optimizedTitle} />
+    <meta name="twitter:description" content={optimizedDescription} />
+    <meta name="twitter:image" content={new URL(ogImage, siteUrl).href} />
+    <meta name="twitter:image:alt" content="The KPS Group - Modern Business Infrastructure Engine" />
+    <meta name="twitter:site" content="@TheKPSGroup" />
+    <meta name="twitter:creator" content="@KarsonLawrence" />
+    <meta name="twitter:domain" content="thekpsgroup.com" />
+    <meta name="twitter:url" content={currentUrl} />
+    
+    <!-- PERFORMANCE & PRELOAD -->
+    <link rel="preload" as="image" href={ogImage} />
+    <link rel="preload" as="image" href="/img/branding/kps-group-logo.png" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- MOBILE & DEVICE OPTIMIZATION -->
+    <meta name="format-detection" content="telephone=yes" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="MobileOptimized" content="320" />
+    <meta http-equiv="cleartype" content="on" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="The KPS Group" />
+
+    <!-- COMPREHENSIVE STRUCTURED DATA FOR SEO DOMINATION -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Organization',
+            '@id': `${siteUrl}#organization`,
+            'name': 'The KPS Group LLC',
+            'alternateName': ['The KPS Group', 'KPS Group', 'Modern Business Infrastructure'],
+            'legalName': 'The KPS Group LLC',
+            'url': siteUrl,
+            'logo': {
+              '@type': 'ImageObject',
+              'url': new URL('/img/branding/kps-group-logo.png', siteUrl).href,
+              'width': 512,
+              'height': 512
+            },
+            'image': new URL('/img/branding/og-default.jpg', siteUrl).href,
+            'description': 'The KPS Group LLC - Modern business infrastructure engine for high-growth service businesses. QuickBooks consulting, payroll services, branding, and operational consulting nationwide.',
+            'slogan': 'Modern infrastructure, operational clarity, and hands-on execution from people who have done it before.',
+            'foundingDate': '2020',
+            'founder': {
+              '@type': 'Person',
+              'name': 'Karson Lawrence',
+              'jobTitle': 'Founder & CEO',
+              'email': BUSINESS.email
+            },
+            'numberOfEmployees': '10-50',
+            'address': {
+              '@type': 'PostalAddress',
+              'streetAddress': '5900 Balcones Drive, Suite 15292',
+              'addressLocality': 'Austin',
+              'addressRegion': 'TX',
+              'postalCode': '78731',
+              'addressCountry': 'US'
+            },
+            'geo': {
+              '@type': 'GeoCoordinates',
+              'latitude': 30.3916,
+              'longitude': -97.7416
+            },
+            'contactPoint': [
+              {
+                '@type': 'ContactPoint',
+                'telephone': `+1-${BUSINESS.phone}`,
+                'contactType': 'customer service',
+                'email': BUSINESS.email,
+                'availableLanguage': 'English',
+                'areaServed': 'US',
+                'hoursAvailable': '8 AM – 8 PM CST'
+              },
+              {
+                '@type': 'ContactPoint',
+                'telephone': `+1-${BUSINESS.phone}`,
+                'contactType': 'sales',
+                'email': BUSINESS.email,
+                'availableLanguage': 'English',
+                'areaServed': 'US'
+              }
+            ],
+            'sameAs': [
+              'https://www.linkedin.com/company/thekpsgroup',
+              'https://thekpsgroup.com/services/peo-payroll',
+              'https://thekpsgroup.com/services/quickbooks-consulting',
+              'https://thekpsgroup.com/services/branding',
+              'https://thekpsgroup.com/services'
+            ],
+            'hasOfferCatalog': {
+              '@type': 'OfferCatalog',
+              'name': 'KPS Service Divisions',
+              'itemListElement': [
+                'KPS Payroll Solutions',
+                'KPS Financial Advisory', 
+                'KPS Brand Development',
+                'KPS Operations Excellence',
+                'KPS Technology Solutions',
+                'KPS Workforce Systems'
+              ]
+            },
+            'areaServed': {
+              '@type': 'Country',
+              'name': 'United States'
+            },
+            'knowsAbout': [
+              'Workforce Leadership Development',
+              'Organizational Psychology', 
+              'Team Accountability Systems',
+              'Positive Reinforcement Methodologies',
+              'Next Generation Workforce Management',
+              'Business Infrastructure',
+              'Leadership Transformation',
+              'Company Culture Development',
+              'Employee Engagement',
+              'Leadership Training'
+            ]
+          },
+          {
+            '@type': 'WebSite',
+            '@id': `${siteUrl}#website`,
+            'url': siteUrl,
+            'name': 'The KPS Group',
+            'description': 'Modern business infrastructure engine - QuickBooks consulting, payroll services, branding, and operational consulting nationwide.',
+            'publisher': {
+              '@id': `${siteUrl}#organization`
+            },
+            'potentialAction': {
+              '@type': 'SearchAction',
+              'target': `${siteUrl}/search?q={search_term_string}`,
+              'query-input': 'required name=search_term_string'
+            },
+            'inLanguage': 'en-US'
+          },
+          {
+            '@type': 'LocalBusiness',
+            '@id': `${siteUrl}#localbusiness`,
+            'name': 'The KPS Group LLC',
+            'image': new URL('/img/branding/kps-group-logo.png', siteUrl).href,
+            'telephone': `+1-${BUSINESS.phone}`,
+            'email': BUSINESS.email,
+            'url': siteUrl,
+            'address': {
+              '@type': 'PostalAddress',
+              'streetAddress': '5900 Balcones Drive, Suite 15292',
+              'addressLocality': 'Austin',
+              'addressRegion': 'TX',
+              'postalCode': '78731',
+              'addressCountry': 'US'
+            },
+            'geo': {
+              '@type': 'GeoCoordinates',
+              'latitude': 30.3916,
+              'longitude': -97.7416
+            },
+            'openingHours': 'Mo-Fr 08:00-20:00',
+            'priceRange': '$$',
+            'areaServed': [
+              {
+                '@type': 'State',
+                'name': 'Texas'
+              },
+              {
+                '@type': 'Country',
+                'name': 'United States'
+              }
+            ]
+          },
+          {
+            '@type': 'ProfessionalService',
+            '@id': `${siteUrl}#service`,
+            'name': 'Business Infrastructure Services',
+            'alternateName': 'Back Office Solutions',
+            'image': new URL('/img/branding/kps-group-logo.png', siteUrl).href,
+            'description': 'Comprehensive business infrastructure services including QuickBooks consulting, payroll management, branding, and operational consulting.',
+            'provider': {
+              '@id': `${siteUrl}#organization`
+            },
+            'areaServed': {
+              '@type': 'Country',
+              'name': 'United States'
+            },
+            'serviceType': [
+              'QuickBooks Consulting',
+              'QuickBooks Cleanup Services',
+              'QuickBooks Migration',
+              'Job Costing Optimization',
+              'Multi-Entity Consolidation',
+              'Payroll Processing',
+              'HR Compliance',
+              'PEO Services',
+              'Employee Benefits',
+              'Workers Compensation',
+              'Website Design',
+              'Logo Design',
+              'Brand Development',
+              'Business Consulting',
+              'Operations Consulting',
+              'SOP Development',
+              'Process Optimization',
+              'IT Support',
+              'Software Integration',
+              'Business Automation'
+            ],
+            'offers': {
+              '@type': 'Offer',
+              'description': 'Professional business infrastructure services',
+              'areaServed': {
+                '@type': 'Country',
+                'name': 'United States'
+              }
+            }
+          }
+        ]
+      })}
+    </script>
+
+    <!-- SERVICE-SPECIFIC STRUCTURED DATA -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'QuickBooks Consulting Services',
+        'description': 'Expert QuickBooks consulting, cleanup, migration, and optimization services for businesses nationwide.',
+        'provider': {
+          '@type': 'Organization',
+          'name': 'The KPS Group LLC',
+          'url': siteUrl
+        },
+        'areaServed': {
+          '@type': 'Country',
+          'name': 'United States'
+        },
+        'serviceOutput': 'Clean, organized QuickBooks files with proper job costing and financial reporting',
+        'category': 'Financial Consulting'
+      })}
+    </script>
+
+    <!-- BREADCRUMB STRUCTURED DATA -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          {
+            '@type': 'ListItem',
+            'position': 1,
+            'name': 'The KPS Group',
+            'item': siteUrl
+          },
+          {
+            '@type': 'ListItem',
+            'position': 2,
+            'name': isServicePage ? 'Services' : isLocationPage ? 'Locations' : 'Home',
+            'item': isServicePage ? `${siteUrl}/services` : isLocationPage ? `${siteUrl}/locations` : siteUrl
+          }
+        ]
+      })}
+    </script>
+
+    <!-- FAQ STRUCTURED DATA FOR COMMON QUERIES -->
+    <script type="application/ld+json">
+      {JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'Do you offer QuickBooks support for contractors?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Yes, we specialize in QuickBooks for contractors including job costing, project tracking, and financial reporting specifically designed for construction, HVAC, plumbing, and electrical trades.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Can you clean up multiple years of bookkeeping?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Absolutely. We regularly clean up months or years of backed-up books, categorize transactions, reconcile accounts, and get your financial records audit-ready.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Do you provide payroll services nationwide?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Yes, through Modern Pay we provide full-service payroll, HR compliance, benefits administration, and PEO services across all 50 states.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'What makes The KPS Group different from other business consultants?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'We operate as a modern business infrastructure engine with specialized portfolio companies. Instead of just advice, we provide hands-on execution with enterprise-grade systems for small and mid-size businesses.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Do you work with businesses outside of Texas?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Yes, while we\'re headquartered in Austin, Texas, we serve businesses nationwide through remote and on-site consulting, virtual bookkeeping, and online payroll services.'
+            }
+          }
+        ]
+      })}
+    </script>
+  </head>
+
+  <body class="antialiased font-sans bg-black text-white">
+    <!-- Skip Navigation Link for Accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gold text-black px-4 py-2 rounded-lg font-semibold z-50 focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black transition-all duration-200">
+      Skip to main content
+    </a>
+    
+    <Header />
+    
+    <main id="main-content" role="main">
+      <slot />
+    </main>
+    
+    <Footer />
+    
+    <!-- HIDDEN SEO CONTENT FOR ADDITIONAL KEYWORD TARGETING -->
+    <div style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">
+      <p>The KPS Group LLC serves Austin, Dallas, Houston, San Antonio, Fort Worth, and all Texas cities with professional workforce leadership development, organizational psychology, and business infrastructure consulting. Call 469-534-3392 for expert leadership transformation solutions.</p>
+      <p>Nationwide workforce leadership experts specializing in positive psychology methodologies, team accountability systems, leadership development for next-generation workforce, and organizational culture transformation.</p>
+      <p>Modern Pay provides PEO services, payroll processing, HR compliance, workers compensation, and employee benefits administration across all 50 states. Enterprise-grade solutions for small businesses.</p>
+      <p>Modern Ledger offers QuickBooks cleanup, financial migrations, job costing optimization, multi-entity consolidation, and CFO-level financial reporting for growing service businesses.</p>
+      <p>Portfolio companies provide comprehensive business infrastructure while The KPS Group focuses on leadership development, workforce psychology, and organizational excellence for high-growth service businesses.</p>
+      <p>Expert leadership consulting including team development, accountability frameworks, positive reinforcement systems, organizational psychology, culture transformation, and scalability planning from Austin, Texas to nationwide clients.</p>
+    </div>
+  </body>
+</html>
