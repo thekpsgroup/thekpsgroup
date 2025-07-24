@@ -11,8 +11,13 @@ Disallow: /dist/
 Allow: /services/
 Allow: /locations/
 Allow: /about
+Allow: /leadership
 Allow: /contact
 Allow: /team
+Allow: /bookkeeping-services
+Allow: /technology-consulting
+Allow: /hvac-consulting
+Allow: /electrical-consulting
 
 # Point to sitemap
 Sitemap: https://thekpsgroup.com/sitemap.xml

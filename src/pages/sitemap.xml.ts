@@ -10,6 +10,11 @@ export async function GET() {
   const staticPages = [
     { path: '', priority: '1.0', changefreq: 'daily' },
     { path: '/about', priority: '0.9', changefreq: 'weekly' },
+    { path: '/leadership', priority: '0.8', changefreq: 'monthly' },
+    { path: '/bookkeeping-services', priority: '0.9', changefreq: 'weekly' },
+    { path: '/technology-consulting', priority: '0.9', changefreq: 'weekly' },
+    { path: '/hvac-consulting', priority: '0.9', changefreq: 'weekly' },
+    { path: '/electrical-consulting', priority: '0.9', changefreq: 'weekly' },
     { path: '/contact', priority: '0.9', changefreq: 'weekly' },
     { path: '/services', priority: '0.9', changefreq: 'weekly' },
     { path: '/team', priority: '0.8', changefreq: 'monthly' },

@@ -35,7 +35,13 @@ const defaultKeywords = [
   'Karson Lawrence KPS Group',
   'Modern business infrastructure KPS',
   
-  // QUICKBOOKS DOMINATION (HIGH VALUE TARGET)
+  // BOOKKEEPING & QUICKBOOKS DOMINATION (HIGH VALUE TARGET)
+  'bookkeeper near me',
+  'bookkeeping services near me',
+  'QuickBooks bookkeeper near me',
+  'small business bookkeeper',
+  'virtual bookkeeper',
+  'bookkeeping consultant',
   'QuickBooks consulting nationwide',
   'QuickBooks cleanup services',
   'QuickBooks migration experts',
@@ -49,8 +55,63 @@ const defaultKeywords = [
   'QuickBooks for plumbing companies',
   'QuickBooks for electrical contractors',
   'QuickBooks for construction companies',
+  'bookkeeping for contractors',
+  'construction bookkeeping services',
+  'HVAC bookkeeping specialist',
+  'plumbing bookkeeping services',
+  'electrical contractor bookkeeper',
+  'trade business bookkeeping',
+  'home services bookkeeper',
+  'field service bookkeeping',
+  
+  // INDUSTRY-SPECIFIC CONSULTANT TARGETING
+  'HVAC consultant near me',
+  'HVAC business consultant',
+  'heating air conditioning consultant',
+  'HVAC operations consultant',
+  'HVAC software consultant',
+  'HVAC dispatch consultant',
+  'electrical consultant near me',
+  'electrical contractor consultant',
+  'electrical business advisor',
+  'electrical operations consultant',
+  'plumbing consultant near me',
+  'plumbing business consultant',
+  'plumbing operations advisor',
+  'construction consultant near me',
+  'construction business consultant',
+  'construction operations consultant',
+  'roofing consultant near me',
+  'roofing business consultant',
+  'solar consultant near me',
+  'solar business consultant',
+  'landscaping consultant near me',
+  'landscaping business consultant',
+  'home services consultant',
+  'field service consultant',
+  'service business consultant',
+  'trade business consultant',
+  
+  // TECHNOLOGY CONSULTANT TARGETING
+  'tech consultant near me',
+  'technology consultant small business',
+  'IT consultant small business',
+  'business technology consultant',
+  'software consultant near me',
+  'CRM consultant near me',
+  'database consultant small business',
+  'automation consultant near me',
+  'digital transformation consultant',
+  'business systems consultant',
+  'workflow consultant near me',
+  'process automation consultant',
+  'business efficiency consultant',
+  'operations technology consultant',
+  'Modern Stack technology consultant',
   
   // PAYROLL PEO SERVICES (MONTHLY REVENUE DRIVER)
+  'payroll services near me',
+  'PEO services near me',
   'PEO services small business',
   'payroll processing nationwide',
   'HR compliance consulting',
@@ -61,16 +122,51 @@ const defaultKeywords = [
   'PEO for contractors',
   'payroll for trades businesses',
   'HR outsourcing small business',
+  'payroll consultant near me',
+  'HR consultant small business',
+  'benefits consultant near me',
+  'workers comp consultant',
   
-  // ENHANCED WORKFORCE LEADERSHIP SERVICES (PRIMARY FOCUS)
+  // BRANDING & MARKETING CONSULTANT
+  'branding consultant near me',
+  'marketing consultant small business',
+  'brand consultant near me',
+  'logo design consultant',
+  'website design consultant',
+  'digital marketing consultant',
+  'brand strategy consultant',
+  'marketing advisor small business',
+  'Modern Brands consultant',
+  'contractor marketing consultant',
+  'HVAC marketing consultant',
+  'plumbing marketing consultant',
+  'electrical marketing consultant',
+  'construction marketing consultant',
+  'trade business marketing',
+  'field service marketing',
+  
+  // LOCAL "NEAR ME" DOMINATION
+  'business consultant near me',
+  'small business consultant near me',
+  'operations consultant near me',
+  'management consultant near me',
+  'strategy consultant near me',
+  'efficiency consultant near me',
+  'productivity consultant near me',
+  'business advisor near me',
+  'business coach near me',
+  'Modern Consulting near me',
+  
+  // ENHANCED WORKFORCE LEADERSHIP SERVICES
   'workforce leadership development',
   'organizational psychology consulting',
   'positive reinforcement systems',
   'next generation workforce management',
-  'contractor website development',
-  'trades business branding',
-  'professional service websites',
-  'local business web design',
+  'employee engagement consultant',
+  'leadership development consultant',
+  'team building consultant',
+  'workplace culture consultant',
+  'performance management consultant',
   
   // HIGH-VALUE CONSULTING (LONG TERM PLAY)
   'business operations consulting',
@@ -83,6 +179,10 @@ const defaultKeywords = [
   'business automation consulting',
   'scalability consulting services',
   'Modern Consulting business advisory',
+  'lean operations consultant',
+  'continuous improvement consultant',
+  'change management consultant',
+  'business transformation consultant',
   
   // TEXAS MARKET DOMINATION
   'business services Austin Texas',
@@ -93,6 +193,14 @@ const defaultKeywords = [
   'operational consulting Texas',
   'business infrastructure Austin',
   'Modern infrastructure Texas',
+  'bookkeeper Austin TX',
+  'bookkeeper Dallas TX',
+  'bookkeeper Houston TX',
+  'HVAC consultant Austin TX',
+  'HVAC consultant Dallas TX',
+  'electrical consultant Austin TX',
+  'plumbing consultant Austin TX',
+  'tech consultant Austin TX',
   
   // NATIONWIDE SERVICE AREAS
   'business consulting United States',
@@ -101,6 +209,9 @@ const defaultKeywords = [
   'remote business consulting',
   'virtual back office solutions',
   'nationwide business infrastructure',
+  'virtual bookkeeping services',
+  'remote QuickBooks support',
+  'online business consulting',
   
   // INDUSTRY-SPECIFIC LONG TAILS
   'HVAC business consulting',
@@ -112,12 +223,39 @@ const defaultKeywords = [
   'trades business infrastructure',
   'service business scaling',
   'contractor business consulting',
+  'field service optimization',
+  'dispatch optimization consultant',
+  'service routing consultant',
+  'technician productivity consultant',
   
   // COMPETITIVE KEYWORDS
   'best QuickBooks consultants',
   'top business consultants Austin',
   'premier back office solutions',
   'leading business infrastructure',
+  'trusted payroll providers',
+  'expert business advisors',
+  'proven business systems',
+  'enterprise-grade solutions SMB',
+  'best bookkeeper near me',
+  'top HVAC consultant',
+  'best electrical consultant',
+  'premier plumbing consultant',
+  'leading tech consultant',
+  
+  // PROBLEM-SOLVING KEYWORDS
+  'QuickBooks problems help',
+  'payroll compliance issues',
+  'business efficiency problems',
+  'cash flow management help',
+  'accounting cleanup services',
+  'business process problems',
+  'HVAC business problems',
+  'contractor cash flow issues',
+  'small business automation',
+  'business growth challenges',
+  'operational bottlenecks',
+  'team productivity issues',
   'trusted payroll providers',
   'expert business advisors',
   'proven business systems',
@@ -357,9 +495,168 @@ if (isServicePage) {
             '@type': 'Organization',
             '@id': `${siteUrl}#organization`,
             'name': 'The KPS Group LLC',
-            'alternateName': ['The KPS Group', 'KPS Group', 'Modern Business Infrastructure'],
+            'alternateName': ['The KPS Group', 'KPS Group', 'Modern Business Infrastructure', 'The Modern Suite'],
             'legalName': 'The KPS Group LLC',
             'url': siteUrl,
+            'logo': {
+              '@type': 'ImageObject',
+              'url': `${siteUrl}/logos/the-kps-group.png`,
+              'width': 600,
+              'height': 200
+            },
+            'description': 'Comprehensive business infrastructure services including bookkeeping, QuickBooks consulting, payroll services, technology consulting, and industry-specific consulting for HVAC, electrical, plumbing, and construction businesses.',
+            'address': {
+              '@type': 'PostalAddress',
+              'streetAddress': '5900 Balcones Drive, Suite 15292',
+              'addressLocality': 'Austin',
+              'addressRegion': 'TX',
+              'postalCode': '78731',
+              'addressCountry': 'US'
+            },
+            'contactPoint': [{
+              '@type': 'ContactPoint',
+              'telephone': '+1-469-534-3392',
+              'contactType': 'customer service',
+              'email': 'sales@thekpsgroup.com',
+              'availableLanguage': 'English',
+              'areaServed': 'US'
+            }],
+            'sameAs': [
+              'https://www.facebook.com/OGKPSGroup',
+              'https://www.linkedin.com/company/thekpsgroup'
+            ],
+            'founder': {
+              '@type': 'Person',
+              'name': 'Karson Lawrence',
+              'jobTitle': 'CEO & Founder',
+              'email': 'karson@thekpsgroup.com'
+            },
+            'employees': [
+              {
+                '@type': 'Person',
+                'name': 'Karson Lawrence',
+                'jobTitle': 'CEO & Founder'
+              },
+              {
+                '@type': 'Person',
+                'name': 'Brandon Gibson',
+                'jobTitle': 'Chief Revenue Officer'
+              },
+              {
+                '@type': 'Person',
+                'name': 'Allie Banks',
+                'jobTitle': 'Chief Administrative Officer'
+              }
+            ],
+            'hasOfferCatalog': {
+              '@type': 'OfferCatalog',
+              'name': 'The Modern Suite Services',
+              'itemListElement': [
+                {
+                  '@type': 'Offer',
+                  'itemOffered': {
+                    '@type': 'Service',
+                    'name': 'Bookkeeping Services',
+                    'description': 'Professional bookkeeping services including QuickBooks consulting, cleanup, and ongoing maintenance for small businesses and contractors.',
+                    'provider': { '@id': `${siteUrl}#organization` },
+                    'areaServed': 'US',
+                    'hasOfferCatalog': {
+                      '@type': 'OfferCatalog',
+                      'name': 'Bookkeeping Services',
+                      'itemListElement': [
+                        { '@type': 'Service', 'name': 'QuickBooks Consulting' },
+                        { '@type': 'Service', 'name': 'QuickBooks Cleanup' },
+                        { '@type': 'Service', 'name': 'Virtual Bookkeeping' },
+                        { '@type': 'Service', 'name': 'Construction Bookkeeping' },
+                        { '@type': 'Service', 'name': 'HVAC Bookkeeping' },
+                        { '@type': 'Service', 'name': 'Electrical Contractor Bookkeeping' },
+                        { '@type': 'Service', 'name': 'Plumbing Business Bookkeeping' }
+                      ]
+                    }
+                  }
+                },
+                {
+                  '@type': 'Offer',
+                  'itemOffered': {
+                    '@type': 'Service',
+                    'name': 'Industry Consulting Services',
+                    'description': 'Specialized consulting for HVAC, electrical, plumbing, construction, and technology businesses.',
+                    'provider': { '@id': `${siteUrl}#organization` },
+                    'areaServed': 'US',
+                    'hasOfferCatalog': {
+                      '@type': 'OfferCatalog',
+                      'name': 'Industry Consulting',
+                      'itemListElement': [
+                        { '@type': 'Service', 'name': 'HVAC Business Consulting' },
+                        { '@type': 'Service', 'name': 'Electrical Contractor Consulting' },
+                        { '@type': 'Service', 'name': 'Plumbing Business Consulting' },
+                        { '@type': 'Service', 'name': 'Construction Business Consulting' },
+                        { '@type': 'Service', 'name': 'Technology Consulting' },
+                        { '@type': 'Service', 'name': 'Field Service Consulting' },
+                        { '@type': 'Service', 'name': 'Home Services Consulting' }
+                      ]
+                    }
+                  }
+                },
+                {
+                  '@type': 'Offer',
+                  'itemOffered': {
+                    '@type': 'Service',
+                    'name': 'Payroll and HR Services',
+                    'description': 'Comprehensive payroll processing, PEO services, and HR compliance for small businesses.',
+                    'provider': { '@id': `${siteUrl}#organization` },
+                    'areaServed': 'US'
+                  }
+                },
+                {
+                  '@type': 'Offer',
+                  'itemOffered': {
+                    '@type': 'Service',
+                    'name': 'Technology Consulting',
+                    'description': 'Business technology consulting, CRM implementation, automation, and digital transformation.',
+                    'provider': { '@id': `${siteUrl}#organization` },
+                    'areaServed': 'US'
+                  }
+                },
+                {
+                  '@type': 'Offer',
+                  'itemOffered': {
+                    '@type': 'Service',
+                    'name': 'Branding and Marketing',
+                    'description': 'Professional branding, marketing strategy, and digital marketing for contractors and service businesses.',
+                    'provider': { '@id': `${siteUrl}#organization` },
+                    'areaServed': 'US'
+                  }
+                }
+              ]
+            },
+            'makesOffer': [
+              {
+                '@type': 'Offer',
+                'name': 'QuickBooks Consulting',
+                'description': 'Expert QuickBooks consulting and support',
+                'category': 'Bookkeeping'
+              },
+              {
+                '@type': 'Offer',
+                'name': 'HVAC Business Consulting',
+                'description': 'Specialized consulting for HVAC contractors',
+                'category': 'Industry Consulting'
+              },
+              {
+                '@type': 'Offer',
+                'name': 'Electrical Contractor Consulting',
+                'description': 'Business consulting for electrical contractors',
+                'category': 'Industry Consulting'
+              },
+              {
+                '@type': 'Offer',
+                'name': 'Plumbing Business Consulting',
+                'description': 'Operations and business consulting for plumbing companies',
+                'category': 'Industry Consulting'
+              }
+            ]
+          },
             'logo': {
               '@type': 'ImageObject',
               'url': new URL('/img/branding/kps-group-logo.png', siteUrl).href,
