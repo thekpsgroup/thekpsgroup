@@ -133,7 +133,7 @@ const leaders = [
                       <img
                         src={image}
                         alt={`${leader.name} - Personal photo ${imgIndex + 1}`}
-                        class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                        class="w-full h-64 object-contain bg-gray-800 group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -153,7 +153,7 @@ const leaders = [
                     <img
                       src={leader.image}
                       alt={`${leader.name}, ${leader.title}`}
-                      class="w-full h-80 object-cover rounded-2xl mb-6"
+                      class="w-full h-80 object-contain bg-gray-800 rounded-2xl mb-6"
                       loading="lazy"
                     />
                     <div class="text-center">
