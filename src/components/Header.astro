@@ -122,9 +122,9 @@ import { BUSINESS } from '../data/constants';
               loading="eager"
               decoding="async"
             />
-            <div class="absolute inset-0 bg-gold/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+            <div class="absolute inset-0 bg-accent-500/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
           </div>
-          <span class="hidden sm:block text-lg lg:text-xl font-bold text-gold group-hover:text-goldLight transition-colors duration-300">
+          <span class="hidden sm:block text-lg lg:text-xl font-bold text-accent-400 group-hover:text-accent-300 transition-colors duration-300">
             {BUSINESS.brand}
           </span>
         </a>
@@ -138,8 +138,8 @@ import { BUSINESS } from '../data/constants';
         <a href="/contact" class="nav-link">Contact</a>
         
         <!-- CTA Button -->
-        <a href="/contact" class="btn-primary ml-4" aria-label="Get started with The KPS Group">
-          Get Started
+        <a href="mailto:sales@thekpsgroup.com?subject=The Modern Suite Inquiry&body=Hello, I'm interested in learning more about The Modern Suite and how it can help my business." class="btn-primary ml-4" aria-label="Contact The KPS Group Sales">
+          Contact Sales
         </a>
       </nav>
 
@@ -148,7 +148,7 @@ import { BUSINESS } from '../data/constants';
         <button
           id="menuToggle"
           type="button"
-          class="relative p-2 text-gold hover:text-goldLight focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black rounded-lg transition-colors duration-200"
+          class="relative p-2 text-accent-400 hover:text-accent-300 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-black rounded-lg transition-colors duration-200"
           aria-expanded="false"
           aria-controls="mobile-menu"
           aria-label="Toggle navigation menu"
@@ -169,7 +169,7 @@ import { BUSINESS } from '../data/constants';
   <!-- Mobile navigation menu -->
   <nav
     id="mobileMenu"
-    class="md:hidden hidden fixed inset-x-0 top-16 lg:top-20 opacity-0 scale-95 transform transition-all duration-200 ease-in-out bg-black/95 backdrop-blur-lg border-t border-gold/20 shadow-xl"
+    class="md:hidden hidden fixed inset-x-0 top-16 lg:top-20 opacity-0 scale-95 transform transition-all duration-200 ease-in-out bg-black/95 backdrop-blur-lg border-t border-accent-600/20 shadow-xl"
     role="navigation"
     aria-label="Mobile navigation"
   >
@@ -181,8 +181,8 @@ import { BUSINESS } from '../data/constants';
       
       <!-- Mobile CTA -->
       <div class="pt-4">
-        <a href="/contact" class="btn-primary w-full text-center block" aria-label="Get started with The KPS Group">
-          Get Started
+        <a href="mailto:sales@thekpsgroup.com?subject=The Modern Suite Inquiry&body=Hello, I'm interested in learning more about The Modern Suite and how it can help my business." class="btn-primary w-full text-center block" aria-label="Contact The KPS Group Sales">
+          Contact Sales
         </a>
       </div>
     </div>
@@ -194,12 +194,12 @@ import { BUSINESS } from '../data/constants';
 
 <style>
   .nav-link {
-    @apply relative px-3 py-2 text-sm font-medium text-gold/90 hover:text-gold transition-all duration-300;
+    @apply relative px-3 py-2 text-sm font-medium text-accent-400/90 hover:text-accent-300 transition-all duration-300;
   }
   
   .nav-link::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-gold to-goldLight transition-all duration-300;
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-500 to-accent-400 transition-all duration-300;
   }
   
   .nav-link:hover::after {
@@ -207,10 +207,10 @@ import { BUSINESS } from '../data/constants';
   }
   
   .mobile-nav-link {
-    @apply block px-4 py-3 text-base font-medium text-gold/90 hover:text-gold hover:bg-gold/10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold;
+    @apply block px-4 py-3 text-base font-medium text-accent-400/90 hover:text-accent-300 hover:bg-accent-500/10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500;
   }
   
   .btn-primary {
-    @apply inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-gold to-goldLight text-black font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black;
+    @apply inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-accent-600 to-accent-500 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-black;
   }
 </style>

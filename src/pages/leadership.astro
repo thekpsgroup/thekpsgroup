@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BUSINESS } from '../data/constants';
+
+const pageTitle = 'Leadership Team';
+const pageDescription = 'Meet the executive leadership team of The KPS Group - Karson Lawrence (CEO), Brandon Davis (CRO), and Allie Murphy (CAO), driving innovation and growth across The Modern Suite.';
+
+// Leadership team data
+const leaders = [
+  {
+    name: 'Karson Lawrence',
+    title: 'Founder & CEO',
+    location: 'Dallas, TX',
+    subtitle: 'Systems Architect | Financial Strategist | Ex-Big Tech Operator',
+    image: '/team/karson/CEO-Karson.png.jpg',
+    galleryImages: [
+      '/team/karson/karson.jpg',
+      '/team/karson/karson-w-girls.jpg',
+      '/team/karson/karson-w-girls2.jpg'
+    ],
+    bio: 'Karson is the founder and visionary force behind The KPS Group and the entire Modern Suite. Before stepping into the small business arena, he spent a decade inside Big Tech, managing high-value enterprise accounts for PwC, IBM, and Microsoft. That experience sharpened his skills in system architecture, enterprise operations, and strategic finance — all of which now inform his work rebuilding Main Street businesses from the inside out.',
+    experience: [
+      '10 years in big tech managing Fortune 500 accounts',
+      'Background in systems thinking, ops architecture, and account profitability',
+      'Fractional COO and turnaround advisor to dozens of service-based firms',
+      'Creator of Modern OS, the ERP/CRM/FSM engine powering the Modern Suite'
+    ],
+    philosophy: 'Karson sees through the noise and targets the root. Whether it\'s cash flow confusion, bloated headcount, or a complete lack of visibility — he brings the strategy, structure, and software to fix it.',
+    quote: 'My job is to build the system the owner wishes they had 5 years ago — and make it scalable.',
+    expertise: [
+      'Systems Architecture',
+      'Enterprise Operations',
+      'Strategic Finance',
+      'Turnaround Strategy',
+      'Process Optimization'
+    ],
+    email: 'karson@thekpsgroup.com'
+  },
+  {
+    name: 'Brandon Gibson',
+    title: 'Chief Revenue Officer',
+    location: 'Dallas, TX',
+    subtitle: 'Sales Leader | Field Services Veteran | Revenue System Builder',
+    image: '/team/brandon/CRO-Brandon.jpg.jpg',
+    galleryImages: [
+      // Add more photos here when available
+    ],
+    bio: 'Brandon has spent the last 15 years in the trenches of service business sales — building and leading high-performing teams across HVAC, solar, roofing, and construction. He\'s trained closers, rebuilt CRMs, built lead-to-close pipelines, and turned sales chaos into structured, scalable revenue engines.',
+    experience: [
+      'Former VP of Sales across multiple 7-figure field service firms',
+      'Expert in objection handling, deal psychology, and performance accountability',
+      'Leads the development of the Modern Consulting sales training ecosystem',
+      'Primary author of sales manuals, script packets, and live training programs'
+    ],
+    philosophy: 'His zone of genius? Turning talented but underperforming sales teams into high-output closers with consistent activity and trackable results.',
+    quote: 'Sales isn\'t magic. It\'s a math equation most companies haven\'t solved.',
+    expertise: [
+      'Sales Leadership',
+      'Revenue Operations',
+      'CRM Development',
+      'Team Training',
+      'Performance Management'
+    ],
+    email: 'brandon@thekpsgroup.com'
+  },
+  {
+    name: 'Allie Banks',
+    title: 'Chief Administrative Officer',
+    location: 'Georgia',
+    subtitle: 'HR Compliance Expert | Payroll Veteran | Enterprise-Grade Operator',
+    image: '/team/allie/CAO-Allie.jpeg.jpg',
+    galleryImages: [
+      '/team/allie/allie-with-family.jpg',
+      '/team/allie/allie-with-spouse.jpg'
+    ],
+    bio: 'Allie brings enterprise experience with small business empathy. She spent nearly a decade leading operations inside ADP, where she managed payroll, compliance, and HR support for thousands of employees. At The KPS Group, she translates that rigor into lean, automated back-office systems for small business teams.',
+    experience: [
+      'Former ADP senior account lead for national accounts',
+      'Direct experience with complex payroll, W-2/1099 compliance, PTO tracking, and benefits',
+      'Designs all onboarding and compliance flows for Modern Pay',
+      'Oversees all internal KPS HR, SOPs, and administrative systems'
+    ],
+    philosophy: 'Allie ensures your business isn\'t just operating — it\'s protected. From the first hire to the final paycheck, she builds the guardrails most small businesses skip.',
+    quote: 'Structure creates freedom. And most teams are drowning in the absence of it.',
+    expertise: [
+      'HR Compliance',
+      'Payroll Systems',
+      'Benefits Administration',
+      'Process Documentation',
+      'Risk Management'
+    ],
+    email: 'allie@thekpsgroup.com'
+  }
+];
+---
+
+<BaseLayout 
+  title={pageTitle}
+  description={pageDescription}
+  showHero={false}
+>
+  <!-- Leadership Header -->
+  <section class="bg-primary-900 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 bg-accent-500/10 border border-accent-500/30 rounded-full px-4 py-2 mb-6">
+        <div class="w-2 h-2 bg-accent-500 rounded-full animate-pulse"></div>
+        <span class="text-sm font-medium text-accent-400">Leadership Team</span>
+      </div>
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+        Meet Our <span class="text-accent-400">Executive Leadership</span>
+      </h1>
+      <p class="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+        The visionary leaders driving innovation and growth across The Modern Suite, 
+        committed to empowering small businesses with enterprise-level capabilities.
+      </p>
+    </div>
+  </section>
+
+  <!-- Leadership Team Profiles -->
+  <section class="bg-gradient-to-b from-primary-800 to-primary-900 py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-32">
+        {leaders.map((leader, index) => (
+          <div class="space-y-8">
+            <!-- Personal Gallery -->
+            {leader.galleryImages && leader.galleryImages.length > 0 && (
+              <div class="text-center">
+                <h3 class="text-2xl font-bold text-white mb-2">Meet {leader.name.split(' ')[0]}</h3>
+                <p class="text-accent-400 mb-8">Beyond the Professional</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+                  {leader.galleryImages.map((image, imgIndex) => (
+                    <div class="group relative overflow-hidden rounded-2xl bg-gray-900/50 border border-gray-800 hover:border-accent-500/50 transition-all duration-300">
+                      <img
+                        src={image}
+                        alt={`${leader.name} - Personal photo ${imgIndex + 1}`}
+                        class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <!-- Professional Profile -->
+            <div class={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''}`}>
+              <!-- Image Section -->
+              <div class={`${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
+                <div class="relative">
+                  <div class="absolute inset-0 bg-gradient-to-br from-accent-500/20 via-transparent to-accent-600/20 rounded-3xl"></div>
+                  <div class="relative bg-gray-900/50 border border-gray-800 rounded-3xl p-8 backdrop-blur-sm">
+                    <img
+                      src={leader.image}
+                      alt={`${leader.name}, ${leader.title}`}
+                      class="w-full h-80 object-cover rounded-2xl mb-6"
+                      loading="lazy"
+                    />
+                    <div class="text-center">
+                      <h3 class="text-2xl font-bold text-white mb-2">{leader.name}</h3>
+                      <p class="text-accent-400 font-medium mb-4">{leader.title}</p>
+                      <a 
+                        href={`mailto:${leader.email}?subject=Hello from the website&body=Hello ${leader.name.split(' ')[0]}, I'd like to connect with you regarding The KPS Group.`}
+                        class="inline-flex items-center gap-2 bg-accent-500 text-white px-6 py-3 rounded-full font-medium hover:bg-accent-600 transition-all duration-300 hover:scale-105"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Contact {leader.name.split(' ')[0]}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Content Section -->
+              <div class={`${index % 2 === 1 ? 'lg:col-start-1' : ''} space-y-8`}>
+                <div>
+                  <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                    {leader.name}
+                  </h2>
+                  <h3 class="text-xl text-accent-400 font-semibold mb-1">
+                    {leader.title}
+                  </h3>
+                  <p class="text-gray-400 mb-2">{leader.location}</p>
+                  <p class="text-accent-300 font-medium mb-6 italic">
+                    {leader.subtitle}
+                  </p>
+                  <p class="text-gray-300 leading-relaxed text-lg mb-6">
+                    {leader.bio}
+                  </p>
+                  
+                  <!-- Philosophy -->
+                  <div class="bg-accent-500/10 border border-accent-500/30 rounded-xl p-6 mb-6">
+                    <p class="text-gray-300 leading-relaxed mb-4">
+                      {leader.philosophy}
+                    </p>
+                    <blockquote class="border-l-4 border-accent-400 pl-4">
+                      <p class="text-accent-300 font-medium italic text-lg">
+                        "{leader.quote}"
+                      </p>
+                    </blockquote>
+                  </div>
+                </div>
+
+                <!-- Experience -->
+                <div>
+                  <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Key Experience
+                  </h4>
+                  <ul class="space-y-3">
+                    {leader.experience.map((exp) => (
+                      <li class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-accent-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <p class="text-gray-300">{exp}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <!-- Expertise -->
+                <div>
+                  <h4 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Core Expertise
+                  </h4>
+                  <div class="flex flex-wrap gap-2">
+                    {leader.expertise.map((skill) => (
+                      <span class="bg-accent-500/20 border border-accent-500/30 text-accent-300 px-3 py-1 rounded-full text-sm font-medium">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Why Section -->
+  <section class="bg-primary-800 py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 bg-accent-500/10 border border-accent-500/30 rounded-full px-4 py-2 mb-8">
+        <div class="w-2 h-2 bg-accent-500 rounded-full animate-pulse"></div>
+        <span class="text-sm font-medium text-accent-400">Our Why</span>
+      </div>
+      
+      <h2 class="text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
+        We didn't create The KPS Group to offer services.<br/>
+        <span class="text-accent-400">We created it because we saw business owners being told to "scale" without being handed a system — or the truth.</span>
+      </h2>
+
+      <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 mb-8">
+        <h3 class="text-2xl font-bold text-white mb-6">We believe:</h3>
+        <ul class="space-y-4 text-left max-w-2xl mx-auto">
+          <li class="flex items-start gap-3">
+            <div class="w-2 h-2 bg-accent-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p class="text-gray-300 text-lg">You can't grow what you don't understand.</p>
+          </li>
+          <li class="flex items-start gap-3">
+            <div class="w-2 h-2 bg-accent-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p class="text-gray-300 text-lg">Finance isn't just reporting — it's strategy.</p>
+          </li>
+          <li class="flex items-start gap-3">
+            <div class="w-2 h-2 bg-accent-400 rounded-full mt-2 flex-shrink-0"></div>
+            <p class="text-gray-300 text-lg">Your ops should run even when you're not there.</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="space-y-6">
+        <p class="text-xl text-white font-semibold">
+          We don't sell fluff.<br/>
+          <span class="text-accent-400">We install infrastructure.</span>
+        </p>
+        <p class="text-lg text-gray-300">
+          The Modern Suite isn't a vendor. It's your outsourced back office — with real operators behind it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="bg-primary-900 py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+        Ready to Work with Our Leadership Team?
+      </h2>
+      <p class="text-xl text-gray-300 mb-8 leading-relaxed">
+        Connect directly with our executive team to discuss how The Modern Suite 
+        can transform your business operations and drive sustainable growth.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a 
+          href="mailto:sales@thekpsgroup.com?subject=Leadership Meeting Request&body=Hello, I'd like to schedule a meeting with your leadership team to discuss how The Modern Suite can help my business."
+          class="inline-flex items-center justify-center gap-2 bg-accent-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-accent-600 hover:scale-105 transition-all duration-300"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          Schedule Executive Meeting
+        </a>
+        <a 
+          href="mailto:sales@thekpsgroup.com?subject=General Inquiry&body=Hello, I'd like to learn more about The Modern Suite and how it can benefit my business."
+          class="inline-flex items-center justify-center gap-2 border-2 border-accent-500 text-accent-500 px-8 py-4 rounded-full font-semibold hover:bg-accent-500 hover:text-white transition-all duration-300"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          General Inquiry
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

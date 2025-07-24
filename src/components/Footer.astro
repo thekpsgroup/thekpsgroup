@@ -7,31 +7,31 @@ const currentYear = new Date().getFullYear();
 const topCities = CITIES.slice(0, 8).sort();
 ---
 
-<footer class="bg-gray-900 border-t border-goldDark/30 text-gray-300" role="contentinfo">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16">
+<footer class="bg-primary-900 border-t border-accent-700/30 text-gray-300" role="contentinfo">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <!-- Main Footer Content -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-8 lg:gap-6 mb-8 sm:mb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-12">
       
       <!-- Company Info -->
-      <div class="space-y-4 sm:col-span-2 lg:col-span-1">
-        <div class="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+      <div class="lg:col-span-1 space-y-6">
+        <div class="flex items-center gap-3">
           <img
             src="/logos/the-kps-group.png"
             alt={`${BUSINESS.brand} logo`}
-            class="h-6 sm:h-8 w-auto"
+            class="h-8 w-auto"
             loading="lazy"
           />
-          <span class="text-lg sm:text-xl font-bold text-goldLight">{BUSINESS.brand}</span>
+          <span class="text-xl font-bold text-white">{BUSINESS.brand}</span>
         </div>
-        <p class="text-sm text-gray-400 leading-relaxed">
+        <p class="text-gray-400 leading-relaxed max-w-sm">
           {BUSINESS.blurb}
         </p>
-        <div class="flex items-center gap-4 pt-2">
+        <div class="flex items-center gap-3">
           <a 
             href="https://www.facebook.com/OGKPSGroup" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="text-gray-400 hover:text-gold transition-colors p-2 hover:bg-gold/10 rounded-lg focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none"
+            class="text-gray-400 hover:text-accent-400 transition-colors p-2 hover:bg-accent-500/10 rounded-lg focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-primary-900 focus:outline-none"
             aria-label="Follow us on Facebook (opens in new window)"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -41,45 +41,144 @@ const topCities = CITIES.slice(0, 8).sort();
         </div>
       </div>
 
-      <!-- Our Companies -->
-      <nav aria-labelledby="companies-heading">
-        <h4 id="companies-heading" class="text-white font-semibold mb-3 sm:mb-4">Our Companies</h4>
-        <ul class="space-y-3 text-sm">
+      <!-- Modern Suite Companies -->
+      <div class="lg:col-span-1">
+        <h4 class="text-white font-semibold mb-6 text-lg">The Modern Suite</h4>
+        <ul class="space-y-4">
           <li>
-            <a href="https://modernpay.co" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors block focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-gray-900 focus:outline-none rounded" aria-label="Modern Pay (opens in new window)">
-              <span class="font-medium text-goldLight">Modern Pay</span>
-              <p class="text-xs text-gray-400 mt-1">Payroll, HR compliance, and white-labeled PEO infrastructure</p>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Pay Inquiry&body=Hello, I'm interested in learning more about Modern Pay services." class="group block">
+              <span class="font-medium text-accent-400 group-hover:text-accent-300 transition-colors">Modern Pay</span>
+              <p class="text-sm text-gray-400 mt-1">Payroll & HR Solutions</p>
             </a>
           </li>
           <li>
-            <a href="https://thekpsgroup.com/services/quickbooks-consulting" class="hover:text-gold transition-colors block">
-              <span class="font-medium text-goldLight">KPS Financial Advisory</span>
-              <p class="text-xs text-gray-400 mt-1">QuickBooks optimization, financial management, and controller services</p>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Ledger Inquiry&body=Hello, I'm interested in learning more about Modern Ledger financial services." class="group block">
+              <span class="font-medium text-accent-400 group-hover:text-accent-300 transition-colors">Modern Ledger</span>
+              <p class="text-sm text-gray-400 mt-1">Financial Management</p>
             </a>
           </li>
           <li>
-            <a href="https://thekpsgroup.com/services/branding" class="hover:text-gold transition-colors block">
-              <span class="font-medium text-goldLight">KPS Brand Development</span>
-              <p class="text-xs text-gray-400 mt-1">Professional branding and workforce leadership positioning</p>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Brands Inquiry&body=Hello, I'm interested in learning more about Modern Brands creative services." class="group block">
+              <span class="font-medium text-accent-400 group-hover:text-accent-300 transition-colors">Modern Brands</span>
+              <p class="text-sm text-gray-400 mt-1">Creative & Branding</p>
             </a>
           </li>
           <li>
-            <a href="https://thekpsgroup.com/services" class="hover:text-gold transition-colors block">
-              <span class="font-medium text-goldLight">KPS Technology Solutions</span>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Stack Inquiry&body=Hello, I'm interested in learning more about Modern Stack technology solutions." class="group block">
+              <span class="font-medium text-accent-400 group-hover:text-accent-300 transition-colors">Modern Stack</span>
+              <p class="text-sm text-gray-400 mt-1">Technology Solutions</p>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Consulting Inquiry&body=Hello, I'm interested in learning more about Modern Consulting services." class="group block">
+              <span class="font-medium text-accent-400 group-hover:text-accent-300 transition-colors">Modern Consulting</span>
+              <p class="text-sm text-gray-400 mt-1">Business Consulting</p>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern OS Early Access&body=Hello, I'm interested in early access to the Modern OS platform." class="group block">
+              <span class="font-medium text-accent-400 group-hover:text-accent-300 transition-colors">Modern OS</span>
+              <p class="text-sm text-gray-400 mt-1">ERP Platform (Coming Soon)</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Company Links -->
+      <div class="lg:col-span-1">
+        <h4 class="text-white font-semibold mb-6 text-lg">Company</h4>
+        <ul class="space-y-3">
+          <li><a href="/" class="text-gray-400 hover:text-accent-400 transition-colors">Home</a></li>
+          <li><a href="/about" class="text-gray-400 hover:text-accent-400 transition-colors">About</a></li>
+          <li><a href="/leadership" class="text-gray-400 hover:text-accent-400 transition-colors">Leadership</a></li>
+          <li><a href="/#companies" class="text-gray-400 hover:text-accent-400 transition-colors">Our Companies</a></li>
+          <li><a href="mailto:sales@thekpsgroup.com?subject=General Inquiry&body=Hello, I'd like to learn more about The KPS Group." class="text-gray-400 hover:text-accent-400 transition-colors">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="lg:col-span-1">
+        <h4 class="text-white font-semibold mb-6 text-lg">Get In Touch</h4>
+        <div class="space-y-4">
+          <div>
+            <p class="text-gray-400 text-sm font-medium">Phone</p>
+            <a 
+              href="tel:4695343392" 
+              class="text-accent-400 hover:text-accent-300 transition-colors font-medium"
+            >
+              {BUSINESS.phone}
+            </a>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm font-medium">Email</p>
+            <a 
+              href="mailto:sales@thekpsgroup.com" 
+              class="text-accent-400 hover:text-accent-300 transition-colors font-medium"
+            >
+              {BUSINESS.email}
+            </a>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm font-medium">Hours</p>
+            <p class="text-white">{BUSINESS.hours}</p>
+          </div>
+          <div>
+            <p class="text-gray-400 text-sm font-medium">Location</p>
+            <p class="text-white text-sm">{BUSINESS.cityState}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="border-t border-gray-700 pt-8">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="text-sm text-gray-400">
+          © {currentYear} {BUSINESS.name}. All rights reserved.
+        </div>
+        <div class="flex items-center gap-6 text-sm">
+          <a href="mailto:sales@thekpsgroup.com?subject=Privacy Policy Question&body=Hello, I have a question about your privacy policy." class="text-gray-400 hover:text-accent-400 transition-colors">
+            Privacy Policy
+          </a>
+          <a href="mailto:sales@thekpsgroup.com?subject=Terms of Service Question&body=Hello, I have a question about your terms of service." class="text-gray-400 hover:text-accent-400 transition-colors">
+            Terms of Service
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+              <p class="text-xs text-gray-400 mt-1">Payroll, HR compliance, and PEO services</p>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Ledger Inquiry&body=Hello, I'm interested in learning more about Modern Ledger financial services." class="hover:text-accent-400 transition-colors block">
+              <span class="font-medium text-accent-400">Modern Ledger</span>
+              <p class="text-xs text-gray-400 mt-1">QuickBooks optimization, financial management, and CFO-level advisory</p>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Brands Inquiry&body=Hello, I'm interested in learning more about Modern Brands creative services." class="hover:text-accent-400 transition-colors block">
+              <span class="font-medium text-accent-400">Modern Brands</span>
+              <p class="text-xs text-gray-400 mt-1">Creative design, brand development, and marketing solutions</p>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Stack Inquiry&body=Hello, I'm interested in learning more about Modern Stack technology solutions." class="hover:text-accent-400 transition-colors block">
+              <span class="font-medium text-accent-400">Modern Stack</span>
               <p class="text-xs text-gray-400 mt-1">IT support, software integration, and business systems optimization</p>
             </a>
           </li>
           <li>
-            <a href="https://modernconsulting.co" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors block">
-              <span class="font-medium text-goldLight">Modern Consulting</span>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern Consulting Inquiry&body=Hello, I'm interested in learning more about Modern Consulting services." class="hover:text-accent-400 transition-colors block">
+              <span class="font-medium text-accent-400">Modern Consulting</span>
               <p class="text-xs text-gray-400 mt-1">Pragmatic operational consulting with uncomfortable truths and real results</p>
             </a>
           </li>
           <li>
-            <div class="block opacity-75">
-              <span class="font-medium text-goldLight">Modern OS</span>
-              <p class="text-xs text-gray-400 mt-1">All-in-one ERP/CRM/FSM platform - Coming Soon</p>
-            </div>
+            <a href="mailto:sales@thekpsgroup.com?subject=Modern OS Early Access&body=Hello, I'm interested in early access to the Modern OS platform." class="hover:text-accent-400 transition-colors block">
+              <span class="font-medium text-accent-400">Modern OS</span>
+              <p class="text-xs text-gray-400 mt-1">All-in-one ERP/CRM/FSM platform - Join the early access list</p>
           </li>
         </ul>
       </div>
@@ -88,10 +187,10 @@ const topCities = CITIES.slice(0, 8).sort();
       <div>
         <h4 class="text-white font-semibold mb-3 sm:mb-4">Company</h4>
         <ul class="space-y-2 sm:space-y-3 text-sm">
-          <li><a href="/" class="hover:text-gold transition-colors py-1 block">Home</a></li>
-          <li><a href="/about" class="hover:text-gold transition-colors py-1 block">About</a></li>
-          <li><a href="/#companies" class="hover:text-gold transition-colors py-1 block">Our Companies</a></li>
-          <li><a href="/contact" class="hover:text-gold transition-colors py-1 block">Contact</a></li>
+          <li><a href="/" class="hover:text-accent-400 transition-colors py-1 block">Home</a></li>
+          <li><a href="/about" class="hover:text-accent-400 transition-colors py-1 block">About</a></li>
+          <li><a href="/#companies" class="hover:text-accent-400 transition-colors py-1 block">Our Companies</a></li>
+          <li><a href="mailto:sales@thekpsgroup.com?subject=General Inquiry&body=Hello, I'd like to learn more about The KPS Group." class="hover:text-accent-400 transition-colors py-1 block">Contact</a></li>
         </ul>
       </div>
 
@@ -103,7 +202,7 @@ const topCities = CITIES.slice(0, 8).sort();
             <p class="text-gray-400 text-xs sm:text-sm">Phone</p>
             <a 
               href="tel:4695343392" 
-              class="text-goldLight hover:text-gold transition-colors font-medium block py-1"
+              class="text-accent-400 hover:text-accent-300 transition-colors font-medium block py-1"
             >
               {BUSINESS.phone}
             </a>
@@ -112,14 +211,14 @@ const topCities = CITIES.slice(0, 8).sort();
             <p class="text-gray-400 text-xs sm:text-sm">Email</p>
             <a 
               href="mailto:sales@thekpsgroup.com" 
-              class="text-goldLight hover:text-gold transition-colors font-medium block py-1 break-all"
+              class="text-accent-400 hover:text-accent-300 transition-colors font-medium block py-1 break-all"
             >
               {BUSINESS.email}
             </a>
           </div>
           <div>
             <p class="text-gray-400 text-xs sm:text-sm">Hours</p>
-            <p class="text-goldLight">{BUSINESS.hours}</p>
+            <p class="text-accent-400">{BUSINESS.hours}</p>
           </div>
         </div>
       </div>
@@ -132,10 +231,10 @@ const topCities = CITIES.slice(0, 8).sort();
           © {currentYear} {BUSINESS.name}. All rights reserved.
         </div>
         <div class="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm">
-          <a href="/privacy-policy" class="text-gray-400 hover:text-gold transition-colors py-2">
+          <a href="mailto:sales@thekpsgroup.com?subject=Privacy Policy Question&body=Hello, I have a question about your privacy policy." class="text-gray-400 hover:text-accent-400 transition-colors py-2">
             Privacy Policy
           </a>
-          <a href="/terms-of-service" class="text-gray-400 hover:text-gold transition-colors py-2">
+          <a href="mailto:sales@thekpsgroup.com?subject=Terms of Service Question&body=Hello, I have a question about your terms of service." class="text-gray-400 hover:text-accent-400 transition-colors py-2">
             Terms of Service
           </a>
         </div>
