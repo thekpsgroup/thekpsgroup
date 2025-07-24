@@ -1,223 +1,263 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { BUSINESS } from '../data/constants';
 
-const title = 'About The KPS Group | Complete Back-Office Solutions | Austin TX';
-const description = 'Learn about The KPS Group, your trusted partner for complete back-office solutions. Serving small businesses nationwide from Austin with bookkeeping, payroll, branding, and business consulting services.';
+const title = 'About The KPS Group | Professional Holding Company | The Modern Suite';
+const description = 'Learn about The KPS Group, a professional holding company that empowers small businesses through The Modern Suite - six specialized companies providing integrated solutions for sustainable growth and success.';
 ---
 
 <BaseLayout {title} {description}>
-  <section class="py-20 sm:py-32 px-6 max-w-6xl mx-auto min-h-screen">
-    <div class="text-center mb-16">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-goldLight mb-6 leading-tight">
-        About The KPS Group
+  
+  <!-- Hero Section -->
+  <section class="py-20 sm:py-32 px-6 bg-gradient-to-b from-black to-gray-950">
+    <div class="max-w-6xl mx-auto text-center">
+      <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-gold/30 rounded-full px-6 py-3 mb-8">
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+        <span class="text-sm font-medium text-gold tracking-wide uppercase">About The KPS Group</span>
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+        Professional Holding Company<br/>
+        <span class="text-gradient-gold">Empowering Small Business Success</span>
       </h1>
-      <p class="text-lg sm:text-xl text-goldLight/80 leading-relaxed max-w-4xl mx-auto">
-        We provide complete back-office solutions for growing businesses in the trades and service industries. Based in Austin and serving clients nationwide, we handle the business operations so you can focus on your customers.
-      </p>
-    </div>
-
-    <!-- Values Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-16">
-      <div class="text-center p-6 rounded-xl bg-gold/5 border border-gold/20">
-        <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold text-gold mb-2">Fast Delivery</h3>
-        <p class="text-goldLight/80">Quick turnaround on all projects</p>
-      </div>
-
-      <div class="text-center p-6 rounded-xl bg-gold/5 border border-gold/20">
-        <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold text-gold mb-2">Professional Quality</h3>
-        <p class="text-goldLight/80">Experienced team, reliable results</p>
-      </div>
-
-      <div class="text-center p-6 rounded-xl bg-gold/5 border border-gold/20">
-        <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-          <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold text-gold mb-2">Fair Pricing</h3>
-        <p class="text-goldLight/80">Transparent rates, no hidden fees</p>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="text-center">
-      <a 
-        href="/contact" 
-        class="inline-flex items-center gap-2 bg-gold text-black px-8 py-4 rounded-full font-semibold hover:bg-goldLight hover:scale-105 transition-all duration-300"
-      >
-        Get Started Today
-      </a>
-    </div>
-    <!-- About Story -->
-    <div class="mb-16">
-      <p class="text-lg text-goldLight/80 leading-relaxed max-w-4xl mx-auto text-center">
-        At The KPS Group, we develop organizational systems and leadership capabilities that don't just look professional—they perform like strategic assets. We're an elite consulting partner that moves fast, thinks systemically, and delivers measurable workforce excellence that elevates your competitive positioning while maximizing ROI.
-      </p>
-
-      <!-- Stats Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-        <div class="p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold text-gold mb-2">300+</div>
-          <div class="text-goldLight/80 text-sm">Successful Projects</div>
-        </div>
-        <div class="p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold text-gold mb-2">4.9★</div>
-          <div class="text-goldLight/80 text-sm">Client Rating</div>
-        </div>
-        <div class="p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
-          <div class="text-3xl font-bold text-gold mb-2">48hr</div>
-          <div class="text-goldLight/80 text-sm">Average Turnaround</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Our Approach -->
-    <div class="mb-16">
-      <h2 class="text-3xl sm:text-4xl font-bold text-goldLight mb-8">Our Approach</h2>
-      <div class="grid md:grid-cols-2 gap-8 text-left">
-        <div class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-2xl p-6 sm:p-8 hover:border-gold/60 hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gold/20 rounded-xl flex items-center justify-center group-hover:bg-gold/30 transition-colors duration-300">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-              </svg>
-            </div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-gold group-hover:text-goldLight transition-colors duration-300">Built for Results</h3>
-          </div>
-          <p class="text-goldLight/80 leading-relaxed text-sm sm:text-base">
-            Whether it's your first logo or your fifth website redesign, we focus on impact and ROI. We don't just design—we brand with intention, creating visual assets that drive business growth and customer engagement.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-2xl p-6 sm:p-8 hover:border-gold/60 hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gold/20 rounded-xl flex items-center justify-center group-hover:bg-gold/30 transition-colors duration-300">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-              </svg>
-            </div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-gold group-hover:text-goldLight transition-colors duration-300">Senior‑Level Talent, Startup Speed</h3>
-          </div>
-          <p class="text-goldLight/80 leading-relaxed text-sm sm:text-base">
-            You get the polish of a high-end agency without the bloat or delays. Every project is led by senior designers, operators, and strategists who understand both aesthetics and business outcomes.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-2xl p-6 sm:p-8 hover:border-gold/60 hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gold/20 rounded-xl flex items-center justify-center group-hover:bg-gold/30 transition-colors duration-300">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-              </svg>
-            </div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-gold group-hover:text-goldLight transition-colors duration-300">Transparent Pricing</h3>
-          </div>
-          <p class="text-goldLight/80 leading-relaxed text-sm sm:text-base">
-            No hidden fees, no scope creep, no surprises. You know exactly what you're getting and what it costs before we start. Fixed pricing means you can budget with confidence.
-          </p>
-        </div>
-
-        <div class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-2xl p-6 sm:p-8 hover:border-gold/60 hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gold/20 rounded-xl flex items-center justify-center group-hover:bg-gold/30 transition-colors duration-300">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-gold group-hover:text-goldLight transition-colors duration-300">Quality Guaranteed</h3>
-          </div>
-          <p class="text-goldLight/80 leading-relaxed text-sm sm:text-base">
-            100% satisfaction guarantee on every project. If you're not completely happy with the final result, we'll revise until you are—or provide a full refund. Your success is our success.
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Why Choose Us -->
-    <div class="mb-16 p-8 bg-gradient-to-r from-gold/10 to-goldLight/10 border border-gold/20 rounded-2xl backdrop-blur-sm">
-      <h2 class="text-3xl sm:text-4xl font-bold text-goldLight mb-6">Why Choose The KPS Group?</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left max-w-4xl mx-auto">
-        <div class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <div>
-            <h4 class="font-semibold text-gold mb-1">Rapid Implementation</h4>
-            <p class="text-goldLight/80 text-sm">Most projects completed within 48-72 hours</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <div>
-            <h4 class="font-semibold text-gold mb-1">Premium Quality</h4>
-            <p class="text-goldLight/80 text-sm">High-end design without the agency price tag</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <div>
-            <h4 class="font-semibold text-gold mb-1">Strategic Focus</h4>
-            <p class="text-goldLight/80 text-sm">Every design decision drives business results</p>
-          </div>
-        </div>
-        
-        <div class="flex items-start gap-3">
-          <svg class="w-6 h-6 text-green-400 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <div>
-            <h4 class="font-semibold text-gold mb-1">Personal Service</h4>
-            <p class="text-goldLight/80 text-sm">Direct access to senior designers and strategists</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CTA Section -->
-    <div class="text-center">
-      <h3 class="text-2xl sm:text-3xl font-bold text-goldLight mb-4">Ready to Transform Your Organization?</h3>
-      <p class="text-goldLight/80 mb-8 max-w-2xl mx-auto">
-        Join 300+ successful organizations who've achieved exceptional workforce performance with The KPS Group.
-      </p>
       
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-2 bg-gold text-black px-8 py-4 rounded-full font-semibold hover:bg-goldLight hover:scale-105 transition-all duration-300 shadow-lg"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-          </svg>
-          Get Your Free Consultation
-        </a>
-        
-        <a
-          href="/contact"
-          class="inline-flex items-center gap-2 border border-gold/30 text-gold px-8 py-4 rounded-full font-semibold hover:border-gold hover:bg-gold/10 transition-all duration-300"
-        >
-          View Our Packages
-        </a>
-      </div>
-      
-      <div class="mt-4 text-xs text-gold/60">
-        🔥 Limited time: Free rush delivery on all packages this week
+      <p class="text-xl sm:text-2xl text-white/80 leading-relaxed max-w-4xl mx-auto mb-12">
+        The KPS Group brings together six specialized companies under The Modern Suite, providing small businesses with enterprise-level capabilities and integrated solutions for sustainable growth.
+      </p>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-6">
+          <div class="text-4xl font-bold text-gradient-gold mb-2">2020</div>
+          <div class="text-white/70">Founded</div>
+        </div>
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-6">
+          <div class="text-4xl font-bold text-gradient-gold mb-2">6</div>
+          <div class="text-white/70">Specialized Companies</div>
+        </div>
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-6">
+          <div class="text-4xl font-bold text-gradient-gold mb-2">1000+</div>
+          <div class="text-white/70">Businesses Served</div>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Our Story Section -->
+  <section class="py-20 px-6 bg-gray-950">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+            Our Story
+          </h2>
+          <div class="space-y-6 text-white/80 leading-relaxed">
+            <p>
+              The KPS Group was founded with a simple but powerful vision: small businesses deserve access to the same sophisticated systems and support that large enterprises enjoy, but without the complexity and cost barriers.
+            </p>
+            <p>
+              After years of working with businesses across various industries, our founder Karson Lawrence recognized a critical gap in the market. Small business owners were brilliant at their craft but often struggled with the operational infrastructure needed to scale efficiently.
+            </p>
+            <p>
+              Rather than offering piecemeal solutions, we decided to create something unprecedented: The Modern Suite - a collection of six specialized companies that work together seamlessly to provide comprehensive business empowerment.
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-2xl p-8">
+          <h3 class="text-2xl font-bold text-gold mb-6">Our Mission</h3>
+          <blockquote class="text-lg text-white/90 italic leading-relaxed mb-6">
+            "{BUSINESS.mission}"
+          </blockquote>
+          <cite class="text-gold font-medium">— {BUSINESS.founder}</cite>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Values Section -->
+  <section class="py-20 px-6 bg-gradient-to-b from-gray-950 to-black">
+    <div class="max-w-6xl mx-auto">
+      
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+          Our Core Values
+        </h2>
+        <p class="text-xl text-white/80 max-w-3xl mx-auto">
+          These principles guide every decision we make and every solution we provide through The Modern Suite.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-16 h-16 bg-gradient-to-r from-gold/20 to-goldLight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Excellence</h3>
+          <p class="text-white/70">
+            We deliver enterprise-quality solutions with meticulous attention to detail and professional standards.
+          </p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-16 h-16 bg-gradient-to-r from-gold/20 to-goldLight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Partnership</h3>
+          <p class="text-white/70">
+            We invest in long-term relationships and grow alongside our clients as trusted business partners.
+          </p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-16 h-16 bg-gradient-to-r from-gold/20 to-goldLight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Integration</h3>
+          <p class="text-white/70">
+            All our solutions work together seamlessly, ensuring every aspect of your business is aligned and optimized.
+          </p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-16 h-16 bg-gradient-to-r from-gold/20 to-goldLight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Innovation</h3>
+          <p class="text-white/70">
+            We continuously evolve our solutions using the latest technology and proven methodologies.
+          </p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-16 h-16 bg-gradient-to-r from-gold/20 to-goldLight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Transparency</h3>
+          <p class="text-white/70">
+            Clear communication, honest assessments, and straightforward solutions with no hidden surprises.
+          </p>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-16 h-16 bg-gradient-to-r from-gold/20 to-goldLight/20 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-4">Results</h3>
+          <p class="text-white/70">
+            We measure our success by your success and focus on delivering measurable business outcomes.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Leadership Section -->
+  <section class="py-20 px-6 bg-black">
+    <div class="max-w-6xl mx-auto">
+      
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+          Leadership Team
+        </h2>
+        <p class="text-xl text-white/80 max-w-3xl mx-auto">
+          Meet the experienced professionals who guide The KPS Group and ensure The Modern Suite delivers exceptional results for every client.
+        </p>
+      </div>
+
+      <!-- Team Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- CEO -->
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+            <img src="/team/CEO-Karson.png.jpg" alt="Karson Lawrence, CEO" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Karson Lawrence</h3>
+          <p class="text-gold font-medium mb-4">Founder & CEO</p>
+          <p class="text-white/70 text-sm">
+            Visionary leader with extensive experience in business operations, strategic planning, and organizational development.
+          </p>
+        </div>
+
+        <!-- CRO -->
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+            <img src="/team/CRO-Brandon.jpg.jpg" alt="Brandon, CRO" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Brandon</h3>
+          <p class="text-gold font-medium mb-4">Chief Revenue Officer</p>
+          <p class="text-white/70 text-sm">
+            Revenue optimization expert focused on helping clients achieve sustainable growth and profitability through The Modern Suite.
+          </p>
+        </div>
+
+        <!-- CAO -->
+        <div class="bg-white/5 backdrop-blur-sm border border-gold/20 rounded-xl p-8 text-center">
+          <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden">
+            <img src="/team/CAO-Allie.jpeg.jpg" alt="Allie, CAO" class="w-full h-full object-cover" />
+          </div>
+          <h3 class="text-xl font-bold text-white mb-2">Allie</h3>
+          <p class="text-gold font-medium mb-4">Chief Administrative Officer</p>
+          <p class="text-white/70 text-sm">
+            Operations specialist ensuring seamless integration and delivery of all Modern Suite services across client engagements.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 px-6 bg-gradient-to-t from-black to-gray-950">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-6">
+        Ready to Experience The Modern Suite?
+      </h2>
+      <p class="text-xl text-white/80 mb-8">
+        Join over 1000 businesses who have transformed their operations with The KPS Group's integrated solutions.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" class="inline-flex items-center gap-3 bg-gold hover:bg-goldLight text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105">
+          <span>Schedule Free Consultation</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+        </a>
+        <a href="/services" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg border border-white/20 hover:border-gold/50 transition-all duration-300">
+          <span>Explore The Modern Suite</span>
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
 </BaseLayout>
+
+<style>
+.text-gradient-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+</style>
