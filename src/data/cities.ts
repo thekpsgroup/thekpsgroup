@@ -1200,6 +1200,7 @@ export const MAJOR_CITIES: CityData[] = [
 ];
 
 export const STATES = [
+  { name: 'Alabama', code: 'AL', region: 'Southeast', opportunities: 'medium' },
   { name: 'Alaska', code: 'AK', region: 'West', opportunities: 'low' },
   { name: 'Arizona', code: 'AZ', region: 'Southwest', opportunities: 'medium' },
   { name: 'Arkansas', code: 'AR', region: 'South', opportunities: 'medium' },

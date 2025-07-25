@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { MAJOR_CITIES, STATES } from '../../data/cities';
+
+const state = STATES.find(s => s.name === 'Georgia');
+const stateCities = MAJOR_CITIES.filter(city => city.state === 'Georgia');
+
+const pageTitle = `Professional Services in Georgia | The KPS Group`;
+const pageDescription = `Expert consulting, bookkeeping, and technology services across Georgia including ${stateCities.slice(0, 5).map(c => c.name).join(', ')} and more. Serving ${stateCities.length} major cities statewide.`;
+---
+
+<BaseLayout 
+  title={pageTitle}
+  description={pageDescription}
+  canonical={`https://thekpsgroup.com/locations/georgia`}
+>
+  <!-- Hero Section -->
+  <section class="relative min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-black via-gray-900 to-black">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(212,175,55,0.1),transparent_70%)]"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+        Professional Services in
+        <span class="text-gold block mt-2">Georgia</span>
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+        Expert consulting, bookkeeping, and technology services across the Peach State
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 text-gold/80">
+        <span class="px-4 py-2 bg-gold/10 rounded-full border border-gold/20">
+          {stateCities.length} Major Cities Served
+        </span>
+        <span class="px-4 py-2 bg-gold/10 rounded-full border border-gold/20">
+          Statewide Coverage
+        </span>
+        <span class="px-4 py-2 bg-gold/10 rounded-full border border-gold/20">
+          Business Growth Hub
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Areas -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Georgia Service Areas
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          We proudly serve businesses across Georgia's thriving metropolitan areas and growing cities
+        </p>
+      </div>
+
+      <!-- Major Cities Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {stateCities.map((city) => (
+          <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">{city.name}</h3>
+            <p class="text-gray-600 mb-3">Population: {city.population?.toLocaleString()}</p>
+            <div class="space-y-2">
+              <div class="flex items-center text-sm text-gray-500">
+                <svg class="w-4 h-4 mr-2 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+                </svg>
+                {city.county} County
+              </div>
+              {city.industries && (
+                <div class="flex flex-wrap gap-1">
+                  {city.industries.slice(0, 3).map((industry) => (
+                    <span class="px-2 py-1 bg-gold/10 text-gold text-xs rounded">
+                      {industry}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Georgia Business Climate -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            Georgia's Thriving Business Environment
+          </h2>
+          <div class="space-y-6">
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center mr-4">
+                <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Top Business State</h3>
+                <p class="text-gray-600">Consistently ranked #1 for business by Site Selection magazine for multiple years.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center mr-4">
+                <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Transportation Hub</h3>
+                <p class="text-gray-600">World's busiest airport and strategic location for distribution and logistics.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="flex-shrink-0 w-8 h-8 bg-gold/10 rounded-full flex items-center justify-center mr-4">
+                <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Diverse Economy</h3>
+                <p class="text-gray-600">Strong presence in film, technology, agriculture, and financial services.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-gold/5 to-gold/10 rounded-2xl p-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6">Georgia By The Numbers</h3>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-gold mb-2">#8</div>
+              <div class="text-sm text-gray-600">US Population Rank</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-gold mb-2">10.9M</div>
+              <div class="text-sm text-gray-600">Residents</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-gold mb-2">$650B+</div>
+              <div class="text-sm text-gray-600">State GDP</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-gold mb-2">159</div>
+              <div class="text-sm text-gray-600">Counties</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          Our Georgia Services
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Comprehensive business solutions for Georgia's dynamic and growing economy
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Bookkeeping Services</h3>
+          <p class="text-gray-600">Professional accounting services for Georgia's diverse business sectors.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Business Consulting</h3>
+          <p class="text-gray-600">Strategic consulting to help Georgia businesses capitalize on growth opportunities.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-16 h-16 bg-gold/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Technology Solutions</h3>
+          <p class="text-gray-600">Cutting-edge technology consulting for Georgia's innovation-driven businesses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 bg-gradient-to-r from-gray-900 to-black">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+        Ready to Grow Your Georgia Business?
+      </h2>
+      <p class="text-xl text-gray-300 mb-8">
+        Contact us today to learn how we can help your business succeed in the Peach State
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-gold hover:bg-gold/90 transition-colors duration-200"
+        >
+          Get Started Today
+        </a>
+        <a
+          href="/services"
+          class="inline-flex items-center justify-center px-8 py-3 border border-gold text-base font-medium rounded-md text-gold hover:bg-gold/10 transition-colors duration-200"
+        >
+          View Our Services
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

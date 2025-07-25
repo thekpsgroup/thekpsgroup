@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const title = "Business Services Alaska | QuickBooks Consulting & Payroll | The KPS Group";
+const description = "Professional business consulting services across Alaska. QuickBooks setup, payroll management, HR solutions, and technology consulting. Serving Anchorage, Fairbanks, Juneau and beyond.";
+
+const alaskaCities = [
+  { name: 'Anchorage', path: '/locations/alaska/anchorage', description: 'Alaska\'s largest city and economic center' },
+  { name: 'Fairbanks', path: '/locations/alaska/fairbanks', description: 'Interior Alaska hub with university and military' },
+  { name: 'Juneau', path: '/locations/alaska/juneau', description: 'State capital with government and tourism' },
+  { name: 'Wasilla', path: '/locations/alaska/wasilla', description: 'Fast-growing Mat-Su Valley community' },
+  { name: 'Sitka', path: '/locations/alaska/sitka', description: 'Southeast Alaska fishing and tourism center' }
+];
+
+const alaskaIndustries = [
+  'Oil & Gas',
+  'Tourism & Hospitality',
+  'Fishing & Seafood',
+  'Government Services',
+  'Military & Defense',
+  'Mining & Natural Resources',
+  'Transportation & Logistics',
+  'Healthcare Services',
+  'Construction',
+  'Professional Services'
+];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Business Consulting Services Alaska",
+  "description": "Professional QuickBooks consulting, payroll services, and business solutions across Alaska",
+  "provider": {
+    "@type": "Organization",
+    "name": "The KPS Group",
+    "url": "https://thekpsgroup.com",
+    "telephone": "(469) 534-3392",
+    "email": "info@thekpsgroup.com"
+  },
+  "areaServed": {
+    "@type": "State",
+    "name": "Alaska",
+    "sameAs": "https://en.wikipedia.org/wiki/Alaska"
+  },
+  "serviceType": [
+    "QuickBooks Consulting",
+    "Payroll Services", 
+    "HR Solutions",
+    "Technology Consulting",
+    "Business Process Automation"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Alaska Business Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "QuickBooks Consulting Alaska",
+          "description": "Expert QuickBooks setup, training, and ongoing support for Alaska businesses"
+        }
+      },
+      {
+        "@type": "Offer", 
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Payroll Services Alaska",
+          "description": "Complete payroll processing and compliance for Alaska companies"
+        }
+      }
+    ]
+  }
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead 
+    title={title}
+    description={description}
+    keywords="business services alaska, quickbooks consulting alaska, payroll services alaska, hr solutions alaska, technology consulting alaska, business consulting anchorage fairbanks juneau"
+    structuredData={structuredData}
+    canonical="https://thekpsgroup.com/locations/alaska"
+  />
+
+  <main class="pt-24">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-20">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Business Services Across <span class="text-yellow-400">Alaska</span>
+          </h1>
+          <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-4xl mx-auto">
+            Expert QuickBooks consulting, payroll services, and business solutions for Alaska's unique business environment
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors">
+              Get Started Today
+            </a>
+            <a href="tel:(469) 534-3392" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-900 transition-colors">
+              Call (469) 534-3392
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Alaska Business Services</h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Comprehensive business solutions tailored for Alaska's unique market conditions and regulatory environment
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">QuickBooks Consulting</h3>
+            <p class="text-gray-600 mb-6">Expert setup, training, and ongoing support for QuickBooks Desktop and Online, customized for Alaska businesses.</p>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Initial setup & data migration</li>
+              <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Custom chart of accounts</li>
+              <li class="flex items-center"><span class="w-2 h-2 bg-blue-600 rounded-full mr-3"></span>Staff training & support</li>
+            </ul>
+          </div>
+
+          <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Payroll Services</h3>
+            <p class="text-gray-600 mb-6">Complete payroll processing with Alaska-specific tax compliance and reporting requirements.</p>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Automated payroll processing</li>
+              <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Alaska state tax compliance</li>
+              <li class="flex items-center"><span class="w-2 h-2 bg-green-600 rounded-full mr-3"></span>Employee self-service portal</li>
+            </ul>
+          </div>
+
+          <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">HR Solutions</h3>
+            <p class="text-gray-600 mb-6">Comprehensive human resources support designed for Alaska's unique workforce challenges.</p>
+            <ul class="space-y-2 text-gray-600">
+              <li class="flex items-center"><span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>Employee handbook development</li>
+              <li class="flex items-center"><span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>Alaska labor law compliance</li>
+              <li class="flex items-center"><span class="w-2 h-2 bg-purple-600 rounded-full mr-3"></span>Benefits administration</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alaska Cities Section -->
+    <section class="py-20">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Serving Alaska Communities</h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            We provide business consulting services across Alaska's major cities and communities
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {alaskaCities.map(city => (
+            <a href={city.path} class="block bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-blue-500 hover:shadow-lg transition-all">
+              <h3 class="text-xl font-bold text-gray-900 mb-2">{city.name}</h3>
+              <p class="text-gray-600">{city.description}</p>
+              <div class="mt-4 text-blue-600 font-semibold flex items-center">
+                Learn More
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section class="py-20 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold text-gray-900 mb-4">Alaska Industries We Serve</h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Specialized business solutions for Alaska's key industries
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+          {alaskaIndustries.map(industry => (
+            <div class="bg-white p-4 rounded-lg text-center shadow hover:shadow-md transition-shadow">
+              <span class="text-gray-700 font-medium">{industry}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-blue-900 text-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-6">Ready to Streamline Your Alaska Business?</h2>
+        <p class="text-xl text-blue-100 mb-8">
+          Get expert business consulting services tailored for Alaska's unique business environment. Contact us today for a free consultation.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors">
+            Schedule Consultation
+          </a>
+          <a href="tel:(469) 534-3392" class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-900 transition-colors">
+            Call (469) 534-3392
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

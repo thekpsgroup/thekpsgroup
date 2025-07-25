@@ -1656,6 +1656,31 @@ button, input[type="submit"], input[type="button"] {
     width: auto;
   }
   
+  /* Mobile team photo optimizations */
+  .team-member img,
+  img[src*="/team/"],
+  img[alt*="Allie"],
+  img[alt*="Brandon"],
+  img[alt*="Karson"] {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* Force team images to load on mobile */
+  .team-grid img,
+  .team-member-card img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+    max-width: none !important;
+    min-height: 200px;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  }
+  
   /* Mobile list spacing */
   ul li {
     margin-bottom: 0.75rem;
