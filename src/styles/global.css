@@ -999,15 +999,6 @@ button, input[type="submit"], input[type="button"] {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
 /* Utility Classes */
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
@@ -1027,12 +1018,6 @@ button, input[type="submit"], input[type="button"] {
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
 }
 
 /* --------------------

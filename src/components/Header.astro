@@ -431,7 +431,6 @@ import { BUSINESS } from '../data/constants';
         <!-- Enhanced CTA Button -->
         <a href="mailto:sales@thekpsgroup.com?subject=The Modern Suite Inquiry&body=Hello, I'm interested in learning more about The Modern Suite and how it can help my business." class="btn-primary-compact ml-4 group" aria-label="Contact The KPS Group Sales">
           <span class="relative z-10">Contact Sales</span>
-          <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:animate-shimmer"></div>
         </a>
       </nav>
 
@@ -739,19 +738,6 @@ import { BUSINESS } from '../data/constants';
   
   .btn-primary {
     @apply relative inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-warning-500 to-warning-400 text-accent-700 font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-warning-400 focus:ring-offset-2 focus:ring-offset-black overflow-hidden;
-  }
-
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%) skewX(-12deg);
-    }
-    100% {
-      transform: translateX(200%) skewX(-12deg);
-    }
-  }
-
-  .animate-shimmer {
-    animation: shimmer 1.5s ease-in-out;
   }
 
   /* Enhanced mobile touch targets */
