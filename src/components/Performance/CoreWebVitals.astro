@@ -1,0 +1,368 @@
+---
+// Performance & Core Web Vitals Optimization Component
+const { 
+  enableLazyLoading = true, 
+  enableImageOptimization = true,
+  enablePrefetch = true,
+  enableServiceWorker = false 
+} = Astro.props;
+---
+
+<!-- Critical Resource Hints -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="//www.google-analytics.com" />
+<link rel="dns-prefetch" href="//thekpsgroup.com" />
+
+<!-- Preload Critical Assets -->
+<link rel="preload" href="/fonts/Inter-var.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/img/branding/kps-group-logo.webp" as="image" />
+
+{enablePrefetch && (
+  <Fragment>
+    <!-- Prefetch likely next pages -->
+    <link rel="prefetch" href="/services" />
+    <link rel="prefetch" href="/about-us" />
+    <link rel="prefetch" href="/contact" />
+    <link rel="prefetch" href="/locations" />
+  </Fragment>
+)}
+
+<!-- Core Web Vitals Optimization Script -->
+<script>
+  class PerformanceOptimizer {
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      this.optimizeImages();
+      this.enableIntersectionObserver();
+      this.optimizeAnimations();
+      this.measureCoreWebVitals();
+      this.enablePrefetching();
+    }
+
+    optimizeImages() {
+      // Lazy load images with intersection observer
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            
+            // Load the actual image
+            if (img.dataset.src) {
+              img.src = img.dataset.src;
+              img.removeAttribute('data-src');
+            }
+            
+            // Load srcset if available
+            if (img.dataset.srcset) {
+              img.srcset = img.dataset.srcset;
+              img.removeAttribute('data-srcset');
+            }
+            
+            // Remove loading class and add loaded class
+            img.classList.remove('loading');
+            img.classList.add('loaded');
+            
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px 0px',
+        threshold: 0.1
+      });
+
+      // Observe all lazy images
+      document.querySelectorAll('img[data-src]').forEach(img => {
+        img.classList.add('loading');
+        imageObserver.observe(img);
+      });
+    }
+
+    enableIntersectionObserver() {
+      // Animate elements when they come into view
+      const animationObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const element = entry.target;
+            
+            // Add animation class
+            element.classList.add('animate-in-view');
+            
+            // Unobserve after animation
+            animationObserver.unobserve(element);
+          }
+        });
+      }, {
+        rootMargin: '0px 0px -100px 0px',
+        threshold: 0.1
+      });
+
+      // Observe elements with animation classes
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        animationObserver.observe(el);
+      });
+    }
+
+    optimizeAnimations() {
+      // Reduce motion if user prefers it
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      
+      if (prefersReducedMotion.matches) {
+        document.documentElement.style.setProperty('--animation-duration', '0.01ms');
+        document.documentElement.style.setProperty('--transition-duration', '0.01ms');
+      }
+
+      // Use transform and opacity for better performance
+      const animatedElements = document.querySelectorAll('.animate-fade-in-up, .hover-lift');
+      animatedElements.forEach(el => {
+        el.style.willChange = 'transform, opacity';
+      });
+    }
+
+    measureCoreWebVitals() {
+      // Measure and report Core Web Vitals
+      try {
+        import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+          getCLS(this.sendToAnalytics);
+          getFID(this.sendToAnalytics);
+          getFCP(this.sendToAnalytics);
+          getLCP(this.sendToAnalytics);
+          getTTFB(this.sendToAnalytics);
+        });
+      } catch (error) {
+        console.log('Web Vitals measurement not available');
+      }
+    }
+
+    sendToAnalytics(metric) {
+      // Send Core Web Vitals to analytics
+      if (typeof gtag !== 'undefined') {
+        gtag('event', metric.name, {
+          event_category: 'Web Vitals',
+          value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+          event_label: metric.id,
+          non_interaction: true,
+        });
+      }
+    }
+
+    enablePrefetching() {
+      // Prefetch links on hover/focus
+      const linkObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const link = entry.target;
+            this.prefetchLink(link.href);
+          }
+        });
+      });
+
+      // Observe internal links
+      document.querySelectorAll('a[href^="/"], a[href^="https://thekpsgroup.com"]').forEach(link => {
+        // Prefetch on hover
+        link.addEventListener('mouseenter', () => {
+          this.prefetchLink(link.href);
+        }, { once: true });
+
+        // Also observe for viewport intersection
+        linkObserver.observe(link);
+      });
+    }
+
+    prefetchLink(url) {
+      if (!url || url === window.location.href) return;
+      
+      // Check if already prefetched
+      if (document.querySelector(`link[rel="prefetch"][href="${url}"]`)) return;
+      
+      // Create prefetch link
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = url;
+      document.head.appendChild(link);
+    }
+
+    // Progressive image loading with blur-up effect
+    progressiveImageLoad() {
+      const images = document.querySelectorAll('.progressive-image');
+      
+      images.forEach(container => {
+        const img = container.querySelector('img');
+        const placeholder = container.querySelector('.image-placeholder');
+        
+        if (img && placeholder) {
+          img.onload = () => {
+            img.classList.add('loaded');
+            placeholder.classList.add('fade-out');
+          };
+        }
+      });
+    }
+
+    // Critical CSS inlining helper
+    inlineCriticalCSS() {
+      // This would normally be done at build time
+      // Here we're just adding classes to improve perceived performance
+      document.documentElement.classList.add('fonts-loaded');
+    }
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      new PerformanceOptimizer();
+    });
+  } else {
+    new PerformanceOptimizer();
+  }
+
+  // Performance monitoring
+  window.addEventListener('load', () => {
+    // Report loading performance
+    const perfData = performance.getEntriesByType('navigation')[0];
+    if (perfData) {
+      console.log('Page Load Time:', perfData.loadEventEnd - perfData.fetchStart);
+      console.log('DOM Content Loaded:', perfData.domContentLoadedEventEnd - perfData.fetchStart);
+      console.log('First Paint:', performance.getEntriesByType('paint')[0]?.startTime);
+    }
+  });
+</script>
+
+<!-- Service Worker Registration -->
+{enableServiceWorker && (
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+)}
+
+<style>
+  /* Performance-optimized image loading */
+  .loading img {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .loaded img {
+    opacity: 1;
+  }
+
+  /* Progressive image blur-up effect */
+  .progressive-image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+    filter: blur(10px);
+    transition: opacity 0.3s ease;
+  }
+
+  .image-placeholder.fade-out {
+    opacity: 0;
+  }
+
+  .progressive-image img {
+    transition: opacity 0.3s ease;
+  }
+
+  .progressive-image img.loaded {
+    opacity: 1;
+  }
+
+  /* Animation optimization */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .animate-in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Will-change for animated elements */
+  .hover-lift,
+  .animate-fade-in-up,
+  .animate-slide-in-left,
+  .animate-slide-in-right {
+    will-change: transform;
+  }
+
+  /* GPU acceleration for smooth scrolling */
+  .smooth-scroll {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+  }
+
+  /* Reduce motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-on-scroll,
+    .animate-in-view {
+      transition: none !important;
+      animation: none !important;
+    }
+    
+    .hover-lift:hover {
+      transform: none !important;
+    }
+  }
+
+  /* Critical font loading */
+  .fonts-loading {
+    visibility: hidden;
+  }
+
+  .fonts-loaded {
+    visibility: visible;
+  }
+
+  /* Skeleton loading states */
+  .skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Layout shift prevention */
+  .aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+  }
+
+  .aspect-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+  }
+</style>

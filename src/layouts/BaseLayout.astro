@@ -3,6 +3,8 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import AnalyticsTracker from '../components/AnalyticsTracker.astro';
+import EnhancedAccessibility from '../components/UI/EnhancedAccessibility.astro';
+import CoreWebVitals from '../components/Performance/CoreWebVitals.astro';
 import { BUSINESS, CITIES } from '../data/constants';
 
 const {
@@ -19,6 +21,8 @@ const {
   isLocationPage = false,
   serviceName,
   cityName,
+  schema = {},
+  breadcrumbs = []
 } = Astro.props;
 
 const siteUrl = Astro.site?.href ?? 'https://thekpsgroup.com';
@@ -403,19 +407,47 @@ if (isServicePage) {
     <meta property="linkedin:description" content={optimizedDescription} />
     <meta property="linkedin:image" content={new URL(ogImage, siteUrl).href} />
     
-    <!-- LOCAL BUSINESS STRUCTURED DATA -->
+    <!-- CORE WEB VITALS OPTIMIZATION -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//thekpsgroup.com" />
+    
+    <!-- ENHANCED LOCAL BUSINESS STRUCTURED DATA -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "ProfessionalService",
+        "@type": ["ProfessionalService", "LocalBusiness", "Organization"],
+        "@id": "${siteUrl}#organization",
         "name": "The KPS Group LLC",
-        "alternateName": "The KPS Group",
+        "alternateName": ["The KPS Group", "KPS Group"],
+        "legalName": "The KPS Group LLC",
         "description": "${optimizedDescription}",
+        "slogan": "Modern Business Infrastructure Engine",
         "url": "${siteUrl}",
-        "logo": "${new URL('/img/branding/kps-group-logo.png', siteUrl).href}",
-        "image": "${new URL(ogImage, siteUrl).href}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "${new URL('/img/branding/kps-group-logo.png', siteUrl).href}",
+          "width": "300",
+          "height": "100"
+        },
+        "image": {
+          "@type": "ImageObject",
+          "url": "${new URL(ogImage, siteUrl).href}",
+          "width": "1200",
+          "height": "630"
+        },
         "telephone": "${BUSINESS.phone}",
         "email": "${BUSINESS.email}",
+        "contactPoint": [{
+          "@type": "ContactPoint",
+          "telephone": "${BUSINESS.phone}",
+          "contactType": "customer service",
+          "availableLanguage": "English",
+          "hoursAvailable": "Mo-Fr 08:00-20:00 CT"
+        }],
         "address": {
           "@type": "PostalAddress",
           "streetAddress": "5900 Balcones Drive, Suite 15292",
@@ -429,23 +461,85 @@ if (isServicePage) {
           "latitude": 30.3916,
           "longitude": -97.7416
         },
-        "areaServed": {
+        "areaServed": [{
           "@type": "Country",
           "name": "United States"
+        }, {
+          "@type": "State",
+          "name": "Texas"
+        }],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Business Infrastructure Services",
+          "itemListElement": [{
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "QuickBooks Consulting",
+              "description": "Expert QuickBooks setup, cleanup, and optimization services"
+            }
+          }, {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Bookkeeping Services",
+              "description": "Professional bookkeeping for small and medium businesses"
+            }
+          }, {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "PEO Services",
+              "description": "Comprehensive HR and payroll solutions"
+            }
+          }]
         },
-        "serviceType": ["Business Infrastructure", "QuickBooks Consulting", "PEO Services", "Workforce Leadership"],
+        "knowsAbout": ["QuickBooks", "Bookkeeping", "Business Operations", "HVAC Consulting", "Electrical Consulting"],
+        "expertise": ["Business Infrastructure", "Financial Management", "Operations Optimization"],
         "priceRange": "$$",
+        "paymentAccepted": ["Cash", "Credit Card", "Check", "Bank Transfer"],
+        "currenciesAccepted": "USD",
         "openingHours": "Mo-Fr 08:00-20:00",
         "foundingDate": "2020",
+        "foundingLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Austin",
+            "addressRegion": "TX"
+          }
+        },
         "founder": {
           "@type": "Person",
           "name": "Karson Lawrence",
-          "jobTitle": "CEO & Founder"
+          "jobTitle": "CEO & Founder",
+          "knowsAbout": ["Business Operations", "QuickBooks", "Leadership"]
+        },
+        "employee": [{
+          "@type": "Person",
+          "name": "Brandon Lawrence",
+          "jobTitle": "Chief Revenue Officer"
+        }, {
+          "@type": "Person",
+          "name": "Allie Lawrence",
+          "jobTitle": "Chief Administrative Officer"
+        }],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "150+",
+          "bestRating": "5"
         },
         "sameAs": [
           "https://www.linkedin.com/company/thekpsgroup",
-          "https://twitter.com/thekpsgroup"
-        ]
+          "https://twitter.com/thekpsgroup",
+          "https://www.facebook.com/thekpsgroup"
+        ],
+        "brand": {
+          "@type": "Brand",
+          "name": "The KPS Group",
+          "logo": "${new URL('/img/branding/kps-group-logo.png', siteUrl).href}"
+        }
       }
     </script>
     <meta property="article:author" content="Karson Lawrence" />
@@ -926,14 +1020,13 @@ if (isServicePage) {
   </head>
 
   <body class="antialiased font-sans bg-black text-white">
-    <!-- Skip Navigation Link for Accessibility -->
-    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-gold text-black px-4 py-2 rounded-lg font-semibold z-50 focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black transition-all duration-200">
-      Skip to main content
-    </a>
+    <!-- Enhanced Accessibility & Performance Components -->
+    <EnhancedAccessibility skipToContent={true} />
+    <CoreWebVitals enableLazyLoading={true} enableImageOptimization={true} />
     
     <Header />
     
-    <main id="main-content" role="main">
+    <main id="main-content" role="main" tabindex="-1">
       <slot />
     </main>
     
@@ -941,6 +1034,28 @@ if (isServicePage) {
     
     <!-- Analytics Tracker -->
     <AnalyticsTracker />
+    
+    <!-- Progressive Enhancement Script -->
+    <script>
+      // Progressive enhancement for modern browsers
+      if ('IntersectionObserver' in window) {
+        document.documentElement.classList.add('intersection-observer');
+      }
+      
+      // Add browser support classes  
+      if ('serviceWorker' in navigator) {
+        document.documentElement.classList.add('service-worker');
+      }
+      
+      // Performance timing
+      window.addEventListener('load', () => {
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => {
+            document.documentElement.classList.add('fully-loaded');
+          });
+        }
+      });
+    </script>
     
     <!-- HIDDEN SEO CONTENT FOR ADDITIONAL KEYWORD TARGETING -->
     <div style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">

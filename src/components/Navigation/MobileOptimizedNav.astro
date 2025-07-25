@@ -87,17 +87,21 @@ const hasActiveChild = (children?: NavItem[]) => {
   <!-- Main Navigation Bar -->
   <div class="max-w-7xl mx-auto px-4">
     <div class="flex items-center justify-between h-16">
-      <!-- Logo -->
+      <!-- Logo with Enhanced Accessibility -->
       <div class="flex-shrink-0">
-        <a href="/" class="flex items-center space-x-2 group">
-          <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
-            <span class="text-white font-bold text-lg">K</span>
+        <a 
+          href="/" 
+          class="flex items-center space-x-2 group focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-2 rounded-lg p-1"
+          aria-label="The KPS Group - Return to homepage"
+        >
+          <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-focus:scale-110">
+            <span class="text-white font-bold text-lg" aria-hidden="true">K</span>
           </div>
           <div class="hidden sm:block">
-            <div class={`text-xl font-bold ${transparent ? 'text-white' : 'text-gray-900'}`}>
+            <div class={`text-xl font-bold transition-colors duration-200 ${transparent ? 'text-white' : 'text-gray-900'}`}>
               The KPS Group
             </div>
-            <div class={`text-xs ${transparent ? 'text-gray-200' : 'text-gray-500'}`}>
+            <div class={`text-xs transition-colors duration-200 ${transparent ? 'text-gray-200' : 'text-gray-500'}`}>
               Business Solutions
             </div>
           </div>
