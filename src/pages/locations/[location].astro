@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCityBySlug, MAJOR_CITIES } from '../../data/cities';
 import EnhancedSEOSchema from '../../components/SEO/EnhancedSEOSchema.astro';
 import InteractiveLocationMap from '../../components/UI/InteractiveLocationMap.astro';
@@ -106,7 +106,7 @@ const pageTitle = `Business Services in ${city.name}, ${city.state} | QuickBooks
 const pageDescription = `Professional business consulting, QuickBooks setup, and payroll services in ${city.name}, ${city.state}. Local expertise with ${localInsights.businessCount}+ businesses served. Get your free consultation today.`;
 ---
 
-<Layout 
+<BaseLayout 
   title={pageTitle}
   description={pageDescription}
   canonicalURL={`https://thekpsgroup.com/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}`}
@@ -433,7 +433,7 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
       />
     </div>
   </section>
-</Layout>
+</BaseLayout>
 
 <script>
   // FAQ Toggle Functionality
