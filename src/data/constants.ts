@@ -31,12 +31,6 @@ export const SERVICES = {
     keywords: ['PEO services', 'payroll processing', 'HR compliance', 'employee benefits', 'workers compensation'],
     description: 'Complete PEO services including payroll, HR compliance, and benefits administration'
   },
-  branding: {
-    name: 'Website Design & Branding',
-    slug: 'branding', 
-    keywords: ['website design', 'logo design', 'branding', 'contractor websites', 'professional websites'],
-    description: 'Professional website design, branding, and digital marketing for service businesses'
-  },
   consulting: {
     name: 'Business Consulting',
     slug: 'operations-consulting',
