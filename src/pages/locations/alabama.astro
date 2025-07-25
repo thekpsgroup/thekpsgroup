@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = "Business Services Alabama | QuickBooks Consulting & Payroll | The KPS Group";
+const description = "Professional business consulting services across Alabama. QuickBooks setup, payroll management, HR solutions, and technology consulting. Serving Birmingham and beyond.";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="pt-24">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-20">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Business Services Across <span class="text-yellow-400">Alabama</span>
+          </h1>
+          
+          <p class="text-xl md:text-2xl mb-8 text-blue-100 max-w-4xl mx-auto">
+            Expert QuickBooks consulting, payroll management, and comprehensive business solutions 
+            for Alabama companies across all major metropolitan areas
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="btn-primary bg-yellow-500 hover:bg-yellow-600 text-blue-900">
+              Get Alabama Consultation
+            </a>
+            <a href="/services" class="btn-secondary border-white text-white hover:bg-white hover:text-blue-900">
+              View Services
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Major Cities -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold mb-4">Major Alabama Cities We Serve</h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Local expertise combined with enterprise-level solutions across Alabama's 
+            most dynamic business markets
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow">
+            <h3 class="text-xl font-bold mb-3 text-blue-600">Birmingham</h3>
+            <p class="text-gray-600 mb-4">Healthcare and banking hub with diverse industries</p>
+            <div class="text-sm text-gray-500">Population: 200,733</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="py-16 bg-white">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-4xl font-bold mb-4">Our Alabama Business Services</h2>
+          <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Comprehensive business solutions designed to help Alabama companies thrive
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="bg-blue-50 rounded-lg p-6">
+            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">QuickBooks Consulting</h3>
+            <p class="text-gray-600">Expert setup, training, and ongoing support for QuickBooks across Alabama.</p>
+          </div>
+          
+          <div class="bg-green-50 rounded-lg p-6">
+            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Payroll Services</h3>
+            <p class="text-gray-600">Complete payroll processing and compliance management for Alabama businesses.</p>
+          </div>
+          
+          <div class="bg-purple-50 rounded-lg p-6">
+            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">HR Solutions</h3>
+            <p class="text-gray-600">Comprehensive human resources support and compliance for Alabama companies.</p>
+          </div>
+          
+          <div class="bg-yellow-50 rounded-lg p-6">
+            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Technology Consulting</h3>
+            <p class="text-gray-600">Strategic technology guidance and implementation for Alabama businesses.</p>
+          </div>
+          
+          <div class="bg-red-50 rounded-lg p-6">
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Process Automation</h3>
+            <p class="text-gray-600">Streamline operations and boost efficiency for Alabama organizations.</p>
+          </div>
+          
+          <div class="bg-indigo-50 rounded-lg p-6">
+            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Compliance Support</h3>
+            <p class="text-gray-600">Ensure regulatory compliance and risk management for Alabama enterprises.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16 bg-blue-900 text-white">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 class="text-4xl font-bold mb-4">Ready to Transform Your Alabama Business?</h2>
+        <p class="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
+          Get expert business consulting services tailored to your Alabama company's unique needs. 
+          Contact us today for a free consultation.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="btn-primary bg-yellow-500 hover:bg-yellow-600 text-blue-900">
+            Get Free Consultation
+          </a>
+          <a href="tel:(469) 534-3392" class="btn-secondary border-white text-white hover:bg-white hover:text-blue-900">
+            Call (469) 534-3392
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
