@@ -94,7 +94,7 @@ You can reach me directly at:
 Best regards,
 The KPS Group Team
 
-P.S. We've helped over 500+ businesses streamline their operations. Let us show you how we can help yours too!`
+P.S. We've helped over 250+ businesses streamline their operations. Let us show you how we can help yours too!`
     },
     
     follow_up: {
