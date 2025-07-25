@@ -13,8 +13,8 @@ const userAgent = Astro.request.headers.get('user-agent') || '';
 const clientIP = Astro.clientAddress;
 
 // Security configuration
-const CORRECT_PASSWORD = 'KPS_CRM_2025!@#';
-const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+const CORRECT_PASSWORD = 'kpsadmin';
+const SESSION_DURATION = 8 * 60 * 60 * 1000; // 8 hours instead of 30 minutes
 const MAX_LOGIN_ATTEMPTS = 3;
 const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
 
@@ -460,7 +460,7 @@ if (!isAuthenticated) {
   <div class="session-header">
     <div class="session-info">
       <span class="session-status">🔒 Secure Session Active</span>
-      <span class="session-details">Session expires in <span id="sessionTimer">30:00</span></span>
+      <span class="session-details">Session expires in <span id="sessionTimer">8:00:00</span></span>
     </div>
     <div class="session-actions">
       <button id="logoutBtn" class="btn btn-secondary">
@@ -724,21 +724,22 @@ if (!isAuthenticated) {
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {
       // Session Management
-      let sessionTimeLeft = 30 * 60; // 30 minutes in seconds
+      let sessionTimeLeft = 8 * 60 * 60; // 8 hours in seconds
       const sessionTimer = document.getElementById('sessionTimer');
       const logoutBtn = document.getElementById('logoutBtn');
       
       // Update session timer
       function updateSessionTimer() {
-        const minutes = Math.floor(sessionTimeLeft / 60);
+        const hours = Math.floor(sessionTimeLeft / 3600);
+        const minutes = Math.floor((sessionTimeLeft % 3600) / 60);
         const seconds = sessionTimeLeft % 60;
-        const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        const timeString = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         
         if (sessionTimer) {
           sessionTimer.textContent = timeString;
           
-          // Warning when less than 5 minutes
-          if (sessionTimeLeft <= 300) {
+          // Warning when less than 30 minutes
+          if (sessionTimeLeft <= 1800) {
             sessionTimer.style.color = '#ef4444';
             sessionTimer.parentElement.style.animation = 'pulse 2s infinite';
           }
@@ -802,7 +803,7 @@ if (!isAuthenticated) {
       function resetSessionTimer() {
         const now = Date.now();
         if (now - lastActivity > 60000) { // Only reset if inactive for 1+ minutes
-          sessionTimeLeft = Math.min(sessionTimeLeft + 300, 30 * 60); // Add 5 minutes, max 30
+          sessionTimeLeft = Math.min(sessionTimeLeft + 1800, 8 * 60 * 60); // Add 30 minutes, max 8 hours
           lastActivity = now;
         }
       }
