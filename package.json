@@ -15,7 +15,8 @@
     "@types/better-sqlite3": "^7.6.13",
     "astro": "^5.12.2",
     "better-sqlite3": "^12.2.0",
-    "resend": "^4.7.0"
+    "resend": "^4.7.0",
+    "web-vitals": "^4.2.4"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.4.1",
