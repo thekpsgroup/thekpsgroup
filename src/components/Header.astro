@@ -147,6 +147,94 @@ import { BUSINESS } from '../data/constants';
           <div class="nav-indicator"></div>
         </a>
         
+        <!-- Services Dropdown -->
+        <div class="relative group">
+          <button class="nav-link group flex items-center gap-1">
+            <span>Services</span>
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+            <div class="nav-indicator"></div>
+          </button>
+          <div class="absolute top-full left-0 mt-2 w-80 bg-black/95 backdrop-blur-lg border border-accent-600/20 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div class="p-6">
+              <div class="text-sm text-accent-400 font-medium mb-4">Professional Services</div>
+              <div class="grid grid-cols-1 gap-3">
+                <a href="/services" class="dropdown-link-company group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-warning-400/20 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 00-2 2H10a2 2 0 00-2-2V6m8 0h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-medium text-white">All Services</div>
+                      <div class="text-xs text-gray-400">Complete service overview</div>
+                    </div>
+                  </div>
+                </a>
+                
+                <a href="/services/quickbooks-consulting-premium" class="dropdown-link-company group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-warning-400/20 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-medium text-white">QuickBooks Consulting</div>
+                      <div class="text-xs text-gray-400">Setup, cleanup & training</div>
+                    </div>
+                  </div>
+                </a>
+                
+                <a href="/services/payroll-services" class="dropdown-link-company group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-warning-400/20 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-medium text-white">Payroll Services</div>
+                      <div class="text-xs text-gray-400">Complete payroll management</div>
+                    </div>
+                  </div>
+                </a>
+                
+                <a href="/services/hr-services" class="dropdown-link-company group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-warning-400/20 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-medium text-white">HR Services</div>
+                      <div class="text-xs text-gray-400">Compliance & employee support</div>
+                    </div>
+                  </div>
+                </a>
+                
+                <a href="/services/technology-consulting" class="dropdown-link-company group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-warning-400/20 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-medium text-white">Technology Consulting</div>
+                      <div class="text-xs text-gray-400">Digital transformation</div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- The Modern Suite Dropdown -->
         <div class="relative group">
           <button class="nav-link group flex items-center gap-1">
@@ -160,7 +248,7 @@ import { BUSINESS } from '../data/constants';
             <div class="p-6">
               <div class="text-sm text-accent-400 font-medium mb-4">Our Companies</div>
               <div class="grid grid-cols-1 gap-3">
-                <a href="mailto:sales@thekpsgroup.com?subject=Modern Pay Inquiry" class="dropdown-link-company group">
+                <a href="https://modernpayroll.co" target="_blank" rel="noopener noreferrer" class="dropdown-link-company group">
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-accent-500/20 rounded-lg flex items-center justify-center">
                       <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,7 +262,7 @@ import { BUSINESS } from '../data/constants';
                   </div>
                 </a>
                 
-                <a href="mailto:sales@thekpsgroup.com?subject=Modern Ledger Inquiry" class="dropdown-link-company group">
+                <a href="https://modernledger.co" target="_blank" rel="noopener noreferrer" class="dropdown-link-company group">
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-accent-500/20 rounded-lg flex items-center justify-center">
                       <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,7 +276,7 @@ import { BUSINESS } from '../data/constants';
                   </div>
                 </a>
                 
-                <a href="mailto:sales@thekpsgroup.com?subject=Modern Brands Inquiry" class="dropdown-link-company group">
+                <a href="https://modernbrands.co" target="_blank" rel="noopener noreferrer" class="dropdown-link-company group">
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-accent-500/20 rounded-lg flex items-center justify-center">
                       <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,7 +290,7 @@ import { BUSINESS } from '../data/constants';
                   </div>
                 </a>
                 
-                <a href="mailto:sales@thekpsgroup.com?subject=Modern Stack Inquiry" class="dropdown-link-company group">
+                <a href="https://moderntechstack.co" target="_blank" rel="noopener noreferrer" class="dropdown-link-company group">
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-accent-500/20 rounded-lg flex items-center justify-center">
                       <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -216,7 +304,7 @@ import { BUSINESS } from '../data/constants';
                   </div>
                 </a>
                 
-                <a href="mailto:sales@thekpsgroup.com?subject=Modern Consulting Inquiry" class="dropdown-link-company group">
+                <a href="https://modernconsulting.co" target="_blank" rel="noopener noreferrer" class="dropdown-link-company group">
                   <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-accent-500/20 rounded-lg flex items-center justify-center">
                       <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,27 +318,29 @@ import { BUSINESS } from '../data/constants';
                   </div>
                 </a>
                 
-                <div class="flex items-center gap-3 opacity-60">
-                  <div class="w-8 h-8 bg-gray-600/20 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-                    </svg>
+                <a href="https://modernos.app" target="_blank" rel="noopener noreferrer" class="dropdown-link-company group">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-accent-500/20 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <div class="font-medium text-white">Modern OS</div>
+                      <div class="text-xs text-gray-400">All-in-One Platform</div>
+                    </div>
                   </div>
-                  <div>
-                    <div class="font-medium text-gray-400">Modern OS</div>
-                    <div class="text-xs text-gray-500">All-in-One Platform - Coming Soon</div>
-                  </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>
         </div>
         
-        <a href="/leadership" class="nav-link group">
-          <span>Leadership</span>
+        <a href="/team" class="nav-link group">
+          <span>Team</span>
           <div class="nav-indicator"></div>
         </a>
-        <a href="mailto:sales@thekpsgroup.com?subject=General Inquiry&body=Hello, I'd like to learn more about The KPS Group." class="nav-link group">
+        <a href="/contact" class="nav-link group">
           <span>Contact</span>
           <div class="nav-indicator"></div>
         </a>
@@ -285,7 +375,6 @@ import { BUSINESS } from '../data/constants';
     </div>
   </div>
 
-  <!-- Mobile navigation menu -->
   <nav
     id="mobileMenu"
     class="md:hidden hidden fixed inset-x-0 top-16 lg:top-20 opacity-0 scale-95 transform transition-all duration-200 ease-in-out bg-gradient-to-b from-accent-700/95 to-black/95 backdrop-blur-lg border-t border-warning-400/20 shadow-xl"
@@ -306,12 +395,72 @@ import { BUSINESS } from '../data/constants';
         <span>About</span>
       </a>
       
+      <!-- Services Section -->
+      <div class="border-t border-accent-600/20 pt-3 mt-3">
+        <div class="text-warning-400 text-sm font-semibold mb-2 px-3">Our Services</div>
+        
+        <!-- All Services -->
+        <a href="/services" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-warning-500 to-warning-600 flex items-center justify-center text-white text-xs font-bold">
+            A
+          </div>
+          <div>
+            <div class="font-semibold">All Services</div>
+            <div class="text-xs text-accent-400">Complete overview</div>
+          </div>
+        </a>
+        
+        <!-- QuickBooks Consulting -->
+        <a href="/services/quickbooks-consulting-premium" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-warning-500 to-warning-600 flex items-center justify-center text-white text-xs font-bold">
+            Q
+          </div>
+          <div>
+            <div class="font-semibold">QuickBooks Consulting</div>
+            <div class="text-xs text-accent-400">Setup, cleanup & training</div>
+          </div>
+        </a>
+        
+        <!-- Payroll Services -->
+        <a href="/services/payroll-services" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-warning-500 to-warning-600 flex items-center justify-center text-white text-xs font-bold">
+            P
+          </div>
+          <div>
+            <div class="font-semibold">Payroll Services</div>
+            <div class="text-xs text-accent-400">Complete payroll management</div>
+          </div>
+        </a>
+        
+        <!-- HR Services -->
+        <a href="/services/hr-services" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-warning-500 to-warning-600 flex items-center justify-center text-white text-xs font-bold">
+            H
+          </div>
+          <div>
+            <div class="font-semibold">HR Services</div>
+            <div class="text-xs text-accent-400">Compliance & support</div>
+          </div>
+        </a>
+        
+        <!-- Technology Consulting -->
+        <a href="/services/technology-consulting" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-warning-500 to-warning-600 flex items-center justify-center text-white text-xs font-bold">
+            T
+          </div>
+          <div>
+            <div class="font-semibold">Technology Consulting</div>
+            <div class="text-xs text-accent-400">Digital transformation</div>
+          </div>
+        </a>
+      </div>
+      
       <!-- The Modern Suite Section -->
       <div class="border-t border-accent-600/20 pt-3 mt-3">
         <div class="text-accent-400 text-sm font-semibold mb-2 px-3">The Modern Suite</div>
         
         <!-- Modern Pay -->
-        <a href="https://modernpay.com" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
+        <a href="https://modernpayroll.co" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
           <div class="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
             P
           </div>
@@ -322,7 +471,7 @@ import { BUSINESS } from '../data/constants';
         </a>
         
         <!-- Modern Ledger -->
-        <a href="https://modernledger.com" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
+        <a href="https://modernledger.co" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
           <div class="w-5 h-5 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-xs font-bold">
             L
           </div>
@@ -333,7 +482,7 @@ import { BUSINESS } from '../data/constants';
         </a>
         
         <!-- Modern Brands -->
-        <a href="https://modernbrands.com" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
+        <a href="https://modernbrands.co" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
           <div class="w-5 h-5 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
             B
           </div>
@@ -344,7 +493,7 @@ import { BUSINESS } from '../data/constants';
         </a>
         
         <!-- Modern Stack -->
-        <a href="https://modernstack.com" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
+        <a href="https://moderntechstack.co" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
           <div class="w-5 h-5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white text-xs font-bold">
             S
           </div>
@@ -355,7 +504,7 @@ import { BUSINESS } from '../data/constants';
         </a>
         
         <!-- Modern Consulting -->
-        <a href="/technology-consulting" class="mobile-nav-link flex items-center gap-3 pl-6">
+        <a href="https://modernconsulting.co" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
           <div class="w-5 h-5 rounded-full bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center text-white text-xs font-bold">
             C
           </div>
@@ -366,24 +515,24 @@ import { BUSINESS } from '../data/constants';
         </a>
         
         <!-- Modern OS -->
-        <div class="mobile-nav-link flex items-center gap-3 pl-6 opacity-60 cursor-not-allowed">
+        <a href="https://modernos.app" target="_blank" rel="noopener noreferrer" class="mobile-nav-link flex items-center gap-3 pl-6">
           <div class="w-5 h-5 rounded-full bg-gradient-to-r from-gray-500 to-gray-600 flex items-center justify-center text-white text-xs font-bold">
             O
           </div>
           <div>
             <div class="font-semibold">Modern OS</div>
-            <div class="text-xs text-accent-400">Coming Soon</div>
+            <div class="text-xs text-accent-400">All-in-One Platform</div>
           </div>
-        </div>
+        </a>
       </div>
       
-      <a href="/leadership" class="mobile-nav-link flex items-center gap-3">
+      <a href="/team" class="mobile-nav-link flex items-center gap-3">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
         </svg>
-        <span>Leadership</span>
+        <span>Team</span>
       </a>
-      <a href="mailto:sales@thekpsgroup.com?subject=General Inquiry&body=Hello, I'd like to learn more about The KPS Group." class="mobile-nav-link flex items-center gap-3">
+      <a href="/contact" class="mobile-nav-link flex items-center gap-3">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
         </svg>

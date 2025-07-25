@@ -1,12 +1,72 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import { BUSINESS } from '../data/constants';
 
-const title = 'About The KPS Group | Professional Holding Company | The Modern Suite';
-const description = 'Learn about The KPS Group, a professional holding company that empowers small businesses through The Modern Suite - six specialized companies providing integrated solutions for sustainable growth and success.';
+const seoProps = {
+  title: 'About The KPS Group | Professional Holding Company | The Modern Suite',
+  description: 'Learn about The KPS Group, a professional holding company that empowers small businesses through The Modern Suite - six specialized companies providing integrated solutions for sustainable growth and success.',
+  keywords: [
+    'about KPS Group', 'professional holding company', 'The Modern Suite', 'small business solutions',
+    'integrated business services', 'business empowerment', 'small business consulting', 'Austin Texas',
+    'business operations', 'technology consulting', 'financial services', 'HR solutions',
+    'QuickBooks consulting', 'payroll services', 'digital transformation', 'business strategy'
+  ],
+  serviceSchema: {
+    name: 'The KPS Group - Professional Holding Company',
+    description: 'Professional holding company providing comprehensive business solutions through The Modern Suite',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Professional Business Services',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group',
+    description: 'Professional holding company empowering small businesses through The Modern Suite with integrated solutions',
+    url: 'https://thekpsgroup.com/about',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'Professional Holding Company Services',
+      'Integrated Business Solutions',
+      'Small Business Consulting',
+      'Technology & Operations Support',
+      'Financial & HR Services',
+      'Strategic Business Planning'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'About', url: '/about' }
+  ],
+  faqSchema: [
+    {
+      question: 'What is The KPS Group?',
+      answer: 'The KPS Group is a professional holding company that brings together six specialized companies under The Modern Suite, providing small businesses with enterprise-level capabilities and integrated solutions for sustainable growth.'
+    },
+    {
+      question: 'What is The Modern Suite?',
+      answer: 'The Modern Suite is our integrated approach to business solutions, combining six specialized companies that work together to provide comprehensive support for operations, technology, finance, branding, consulting, and HR needs.'
+    },
+    {
+      question: 'How does The KPS Group help small businesses?',
+      answer: 'We help small businesses by providing enterprise-level solutions typically only available to large corporations. Through The Modern Suite, we offer integrated services that work together to streamline operations, enhance technology, ensure compliance, and drive sustainable growth.'
+    }
+  ]
+};
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
   
   <!-- Hero Section -->
   <section class="py-20 sm:py-32 px-6 bg-gradient-to-b from-black to-gray-950">

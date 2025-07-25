@@ -1,20 +1,70 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 
-const title = 'Leadership Team | The KPS Group | Business Solutions Experts';
-const description = 'Meet The KPS Group leadership team: CEO Karson Lawrence, CRO Brandon Gibson, and CAO Allie Banks. Experienced business professionals dedicated to helping small businesses grow and succeed.';
-const keywords = [
-  'leadership team',
-  'business solutions experts', 
-  'small business consultants',
-  'Karson Lawrence CEO',
-  'Brandon Gibson CRO',
-  'Allie Banks CAO',
-  'business leadership team',
-  'executive team',
-  'business consulting experts',
-  'Austin business leaders'
-];
+const seoProps = {
+  title: 'Leadership Team | The KPS Group | Meet Our Business Solutions Experts',
+  description: 'Meet The KPS Group leadership team: CEO Karson Lawrence, CRO Brandon Gibson, and CAO Allie Banks. Experienced business professionals dedicated to helping small businesses achieve sustainable growth and operational excellence.',
+  keywords: [
+    'leadership team', 'business solutions experts', 'small business consultants', 'executive team',
+    'Karson Lawrence CEO', 'Brandon Gibson CRO', 'Allie Banks CAO', 'business leadership team',
+    'business consulting experts', 'Austin business leaders', 'KPS Group executives', 'professional team',
+    'business operations experts', 'small business support team', 'certified business advisors'
+  ],
+  serviceSchema: {
+    name: 'Expert Business Leadership Team',
+    description: 'Experienced leadership team providing strategic business guidance, operations consulting, and professional support services',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Business Leadership & Consulting',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group Leadership Team',
+    description: 'Experienced business leaders dedicated to helping small businesses achieve sustainable growth through professional consulting and support services.',
+    url: 'https://thekpsgroup.com/team',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'Business Strategy Leadership',
+      'Operations Consulting',
+      'Revenue Growth Planning',
+      'Administrative Excellence',
+      'Client Relationship Management'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Team', url: '/team' }
+  ],
+  faqSchema: [
+    {
+      question: 'What experience does the KPS Group leadership team have?',
+      answer: 'Our leadership team combines decades of experience in business operations, consulting, and client services. CEO Karson Lawrence specializes in business strategy and operations, CRO Brandon Gibson brings expertise in business development and growth planning, and CAO Allie Banks has nearly a decade of experience at ADP in payroll and compliance.'
+    },
+    {
+      question: 'How does the team work together to serve clients?',
+      answer: 'Our integrated approach means each team member brings their specialized expertise to every client engagement. Karson provides strategic direction, Brandon focuses on understanding client needs and growth opportunities, and Allie ensures flawless execution and ongoing support.'
+    },
+    {
+      question: 'Can I work directly with the leadership team?',
+      answer: 'Absolutely! As a boutique consulting firm, our clients work directly with our leadership team. You\'re not handed off to junior staff - you get the expertise and attention of our senior professionals throughout your engagement.'
+    },
+    {
+      question: 'What makes the KPS Group team different from other consulting firms?',
+      answer: 'Our team focuses exclusively on small and medium businesses, understanding the unique challenges you face. We combine enterprise-level expertise with personalized service, ensuring you get professional solutions that are practical and affordable for your business size.'
+    }
+  ]
+};
 
 const team = [
   {
@@ -46,7 +96,9 @@ const team = [
   }
 ];
 ---
-<BaseLayout {title} {description} {keywords}>
+
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
   <!-- Enhanced Team Section -->
   <section class="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl mx-auto">
     <!-- Background decoration -->

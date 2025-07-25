@@ -1,0 +1,246 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const title = "Business Services Texas | QuickBooks Consulting & Payroll | The KPS Group";
+const description = "Professional business consulting services across Texas. QuickBooks setup, payroll management, HR solutions, and technology consulting. Serving Austin, Dallas, Houston, San Antonio and beyond.";
+
+const texasCities = [
+  { name: 'Austin', path: '/locations/texas/austin', description: 'Tech hub with thriving startup ecosystem' },
+  { name: 'Dallas', path: '/locations/texas/dallas', description: 'Major business center and corporate headquarters' },
+  { name: 'Houston', path: '/locations/texas/houston', description: 'Energy capital with diverse economy' },
+  { name: 'San Antonio', path: '/locations/texas/san-antonio', description: 'Growing military and healthcare sectors' },
+  { name: 'Fort Worth', path: '/locations/texas/fort-worth', description: 'Manufacturing and transportation hub' },
+  { name: 'Plano', path: '/locations/texas/plano', description: 'Corporate headquarters and tech companies' },
+  { name: 'Irving', path: '/locations/texas/irving', description: 'Business district with major corporations' },
+  { name: 'Garland', path: '/locations/texas/garland', description: 'Manufacturing and small business community' },
+  { name: 'Frisco', path: '/locations/texas/frisco', description: 'Fast-growing suburban business center' },
+  { name: 'McKinney', path: '/locations/texas/mckinney', description: 'Historic downtown with modern businesses' }
+];
+
+const texasIndustries = [
+  'Energy & Oil Services',
+  'Technology & Software',
+  'Healthcare & Biotechnology', 
+  'Manufacturing & Industrial',
+  'Construction & Real Estate',
+  'Transportation & Logistics',
+  'Financial Services',
+  'Aerospace & Defense',
+  'Agriculture & Food Processing',
+  'Professional Services'
+];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Business Consulting Services Texas",
+  "description": "Professional QuickBooks consulting, payroll services, and business solutions across Texas",
+  "provider": {
+    "@type": "Organization",
+    "name": "The KPS Group",
+    "url": "https://thekpsgroup.com",
+    "telephone": "(469) 534-3392",
+    "email": "info@thekpsgroup.com"
+  },
+  "areaServed": {
+    "@type": "State",
+    "name": "Texas",
+    "sameAs": "https://en.wikipedia.org/wiki/Texas"
+  },
+  "serviceType": [
+    "QuickBooks Consulting",
+    "Payroll Services", 
+    "HR Solutions",
+    "Technology Consulting",
+    "Business Process Automation"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Texas Business Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "QuickBooks Consulting Texas",
+          "description": "Expert QuickBooks setup, training, and ongoing support for Texas businesses"
+        }
+      },
+      {
+        "@type": "Offer", 
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Payroll Services Texas",
+          "description": "Complete payroll processing and compliance for Texas companies"
+        }
+      }
+    ]
+  }
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead 
+    title={title}
+    description={description}
+    keywords="business services texas, quickbooks consulting texas, payroll services texas, hr solutions texas, technology consulting texas, business consulting austin dallas houston"
+    structuredData={structuredData}
+    canonical="https://thekpsgroup.com/locations/texas"
+  />
+
+  <main class="pt-24">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-20">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Business Services Across <span class="text-yellow-400">Texas</span>
+          </h1>
+          <p class="text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
+            Professional QuickBooks consulting, payroll management, and business solutions serving companies throughout the Lone Star State. From Austin's tech startups to Houston's energy sector.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="bg-yellow-500 text-blue-900 px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 transition-colors">
+              Get Free Consultation
+            </a>
+            <a href="tel:4695343392" class="border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors">
+              Call (469) 534-3392
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Texas Cities We Serve -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Major Texas Markets We Serve
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Comprehensive business consulting services across Texas's largest metropolitan areas and growing business communities.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {texasCities.map((city) => (
+            <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <h3 class="text-xl font-semibold text-blue-900 mb-3">{city.name}</h3>
+              <p class="text-gray-600 mb-4">{city.description}</p>
+              <a 
+                href={city.path}
+                class="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center"
+              >
+                Learn More 
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Texas Industries -->
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Industries We Serve in Texas
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Specialized business consulting solutions tailored to Texas's diverse economy and unique industry requirements.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {texasIndustries.map((industry) => (
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+              <span class="text-blue-900 font-medium">{industry}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Comprehensive Business Solutions
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Everything your Texas business needs to streamline operations, ensure compliance, and drive growth.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">QuickBooks Consulting</h3>
+            <p class="text-gray-600 text-sm">Expert setup, training, and ongoing support for QuickBooks systems</p>
+          </div>
+
+          <div class="text-center">
+            <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Payroll Services</h3>
+            <p class="text-gray-600 text-sm">Complete payroll processing with Texas tax compliance</p>
+          </div>
+
+          <div class="text-center">
+            <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">HR Solutions</h3>
+            <p class="text-gray-600 text-sm">Human resources support and compliance management</p>
+          </div>
+
+          <div class="text-center">
+            <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Technology Consulting</h3>
+            <p class="text-gray-600 text-sm">IT solutions and digital transformation guidance</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-blue-900 text-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          Ready to Grow Your Texas Business?
+        </h2>
+        <p class="text-lg mb-8 max-w-2xl mx-auto">
+          Get a free consultation with our Texas business experts. We'll analyze your current processes and recommend solutions to streamline operations and drive growth.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="bg-yellow-500 text-blue-900 px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 transition-colors">
+            Schedule Free Consultation
+          </a>
+          <a href="tel:4695343392" class="border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-900 transition-colors">
+            Call (469) 534-3392
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

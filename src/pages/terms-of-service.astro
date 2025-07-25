@@ -1,11 +1,73 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 
-const title = 'Terms of Service | The KPS Group - Workforce Leadership & Business Infrastructure';
-const description = 'Terms of Service for The KPS Group professional workforce leadership and business infrastructure services nationwide.';
+const seoProps = {
+  title: 'Terms of Service | The KPS Group | Professional Service Agreement',
+  description: 'Terms of Service for The KPS Group professional business consulting, QuickBooks services, payroll management, HR solutions, and technology consulting services nationwide.',
+  keywords: [
+    'terms of service', 'service agreement', 'business consulting terms', 'professional services terms',
+    'QuickBooks consulting terms', 'payroll services terms', 'HR services agreement', 'technology consulting terms',
+    'business service conditions', 'consulting agreement', 'service terms and conditions', 'professional service contract'
+  ],
+  serviceSchema: {
+    name: 'Professional Service Terms & Conditions',
+    description: 'Comprehensive terms of service for business consulting, QuickBooks services, payroll management, and technology consulting',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Professional Service Agreement',
+    priceRange: 'Varies'
+  },
+  businessSchema: {
+    name: 'The KPS Group - Terms of Service',
+    description: 'Professional terms of service governing business consulting, technology services, and operational support solutions.',
+    url: 'https://thekpsgroup.com/terms-of-service',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'Service Agreement Terms',
+      'Professional Service Contracts',
+      'Business Consulting Terms',
+      'Technology Service Terms',
+      'Payment Terms & Conditions'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Terms of Service', url: '/terms-of-service' }
+  ],
+  faqSchema: [
+    {
+      question: 'What are the payment terms for KPS Group services?',
+      answer: 'Payment terms are outlined in individual service agreements and project contracts. We offer flexible payment options including project-based billing, monthly retainers, and custom payment schedules based on your business needs.'
+    },
+    {
+      question: 'How many revisions are included in service packages?',
+      answer: 'Each project includes a specified number of revisions as outlined in your service package. The exact number varies by service type and package level. Additional revisions beyond the included amount may incur additional charges.'
+    },
+    {
+      question: 'Can I cancel services at any time?',
+      answer: 'Cancellation terms depend on the specific service agreement. Generally, we require reasonable notice for service cancellation and may have minimum commitment periods for certain ongoing services like payroll management or monthly consulting retainers.'
+    },
+    {
+      question: 'What happens if I\'m not satisfied with the service?',
+      answer: 'We stand behind our work and offer satisfaction guarantees on our services. If you\'re not satisfied, we\'ll work with you to address concerns and make necessary corrections. Specific satisfaction terms are outlined in individual service agreements.'
+    }
+  ]
+};
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
   <section class="py-20 sm:py-32 px-6 max-w-4xl mx-auto min-h-screen bg-black">
     <div class="relative z-10">
       <h1 class="text-4xl sm:text-5xl font-extrabold text-goldLight mb-8 text-center">

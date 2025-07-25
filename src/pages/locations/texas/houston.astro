@@ -1,0 +1,12 @@
+---
+// Houston, TX - High Opportunity Market  
+import CityPageTemplate from '../../../components/templates/CityPageTemplate.astro';
+import { MAJOR_CITIES } from '../../../data/cities';
+
+const cityData = MAJOR_CITIES.find(city => city.name === 'Houston');
+if (!cityData) {
+  throw new Error('Houston city data not found');
+}
+---
+
+<CityPageTemplate city={cityData} />

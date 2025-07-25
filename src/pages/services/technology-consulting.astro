@@ -1,0 +1,537 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const seoProps = {
+  title: 'Expert Technology Consulting Services - Digital Transformation & IT Strategy',
+  description: 'Professional technology consulting for digital transformation, cloud migration, cybersecurity, and IT strategy. Modernize your business with expert guidance.',
+  keywords: [
+    'technology consulting', 'IT consulting', 'digital transformation', 'cloud migration',
+    'cybersecurity consulting', 'IT strategy', 'software development', 'system integration',
+    'technology modernization', 'IT infrastructure', 'cloud solutions', 'business automation',
+    'tech advisory', 'enterprise technology', 'IT project management', 'technology roadmap'
+  ],
+  serviceSchema: {
+    name: 'Technology Consulting Services',
+    description: 'Expert technology consulting for digital transformation, cloud solutions, cybersecurity, and strategic IT planning',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Technology Consulting',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group - Technology Consulting',
+    description: 'Professional technology consulting and digital transformation services for modern businesses',
+    url: 'https://thekpsgroup.com/services/technology-consulting',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'Digital Transformation Strategy',
+      'Cloud Migration & Solutions',
+      'Cybersecurity Assessment & Implementation',
+      'IT Infrastructure Modernization',
+      'Software Development & Integration',
+      'Technology Roadmap Planning'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Services', url: '/services' },
+    { name: 'Technology Consulting', url: '/services/technology-consulting' }
+  ],
+  faqSchema: [
+    {
+      question: 'What technology consulting services do you offer?',
+      answer: 'We provide comprehensive technology consulting including digital transformation strategy, cloud migration, cybersecurity assessment, IT infrastructure modernization, software development, and technology roadmap planning tailored to your business needs.'
+    },
+    {
+      question: 'How do you approach digital transformation projects?',
+      answer: 'Our digital transformation approach begins with assessing your current technology landscape, identifying business objectives, developing a strategic roadmap, and implementing solutions in phases with minimal disruption to your operations.'
+    },
+    {
+      question: 'Can you help with cloud migration and strategy?',
+      answer: 'Yes, we specialize in cloud migration strategy and implementation. We help you choose the right cloud platform, develop migration plans, ensure security compliance, and optimize costs while maximizing the benefits of cloud computing.'
+    },
+    {
+      question: 'Do you provide ongoing technology support?',
+      answer: 'Absolutely! We offer ongoing technology support, monitoring, and strategic guidance to ensure your systems remain optimized, secure, and aligned with your evolving business needs and industry best practices.'
+    }
+  ]
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
+  
+  <!-- Enhanced Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Premium Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-accent-900 via-black to-accent-800"></div>
+    
+    <!-- Animated Tech Elements -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-warning-400/20 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-warning-400/10 rounded-full blur-2xl animate-pulse" style="animation-delay: -3s;"></div>
+      <div class="absolute top-1/2 right-1/3 w-64 h-64 bg-warning-400/5 rounded-full blur-xl animate-pulse" style="animation-delay: -1.5s;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 container mx-auto px-6 py-20">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Professional Badge -->
+        <div class="text-center mb-8 animate-fade-in">
+          <div class="inline-flex items-center gap-3 bg-warning-400/20 border border-warning-400/40 rounded-full px-6 py-3">
+            <svg class="w-5 h-5 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-warning-400 font-semibold">Strategic Technology Leadership</span>
+          </div>
+        </div>
+
+        <!-- Main Headline -->
+        <div class="text-center mb-16">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in" style="animation-delay: 0.2s;">
+            <span class="text-white">Expert</span>
+            <span class="text-gradient-enhanced ml-4 block mt-2">Technology</span>
+            <span class="text-white">Consulting</span>
+          </h1>
+          
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-light text-warning-400/90 mb-8 animate-fade-in" style="animation-delay: 0.3s;">
+            Digital Transformation That Drives Real Business Results
+          </h2>
+          
+          <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed animate-fade-in" style="animation-delay: 0.4s;">
+            Strategic technology consulting to modernize your business, enhance security, and accelerate growth. 
+            From cloud migration to digital transformation, we guide you through every step of your technology journey.
+          </p>
+        </div>
+
+        <!-- Enhanced CTAs -->
+        <div class="text-center mb-20 animate-fade-in" style="animation-delay: 0.5s;">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            <a href="mailto:sales@thekpsgroup.com?subject=Technology Consulting - Strategic Assessment&body=I'm interested in technology consulting services and would like to schedule a strategic technology assessment for my business." 
+               class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 hover:from-warning-400 hover:to-warning-300 text-accent-700 font-bold px-10 py-5 rounded-2xl transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-warning-400/40 overflow-hidden w-full sm:w-auto transform hover:rotate-1">
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:animate-shimmer"></div>
+              <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <span class="text-xl relative z-10">Get Tech Assessment</span>
+            </a>
+            
+            <a href="tel:4695343392" 
+               class="group relative inline-flex items-center justify-center gap-3 bg-accent-700/30 hover:bg-accent-700/50 backdrop-blur-xl text-white font-semibold px-10 py-5 rounded-2xl border-2 border-warning-400/40 hover:border-warning-400/80 transition-all duration-500 hover:scale-105 hover:shadow-xl w-full sm:w-auto transform hover:-rotate-1">
+              <svg class="w-6 h-6 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <span class="text-xl">Call (469) 534-3392</span>
+            </a>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="flex flex-wrap justify-center items-center gap-8 text-sm text-white/60">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Certified Technology Experts</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Enterprise-Grade Security</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Proven ROI Results</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>24/7 Support Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Complete <span class="text-gradient-enhanced">Technology Solutions</span>
+          </h2>
+          <p class="text-xl text-white/80 max-w-3xl mx-auto">
+            From strategic planning to implementation and support, we provide end-to-end 
+            technology consulting services that transform your business operations.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Digital Transformation -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Digital Transformation</h3>
+              <p class="text-white/70 mb-6">
+                Strategic digital transformation planning and implementation 
+                to modernize your business processes and drive innovation.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Digital Strategy Development
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Process Automation
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Change Management
+              </li>
+            </ul>
+          </div>
+
+          <!-- Cloud Solutions -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Cloud Solutions</h3>
+              <p class="text-white/70 mb-6">
+                Comprehensive cloud migration, optimization, and management 
+                services to maximize your cloud investment and scalability.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Cloud Migration Strategy
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Multi-Cloud Architecture
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Cost Optimization
+              </li>
+            </ul>
+          </div>
+
+          <!-- Cybersecurity -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Cybersecurity</h3>
+              <p class="text-white/70 mb-6">
+                Comprehensive cybersecurity assessment, implementation, 
+                and monitoring to protect your business from evolving threats.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Security Assessment
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Threat Monitoring
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Compliance Management
+              </li>
+            </ul>
+          </div>
+
+          <!-- Software Development -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Software Development</h3>
+              <p class="text-white/70 mb-6">
+                Custom software development and system integration solutions 
+                to automate processes and enhance business capabilities.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Custom Applications
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                System Integration
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                API Development
+              </li>
+            </ul>
+          </div>
+
+          <!-- IT Infrastructure -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">IT Infrastructure</h3>
+              <p class="text-white/70 mb-6">
+                Modern IT infrastructure design, implementation, and management 
+                to ensure reliable, scalable, and secure technology foundations.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Network Design
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Server Management
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Performance Monitoring
+              </li>
+            </ul>
+          </div>
+
+          <!-- Technology Strategy -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Technology Strategy</h3>
+              <p class="text-white/70 mb-6">
+                Strategic technology roadmap development and governance 
+                to align your IT investments with business objectives.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Technology Roadmaps
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                IT Governance
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                ROI Analysis
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="py-20 bg-gradient-to-b from-black to-accent-700">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Our <span class="text-gradient-enhanced">Technology Consulting</span> Process
+          </h2>
+          <p class="text-xl text-white/80 max-w-3xl mx-auto">
+            A proven methodology that ensures successful technology implementations 
+            with minimal disruption to your business operations.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6 relative">
+              <span class="text-2xl font-bold text-warning-400">1</span>
+              <div class="absolute -top-2 -right-2 w-6 h-6 bg-warning-400 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-accent-700" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Assessment</h3>
+            <p class="text-white/70">Comprehensive evaluation of your current technology landscape and business requirements.</p>
+          </div>
+
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6 relative">
+              <span class="text-2xl font-bold text-warning-400">2</span>
+              <div class="absolute -top-2 -right-2 w-6 h-6 bg-warning-400 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-accent-700" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Strategy</h3>
+            <p class="text-white/70">Development of a customized technology roadmap aligned with your business goals.</p>
+          </div>
+
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6 relative">
+              <span class="text-2xl font-bold text-warning-400">3</span>
+              <div class="absolute -top-2 -right-2 w-6 h-6 bg-warning-400 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-accent-700" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Implementation</h3>
+            <p class="text-white/70">Phased implementation with minimal disruption and comprehensive testing protocols.</p>
+          </div>
+
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6 relative">
+              <span class="text-2xl font-bold text-warning-400">4</span>
+              <div class="absolute -top-2 -right-2 w-6 h-6 bg-warning-400 rounded-full flex items-center justify-center">
+                <svg class="w-3 h-3 text-accent-700" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Optimization</h3>
+            <p class="text-white/70">Ongoing monitoring, optimization, and support to ensure maximum ROI and performance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-accent-700">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
+          Ready to Transform Your <span class="text-gradient-enhanced">Technology?</span>
+        </h2>
+        <p class="text-xl text-white/80 mb-12">
+          Let's discuss how our technology expertise can accelerate your digital transformation 
+          and drive measurable business results. Get started with a comprehensive technology assessment.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <a href="mailto:sales@thekpsgroup.com?subject=Technology Consulting Assessment" 
+             class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 text-accent-700 font-bold px-10 py-5 rounded-2xl hover:scale-105 transition-all duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            Schedule Tech Assessment
+          </a>
+          
+          <a href="tel:4695343392" 
+             class="inline-flex items-center justify-center gap-3 bg-white/10 backdrop-blur-xl text-white font-semibold px-10 py-5 rounded-2xl border-2 border-white/20 hover:bg-white/20 transition-all duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+            Call Technology Expert
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.text-gradient-enhanced {
+  background: linear-gradient(135deg, #f8d673 0%, #fce7b3 30%, #f8d673 60%, #e6b429 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(248, 214, 115, 0.3));
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

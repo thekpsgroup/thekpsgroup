@@ -1,0 +1,394 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const seoProps = {
+  title: 'Expert QuickBooks Consulting & Setup Services - Small Business Solutions',
+  description: 'Professional QuickBooks consulting, setup, training, and support. Get your books organized with certified QuickBooks ProAdvisors. Free consultation available.',
+  keywords: [
+    'QuickBooks consulting', 'QuickBooks setup', 'QuickBooks training', 'QuickBooks ProAdvisor',
+    'small business accounting', 'bookkeeping services', 'QuickBooks cleanup', 'QuickBooks migration',
+    'accounting software setup', 'QuickBooks support', 'financial management', 'business accounting',
+    'QuickBooks Online', 'QuickBooks Desktop', 'chart of accounts setup', 'QuickBooks data conversion'
+  ],
+  serviceSchema: {
+    name: 'QuickBooks Consulting Services',
+    description: 'Professional QuickBooks setup, training, cleanup, and ongoing support for small businesses',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Accounting Software Consulting',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group - QuickBooks Consulting',
+    description: 'Certified QuickBooks ProAdvisors providing expert setup, training, and support',
+    url: 'https://thekpsgroup.com/services/quickbooks-consulting',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'QuickBooks Setup & Configuration',
+      'QuickBooks Training & Support',
+      'QuickBooks Cleanup & Organization',
+      'QuickBooks Migration Services',
+      'Chart of Accounts Setup',
+      'Financial Reporting Setup'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Services', url: '/services' },
+    { name: 'QuickBooks Consulting', url: '/services/quickbooks-consulting' }
+  ],
+  faqSchema: [
+    {
+      question: 'How much does QuickBooks consulting cost?',
+      answer: 'Our QuickBooks consulting rates vary based on your specific needs. We offer competitive hourly rates and package deals for setup, training, and ongoing support. Contact us for a free consultation and custom quote.'
+    },
+    {
+      question: 'Do you work with QuickBooks Online and Desktop?',
+      answer: 'Yes, our certified QuickBooks ProAdvisors work with both QuickBooks Online and QuickBooks Desktop versions. We can help you choose the right version for your business and migrate data between platforms if needed.'
+    },
+    {
+      question: 'How long does QuickBooks setup take?',
+      answer: 'QuickBooks setup typically takes 1-3 business days depending on your business complexity. This includes chart of accounts setup, initial data entry, and basic training. We work efficiently to get you up and running quickly.'
+    },
+    {
+      question: 'Can you clean up my existing QuickBooks file?',
+      answer: 'Absolutely! We specialize in QuickBooks cleanup services. We can fix categorization errors, reconcile accounts, organize transactions, and get your books back on track for accurate financial reporting.'
+    }
+  ]
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
+  
+  <!-- Enhanced Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Premium Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-accent-700 via-black to-accent-800"></div>
+    
+    <!-- Animated Elements -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-warning-400/10 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-warning-400/5 rounded-full blur-2xl animate-pulse" style="animation-delay: -2s;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 container mx-auto px-6 py-20">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Professional Badge -->
+        <div class="text-center mb-8 animate-fade-in">
+          <div class="inline-flex items-center gap-3 bg-warning-400/20 border border-warning-400/40 rounded-full px-6 py-3">
+            <svg class="w-5 h-5 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span class="text-warning-400 font-semibold">Certified QuickBooks ProAdvisors</span>
+          </div>
+        </div>
+
+        <!-- Main Headline -->
+        <div class="text-center mb-16">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in" style="animation-delay: 0.2s;">
+            <span class="text-white">Expert</span>
+            <span class="text-gradient-enhanced ml-4">QuickBooks</span>
+            <span class="text-white block mt-2">Consulting</span>
+          </h1>
+          
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-light text-warning-400/90 mb-8 animate-fade-in" style="animation-delay: 0.3s;">
+            Get Your Books Organized & Your Business Growing
+          </h2>
+          
+          <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed animate-fade-in" style="animation-delay: 0.4s;">
+            Professional QuickBooks setup, cleanup, training, and ongoing support from certified ProAdvisors. 
+            Transform your financial management and make informed business decisions with confidence.
+          </p>
+        </div>
+
+        <!-- Enhanced CTAs -->
+        <div class="text-center mb-20 animate-fade-in" style="animation-delay: 0.5s;">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            <a href="mailto:sales@thekpsgroup.com?subject=QuickBooks Consulting - Free Consultation&body=I'm interested in QuickBooks consulting services and would like to schedule a free consultation." 
+               class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 hover:from-warning-400 hover:to-warning-300 text-accent-700 font-bold px-10 py-5 rounded-2xl transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-warning-400/40 overflow-hidden w-full sm:w-auto transform hover:rotate-1">
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:animate-shimmer"></div>
+              <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+              <span class="text-xl relative z-10">Get Free Consultation</span>
+            </a>
+            
+            <a href="tel:4695343392" 
+               class="group relative inline-flex items-center justify-center gap-3 bg-accent-700/30 hover:bg-accent-700/50 backdrop-blur-xl text-white font-semibold px-10 py-5 rounded-2xl border-2 border-warning-400/40 hover:border-warning-400/80 transition-all duration-500 hover:scale-105 hover:shadow-xl w-full sm:w-auto transform hover:-rotate-1">
+              <svg class="w-6 h-6 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <span class="text-xl">Call (469) 534-3392</span>
+            </a>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="flex flex-wrap justify-center items-center gap-8 text-sm text-white/60">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Certified ProAdvisors</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Free Initial Consultation</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Same-Day Setup Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Complete <span class="text-gradient-enhanced">QuickBooks Solutions</span>
+          </h2>
+          <p class="text-xl text-white/80 max-w-3xl mx-auto">
+            From initial setup to ongoing support, we provide comprehensive QuickBooks services 
+            tailored to your business needs.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- QuickBooks Setup -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">QuickBooks Setup</h3>
+              <p class="text-white/70 mb-6">
+                Complete QuickBooks configuration including chart of accounts, company settings, 
+                and initial data entry to get you started right.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Chart of Accounts Setup
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Company File Configuration
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Initial Data Entry
+              </li>
+            </ul>
+          </div>
+
+          <!-- QuickBooks Training -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">QuickBooks Training</h3>
+              <p class="text-white/70 mb-6">
+                Comprehensive training sessions to help you and your team master QuickBooks 
+                for efficient daily operations.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                One-on-One Training
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Group Training Sessions
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Custom Training Materials
+              </li>
+            </ul>
+          </div>
+
+          <!-- QuickBooks Cleanup -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">QuickBooks Cleanup</h3>
+              <p class="text-white/70 mb-6">
+                Fix messy QuickBooks files with professional cleanup services to ensure 
+                accurate financial reporting and compliance.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Transaction Categorization
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Bank Reconciliation
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Error Correction
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="py-20 bg-gradient-to-b from-black to-accent-700">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Why Choose Our <span class="text-gradient-enhanced">QuickBooks Experts</span>
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="space-y-8">
+            <div class="flex gap-6">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-warning-400/20 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Certified ProAdvisors</h3>
+                <p class="text-white/70">Our team consists of QuickBooks certified ProAdvisors with years of experience helping small businesses.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-6">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-warning-400/20 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Fast Implementation</h3>
+                <p class="text-white/70">Get up and running quickly with our streamlined setup process. Most implementations completed within 1-3 business days.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-6">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-warning-400/20 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Ongoing Support</h3>
+                <p class="text-white/70">We don't just set up and leave. Get ongoing support and training to ensure your continued success with QuickBooks.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div class="bg-accent-700/30 rounded-2xl p-8 border border-warning-400/20">
+              <h3 class="text-2xl font-bold text-white mb-6">Ready to Get Started?</h3>
+              <p class="text-white/80 mb-6">
+                Schedule your free consultation today and discover how our QuickBooks expertise can transform your financial management.
+              </p>
+              <a href="mailto:sales@thekpsgroup.com?subject=QuickBooks Consultation Request" 
+                 class="inline-flex items-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 text-accent-700 font-bold px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                Schedule Free Consultation
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.text-gradient-enhanced {
+  background: linear-gradient(135deg, #f8d673 0%, #fce7b3 30%, #f8d673 60%, #e6b429 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(248, 214, 115, 0.3));
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

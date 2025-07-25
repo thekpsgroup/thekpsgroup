@@ -1,0 +1,12 @@
+---
+// Los Angeles, CA - High Opportunity Market
+import CityPageTemplate from '../../../components/templates/CityPageTemplate.astro';
+import { MAJOR_CITIES } from '../../../data/cities';
+
+const cityData = MAJOR_CITIES.find(city => city.name === 'Los Angeles');
+if (!cityData) {
+  throw new Error('Los Angeles city data not found');
+}
+---
+
+<CityPageTemplate city={cityData} />

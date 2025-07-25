@@ -1,0 +1,31 @@
+---
+export async function GET() {
+  const robotsTxt = `User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://thekpsgroup.com/sitemap.xml
+
+# Disallow admin and sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_astro/
+Disallow: /node_modules/
+
+# Allow important service pages
+Allow: /services/
+Allow: /services/quickbooks-consulting-premium
+Allow: /services/payroll-services
+Allow: /services/hr-services
+Allow: /services/technology-consulting
+
+# Crawl delay
+Crawl-delay: 1`;
+
+  return new Response(robotsTxt, {
+    headers: {
+      'content-type': 'text/plain',
+    },
+  });
+}
+---

@@ -1,12 +1,75 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import { BUSINESS } from '../data/constants';
 
-const title = 'Contact The KPS Group | Free Consultation | Business Solutions | Austin TX';
-const description = 'Get your free consultation with The KPS Group. Call (469) 534-3392 or email sales@thekpsgroup.com for QuickBooks consulting, payroll services, technology consulting, and business operations consulting. Same-day response guaranteed.';
+const seoProps = {
+  title: 'Contact The KPS Group | Free Business Consultation | Call (469) 534-3392',
+  description: 'Get your free business consultation with The KPS Group. Expert QuickBooks consulting, payroll services, HR solutions, and technology consulting. Same-day response guaranteed. Call (469) 534-3392 or email sales@thekpsgroup.com.',
+  keywords: [
+    'contact KPS Group', 'free business consultation', 'QuickBooks consulting contact', 'payroll services inquiry',
+    'HR services contact', 'technology consulting contact', 'business services consultation', 'Austin business consulting',
+    'small business support contact', 'free consultation call', 'business operations consulting', 'The Modern Suite contact',
+    'professional business services', 'certified QuickBooks ProAdvisor', 'business transformation consultation'
+  ],
+  serviceSchema: {
+    name: 'Free Business Consultation',
+    description: 'Complimentary business consultation covering QuickBooks setup, payroll services, HR solutions, and technology consulting',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Business Consultation Services',
+    priceRange: 'Free'
+  },
+  businessSchema: {
+    name: 'The KPS Group - Contact & Consultation',
+    description: 'Professional business consultation services with same-day response guarantee. Expert solutions for small business success.',
+    url: 'https://thekpsgroup.com/contact',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'Free Business Consultation',
+      'QuickBooks Consulting Contact',
+      'Payroll Services Inquiry',
+      'HR Services Contact',
+      'Technology Consulting Contact'
+    ],
+    priceRange: 'Free',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Contact', url: '/contact' }
+  ],
+  faqSchema: [
+    {
+      question: 'How quickly will I get a response to my inquiry?',
+      answer: 'We guarantee a same-day response to all consultation requests. Most inquiries receive a response within 2-4 hours during business hours (8 AM - 6 PM, Monday-Friday).'
+    },
+    {
+      question: 'Is the initial consultation really free?',
+      answer: 'Yes, absolutely! Our initial business consultation is completely free with no strings attached. We believe in demonstrating our value before asking for your investment.'
+    },
+    {
+      question: 'What should I prepare for the consultation?',
+      answer: 'Come as you are! We\'ll discuss your current challenges, business goals, and how our services can help. If you have specific questions about QuickBooks, payroll, or technology needs, feel free to bring those up.'
+    },
+    {
+      question: 'Can you work with businesses outside of Texas?',
+      answer: 'Yes! While we\'re based in Austin, Texas, we provide remote services to small and medium businesses across the United States through our Modern Suite platform.'
+    }
+  ]
+};
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
   <section class="relative py-20 sm:py-32 px-6 max-w-6xl mx-auto min-h-screen bg-black">
     <!-- Enhanced background decoration -->
     <div class="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-goldLight/5 rounded-3xl"></div>

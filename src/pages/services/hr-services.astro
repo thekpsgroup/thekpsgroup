@@ -1,0 +1,507 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const seoProps = {
+  title: 'Professional HR Services & Human Resources Consulting - Small Business Solutions',
+  description: 'Complete HR services including employee handbooks, compliance, benefits administration, training, and performance management for growing businesses.',
+  keywords: [
+    'HR services', 'human resources consulting', 'HR outsourcing', 'employee handbook',
+    'HR compliance', 'benefits administration', 'employee training', 'performance management',
+    'workplace policies', 'HR strategy', 'employment law', 'staff development',
+    'HR technology', 'talent management', 'employee relations', 'organizational development'
+  ],
+  serviceSchema: {
+    name: 'Professional HR Services',
+    description: 'Comprehensive human resources consulting including compliance, benefits, training, and strategic HR management',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Human Resources Consulting',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group - HR Services',
+    description: 'Professional human resources consulting and outsourcing services for small and medium businesses',
+    url: 'https://thekpsgroup.com/services/hr-services',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'HR Compliance & Employment Law',
+      'Employee Handbook Development',
+      'Benefits Administration',
+      'Performance Management Systems',
+      'Employee Training & Development',
+      'Workplace Policy Development'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Services', url: '/services' },
+    { name: 'HR Services', url: '/services/hr-services' }
+  ],
+  faqSchema: [
+    {
+      question: 'What HR services do you provide for small businesses?',
+      answer: 'We provide comprehensive HR services including employee handbook development, compliance management, benefits administration, performance management, training programs, and strategic HR consulting tailored for small and medium businesses.'
+    },
+    {
+      question: 'How much do HR consulting services cost?',
+      answer: 'Our HR consulting rates vary based on your specific needs and company size. We offer flexible pricing options including hourly consulting, project-based work, and ongoing HR support packages. Contact us for a custom quote.'
+    },
+    {
+      question: 'Can you help with employment law compliance?',
+      answer: 'Yes, we help businesses stay compliant with federal, state, and local employment laws including FMLA, ADA, EEOC requirements, and workplace safety regulations. We provide ongoing compliance monitoring and updates.'
+    },
+    {
+      question: 'Do you provide employee training programs?',
+      answer: 'Absolutely! We develop and deliver customized training programs covering topics like harassment prevention, diversity and inclusion, leadership development, performance management, and compliance training tailored to your industry and needs.'
+    }
+  ]
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
+  
+  <!-- Enhanced Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Premium Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-accent-800 via-black to-accent-700"></div>
+    
+    <!-- Animated Elements -->
+    <div class="absolute inset-0 opacity-20">
+      <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-warning-400/10 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-warning-400/5 rounded-full blur-2xl animate-pulse" style="animation-delay: -2.5s;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 container mx-auto px-6 py-20">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Professional Badge -->
+        <div class="text-center mb-8 animate-fade-in">
+          <div class="inline-flex items-center gap-3 bg-warning-400/20 border border-warning-400/40 rounded-full px-6 py-3">
+            <svg class="w-5 h-5 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span class="text-warning-400 font-semibold">Strategic HR Solutions & Compliance</span>
+          </div>
+        </div>
+
+        <!-- Main Headline -->
+        <div class="text-center mb-16">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in" style="animation-delay: 0.2s;">
+            <span class="text-white">Professional</span>
+            <span class="text-gradient-enhanced ml-4 block mt-2">HR Services</span>
+          </h1>
+          
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-light text-warning-400/90 mb-8 animate-fade-in" style="animation-delay: 0.3s;">
+            Strategic Human Resources That Drive Business Success
+          </h2>
+          
+          <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed animate-fade-in" style="animation-delay: 0.4s;">
+            Comprehensive HR consulting and outsourcing services to help you build strong teams, 
+            ensure compliance, and create workplace cultures that attract and retain top talent.
+          </p>
+        </div>
+
+        <!-- Enhanced CTAs -->
+        <div class="text-center mb-20 animate-fade-in" style="animation-delay: 0.5s;">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            <a href="mailto:sales@thekpsgroup.com?subject=HR Services - Strategic Consultation&body=I'm interested in professional HR services and would like to schedule a strategic consultation for my business." 
+               class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 hover:from-warning-400 hover:to-warning-300 text-accent-700 font-bold px-10 py-5 rounded-2xl transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-warning-400/40 overflow-hidden w-full sm:w-auto transform hover:rotate-1">
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:animate-shimmer"></div>
+              <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+              </svg>
+              <span class="text-xl relative z-10">Get HR Strategy Session</span>
+            </a>
+            
+            <a href="tel:4695343392" 
+               class="group relative inline-flex items-center justify-center gap-3 bg-accent-700/30 hover:bg-accent-700/50 backdrop-blur-xl text-white font-semibold px-10 py-5 rounded-2xl border-2 border-warning-400/40 hover:border-warning-400/80 transition-all duration-500 hover:scale-105 hover:shadow-xl w-full sm:w-auto transform hover:-rotate-1">
+              <svg class="w-6 h-6 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <span class="text-xl">Call (469) 534-3392</span>
+            </a>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="flex flex-wrap justify-center items-center gap-8 text-sm text-white/60">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Certified HR Professionals</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Employment Law Expertise</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Custom Solutions</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Ongoing Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Complete <span class="text-gradient-enhanced">HR Solutions</span>
+          </h2>
+          <p class="text-xl text-white/80 max-w-3xl mx-auto">
+            From compliance and policy development to strategic planning and training, 
+            we provide comprehensive HR services tailored to your business needs.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- HR Compliance -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">HR Compliance</h3>
+              <p class="text-white/70 mb-6">
+                Stay compliant with federal, state, and local employment laws. 
+                We help navigate complex regulations and minimize legal risks.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Employment Law Updates
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                FMLA & ADA Compliance
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Risk Assessment
+              </li>
+            </ul>
+          </div>
+
+          <!-- Policy Development -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Policy Development</h3>
+              <p class="text-white/70 mb-6">
+                Custom employee handbooks and workplace policies that protect 
+                your business and create clear expectations for your team.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Employee Handbooks
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Workplace Policies
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Procedure Documentation
+              </li>
+            </ul>
+          </div>
+
+          <!-- Performance Management -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Performance Management</h3>
+              <p class="text-white/70 mb-6">
+                Build effective performance management systems that drive 
+                employee engagement, productivity, and professional growth.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Review Systems
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Goal Setting
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Career Development
+              </li>
+            </ul>
+          </div>
+
+          <!-- Training & Development -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Training & Development</h3>
+              <p class="text-white/70 mb-6">
+                Custom training programs that develop your team's skills, 
+                ensure compliance, and create a positive workplace culture.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Leadership Development
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Compliance Training
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Skills Development
+              </li>
+            </ul>
+          </div>
+
+          <!-- Benefits Administration -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">Benefits Administration</h3>
+              <p class="text-white/70 mb-6">
+                Streamline benefits enrollment, administration, and communication 
+                to attract and retain top talent with competitive packages.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Health Insurance
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Retirement Plans
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Enrollment Support
+              </li>
+            </ul>
+          </div>
+
+          <!-- HR Strategy -->
+          <div class="bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 group">
+            <div class="mb-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-3">HR Strategy</h3>
+              <p class="text-white/70 mb-6">
+                Strategic HR planning that aligns with your business goals 
+                and supports sustainable growth and organizational success.
+              </p>
+            </div>
+            <ul class="space-y-2 text-white/60">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Organizational Design
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Talent Strategy
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                Culture Development
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="py-20 bg-gradient-to-b from-black to-accent-700">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Why Choose Our <span class="text-gradient-enhanced">HR Expertise</span>
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="space-y-8">
+            <div class="flex gap-6">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-warning-400/20 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Certified HR Professionals</h3>
+                <p class="text-white/70">Our team includes certified HR professionals with extensive experience in employment law and strategic HR management.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-6">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-warning-400/20 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Compliance Expertise</h3>
+                <p class="text-white/70">Stay ahead of changing employment laws with our up-to-date compliance knowledge and proactive risk management.</p>
+              </div>
+            </div>
+
+            <div class="flex gap-6">
+              <div class="flex-shrink-0">
+                <div class="w-12 h-12 bg-warning-400/20 rounded-xl flex items-center justify-center">
+                  <svg class="w-6 h-6 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Custom Solutions</h3>
+                <p class="text-white/70">Every business is unique. We develop customized HR solutions that fit your specific industry, size, and culture.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div class="bg-accent-700/30 rounded-2xl p-8 border border-warning-400/20">
+              <h3 class="text-2xl font-bold text-white mb-6">Transform Your HR Strategy</h3>
+              <p class="text-white/80 mb-6">
+                Ready to build a stronger, more compliant, and engaging workplace? 
+                Let's discuss how our HR expertise can support your business goals.
+              </p>
+              <a href="mailto:sales@thekpsgroup.com?subject=HR Strategy Consultation" 
+                 class="inline-flex items-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 text-accent-700 font-bold px-8 py-4 rounded-xl hover:scale-105 transition-all duration-300">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+                Start HR Strategy Session
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.text-gradient-enhanced {
+  background: linear-gradient(135deg, #f8d673 0%, #fce7b3 30%, #f8d673 60%, #e6b429 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(248, 214, 115, 0.3));
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

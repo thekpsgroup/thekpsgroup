@@ -1,20 +1,73 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 
-const title = 'Privacy Policy | The KPS Group | Data Protection & User Rights';
-const description = 'The KPS Group privacy policy explains how we collect, use, protect, and respect your personal information. Learn about data security, cookies, user rights, and contact information for privacy concerns.';
-const keywords = [
-  'privacy policy',
-  'data protection',
-  'user privacy',
-  'information security',
-  'personal data',
-  'GDPR compliance',
-  'data collection',
-  'user rights'
-];
+const seoProps = {
+  title: 'Privacy Policy | The KPS Group | Data Protection & User Rights',
+  description: 'The KPS Group privacy policy explains how we collect, use, protect, and respect your personal information. Learn about data security, cookies, user rights, and contact information for privacy concerns.',
+  keywords: [
+    'privacy policy', 'data protection', 'user privacy', 'information security', 'personal data',
+    'GDPR compliance', 'data collection', 'user rights', 'privacy protection', 'data security',
+    'personal information protection', 'business privacy policy', 'consulting privacy policy'
+  ],
+  serviceSchema: {
+    name: 'Privacy Policy & Data Protection',
+    description: 'Comprehensive privacy policy outlining data collection, use, and protection practices for business consulting services',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Privacy & Data Protection Policy',
+    priceRange: 'Free'
+  },
+  businessSchema: {
+    name: 'The KPS Group - Privacy Policy',
+    description: 'Professional privacy policy detailing data protection practices and user rights for business consulting services.',
+    url: 'https://thekpsgroup.com/privacy-policy',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'Data Protection',
+      'Privacy Policy Management',
+      'User Rights Protection',
+      'Information Security',
+      'Compliance Documentation'
+    ],
+    priceRange: 'Free',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Privacy Policy', url: '/privacy-policy' }
+  ],
+  faqSchema: [
+    {
+      question: 'What personal information do you collect?',
+      answer: 'We collect minimal information necessary to respond to inquiries and deliver our services, including name, email, phone number, and business information when voluntarily provided through our contact forms or consultation requests.'
+    },
+    {
+      question: 'How do you protect my personal data?',
+      answer: 'We implement industry-standard security measures to protect your personal information, including secure data transmission, encrypted storage, and limited access controls. We never sell or share your personal data with third parties without your consent.'
+    },
+    {
+      question: 'Can I request deletion of my personal data?',
+      answer: 'Yes, you have the right to request deletion of your personal data. Contact us at sales@thekpsgroup.com with your request, and we will promptly remove your information from our systems, except where required for legal compliance.'
+    },
+    {
+      question: 'Do you use cookies on your website?',
+      answer: 'We use minimal cookies necessary for website functionality and analytics to improve our services. You can control cookie settings through your browser preferences. We do not use tracking cookies for advertising purposes.'
+    }
+  ]
+};
 ---
-<BaseLayout {title} {description} {keywords}>
+
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
   <section class="py-20 sm:py-32 px-6 max-w-4xl mx-auto text-goldLight min-h-screen bg-black">
     <!-- Background decoration -->
     <div class="absolute inset-0 bg-gradient-to-br from-gold/3 via-transparent to-goldLight/3 rounded-3xl"></div>

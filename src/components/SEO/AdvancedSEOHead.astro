@@ -1,0 +1,314 @@
+---
+export interface SEOProps {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'business.business';
+  twitterCard?: 'summary' | 'summary_large_image';
+  noindex?: boolean;
+  nofollow?: boolean;
+  keywords?: string[];
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  locale?: string;
+  alternateLocales?: Array<{locale: string, url: string}>;
+  breadcrumbs?: Array<{name: string, url: string}>;
+  faqSchema?: Array<{question: string, answer: string}>;
+  businessSchema?: {
+    name: string;
+    description: string;
+    url: string;
+    telephone: string;
+    email: string;
+    address: {
+      streetAddress: string;
+      addressLocality: string;
+      addressRegion: string;
+      postalCode: string;
+      addressCountry: string;
+    };
+    services: string[];
+    priceRange: string;
+    openingHours: string[];
+  };
+  serviceSchema?: {
+    name: string;
+    description: string;
+    provider: string;
+    areaServed: string[];
+    serviceType: string;
+    priceRange: string;
+  };
+}
+
+const {
+  title,
+  description,
+  canonical = Astro.url.href,
+  ogImage = '/img/og-default.jpg',
+  ogType = 'website',
+  twitterCard = 'summary_large_image',
+  noindex = false,
+  nofollow = false,
+  keywords = [],
+  author = 'The KPS Group',
+  publishedTime,
+  modifiedTime,
+  locale = 'en_US',
+  alternateLocales = [],
+  breadcrumbs = [],
+  faqSchema = [],
+  businessSchema,
+  serviceSchema
+} = Astro.props as SEOProps;
+
+const fullTitle = title.includes('The KPS Group') ? title : `${title} | The KPS Group - The Modern Suite`;
+const canonicalURL = new URL(canonical, Astro.site);
+const ogImageURL = new URL(ogImage, Astro.site);
+
+// Enhanced keywords for all specialties
+const baseKeywords = [
+  'small business consulting', 'business solutions', 'professional services',
+  'QuickBooks consulting', 'payroll services', 'HR solutions', 'technology consulting',
+  'modern suite', 'integrated business platform', 'scalable solutions',
+  'professional consulting', 'business automation', 'efficiency solutions'
+];
+
+const allKeywords = [...baseKeywords, ...keywords].join(', ');
+---
+
+<!-- Essential Meta Tags -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- SEO Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<meta name="keywords" content={allKeywords} />
+<meta name="author" content={author} />
+<link rel="canonical" href={canonicalURL} />
+
+{noindex && <meta name="robots" content="noindex" />}
+{nofollow && <meta name="robots" content="nofollow" />}
+{(noindex || nofollow) && <meta name="robots" content={`${noindex ? 'noindex' : 'index'},${nofollow ? 'nofollow' : 'follow'}`} />}
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:image:alt" content={`${title} - The KPS Group`} />
+<meta property="og:site_name" content="The KPS Group" />
+<meta property="og:locale" content={locale} />
+
+{alternateLocales.map(alt => (
+  <meta property="og:locale:alternate" content={alt.locale} />
+))}
+
+{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content={twitterCard} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+<meta name="twitter:image:alt" content={`${title} - The KPS Group`} />
+
+<!-- Additional SEO Meta Tags -->
+<meta name="theme-color" content="#f8d673" />
+<meta name="msapplication-TileColor" content="#313F57" />
+
+<!-- Structured Data Schemas -->
+{businessSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": businessSchema.name,
+    "description": businessSchema.description,
+    "url": businessSchema.url,
+    "telephone": businessSchema.telephone,
+    "email": businessSchema.email,
+    "address": {
+      "@type": "PostalAddress",
+      ...businessSchema.address
+    },
+    "priceRange": businessSchema.priceRange,
+    "openingHours": businessSchema.openingHours,
+    "serviceArea": {
+      "@type": "Country",
+      "name": "United States"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Business Services",
+      "itemListElement": businessSchema.services.map((service, index) => ({
+        "@type": "Offer",
+        "position": index + 1,
+        "itemOffered": {
+          "@type": "Service",
+          "name": service
+        }
+      }))
+    }
+  })} />
+)}
+
+{serviceSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": serviceSchema.name,
+    "description": serviceSchema.description,
+    "provider": {
+      "@type": "Organization",
+      "name": serviceSchema.provider
+    },
+    "areaServed": serviceSchema.areaServed.map(area => ({
+      "@type": "Place",
+      "name": area
+    })),
+    "serviceType": serviceSchema.serviceType,
+    "priceRange": serviceSchema.priceRange
+  })} />
+)}
+
+{breadcrumbs.length > 0 && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": crumb.name,
+      "item": new URL(crumb.url, Astro.site).href
+    }))
+  })} />
+)}
+
+{faqSchema.length > 0 && (
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqSchema.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  })} />
+)}
+
+<!-- Organization Schema -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "The KPS Group",
+  "alternateName": "KPS Group",
+  "description": "The Modern Suite - Six specialized companies providing integrated business solutions for small businesses including QuickBooks consulting, payroll, HR, technology consulting, and professional services.",
+  "url": "https://thekpsgroup.com",
+  "logo": "https://thekpsgroup.com/logos/the-kps-group.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-469-534-3392",
+    "contactType": "sales",
+    "email": "sales@thekpsgroup.com",
+    "availableLanguage": "English"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "US",
+    "addressRegion": "TX"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/thekpsgroup"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "The Modern Suite Business Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "QuickBooks Consulting",
+          "description": "Professional QuickBooks setup, training, and ongoing support"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Payroll Services",
+          "description": "Complete payroll processing and compliance solutions"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "HR Solutions",
+          "description": "Human resources consulting and management solutions"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Technology Consulting",
+          "description": "IT solutions and technology strategy for small businesses"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Business Consulting",
+          "description": "Strategic business consulting and process optimization"
+        }
+      }
+    ]
+  }
+})} />
+
+<!-- WebSite Schema for Enhanced Search -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "The KPS Group - The Modern Suite",
+  "description": "Professional business solutions for small businesses. Six specialized companies under one platform providing QuickBooks, payroll, HR, technology, and consulting services.",
+  "url": "https://thekpsgroup.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://thekpsgroup.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+})} />
+
+<!-- Performance and Preloading -->
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+<!-- Favicon and Touch Icons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<!-- Additional SEO Enhancements -->
+<meta name="format-detection" content="telephone=yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+{alternateLocales.map(alt => (
+  <link rel="alternate" hreflang={alt.locale} href={alt.url} />
+))}

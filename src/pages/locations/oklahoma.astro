@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const title = "Business Services Oklahoma | QuickBooks Consulting & Payroll | The KPS Group";
+const description = "Professional business consulting services across Oklahoma. QuickBooks setup, payroll management, HR solutions, and technology consulting. Serving Oklahoma City, Tulsa, Norman and beyond.";
+
+const oklahomaCities = [
+  { name: 'Oklahoma City', path: '/locations/oklahoma/oklahoma-city', description: 'State capital with diverse business ecosystem' },
+  { name: 'Tulsa', path: '/locations/oklahoma/tulsa', description: 'Energy hub with growing tech sector' },
+  { name: 'Norman', path: '/locations/oklahoma/norman', description: 'University town with research industries' },
+  { name: 'Broken Arrow', path: '/locations/oklahoma/broken-arrow', description: 'Suburban business community' },
+  { name: 'Edmond', path: '/locations/oklahoma/edmond', description: 'Affluent business district' }
+];
+
+const oklahomaIndustries = [
+  'Energy & Natural Gas',
+  'Aerospace & Aviation',
+  'Agriculture & Food Processing',
+  'Manufacturing',
+  'Technology & Software',
+  'Healthcare Services',
+  'Transportation & Logistics',
+  'Financial Services',
+  'Education & Research',
+  'Professional Services'
+];
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Business Consulting Services Oklahoma",
+  "description": "Professional QuickBooks consulting, payroll services, and business solutions across Oklahoma",
+  "provider": {
+    "@type": "Organization",
+    "name": "The KPS Group",
+    "url": "https://thekpsgroup.com",
+    "telephone": "(469) 534-3392",
+    "email": "info@thekpsgroup.com"
+  },
+  "areaServed": {
+    "@type": "State", 
+    "name": "Oklahoma",
+    "sameAs": "https://en.wikipedia.org/wiki/Oklahoma"
+  },
+  "serviceType": [
+    "QuickBooks Consulting",
+    "Payroll Services",
+    "HR Solutions", 
+    "Technology Consulting",
+    "Business Process Automation"
+  ]
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead 
+    title={title}
+    description={description}
+    keywords="business services oklahoma, quickbooks consulting oklahoma, payroll services oklahoma, hr solutions oklahoma, technology consulting oklahoma, business consulting oklahoma city tulsa"
+    structuredData={structuredData}
+    canonical="https://thekpsgroup.com/locations/oklahoma"
+  />
+
+  <main class="pt-24">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-red-900 via-red-800 to-red-900 text-white py-20">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Business Services Across <span class="text-yellow-400">Oklahoma</span>
+          </h1>
+          <p class="text-xl mb-8 max-w-3xl mx-auto leading-relaxed">
+            Professional QuickBooks consulting, payroll management, and business solutions serving companies throughout the Sooner State. From Oklahoma City's energy sector to Tulsa's aerospace industry.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="bg-yellow-500 text-red-900 px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 transition-colors">
+              Get Free Consultation
+            </a>
+            <a href="tel:4695343392" class="border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-red-900 transition-colors">
+              Call (469) 534-3392
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Oklahoma Cities We Serve -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Major Oklahoma Markets We Serve
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Comprehensive business consulting services across Oklahoma's key metropolitan areas and business communities.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {oklahomaCities.map((city) => (
+            <div class="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow">
+              <h3 class="text-xl font-semibold text-red-900 mb-3">{city.name}</h3>
+              <p class="text-gray-600 mb-4">{city.description}</p>
+              <a 
+                href={city.path}
+                class="text-red-600 font-medium hover:text-red-800 inline-flex items-center"
+              >
+                Learn More 
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Oklahoma Industries -->
+    <section class="py-16">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Industries We Serve in Oklahoma
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Specialized business consulting solutions tailored to Oklahoma's energy-driven economy and growing technology sector.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {oklahomaIndustries.map((industry) => (
+            <div class="bg-red-50 rounded-lg p-4 text-center">
+              <span class="text-red-900 font-medium">{industry}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Overview -->
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Comprehensive Business Solutions
+          </h2>
+          <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+            Everything your Oklahoma business needs to streamline operations, ensure compliance, and drive growth.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="text-center">
+            <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">QuickBooks Consulting</h3>
+            <p class="text-gray-600 text-sm">Expert setup, training, and ongoing support for QuickBooks systems</p>
+          </div>
+
+          <div class="text-center">
+            <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Payroll Services</h3>
+            <p class="text-gray-600 text-sm">Complete payroll processing with Oklahoma tax compliance</p>
+          </div>
+
+          <div class="text-center">
+            <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">HR Solutions</h3>
+            <p class="text-gray-600 text-sm">Human resources support and compliance management</p>
+          </div>
+
+          <div class="text-center">
+            <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Technology Consulting</h3>
+            <p class="text-gray-600 text-sm">IT solutions and digital transformation guidance</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-red-900 text-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">
+          Ready to Grow Your Oklahoma Business?
+        </h2>
+        <p class="text-lg mb-8 max-w-2xl mx-auto">
+          Get a free consultation with our Oklahoma business experts. We'll analyze your current processes and recommend solutions to streamline operations and drive growth.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contact" class="bg-yellow-500 text-red-900 px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 transition-colors">
+            Schedule Free Consultation
+          </a>
+          <a href="tel:4695343392" class="border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-red-900 transition-colors">
+            Call (469) 534-3392
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

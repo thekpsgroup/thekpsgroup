@@ -1,0 +1,435 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../../components/SEO/AdvancedSEOHead.astro';
+import { BUSINESS } from '../../data/constants';
+
+const seoProps = {
+  title: 'Professional Business Services | Complete Solutions for Small Business Success',
+  description: 'Comprehensive business services including QuickBooks consulting, payroll management, HR services, and technology consulting. Professional solutions designed for small business growth and success.',
+  keywords: [
+    'business services', 'small business solutions', 'professional services', 'QuickBooks consulting',
+    'payroll services', 'HR services', 'technology consulting', 'business consulting', 'Austin Texas',
+    'digital transformation', 'business operations', 'financial services', 'compliance services',
+    'small business support', 'integrated solutions', 'The Modern Suite', 'KPS Group services'
+  ],
+  serviceSchema: {
+    name: 'Comprehensive Business Services',
+    description: 'Complete suite of professional business services including technology, finance, HR, and operational consulting',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Professional Business Services',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group - Business Services',
+    description: 'Professional business services provider offering comprehensive solutions for small and medium businesses',
+    url: 'https://thekpsgroup.com/services',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'QuickBooks Consulting & Setup',
+      'Professional Payroll Services',
+      'HR Services & Compliance',
+      'Technology Consulting',
+      'Digital Transformation',
+      'Business Operations Consulting'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' },
+    { name: 'Services', url: '/services' }
+  ],
+  faqSchema: [
+    {
+      question: 'What business services do you offer?',
+      answer: 'We offer comprehensive business services including QuickBooks consulting, payroll management, HR services, technology consulting, digital transformation, and business operations consulting through The Modern Suite.'
+    },
+    {
+      question: 'Can you customize services for my specific business needs?',
+      answer: 'Yes, all our services are customizable to meet your specific business requirements. We work with you to understand your unique challenges and develop tailored solutions that fit your industry and growth stage.'
+    },
+    {
+      question: 'Do you provide ongoing support after implementation?',
+      answer: 'Absolutely! We provide ongoing support, training, and optimization services to ensure your continued success. Our relationship doesn\'t end at implementation - we\'re your long-term business partner.'
+    },
+    {
+      question: 'How do your integrated services work together?',
+      answer: 'Our services are designed to work seamlessly together through The Modern Suite. For example, our payroll services integrate with QuickBooks setup, our HR services align with compliance requirements, and our technology solutions support all operational aspects of your business.'
+    }
+  ]
+};
+---
+
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
+  
+  <!-- Enhanced Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <!-- Premium Background -->
+    <div class="absolute inset-0 bg-gradient-to-br from-accent-900 via-black to-accent-800"></div>
+    
+    <!-- Animated Elements -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-warning-400/20 rounded-full blur-3xl animate-pulse"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-warning-400/10 rounded-full blur-2xl animate-pulse" style="animation-delay: -2s;"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 container mx-auto px-6 py-20">
+      <div class="max-w-6xl mx-auto">
+        
+        <!-- Professional Badge -->
+        <div class="text-center mb-8 animate-fade-in">
+          <div class="inline-flex items-center gap-3 bg-warning-400/20 border border-warning-400/40 rounded-full px-6 py-3">
+            <svg class="w-5 h-5 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 00-2 2H10a2 2 0 00-2-2V6m8 0h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2"/>
+            </svg>
+            <span class="text-warning-400 font-semibold">Professional Business Services</span>
+          </div>
+        </div>
+
+        <!-- Main Headline -->
+        <div class="text-center mb-16">
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in" style="animation-delay: 0.2s;">
+            <span class="text-white">Complete</span>
+            <span class="text-gradient-enhanced ml-4 block mt-2">Business Solutions</span>
+          </h1>
+          
+          <h2 class="text-2xl md:text-3xl lg:text-4xl font-light text-warning-400/90 mb-8 animate-fade-in" style="animation-delay: 0.3s;">
+            Professional Services That Drive Small Business Success
+          </h2>
+          
+          <p class="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed animate-fade-in" style="animation-delay: 0.4s;">
+            From QuickBooks consulting to technology transformation, we provide integrated business solutions 
+            that streamline operations, ensure compliance, and accelerate growth for small and medium businesses.
+          </p>
+        </div>
+
+        <!-- Enhanced CTAs -->
+        <div class="text-center mb-20 animate-fade-in" style="animation-delay: 0.5s;">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            <a href="mailto:sales@thekpsgroup.com?subject=Business Services Consultation&body=I'm interested in learning more about your business services and would like to schedule a consultation." 
+               class="group relative inline-flex items-center justify-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 hover:from-warning-400 hover:to-warning-300 text-accent-700 font-bold px-10 py-5 rounded-2xl transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-warning-400/40 overflow-hidden w-full sm:w-auto transform hover:rotate-1">
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:animate-shimmer"></div>
+              <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+              <span class="text-xl relative z-10">Get Free Consultation</span>
+            </a>
+            
+            <a href="tel:4695343392" 
+               class="group relative inline-flex items-center justify-center gap-3 bg-accent-700/30 hover:bg-accent-700/50 backdrop-blur-xl text-white font-semibold px-10 py-5 rounded-2xl border-2 border-warning-400/40 hover:border-warning-400/80 transition-all duration-500 hover:scale-105 hover:shadow-xl w-full sm:w-auto transform hover:-rotate-1">
+              <svg class="w-6 h-6 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <span class="text-xl">Call (469) 534-3392</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Grid Section -->
+  <section class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Our <span class="text-gradient-enhanced">Professional Services</span>
+          </h2>
+          <p class="text-xl text-white/80 max-w-3xl mx-auto">
+            Comprehensive business solutions designed to streamline operations, 
+            enhance technology, and drive sustainable growth for your business.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- QuickBooks Consulting -->
+          <a href="/services/quickbooks-consulting-premium" 
+             class="group bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 block">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-warning-400 transition-colors">QuickBooks Consulting</h3>
+                <p class="text-white/70 mb-4">
+                  Professional QuickBooks setup, cleanup, training, and ongoing support from certified ProAdvisors. 
+                  Get your books organized and your financial reporting accurate.
+                </p>
+                <ul class="space-y-2 text-white/60 text-sm">
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    QuickBooks Setup & Configuration
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    QuickBooks Cleanup & Training
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Ongoing ProAdvisor Support
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </a>
+
+          <!-- Payroll Services -->
+          <a href="/services/payroll-services" 
+             class="group bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 block">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-warning-400 transition-colors">Payroll Services</h3>
+                <p class="text-white/70 mb-4">
+                  Complete payroll processing, tax compliance, and HR support. Accurate, secure, 
+                  and stress-free payroll management with direct deposit and benefits administration.
+                </p>
+                <ul class="space-y-2 text-white/60 text-sm">
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Payroll Processing & Direct Deposit
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Tax Compliance & Filing
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Benefits Administration
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </a>
+
+          <!-- HR Services -->
+          <a href="/services/hr-services" 
+             class="group bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 block">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-warning-400 transition-colors">HR Services</h3>
+                <p class="text-white/70 mb-4">
+                  Comprehensive HR consulting including employee handbooks, compliance management, 
+                  performance systems, and training programs for building strong teams.
+                </p>
+                <ul class="space-y-2 text-white/60 text-sm">
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    HR Compliance & Employment Law
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Employee Handbook Development
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Performance Management Systems
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </a>
+
+          <!-- Technology Consulting -->
+          <a href="/services/technology-consulting" 
+             class="group bg-accent-700/20 backdrop-blur-xl border border-warning-400/20 rounded-2xl p-8 hover:bg-accent-700/30 transition-all duration-500 hover:scale-105 hover:border-warning-400/40 block">
+            <div class="flex items-start gap-6">
+              <div class="w-16 h-16 bg-warning-400/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+              </div>
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-warning-400 transition-colors">Technology Consulting</h3>
+                <p class="text-white/70 mb-4">
+                  Strategic technology consulting for digital transformation, cloud migration, cybersecurity, 
+                  and IT infrastructure modernization to accelerate business growth.
+                </p>
+                <ul class="space-y-2 text-white/60 text-sm">
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Digital Transformation Strategy
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Cloud Migration & Solutions
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-warning-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Cybersecurity & Compliance
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="py-20 bg-gradient-to-b from-black to-accent-700">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Why Choose <span class="text-gradient-enhanced">The KPS Group</span>
+          </h2>
+          <p class="text-xl text-white/80 max-w-3xl mx-auto">
+            We provide integrated business solutions that work together seamlessly, 
+            giving you enterprise-level capabilities with personalized service.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <svg class="w-10 h-10 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 00-2 2H10a2 2 0 00-2-2V6m8 0h2a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h2"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Integrated Solutions</h3>
+            <p class="text-white/70">All our services work together seamlessly through The Modern Suite.</p>
+          </div>
+
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <svg class="w-10 h-10 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Proven Expertise</h3>
+            <p class="text-white/70">Certified professionals with years of experience serving small businesses.</p>
+          </div>
+
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <svg class="w-10 h-10 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Ongoing Support</h3>
+            <p class="text-white/70">Dedicated support and optimization to ensure your continued success.</p>
+          </div>
+
+          <div class="text-center">
+            <div class="w-20 h-20 bg-warning-400/20 rounded-xl flex items-center justify-center mx-auto mb-6">
+              <svg class="w-10 h-10 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Fast Implementation</h3>
+            <p class="text-white/70">Quick setup and implementation to get you results fast.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 bg-accent-700">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-8">
+          Ready to Transform Your <span class="text-gradient-enhanced">Business?</span>
+        </h2>
+        <p class="text-xl text-white/80 mb-12">
+          Let's discuss how our comprehensive business services can streamline your operations, 
+          enhance your technology, and accelerate your growth. Get started with a free consultation.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <a href="mailto:sales@thekpsgroup.com?subject=Business Services Consultation" 
+             class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-warning-500 to-warning-400 text-accent-700 font-bold px-10 py-5 rounded-2xl hover:scale-105 transition-all duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+            </svg>
+            Schedule Free Consultation
+          </a>
+          
+          <a href="tel:4695343392" 
+             class="inline-flex items-center justify-center gap-3 bg-white/10 backdrop-blur-xl text-white font-semibold px-10 py-5 rounded-2xl border-2 border-white/20 hover:bg-white/20 transition-all duration-300">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+            Call (469) 534-3392
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+.text-gradient-enhanced {
+  background: linear-gradient(135deg, #f8d673 0%, #fce7b3 30%, #f8d673 60%, #e6b429 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(248, 214, 115, 0.3));
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

@@ -1,36 +1,77 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import Hero from '../components/Hero.astro';
-
-// SEO-optimized metadata for The KPS Group holding company
-const title = 'The KPS Group | The Modern Suite - Empowering Small Business Success';
-const description = 'The KPS Group brings together six specialized companies under The Modern Suite, providing small businesses with integrated solutions for operations, technology, finance, branding, consulting, and HR. Professional holding company serving businesses nationwide.';
-const keywords = [
-  'holding company',
-  'small business solutions',
-  'integrated business services',
-  'modern suite',
-  'business consulting',
-  'technology solutions',
-  'financial services',
-  'branding services',
-  'HR services',
-  'operations consulting',
-  'business empowerment',
-  'professional services',
-  'small business support',
-  'enterprise solutions',
-  'business integration'
-];
+import { BUSINESS } from '../data/constants';
 
 const seoProps = {
-  location: 'Austin, Texas with nationwide reach',
-  service: 'integrated business solutions through The Modern Suite',
-  canonical: 'https://thekpsgroup.com/',
+  title: 'The KPS Group | The Modern Suite - Empowering Small Business Success',
+  description: 'The KPS Group brings together six specialized companies under The Modern Suite, providing small businesses with integrated solutions for operations, technology, finance, branding, consulting, and HR. Professional holding company serving businesses nationwide.',
+  keywords: [
+    'holding company', 'small business solutions', 'integrated business services', 'modern suite',
+    'business consulting', 'technology solutions', 'financial services', 'branding services',
+    'HR services', 'operations consulting', 'business empowerment', 'professional services',
+    'small business support', 'enterprise solutions', 'business integration', 'QuickBooks consulting',
+    'payroll services', 'technology consulting', 'digital transformation', 'small business accounting'
+  ],
+  serviceSchema: {
+    name: 'The Modern Suite - Integrated Business Solutions',
+    description: 'Comprehensive business solutions including technology consulting, financial services, HR support, and operational excellence for small and medium businesses',
+    provider: 'The KPS Group',
+    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    serviceType: 'Business Consulting Services',
+    priceRange: '$$'
+  },
+  businessSchema: {
+    name: 'The KPS Group',
+    description: 'Professional holding company providing integrated business solutions through The Modern Suite',
+    url: 'https://thekpsgroup.com',
+    telephone: '+1-469-534-3392',
+    email: 'sales@thekpsgroup.com',
+    address: {
+      streetAddress: '',
+      addressLocality: 'Austin',
+      addressRegion: 'TX',
+      postalCode: '',
+      addressCountry: 'US'
+    },
+    services: [
+      'QuickBooks Consulting & Setup',
+      'Professional Payroll Services',
+      'HR Services & Compliance',
+      'Technology Consulting & Digital Transformation',
+      'Business Operations Consulting',
+      'Financial Management Services'
+    ],
+    priceRange: '$$',
+    openingHours: ['Mo-Fr 08:00-18:00']
+  },
+  breadcrumbs: [
+    { name: 'Home', url: '/' }
+  ],
+  faqSchema: [
+    {
+      question: 'What services does The KPS Group provide?',
+      answer: 'The KPS Group offers comprehensive business solutions through The Modern Suite, including QuickBooks consulting, payroll services, HR support, technology consulting, digital transformation, and business operations consulting for small and medium businesses.'
+    },
+    {
+      question: 'How can The Modern Suite help my small business?',
+      answer: 'The Modern Suite provides integrated solutions that streamline your operations, enhance technology infrastructure, ensure compliance, and drive growth. Our services are designed to work together seamlessly, providing you with comprehensive business support.'
+    },
+    {
+      question: 'Do you work with businesses nationwide?',
+      answer: 'Yes, while we are based in Austin, Texas, we serve businesses nationwide through remote consulting, cloud-based solutions, and virtual support services. We have expertise in various state and federal requirements.'
+    },
+    {
+      question: 'What makes The KPS Group different from other business consulting firms?',
+      answer: 'The KPS Group offers integrated solutions through The Modern Suite, combining multiple specialized services under one roof. This approach ensures consistency, reduces vendor management overhead, and provides cohesive strategies across all aspects of your business.'
+    }
+  ]
 };
 ---
 
-<BaseLayout {title} {description} {keywords} {...seoProps}>
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
   <Hero />
   
   <!-- The Modern Suite Overview -->
