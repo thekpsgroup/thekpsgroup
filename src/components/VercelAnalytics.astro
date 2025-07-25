@@ -1,0 +1,94 @@
+---
+// Vercel Analytics Component
+// This component integrates Vercel Analytics for page view tracking and performance monitoring
+---
+
+<script>
+  import { inject } from '@vercel/analytics';
+  
+  // Initialize Vercel Analytics
+  inject();
+</script>
+
+<!-- Vercel Analytics tracking with enhanced event monitoring -->
+<script is:inline>
+  // Track page views and custom events for better insights
+  if (typeof window !== 'undefined') {
+    // Initialize analytics tracking
+    window.addEventListener('load', () => {
+      console.log('Vercel Analytics initialized');
+      
+      // Track contact form submissions
+      const contactForms = document.querySelectorAll('form[action*="contact"], form[data-form="contact"]');
+      contactForms.forEach(form => {
+        form.addEventListener('submit', () => {
+          if (window.va) {
+            window.va('track', 'Contact Form Submit');
+          }
+        });
+      });
+      
+      // Track phone number clicks
+      const phoneLinks = document.querySelectorAll('a[href^="tel:"]');
+      phoneLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.va) {
+            window.va('track', 'Phone Call', { number: link.href.replace('tel:', '') });
+          }
+        });
+      });
+      
+      // Track email clicks
+      const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
+      emailLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.va) {
+            window.va('track', 'Email Click', { email: link.href.replace('mailto:', '') });
+          }
+        });
+      });
+      
+      // Track CTA button clicks
+      const ctaButtons = document.querySelectorAll('.btn-primary, .btn-secondary, [data-track="cta"]');
+      ctaButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          if (window.va) {
+            const buttonText = button.textContent?.trim() || button.getAttribute('aria-label') || 'CTA Click';
+            window.va('track', 'CTA Click', { button: buttonText });
+          }
+        });
+      });
+      
+      // Track scroll depth
+      let maxScroll = 0;
+      const trackScrollDepth = () => {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+          maxScroll = scrollPercent;
+          if (window.va) {
+            window.va('track', 'Scroll Depth', { percent: scrollPercent });
+          }
+        }
+      };
+      
+      window.addEventListener('scroll', trackScrollDepth, { passive: true });
+    });
+    
+    // Track navigation events for SPA-like behavior
+    let currentUrl = window.location.href;
+    const observer = new MutationObserver(() => {
+      if (window.location.href !== currentUrl) {
+        currentUrl = window.location.href;
+        // Page navigation is automatically tracked by Vercel Analytics
+        if (window.va) {
+          window.va('track', 'Page Navigation', { url: currentUrl });
+        }
+      }
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+</script>

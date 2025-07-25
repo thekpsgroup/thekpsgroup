@@ -1,0 +1,373 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'The Modern Suite | Complete Back-Office Solutions | The KPS Group';
+const description = 'The Modern Suite is an integrated family of companies under The KPS Group, built to give small businesses one clear path to growth, profitability, and operational control.';
+
+// Modern Suite service offerings
+const modernSuite = [
+  {
+    name: 'Modern Ledger',
+    tagline: 'Bookkeeping that makes sense.',
+    description: 'We don\'t just categorize transactions — we bring meaning to your numbers. Modern Ledger delivers real-time, owner-focused financials that tell the story behind your business.',
+    icon: '🧾',
+    logo: '/logos/modern-ledger.svg',
+    features: [
+      'Cash flow visibility',
+      'Owner-ready P&L reports', 
+      'Month-end close and cleanup',
+      'Audit-proof documentation',
+      'Financial coaching & oversight'
+    ],
+    href: '/contact'
+  },
+  {
+    name: 'Modern Pay',
+    tagline: 'Payroll, HR, and compliance — simplified.',
+    description: 'Modern Pay gives you white-glove payroll processing with built-in HR compliance, time tracking, and onboarding — all backed by real humans who give a damn.',
+    icon: '💸',
+    logo: '/logos/modern-pay.svg',
+    features: [
+      'Payroll that just works',
+      'W-2 and 1099 support',
+      'Time tracking + PTO + accruals',
+      'HR compliance guardrails',
+      'PEO/benefits integrations available'
+    ],
+    href: '/contact'
+  },
+  {
+    name: 'Modern Consulting',
+    tagline: 'Operations. Sales. Leadership. Rebuilt.',
+    description: 'Modern Consulting is your boots-on-the-ground strategic partner — turning financial chaos into focused execution. We start at the numbers, diagnose the real problem, then rebuild your business from the inside out.',
+    icon: '💼',
+    logo: '/logos/modern-consulting.svg',
+    features: [
+      'Deep-dive financial analysis',
+      'Sales training & playbook development',
+      'Workflow mapping & optimization',
+      'Leadership coaching',
+      'Performance tracking and accountability systems'
+    ],
+    href: '/contact'
+  },
+  {
+    name: 'Modern Stack',
+    tagline: 'IT and tech support for the real world.',
+    description: 'Modern Stack delivers smart, lean IT that keeps you compliant, secure, and supported — without the bloat of overpriced MSPs. Perfect for service businesses, field teams, or growing back offices.',
+    icon: '🛠',
+    logo: '/logos/modern-stack.svg',
+    features: [
+      'Device management & MDM',
+      'Cloud backup and security',
+      'Compliance for HIPAA, PCI, PSEG, etc.',
+      'WiFi/network buildouts',
+      'Remote + on-site support options'
+    ],
+    href: '/contact'
+  },
+  {
+    name: 'Modern OS',
+    tagline: 'Your all-in-one CRM, FSM, and ERP platform.',
+    description: 'Modern OS is the heartbeat of the Modern Suite — a fully integrated business operating system custom-built for service companies. From dispatch to dollars, it runs your day-to-day so you can scale.',
+    icon: '🔧',
+    logo: '/logos/modern-os.svg',
+    features: [
+      'CRM with pipeline & communication tools',
+      'FSM: Job scheduling, dispatch, work orders',
+      'Invoicing, estimates, and payments',
+      'Payroll and accounting modules',
+      'Built for trades, pros, and field teams'
+    ],
+    href: '/contact',
+    comingSoon: true
+  }
+];
+
+const benefits = [
+  {
+    title: 'Fast Turnaround',
+    description: 'Most projects completed within 48-72 hours',
+    icon: 'M13 10V3L4 14h7v7l9-11h-7z'
+  },
+  {
+    title: 'Premium Quality',
+    description: 'Senior-level design talent on every project',
+    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+  },
+  {
+    title: 'Fixed Pricing',
+    description: 'No hidden fees or surprise costs',
+    icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1'
+  },
+  {
+    title: 'Proven Results',
+    description: '50+ successful projects and counting',
+    icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6'
+  }
+];
+---
+
+<BaseLayout {title} {description}>
+  <!-- Enhanced Hero Section -->
+  <section class="relative section-mobile text-center max-w-7xl mx-auto overflow-hidden">
+    <!-- Enhanced Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gold/10 via-transparent to-gold/5 rounded-3xl">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.1)_0%,transparent_70%)]"></div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-1/4 left-1/4 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-r from-gold/20 to-transparent rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-gradient-to-l from-gold/15 to-transparent rounded-full blur-3xl animate-float" style="animation-delay: -2s;"></div>
+    
+    <div class="relative z-10">
+      <!-- Enhanced Badge -->
+      <div class="inline-flex items-center gap-2 sm:gap-3 glass-mobile mobile-mb-8 animate-fade-in-up">
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+        <span class="text-xs sm:text-sm font-medium text-gold tracking-widest uppercase font-serif">Premium Services</span>
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+      </div>
+
+      <h1 class="text-mobile-3xl font-bold text-white mobile-mb-8 leading-none animate-fade-in-up" style="animation-delay: 0.2s;">
+        <span class="text-gradient-gold bg-size-200 animate-gradient">Our Services</span>
+      </h1>
+      <p class="text-mobile-xl text-white/90 max-w-4xl mx-auto leading-relaxed mobile-mb-12 sm:mb-16 animate-fade-in-up" style="animation-delay: 0.4s;">
+        We specialize in delivering comprehensive business infrastructure solutions that don't just organize your operations—
+        <span class="text-gold font-medium">they transform your business</span> into a scalable, profitable enterprise.
+      </p>
+
+      <!-- Enhanced Benefits Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mobile-mb-12 sm:mb-16">
+        {benefits.map((benefit, index) => (
+          <div class="card-mobile hover-lift group animate-fade-in-up" style={`animation-delay: ${0.6 + (index * 0.1)}s;`}>
+            <div class="w-8 sm:w-10 h-8 sm:h-10 mx-auto mobile-mb-6 text-gold group-hover:scale-110 transition-transform duration-300">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-full h-full">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={benefit.icon}/>
+              </svg>
+            </div>
+            <h3 class="text-base sm:text-lg font-semibold text-white mobile-mb-6 group-hover:text-gold transition-colors duration-300 font-serif">{benefit.title}</h3>
+            <p class="text-sm sm:text-base text-white/70 group-hover:text-white/90 transition-colors duration-300">{benefit.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Modern Suite Grid -->
+  <section class="py-16 px-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+      {modernSuite.map((service) => (
+        <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 hover:border-gold/20 transition-all duration-300 group">
+          <div class="flex items-center gap-4 mb-6">
+            <img 
+              src={service.logo} 
+              alt={`${service.name} logo`}
+              class="w-12 h-12 object-contain"
+              loading="lazy"
+            />
+            <div>
+              <h3 class="text-xl font-bold text-white group-hover:text-gold transition-colors">
+                {service.name}
+                {service.comingSoon && <span class="ml-2 text-xs bg-gold/20 text-gold px-2 py-1 rounded-full">Coming Soon</span>}
+              </h3>
+              <p class="text-gold text-sm">{service.tagline}</p>
+            </div>
+          </div>
+          
+          <p class="text-gray-300 mb-6 leading-relaxed">{service.description}</p>
+          
+          <ul class="space-y-3 mb-8">
+            {service.features.map((feature) => (
+              <li class="flex items-start gap-3 text-sm">
+                <svg class="w-5 h-5 text-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-gray-300">{feature}</span>
+              </li>
+            ))}
+          </ul>
+          
+          <a 
+            href={service.href}
+            class="btn-primary w-full text-center block opacity-90 group-hover:opacity-100 transition-opacity"
+          >
+            {service.comingSoon ? 'Coming Soon' : 'Learn More'}
+          </a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Modern Suite Integration Benefits -->
+  <section class="py-32 px-6 max-w-7xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-goldLight mb-6">When Combined: A Fully White-Labeled Back Office Suite</h2>
+      <p class="text-xl text-gold/80 max-w-4xl mx-auto">
+        The Modern Suite becomes exponentially more valuable when deployed together. We offer bundled packages that integrate Modern Ledger, Modern Pay, Modern Brands, and Modern Consulting — under one clean system with centralized reporting, ownership dashboards, and AI-enhanced insights.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 mb-16">
+      <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 text-center">
+        <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-goldLight mb-4">Centralized Reporting</h3>
+        <p class="text-gray-300">Single dashboard with real-time insights across all business functions.</p>
+      </div>
+
+      <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 text-center">
+        <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-goldLight mb-4">Operational Excellence</h3>
+        <p class="text-gray-300">Streamlined workflows and automated processes that scale with your growth.</p>
+      </div>
+
+      <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-8 text-center">
+        <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-goldLight mb-4">AI-Enhanced Insights</h3>
+        <p class="text-gray-300">Predictive analytics and intelligent recommendations for better decision-making.</p>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="/contact" class="btn-primary text-lg px-8 py-4">
+        Schedule Your Consultation
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-32 px-6 max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-goldLight mb-6">Frequently Asked Questions</h2>
+      <p class="text-xl text-gold/80">
+        Common questions about our services and process.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      <details class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-xl p-6 hover:border-gold/40 transition-colors duration-300">
+        <summary class="text-lg font-semibold text-goldLight cursor-pointer group-hover:text-gold transition-colors duration-300">
+          How long does each project take?
+        </summary>
+        <p class="text-gray-300 mt-4 leading-relaxed">
+          Project timelines vary by service. QuickBooks consulting and cleanup typically takes 1-2 weeks, payroll setup takes 3-5 business days, and business consulting engagements are customized based on scope and complexity.
+        </p>
+      </details>
+
+      <details class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-xl p-6 hover:border-gold/40 transition-colors duration-300">
+        <summary class="text-lg font-semibold text-goldLight cursor-pointer group-hover:text-gold transition-colors duration-300">
+          Do you offer revisions?
+        </summary>
+        <p class="text-gray-300 mt-4 leading-relaxed">
+          Absolutely! We work closely with you to ensure our services meet your exact needs. QuickBooks consulting includes ongoing support, payroll services include setup refinements, and business consulting includes iterative strategy development.
+        </p>
+      </details>
+
+      <details class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-xl p-6 hover:border-gold/40 transition-colors duration-300">
+        <summary class="text-lg font-semibold text-goldLight cursor-pointer group-hover:text-gold transition-colors duration-300">
+          What's included in the final deliverables?
+        </summary>
+        <p class="text-gray-300 mt-4 leading-relaxed">
+          You'll receive all source files, multiple format exports, brand guidelines, and full ownership rights. For websites, you get hosting setup, domain configuration, and training materials.
+        </p>
+      </details>
+
+      <details class="group bg-gradient-to-br from-gray-900/80 to-gray-800/80 border border-goldDark/30 rounded-xl p-6 hover:border-gold/40 transition-colors duration-300">
+        <summary class="text-lg font-semibold text-goldLight cursor-pointer group-hover:text-gold transition-colors duration-300">
+          Do you provide ongoing support?
+        </summary>
+        <p class="text-gray-300 mt-4 leading-relaxed">
+          All website projects include 30 days of complimentary support. Brand package clients receive priority support and a 10% lifetime discount on future updates and modifications.
+        </p>
+      </details>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-32 px-6 text-center max-w-4xl mx-auto">
+    <div class="bg-gradient-to-r from-gold/10 to-goldLight/10 border border-gold/20 rounded-2xl p-12 backdrop-blur-sm relative overflow-hidden">
+      <!-- Urgency indicator -->
+      <div class="absolute top-6 right-6 bg-red-500 text-white text-xs px-3 py-1 rounded-full animate-pulse">
+        🔥 Limited Time
+      </div>
+      
+      <h2 class="text-3xl md:text-4xl font-bold text-goldLight mb-6">Ready to Transform Your Organization?</h2>
+      <p class="text-xl text-gold/80 mb-8 max-w-2xl mx-auto">
+        Join 300+ successful organizations who've achieved exceptional workforce performance with The KPS Group. Free consultation included with every engagement.
+      </p>
+
+      <!-- Value propositions -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-sm">
+        <div class="flex items-center justify-center gap-2 text-green-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>100% Satisfaction Guarantee</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 text-green-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>48-Hour Turnaround</span>
+        </div>
+        <div class="flex items-center justify-center gap-2 text-green-400">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Fixed Pricing (No Surprises)</span>
+        </div>
+      </div>
+
+      <!-- Social proof -->
+      <div class="mb-8">
+        <div class="flex items-center justify-center gap-1 mb-2">
+          {[...Array(5)].map(() => (
+            <svg class="w-5 h-5 text-gold fill-current" viewBox="0 0 24 24">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          ))}
+        </div>
+        <p class="text-gold/80 text-sm">4.9/5 stars from 100+ happy clients</p>
+      </div>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-6">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 bg-gradient-to-r from-gold to-goldLight text-black px-8 py-4 rounded-full font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+          </svg>
+          See Pricing & Buy Now
+        </a>
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-2 border-2 border-gold text-gold px-8 py-4 rounded-full font-semibold hover:bg-gold hover:text-black transition-all duration-300"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+          Get Free Consultation
+        </a>
+      </div>
+
+      <!-- Urgency elements -->
+      <div class="text-xs text-gold/60 space-y-1">
+        <div>🔥 Only 3 consultation slots left this week</div>
+        <div>⏰ Book within 24hrs for priority treatment and exclusive pricing</div>
+        <div>💼 Join 250+ businesses who've already transformed their brand</div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
