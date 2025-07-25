@@ -109,36 +109,44 @@ const benefits = [
 ---
 
 <BaseLayout {title} {description}>
-  <!-- Hero Section -->
-  <section class="relative py-32 px-6 text-center max-w-7xl mx-auto">
-    <!-- Background decoration -->
-    <div class="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-goldLight/5 rounded-3xl"></div>
+  <!-- Enhanced Hero Section -->
+  <section class="relative section-mobile text-center max-w-7xl mx-auto overflow-hidden">
+    <!-- Enhanced Background decoration -->
+    <div class="absolute inset-0 bg-gradient-to-br from-gold/10 via-transparent to-gold/5 rounded-3xl">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.1)_0%,transparent_70%)]"></div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="absolute top-1/4 left-1/4 w-48 sm:w-64 h-48 sm:h-64 bg-gradient-to-r from-gold/20 to-transparent rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-gradient-to-l from-gold/15 to-transparent rounded-full blur-3xl animate-float" style="animation-delay: -2s;"></div>
     
     <div class="relative z-10">
-      <!-- Badge -->
-      <div class="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 rounded-full px-4 py-2 mb-6">
+      <!-- Enhanced Badge -->
+      <div class="inline-flex items-center gap-2 sm:gap-3 glass-mobile mobile-mb-8 animate-fade-in-up">
         <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
-        <span class="text-sm font-medium text-gold">Premium Services</span>
+        <span class="text-xs sm:text-sm font-medium text-gold tracking-widest uppercase font-serif">Premium Services</span>
+        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
       </div>
 
-      <h1 class="text-5xl md:text-7xl font-bold text-goldLight mb-8 leading-tight">
-        Our Services
+      <h1 class="text-mobile-3xl font-bold text-white mobile-mb-8 leading-none animate-fade-in-up" style="animation-delay: 0.2s;">
+        <span class="text-gradient-gold bg-size-200 animate-gradient">Our Services</span>
       </h1>
-      <p class="text-xl md:text-2xl text-gold/80 max-w-4xl mx-auto leading-relaxed mb-12">
-        We specialize in delivering comprehensive business infrastructure solutions that don't just organize your operations—they transform your business into a scalable, profitable enterprise.
+      <p class="text-mobile-xl text-white/90 max-w-4xl mx-auto leading-relaxed mobile-mb-12 sm:mb-16 animate-fade-in-up" style="animation-delay: 0.4s;">
+        We specialize in delivering comprehensive business infrastructure solutions that don't just organize your operations—
+        <span class="text-gold font-medium">they transform your business</span> into a scalable, profitable enterprise.
       </p>
 
-      <!-- Benefits Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-        {benefits.map((benefit) => (
-          <div class="p-4 bg-gradient-to-b from-gold/10 to-transparent rounded-xl border border-gold/20">
-            <div class="w-8 h-8 mx-auto mb-3 text-gold">
+      <!-- Enhanced Benefits Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 mobile-mb-12 sm:mb-16">
+        {benefits.map((benefit, index) => (
+          <div class="card-mobile hover-lift group animate-fade-in-up" style={`animation-delay: ${0.6 + (index * 0.1)}s;`}>
+            <div class="w-8 sm:w-10 h-8 sm:h-10 mx-auto mobile-mb-6 text-gold group-hover:scale-110 transition-transform duration-300">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-full h-full">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={benefit.icon}/>
               </svg>
             </div>
-            <h3 class="text-sm font-semibold text-goldLight mb-1">{benefit.title}</h3>
-            <p class="text-xs text-gold/70">{benefit.description}</p>
+            <h3 class="text-base sm:text-lg font-semibold text-white mobile-mb-6 group-hover:text-gold transition-colors duration-300 font-serif">{benefit.title}</h3>
+            <p class="text-sm sm:text-base text-white/70 group-hover:text-white/90 transition-colors duration-300">{benefit.description}</p>
           </div>
         ))}
       </div>
