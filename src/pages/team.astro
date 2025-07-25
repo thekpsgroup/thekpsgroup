@@ -88,7 +88,7 @@ const team = [
   {
     name: 'Allie Banks',
     title: 'Chief Administrative Officer',
-    image: '/team/allie/CAO-Allie.jpeg.jpg',
+    image: '/team/allie/CAO-Allie.jpg',
     bio: 'Allie ensures smooth operations and exceptional service delivery. With nearly a decade of experience at ADP, she brings deep expertise in payroll, compliance, and operational excellence to help our clients succeed.',
     skills: ['Operations', 'Compliance', 'Service Delivery', 'Process Management'],
     phone: '678-233-4625',
@@ -99,6 +99,12 @@ const team = [
 
 <BaseLayout>
   <AdvancedSEOHead {...seoProps} slot="head" />
+  
+  <!-- Preload critical team images -->
+  <link rel="preload" as="image" href="/team/karson/CEO-Karson.png.jpg" slot="head" />
+  <link rel="preload" as="image" href="/team/brandon/CRO-Brandon.jpg.jpg" slot="head" />
+  <link rel="preload" as="image" href="/team/allie/CAO-Allie.jpg" slot="head" />
+  
   <!-- Enhanced Team Section -->
   <section class="relative py-16 sm:py-20 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 lg:px-12 max-w-7xl mx-auto">
     <!-- Background decoration -->
@@ -131,11 +137,13 @@ const team = [
                     src={member.image}
                     alt={`${member.name} headshot`}
                     class="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     width="176"
                     height="176"
-                    onerror="this.style.backgroundColor='#d4af37'; this.style.backgroundImage='linear-gradient(135deg, #d4af37, #b8941f)'; this.alt='Photo loading...'"
+                    style="background: linear-gradient(135deg, #d4af37, #b8941f); min-height: 176px;"
+                    onload="this.style.backgroundColor='transparent'"
+                    onerror="this.style.backgroundColor='#d4af37'; this.style.backgroundImage='linear-gradient(135deg, #d4af37, #b8941f)'; this.alt='Photo loading...'; console.log('Image failed to load:', this.src);"
                   />
                 </div>
               </div>

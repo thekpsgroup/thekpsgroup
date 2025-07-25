@@ -1662,23 +1662,27 @@ button, input[type="submit"], input[type="button"] {
   img[alt*="Allie"],
   img[alt*="Brandon"],
   img[alt*="Karson"] {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
     border-radius: 0.5rem;
-    max-width: 100%;
-    display: block;
+    max-width: 100% !important;
+    display: block !important;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb) !important;
+    min-height: 176px !important;
   }
   
-  /* Force team images to load on mobile */
+  /* Force team images to load on mobile - enhanced */
   .team-grid img,
-  .team-member-card img {
+  .team-member-card img,
+  div[class*="w-44"] img {
     width: 100% !important;
     height: auto !important;
     object-fit: cover !important;
     max-width: none !important;
-    min-height: 200px;
-    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    min-height: 176px !important;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb) !important;
+    display: block !important;
   }
   
   /* Mobile list spacing */
