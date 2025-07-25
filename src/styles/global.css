@@ -104,7 +104,6 @@ h1 {
 .bg-size-200 {
   background-size: 200% 200%;
 }
-}
 
 h2 {
   @apply text-3xl lg:text-5xl font-semibold leading-tight mb-4;
