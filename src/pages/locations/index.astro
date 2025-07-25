@@ -1,0 +1,275 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { MAJOR_CITIES, STATES, type CityData } from '../../data/cities';
+
+// Generate SEO data
+const title = "Service Locations | The KPS Group - Nationwide Business Consulting";
+const description = "The KPS Group provides expert business consulting services across major cities in Texas, Oklahoma, and nationwide. Find local QuickBooks consulting, financial analysis, and business solutions in your area.";
+
+// Group cities by state for better organization
+const citiesByState = MAJOR_CITIES.reduce((acc: Record<string, CityData[]>, city: CityData) => {
+  if (!acc[city.state]) {
+    acc[city.state] = [];
+  }
+  acc[city.state].push(city);
+  return acc;
+}, {} as Record<string, CityData[]>);
+
+// Sort states and cities
+const sortedStates = Object.keys(citiesByState).sort();
+sortedStates.forEach(state => {
+  citiesByState[state].sort((a: CityData, b: CityData) => a.name.localeCompare(b.name));
+});
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  canonical="https://thekpsgroup.com/locations"
+>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-primary-900 via-primary-800 to-accent-900 py-20 lg:py-28 overflow-hidden">
+    <div class="absolute inset-0 bg-[url('/img/ui/grid-pattern.svg')] opacity-10"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-block p-2 bg-warning-400/10 rounded-lg mb-6">
+        <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+      </div>
+      
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+        <span class="bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          Service Locations
+        </span>
+      </h1>
+      
+      <p class="text-xl lg:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+        Expert business consulting services delivered locally across major markets nationwide
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" class="btn-primary">
+          Get Local Consultation
+        </a>
+        <a href="/services" class="btn-secondary">
+          View Services
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Service States Overview -->
+  <section class="py-16 lg:py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          State Coverage
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Comprehensive business consulting services across our primary service states
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8 mb-16">
+        {STATES.map((state: any) => (
+          <div class="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-16 h-16 bg-warning-400/10 rounded-lg flex items-center justify-center">
+                <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 8h10M7 12h4m1 8l-1-1v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2l-1 1"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold text-gray-900">{state.name}</h3>
+                <p class="text-gray-600">{state.abbreviation}</p>
+              </div>
+            </div>
+            
+            <p class="text-gray-700 mb-6">
+              {state.name === 'Texas' 
+                ? 'Our primary market with deep local expertise across major metropolitan areas including Austin, Dallas, Houston, and San Antonio.'
+                : 'Strategic regional expansion providing comprehensive business consulting services across Oklahoma\'s key business markets.'
+              }
+            </p>
+            
+            <div class="flex items-center justify-between">
+              <div class="text-sm text-gray-500">
+                {citiesByState[state.abbreviation]?.length || 0} Major Cities
+              </div>
+              <a 
+                href={`/locations/${state.name.toLowerCase()}`}
+                class="inline-flex items-center gap-2 text-warning-600 hover:text-warning-700 font-medium"
+              >
+                View {state.name}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Major Cities Grid -->
+  <section class="py-16 lg:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Major Cities
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Local expertise in America's most dynamic business markets
+        </p>
+      </div>
+
+      {sortedStates.map(state => (
+        <div class="mb-12">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">
+            {state}
+          </h3>
+          
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {citiesByState[state].map(city => (
+              <a 
+                href={`/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}`}
+                class="group bg-gray-50 hover:bg-white border hover:border-warning-200 rounded-lg p-6 transition-all duration-300 hover:shadow-lg"
+              >
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 bg-warning-400/10 group-hover:bg-warning-400/20 rounded-lg flex items-center justify-center transition-colors duration-300">
+                    <svg class="w-5 h-5 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 8h10M7 12h4m1 8l-1-1v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2l-1 1"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-900 group-hover:text-warning-600 transition-colors duration-300">
+                      {city.name}
+                    </h4>
+                    <p class="text-sm text-gray-600">{city.state}</p>
+                  </div>
+                </div>
+                
+                <div class="space-y-2 text-sm text-gray-600">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    Population: {city.population.toLocaleString()}
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 8h10M7 12h4m1 8l-1-1v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2l-1 1"/>
+                    </svg>
+                    {city.industries.slice(0, 2).join(', ')}
+                  </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-t border-gray-200 flex items-center justify-between">
+                  <span class="text-xs text-gray-500">
+                    SEO Opportunity: {city.opportunity}
+                  </span>
+                  <svg class="w-4 h-4 text-warning-400 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Service Benefits -->
+  <section class="py-16 lg:py-20 bg-gradient-to-br from-primary-50 to-accent-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+          Why Choose Local Expertise?
+        </h2>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+          Our local presence combines nationwide experience with deep market knowledge
+        </p>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-warning-400/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">
+            Rapid Response
+          </h3>
+          <p class="text-gray-600">
+            Local teams ensure faster response times and on-site support when you need it most.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-16 h-16 bg-warning-400/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">
+            Market Intelligence
+          </h3>
+          <p class="text-gray-600">
+            Deep understanding of local business conditions, regulations, and opportunities.
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <div class="w-16 h-16 bg-warning-400/10 rounded-xl flex items-center justify-center mx-auto mb-6">
+            <svg class="w-8 h-8 text-warning-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-4">
+            Trusted Relationships
+          </h3>
+          <p class="text-gray-600">
+            Established networks with local partners, vendors, and business communities.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 lg:py-20 bg-gradient-to-r from-primary-600 to-accent-600">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6">
+        Ready to Get Started?
+      </h2>
+      <p class="text-xl text-gray-200 mb-8">
+        Connect with our local experts to discuss your business needs and opportunities
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/contact" class="btn-warning">
+          Schedule Consultation
+        </a>
+        <a href="/services" class="btn-secondary-white">
+          Explore Services
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .btn-warning {
+    @apply inline-flex items-center px-8 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply bg-warning-400 text-black hover:bg-warning-300 hover:scale-105;
+  }
+  
+  .btn-secondary-white {
+    @apply inline-flex items-center px-8 py-3 rounded-lg font-semibold transition-all duration-300;
+    @apply bg-white/10 text-white border border-white/20 hover:bg-white/20;
+  }
+</style>

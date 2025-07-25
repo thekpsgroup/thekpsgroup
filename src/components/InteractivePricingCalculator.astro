@@ -1,0 +1,1481 @@
+---
+// Interactive Pricing Calculator Component
+// Dynamic pricing with service selection and customization
+
+export interface Props {
+  showQuote?: boolean;
+  allowCustomization?: boolean;
+  cityData?: any;
+  className?: string;
+}
+
+const {
+  showQuote = true,
+  allowCustomization = true,
+  cityData,
+  className = ""
+} = Astro.props;
+
+const calculatorId = `kps-pricing-calculator-${crypto.randomUUID().substring(0, 8)}`;
+
+// Service pricing configuration
+const serviceConfig = {
+  quickbooks: {
+    name: "QuickBooks Setup & Training",
+    description: "Complete QuickBooks setup, data migration, and team training",
+    basePrice: 497,
+    options: [
+      { id: 'basic', name: 'Basic Setup', price: 0, description: 'Chart of accounts, basic reports' },
+      { id: 'standard', name: 'Standard Setup', price: 200, description: 'Advanced features, inventory setup' },
+      { id: 'premium', name: 'Premium Setup', price: 500, description: 'Full customization, integrations' }
+    ],
+    addons: [
+      { id: 'training', name: 'Extended Training (4 hours)', price: 300 },
+      { id: 'migration', name: 'Data Migration', price: 250 },
+      { id: 'support', name: '90-Day Support', price: 150 }
+    ]
+  },
+  bookkeeping: {
+    name: "Monthly Bookkeeping",
+    description: "Professional bookkeeping services to keep your finances organized",
+    basePrice: 350,
+    options: [
+      { id: 'basic', name: 'Basic (up to 50 transactions)', price: 0 },
+      { id: 'standard', name: 'Standard (up to 150 transactions)', price: 150 },
+      { id: 'premium', name: 'Premium (unlimited transactions)', price: 300 }
+    ],
+    addons: [
+      { id: 'reconciliation', name: 'Bank Reconciliation', price: 75 },
+      { id: 'reports', name: 'Custom Reports', price: 100 },
+      { id: 'consultation', name: 'Monthly Consultation Call', price: 125 }
+    ]
+  },
+  payroll: {
+    name: "Payroll Management",
+    description: "Complete payroll processing and tax filing services",
+    basePrice: 150,
+    options: [
+      { id: 'basic', name: 'Basic (1-5 employees)', price: 0 },
+      { id: 'standard', name: 'Standard (6-15 employees)', price: 100 },
+      { id: 'premium', name: 'Premium (16+ employees)', price: 250 }
+    ],
+    addons: [
+      { id: 'hr', name: 'HR Support', price: 200 },
+      { id: 'benefits', name: 'Benefits Administration', price: 150 },
+      { id: 'compliance', name: 'Compliance Monitoring', price: 175 }
+    ]
+  },
+  consulting: {
+    name: "Business Consulting",
+    description: "Strategic business consulting to optimize your operations",
+    basePrice: 200,
+    options: [
+      { id: 'hourly', name: 'Hourly Consulting', price: 0, description: '$200/hour' },
+      { id: 'monthly', name: 'Monthly Retainer', price: 600, description: '4 hours included' },
+      { id: 'project', name: 'Project-Based', price: 1500, description: 'Custom pricing' }
+    ],
+    addons: [
+      { id: 'financial-analysis', name: 'Financial Analysis', price: 500 },
+      { id: 'process-optimization', name: 'Process Optimization', price: 750 },
+      { id: 'growth-planning', name: 'Growth Planning', price: 1000 }
+    ]
+  },
+  tax: {
+    name: "Tax Preparation",
+    description: "Professional tax preparation and filing services",
+    basePrice: 300,
+    options: [
+      { id: 'personal', name: 'Personal Tax Return', price: 0 },
+      { id: 'business', name: 'Business Tax Return', price: 400 },
+      { id: 'complex', name: 'Complex Return', price: 800 }
+    ],
+    addons: [
+      { id: 'planning', name: 'Tax Planning Session', price: 250 },
+      { id: 'quarterly', name: 'Quarterly Estimates', price: 150 },
+      { id: 'audit-support', name: 'Audit Support', price: 500 }
+    ]
+  },
+  hr: {
+    name: "HR Services",
+    description: "Comprehensive human resources support and compliance",
+    basePrice: 275,
+    options: [
+      { id: 'basic', name: 'Basic HR Support', price: 0 },
+      { id: 'standard', name: 'Standard HR Package', price: 200 },
+      { id: 'full-service', name: 'Full-Service HR', price: 500 }
+    ],
+    addons: [
+      { id: 'handbook', name: 'Employee Handbook', price: 300 },
+      { id: 'recruiting', name: 'Recruiting Support', price: 400 },
+      { id: 'training', name: 'HR Training Programs', price: 350 }
+    ]
+  }
+};
+---
+
+<div class={`kps-pricing-calculator ${className}`} data-calculator-id={calculatorId}>
+  <!-- Calculator Header -->
+  <div class="calculator-header">
+    <h2 class="calculator-title">Service Pricing Calculator</h2>
+    <p class="calculator-subtitle">
+      Get an instant estimate for your business needs. All prices are starting rates and may vary based on complexity.
+    </p>
+    
+    {cityData && (
+      <div class="location-badge">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Pricing for {cityData.name}, {cityData.stateCode}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Service Selection -->
+  <div class="service-selection">
+    <h3>Select Services</h3>
+    <div class="services-grid">
+      {Object.entries(serviceConfig).map(([serviceId, service]) => (
+        <div class="service-card" data-service={serviceId}>
+          <div class="service-header">
+            <label class="service-checkbox">
+              <input type="checkbox" name="services" value={serviceId} />
+              <span class="checkmark"></span>
+            </label>
+            <div class="service-info">
+              <h4 class="service-name">{service.name}</h4>
+              <p class="service-description">{service.description}</p>
+              <div class="service-price">
+                Starting at <span class="price">${service.basePrice}</span>
+                {service.options[0].description && 
+                  <span class="price-note">/{service.options[0].description.includes('hour') ? 'hour' : 'month'}</span>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="service-options" style="display: none;">
+            <div class="options-section">
+              <h5>Service Level</h5>
+              <div class="option-group">
+                {service.options.map((option, index) => (
+                  <label class="option-item">
+                    <input 
+                      type="radio" 
+                      name={`${serviceId}-option`} 
+                      value={option.id}
+                      data-price={option.price}
+                      checked={index === 0}
+                    />
+                    <span class="option-content">
+                      <span class="option-name">{option.name}</span>
+                      {option.description && <span class="option-description">{option.description}</span>}
+                      <span class="option-price">
+                        {option.price > 0 ? `+$${option.price}` : 'Included'}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div class="addons-section">
+              <h5>Additional Services</h5>
+              <div class="addon-group">
+                {service.addons.map(addon => (
+                  <label class="addon-item">
+                    <input 
+                      type="checkbox" 
+                      name={`${serviceId}-addon`} 
+                      value={addon.id}
+                      data-price={addon.price}
+                    />
+                    <span class="addon-content">
+                      <span class="addon-name">{addon.name}</span>
+                      <span class="addon-price">+${addon.price}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Business Information -->
+  <div class="business-info" style="display: none;">
+    <h3>Business Information</h3>
+    <div class="info-grid">
+      <div class="info-group">
+        <label for="employeeCount">Number of Employees</label>
+        <select id="employeeCount" name="employeeCount">
+          <option value="1-5">1-5 employees</option>
+          <option value="6-15">6-15 employees</option>
+          <option value="16-50">16-50 employees</option>
+          <option value="50+">50+ employees</option>
+        </select>
+      </div>
+
+      <div class="info-group">
+        <label for="businessType">Business Type</label>
+        <select id="businessType" name="businessType">
+          <option value="llc">LLC</option>
+          <option value="corporation">Corporation</option>
+          <option value="partnership">Partnership</option>
+          <option value="sole-proprietorship">Sole Proprietorship</option>
+          <option value="non-profit">Non-Profit</option>
+        </select>
+      </div>
+
+      <div class="info-group">
+        <label for="industry">Industry</label>
+        <select id="industry" name="industry">
+          <option value="">Select Industry</option>
+          <option value="technology">Technology</option>
+          <option value="healthcare">Healthcare</option>
+          <option value="retail">Retail</option>
+          <option value="manufacturing">Manufacturing</option>
+          <option value="construction">Construction</option>
+          <option value="professional-services">Professional Services</option>
+          <option value="hospitality">Hospitality</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="info-group">
+        <label for="monthlyTransactions">Monthly Transactions</label>
+        <select id="monthlyTransactions" name="monthlyTransactions">
+          <option value="under-50">Under 50</option>
+          <option value="50-150">50-150</option>
+          <option value="150-500">150-500</option>
+          <option value="500+">500+</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing Summary -->
+  <div class="pricing-summary">
+    <div class="summary-header">
+      <h3>Pricing Summary</h3>
+      <div class="summary-toggle">
+        <button type="button" class="toggle-monthly active" data-billing="monthly">Monthly</button>
+        <button type="button" class="toggle-annual" data-billing="annual">Annual (Save 15%)</button>
+      </div>
+    </div>
+
+    <div class="summary-content">
+      <div class="selected-services" data-selected-services>
+        <div class="no-services">
+          <i class="fas fa-calculator"></i>
+          <p>Select services above to see pricing</p>
+        </div>
+      </div>
+
+      <div class="pricing-breakdown" style="display: none;">
+        <div class="breakdown-header">
+          <h4>Cost Breakdown</h4>
+        </div>
+        
+        <div class="breakdown-items" data-breakdown-items>
+          <!-- Dynamic content -->
+        </div>
+
+        <div class="pricing-totals">
+          <div class="subtotal">
+            <span>Subtotal:</span>
+            <span data-subtotal>$0</span>
+          </div>
+          <div class="discount" style="display: none;">
+            <span>Annual Discount (15%):</span>
+            <span data-discount>-$0</span>
+          </div>
+          <div class="total">
+            <span>Total:</span>
+            <span data-total>$0</span>
+          </div>
+          <div class="billing-note">
+            <span data-billing-note>per month</span>
+          </div>
+        </div>
+
+        <div class="savings-indicator" style="display: none;">
+          <i class="fas fa-piggy-bank"></i>
+          <span>You could save <span data-annual-savings>$0</span> per year with annual billing!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="calculator-actions">
+      <button type="button" class="btn btn-primary get-quote" data-get-quote>
+        Get Detailed Quote
+      </button>
+      <button type="button" class="btn btn-secondary schedule-consultation" data-schedule>
+        Schedule Consultation
+      </button>
+      <button type="button" class="btn btn-outline share-estimate" data-share>
+        <i class="fas fa-share-alt"></i> Share Estimate
+      </button>
+    </div>
+  </div>
+
+  <!-- Quote Modal -->
+  {showQuote && (
+    <div class="quote-modal" data-quote-modal style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Request Detailed Quote</h3>
+          <button type="button" class="modal-close" data-modal-close>
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="quote-summary">
+            <h4>Selected Services</h4>
+            <div class="quote-services" data-quote-services>
+              <!-- Dynamic content -->
+            </div>
+            <div class="quote-total">
+              <strong>Estimated Total: <span data-quote-total>$0</span>/month</strong>
+            </div>
+          </div>
+
+          <form class="quote-form" data-quote-form>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="quoteName">Full Name *</label>
+                <input type="text" id="quoteName" name="name" required />
+              </div>
+              <div class="form-group">
+                <label for="quoteEmail">Email Address *</label>
+                <input type="email" id="quoteEmail" name="email" required />
+              </div>
+              <div class="form-group">
+                <label for="quotePhone">Phone Number</label>
+                <input type="tel" id="quotePhone" name="phone" />
+              </div>
+              <div class="form-group">
+                <label for="quoteCompany">Company Name</label>
+                <input type="text" id="quoteCompany" name="company" />
+              </div>
+              <div class="form-group full-width">
+                <label for="quoteMessage">Additional Requirements</label>
+                <textarea id="quoteMessage" name="message" rows="4" 
+                  placeholder="Tell us about any specific needs or questions..."></textarea>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+              <button type="submit" class="btn btn-primary">Send Quote Request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
+<style>
+  .kps-pricing-calculator {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .calculator-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .calculator-title {
+    color: #1e3a8a;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .calculator-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0 0 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .location-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+  }
+
+  .service-selection h3,
+  .business-info h3,
+  .pricing-summary h3 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .service-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .service-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .service-card.selected {
+    border-color: #ffd700;
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+  }
+
+  .service-header {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .service-checkbox input {
+    display: none;
+  }
+
+  .service-checkbox .checkmark {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .service-checkbox input:checked + .checkmark {
+    background: #ffd700;
+    border-color: #ffd700;
+  }
+
+  .service-checkbox input:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1e3a8a;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .service-info {
+    flex: 1;
+  }
+
+  .service-name {
+    color: #1e3a8a;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  .service-description {
+    color: #64748b;
+    margin: 0 0 1rem;
+    line-height: 1.5;
+  }
+
+  .service-price {
+    color: #059669;
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .price {
+    font-size: 1.3rem;
+  }
+
+  .price-note {
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .service-options {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      max-height: 500px;
+    }
+  }
+
+  .options-section,
+  .addons-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .options-section h5,
+  .addons-section h5 {
+    color: #374151;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  .option-group,
+  .addon-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .option-item,
+  .addon-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .option-item:hover,
+  .addon-item:hover {
+    background: #f8f9fa;
+    border-color: #ffd700;
+  }
+
+  .option-item input,
+  .addon-item input {
+    margin-top: 2px;
+  }
+
+  .option-content,
+  .addon-content {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .option-name,
+  .addon-name {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .option-description {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .option-price,
+  .addon-price {
+    color: #059669;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .business-info {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .info-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-group label {
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-group select {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .info-group select:focus {
+    outline: none;
+    border-color: #ffd700;
+  }
+
+  .pricing-summary {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .summary-toggle {
+    display: flex;
+    gap: 0.5rem;
+    background: #f1f5f9;
+    padding: 0.25rem;
+    border-radius: 8px;
+  }
+
+  .summary-toggle button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+  }
+
+  .summary-toggle button.active {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .no-services {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+  }
+
+  .no-services i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+  }
+
+  .breakdown-header h4 {
+    color: #1e3a8a;
+    font-size: 1.2rem;
+    margin: 0 0 1rem;
+  }
+
+  .breakdown-items {
+    margin-bottom: 1.5rem;
+  }
+
+  .breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .breakdown-item:last-child {
+    border-bottom: none;
+  }
+
+  .item-name {
+    color: #374151;
+    font-weight: 500;
+  }
+
+  .item-details {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+
+  .item-price {
+    color: #059669;
+    font-weight: 600;
+  }
+
+  .pricing-totals {
+    border-top: 2px solid #e5e7eb;
+    padding-top: 1rem;
+  }
+
+  .pricing-totals > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .subtotal,
+  .discount {
+    color: #6b7280;
+  }
+
+  .total {
+    color: #1e3a8a;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+  }
+
+  .billing-note {
+    color: #6b7280;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+
+  .savings-indicator {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .savings-indicator i {
+    margin-right: 0.5rem;
+  }
+
+  .calculator-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffd700 0%, #f59e0b 100%);
+    color: #1e3a8a;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn-secondary:hover {
+    background: #4b5563;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+  }
+
+  .btn-outline:hover {
+    border-color: #ffd700;
+    color: #1e3a8a;
+  }
+
+  /* Quote Modal */
+  .quote-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .modal-header h3 {
+    color: #1e3a8a;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+
+  .modal-close:hover {
+    background: #f3f4f6;
+  }
+
+  .modal-body {
+    padding: 2rem;
+  }
+
+  .quote-summary {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .quote-summary h4 {
+    margin: 0 0 1rem;
+    color: #1e3a8a;
+  }
+
+  .quote-services {
+    margin-bottom: 1rem;
+  }
+
+  .quote-service {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .quote-total {
+    text-align: right;
+    padding-top: 1rem;
+    border-top: 2px solid #e5e7eb;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-group label {
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #ffd700;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .summary-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .kps-pricing-calculator {
+      padding: 1rem;
+    }
+
+    .calculator-title {
+      font-size: 2rem;
+    }
+
+    .info-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .calculator-actions {
+      flex-direction: column;
+    }
+
+    .calculator-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .modal-content {
+      margin: 1rem;
+      max-height: calc(100vh - 2rem);
+    }
+  }
+</style>
+
+<!-- Pricing Calculator Script -->
+<script is:inline define:vars={{ calculatorId, serviceConfig, cityData }}>
+  window.KPSPricingCalculator = {
+    config: {
+      calculatorId,
+      serviceConfig,
+      cityData
+    },
+
+    selectedServices: new Set(),
+    selectedOptions: {},
+    selectedAddons: {},
+    businessInfo: {},
+    billingType: 'monthly',
+    
+    init: function() {
+      this.container = document.querySelector(`[data-calculator-id="${this.config.calculatorId}"]`);
+      if (!this.container) return;
+
+      this.setupEventListeners();
+      this.updateSummary();
+
+      console.log('KPS Pricing Calculator initialized');
+    },
+
+    setupEventListeners: function() {
+      // Service selection
+      this.container.querySelectorAll('input[name="services"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => this.toggleService(e.target));
+      });
+
+      // Service options
+      this.container.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', (e) => this.updateServiceOption(e.target));
+      });
+
+      // Add-ons
+      this.container.querySelectorAll('input[type="checkbox"]:not([name="services"])').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => this.updateAddon(e.target));
+      });
+
+      // Business info
+      this.container.querySelectorAll('#employeeCount, #businessType, #industry, #monthlyTransactions').forEach(select => {
+        select.addEventListener('change', (e) => this.updateBusinessInfo(e.target));
+      });
+
+      // Billing toggle
+      this.container.querySelectorAll('[data-billing]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.toggleBilling(e.target.dataset.billing));
+      });
+
+      // Action buttons
+      const getQuoteBtn = this.container.querySelector('[data-get-quote]');
+      if (getQuoteBtn) {
+        getQuoteBtn.addEventListener('click', () => this.openQuoteModal());
+      }
+
+      const scheduleBtn = this.container.querySelector('[data-schedule]');
+      if (scheduleBtn) {
+        scheduleBtn.addEventListener('click', () => this.scheduleConsultation());
+      }
+
+      const shareBtn = this.container.querySelector('[data-share]');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', () => this.shareEstimate());
+      }
+
+      // Modal controls
+      const modal = this.container.querySelector('[data-quote-modal]');
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) this.closeQuoteModal();
+        });
+
+        const closeBtn = modal.querySelector('[data-modal-close]');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => this.closeQuoteModal());
+        }
+
+        const quoteForm = modal.querySelector('[data-quote-form]');
+        if (quoteForm) {
+          quoteForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.submitQuoteRequest(e.target);
+          });
+        }
+      }
+    },
+
+    toggleService: function(checkbox) {
+      const serviceId = checkbox.value;
+      const serviceCard = checkbox.closest('.service-card');
+      const serviceOptions = serviceCard.querySelector('.service-options');
+
+      if (checkbox.checked) {
+        this.selectedServices.add(serviceId);
+        serviceCard.classList.add('selected');
+        serviceOptions.style.display = 'block';
+        
+        // Initialize default option
+        const defaultOption = serviceOptions.querySelector('input[type="radio"]:checked');
+        if (defaultOption) {
+          this.selectedOptions[serviceId] = {
+            id: defaultOption.value,
+            price: parseInt(defaultOption.dataset.price)
+          };
+        }
+      } else {
+        this.selectedServices.delete(serviceId);
+        serviceCard.classList.remove('selected');
+        serviceOptions.style.display = 'none';
+        
+        // Clear options and addons
+        delete this.selectedOptions[serviceId];
+        delete this.selectedAddons[serviceId];
+      }
+
+      this.updateBusinessInfoVisibility();
+      this.updateSummary();
+      this.trackServiceSelection();
+    },
+
+    updateServiceOption: function(radio) {
+      const serviceId = radio.name.replace('-option', '');
+      this.selectedOptions[serviceId] = {
+        id: radio.value,
+        price: parseInt(radio.dataset.price)
+      };
+      
+      this.updateSummary();
+    },
+
+    updateAddon: function(checkbox) {
+      const serviceId = checkbox.name.replace('-addon', '');
+      
+      if (!this.selectedAddons[serviceId]) {
+        this.selectedAddons[serviceId] = [];
+      }
+
+      if (checkbox.checked) {
+        this.selectedAddons[serviceId].push({
+          id: checkbox.value,
+          price: parseInt(checkbox.dataset.price)
+        });
+      } else {
+        this.selectedAddons[serviceId] = this.selectedAddons[serviceId].filter(
+          addon => addon.id !== checkbox.value
+        );
+      }
+
+      this.updateSummary();
+    },
+
+    updateBusinessInfo: function(select) {
+      this.businessInfo[select.name] = select.value;
+      this.applyBusinessLogic();
+      this.updateSummary();
+    },
+
+    updateBusinessInfoVisibility: function() {
+      const businessInfo = this.container.querySelector('.business-info');
+      if (this.selectedServices.size > 0) {
+        businessInfo.style.display = 'block';
+      } else {
+        businessInfo.style.display = 'none';
+      }
+    },
+
+    applyBusinessLogic: function() {
+      // Apply pricing adjustments based on business info
+      const employeeCount = this.businessInfo.employeeCount;
+      const monthlyTransactions = this.businessInfo.monthlyTransactions;
+
+      // Suggest appropriate service levels
+      if (employeeCount === '50+' && this.selectedServices.has('payroll')) {
+        this.suggestServiceLevel('payroll', 'premium');
+      }
+
+      if (monthlyTransactions === '500+' && this.selectedServices.has('bookkeeping')) {
+        this.suggestServiceLevel('bookkeeping', 'premium');
+      }
+    },
+
+    suggestServiceLevel: function(serviceId, level) {
+      const serviceCard = this.container.querySelector(`[data-service="${serviceId}"]`);
+      if (!serviceCard) return;
+
+      const radioButton = serviceCard.querySelector(`input[value="${level}"]`);
+      if (radioButton && !radioButton.checked) {
+        // Highlight the suggested option
+        const optionItem = radioButton.closest('.option-item');
+        optionItem.style.background = 'rgba(255, 215, 0, 0.1)';
+        optionItem.style.borderColor = '#ffd700';
+      }
+    },
+
+    toggleBilling: function(billingType) {
+      this.billingType = billingType;
+      
+      // Update button states
+      this.container.querySelectorAll('[data-billing]').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      this.container.querySelector(`[data-billing="${billingType}"]`).classList.add('active');
+      
+      this.updateSummary();
+      this.updateSavingsIndicator();
+    },
+
+    updateSummary: function() {
+      const selectedServicesEl = this.container.querySelector('[data-selected-services]');
+      const pricingBreakdown = this.container.querySelector('.pricing-breakdown');
+      const breakdownItems = this.container.querySelector('[data-breakdown-items]');
+
+      if (this.selectedServices.size === 0) {
+        selectedServicesEl.querySelector('.no-services').style.display = 'block';
+        pricingBreakdown.style.display = 'none';
+        return;
+      }
+
+      selectedServicesEl.querySelector('.no-services').style.display = 'none';
+      pricingBreakdown.style.display = 'block';
+
+      // Generate breakdown
+      let html = '';
+      let subtotal = 0;
+
+      this.selectedServices.forEach(serviceId => {
+        const service = this.config.serviceConfig[serviceId];
+        const option = this.selectedOptions[serviceId];
+        const addons = this.selectedAddons[serviceId] || [];
+
+        const serviceTotal = service.basePrice + (option ? option.price : 0);
+        const addonsTotal = addons.reduce((sum, addon) => sum + addon.price, 0);
+        const total = serviceTotal + addonsTotal;
+
+        html += `
+          <div class="breakdown-item">
+            <div>
+              <div class="item-name">${service.name}</div>
+              ${option ? `<div class="item-details">${this.getOptionName(serviceId, option.id)}</div>` : ''}
+              ${addons.length > 0 ? `<div class="item-details">${addons.length} add-on(s)</div>` : ''}
+            </div>
+            <div class="item-price">$${total.toLocaleString()}</div>
+          </div>
+        `;
+
+        subtotal += total;
+      });
+
+      breakdownItems.innerHTML = html;
+
+      // Calculate totals
+      const discount = this.billingType === 'annual' ? subtotal * 0.15 : 0;
+      const total = subtotal - discount;
+
+      // Update display
+      this.container.querySelector('[data-subtotal]').textContent = `$${subtotal.toLocaleString()}`;
+      this.container.querySelector('[data-total]').textContent = `$${total.toLocaleString()}`;
+      
+      const discountEl = this.container.querySelector('.discount');
+      const discountAmount = this.container.querySelector('[data-discount]');
+      if (discount > 0) {
+        discountEl.style.display = 'flex';
+        discountAmount.textContent = `-$${discount.toLocaleString()}`;
+      } else {
+        discountEl.style.display = 'none';
+      }
+
+      // Update billing note
+      const billingNote = this.container.querySelector('[data-billing-note]');
+      billingNote.textContent = this.billingType === 'annual' ? 'per year' : 'per month';
+    },
+
+    updateSavingsIndicator: function() {
+      const savingsIndicator = this.container.querySelector('.savings-indicator');
+      const annualSavingsEl = this.container.querySelector('[data-annual-savings]');
+      
+      if (this.billingType === 'monthly' && this.selectedServices.size > 0) {
+        const monthlyTotal = this.calculateTotal('monthly');
+        const annualSavings = monthlyTotal * 12 * 0.15;
+        
+        savingsIndicator.style.display = 'block';
+        annualSavingsEl.textContent = `$${annualSavings.toLocaleString()}`;
+      } else {
+        savingsIndicator.style.display = 'none';
+      }
+    },
+
+    calculateTotal: function(billing = this.billingType) {
+      let subtotal = 0;
+
+      this.selectedServices.forEach(serviceId => {
+        const service = this.config.serviceConfig[serviceId];
+        const option = this.selectedOptions[serviceId];
+        const addons = this.selectedAddons[serviceId] || [];
+
+        const serviceTotal = service.basePrice + (option ? option.price : 0);
+        const addonsTotal = addons.reduce((sum, addon) => sum + addon.price, 0);
+        subtotal += serviceTotal + addonsTotal;
+      });
+
+      return billing === 'annual' ? subtotal * 0.85 : subtotal;
+    },
+
+    getOptionName: function(serviceId, optionId) {
+      const service = this.config.serviceConfig[serviceId];
+      const option = service.options.find(opt => opt.id === optionId);
+      return option ? option.name : '';
+    },
+
+    openQuoteModal: function() {
+      if (this.selectedServices.size === 0) {
+        alert('Please select at least one service to request a quote.');
+        return;
+      }
+
+      const modal = this.container.querySelector('[data-quote-modal]');
+      const quoteServices = modal.querySelector('[data-quote-services]');
+      const quoteTotal = modal.querySelector('[data-quote-total]');
+
+      // Populate selected services
+      let html = '';
+      this.selectedServices.forEach(serviceId => {
+        const service = this.config.serviceConfig[serviceId];
+        const total = this.calculateServiceTotal(serviceId);
+        
+        html += `
+          <div class="quote-service">
+            <span>${service.name}</span>
+            <span>$${total.toLocaleString()}/month</span>
+          </div>
+        `;
+      });
+
+      quoteServices.innerHTML = html;
+      quoteTotal.textContent = `$${this.calculateTotal()}/month`;
+
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      // Track quote request
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('quote_modal_opened', {
+          services: Array.from(this.selectedServices),
+          total: this.calculateTotal()
+        });
+      }
+    },
+
+    closeQuoteModal: function() {
+      const modal = this.container.querySelector('[data-quote-modal]');
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    },
+
+    calculateServiceTotal: function(serviceId) {
+      const service = this.config.serviceConfig[serviceId];
+      const option = this.selectedOptions[serviceId];
+      const addons = this.selectedAddons[serviceId] || [];
+
+      const serviceTotal = service.basePrice + (option ? option.price : 0);
+      const addonsTotal = addons.reduce((sum, addon) => sum + addon.price, 0);
+      
+      return serviceTotal + addonsTotal;
+    },
+
+    submitQuoteRequest: function(form) {
+      const formData = new FormData(form);
+      
+      // Add calculator data
+      formData.append('selectedServices', JSON.stringify(Array.from(this.selectedServices)));
+      formData.append('serviceOptions', JSON.stringify(this.selectedOptions));
+      formData.append('serviceAddons', JSON.stringify(this.selectedAddons));
+      formData.append('businessInfo', JSON.stringify(this.businessInfo));
+      formData.append('billingType', this.billingType);
+      formData.append('estimatedTotal', this.calculateTotal());
+      formData.append('formType', 'pricing-quote');
+
+      // Submit quote request
+      this.sendQuoteRequest(formData)
+        .then(response => {
+          alert('Quote request sent successfully! We\'ll contact you within 24 hours.');
+          this.closeQuoteModal();
+          form.reset();
+        })
+        .catch(error => {
+          alert('There was an error sending your quote request. Please try again.');
+          console.error('Quote submission error:', error);
+        });
+    },
+
+    sendQuoteRequest: async function(formData) {
+      try {
+        const response = await fetch('/api/quote', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        // Fallback to email
+        this.fallbackQuoteToEmail(formData);
+        throw error;
+      }
+    },
+
+    fallbackQuoteToEmail: function(formData) {
+      const subject = encodeURIComponent('Pricing Quote Request');
+      let body = 'New pricing quote request:\n\n';
+      
+      for (let [key, value] of formData.entries()) {
+        body += `${key}: ${value}\n`;
+      }
+      
+      const mailtoLink = `mailto:info@kpsgroup.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+      window.open(mailtoLink);
+    },
+
+    scheduleConsultation: function() {
+      // Redirect to consultation scheduling
+      window.open('/schedule-consultation', '_blank');
+    },
+
+    shareEstimate: function() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'KPS Group Service Estimate',
+          text: `My estimated monthly cost: $${this.calculateTotal()}`,
+          url: window.location.href
+        });
+      } else {
+        // Fallback to clipboard
+        const estimateText = `KPS Group Services Estimate: $${this.calculateTotal()}/month\n${window.location.href}`;
+        navigator.clipboard.writeText(estimateText).then(() => {
+          alert('Estimate copied to clipboard!');
+        });
+      }
+    },
+
+    trackServiceSelection: function() {
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('calculator_service_selected', {
+          selectedServices: Array.from(this.selectedServices),
+          totalServices: this.selectedServices.size,
+          estimatedValue: this.calculateTotal()
+        });
+      }
+    }
+  };
+
+  // Auto-initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.KPSPricingCalculator.init());
+  } else {
+    window.KPSPricingCalculator.init();
+  }
+</script>

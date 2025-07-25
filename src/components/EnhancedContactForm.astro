@@ -1,0 +1,1441 @@
+---
+// Enhanced Contact Form Component
+// Multi-step form with validation, progress tracking, and smart routing
+
+export interface Props {
+  formType?: 'contact' | 'consultation' | 'quote' | 'support';
+  showProgress?: boolean;
+  enableSmartRouting?: boolean;
+  requiredFields?: string[];
+  cityData?: any;
+  className?: string;
+}
+
+const {
+  formType = 'contact',
+  showProgress = true,
+  enableSmartRouting = true,
+  requiredFields = ['name', 'email', 'message'],
+  cityData,
+  className = ""
+} = Astro.props;
+
+const formId = `kps-contact-form-${crypto.randomUUID().substring(0, 8)}`;
+
+// Form configuration based on type
+const getFormConfig = (type: string) => {
+  const configs = {
+    contact: {
+      title: "Get in Touch",
+      subtitle: "Let's discuss how we can help your business grow",
+      steps: ['Contact Info', 'Business Details', 'Message'],
+      submitText: "Send Message"
+    },
+    consultation: {
+      title: "Schedule Consultation",
+      subtitle: "Book a free 30-minute consultation with our experts",
+      steps: ['Personal Info', 'Business Info', 'Scheduling'],
+      submitText: "Book Consultation"
+    },
+    quote: {
+      title: "Request Quote",
+      subtitle: "Get a customized quote for your business needs",
+      steps: ['Contact Details', 'Service Requirements', 'Business Info'],
+      submitText: "Get Quote"
+    },
+    support: {
+      title: "Contact Support",
+      subtitle: "Our support team is here to help",
+      steps: ['Contact Info', 'Issue Details'],
+      submitText: "Submit Request"
+    }
+  };
+  return configs[type] || configs.contact;
+};
+
+const config = getFormConfig(formType);
+---
+
+<div class={`kps-enhanced-contact-form ${className}`} data-form-id={formId} data-form-type={formType}>
+  <!-- Form Header -->
+  <div class="form-header">
+    <h2 class="form-title">{config.title}</h2>
+    <p class="form-subtitle">{config.subtitle}</p>
+    
+    {cityData && (
+      <div class="location-context">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Serving {cityData.name}, {cityData.stateCode}</span>
+      </div>
+    )}
+  </div>
+
+  <!-- Progress Indicator -->
+  {showProgress && (
+    <div class="form-progress" data-progress>
+      <div class="progress-bar">
+        <div class="progress-fill" data-progress-fill></div>
+      </div>
+      <div class="progress-steps">
+        {config.steps.map((step, index) => (
+          <div class="progress-step" data-step={index + 1}>
+            <div class="step-number">{index + 1}</div>
+            <div class="step-label">{step}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Form Container -->
+  <form class="enhanced-form" data-enhanced-form novalidate>
+    <!-- Step 1: Contact Information -->
+    <div class="form-step active" data-step="1">
+      <div class="step-header">
+        <h3>Contact Information</h3>
+        <p>Let's start with your basic information</p>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="firstName" class="form-label">
+            First Name <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="firstName" 
+            name="firstName" 
+            class="form-input"
+            required
+            data-validation="name"
+            autocomplete="given-name"
+          />
+          <div class="field-error" data-error="firstName"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName" class="form-label">
+            Last Name <span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="lastName" 
+            name="lastName" 
+            class="form-input"
+            required
+            data-validation="name"
+            autocomplete="family-name"
+          />
+          <div class="field-error" data-error="lastName"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">
+            Email Address <span class="required">*</span>
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input"
+            required
+            data-validation="email"
+            autocomplete="email"
+          />
+          <div class="field-error" data-error="email"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="form-label">
+            Phone Number
+          </label>
+          <input 
+            type="tel" 
+            id="phone" 
+            name="phone" 
+            class="form-input"
+            data-validation="phone"
+            autocomplete="tel"
+            placeholder="(555) 123-4567"
+          />
+          <div class="field-error" data-error="phone"></div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="btn btn-primary next-step" data-next-step>
+          Next Step <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Business Information -->
+    <div class="form-step" data-step="2">
+      <div class="step-header">
+        <h3>Business Details</h3>
+        <p>Tell us about your business so we can better assist you</p>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label for="company" class="form-label">
+            Company Name
+          </label>
+          <input 
+            type="text" 
+            id="company" 
+            name="company" 
+            class="form-input"
+            autocomplete="organization"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="industry" class="form-label">
+            Industry
+          </label>
+          <select id="industry" name="industry" class="form-select">
+            <option value="">Select Industry</option>
+            <option value="technology">Technology</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="retail">Retail</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="construction">Construction</option>
+            <option value="professional-services">Professional Services</option>
+            <option value="hospitality">Hospitality</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="companySize" class="form-label">
+            Company Size
+          </label>
+          <select id="companySize" name="companySize" class="form-select">
+            <option value="">Select Size</option>
+            <option value="1-5">1-5 employees</option>
+            <option value="6-20">6-20 employees</option>
+            <option value="21-50">21-50 employees</option>
+            <option value="51-100">51-100 employees</option>
+            <option value="100+">100+ employees</option>
+          </select>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="services" class="form-label">
+            Services Interested In <span class="required">*</span>
+          </label>
+          <div class="checkbox-group">
+            <label class="checkbox-item">
+              <input type="checkbox" name="services" value="quickbooks" />
+              <span class="checkmark"></span>
+              QuickBooks Setup & Training
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="services" value="payroll" />
+              <span class="checkmark"></span>
+              Payroll Management
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="services" value="bookkeeping" />
+              <span class="checkmark"></span>
+              Bookkeeping Services
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="services" value="consulting" />
+              <span class="checkmark"></span>
+              Business Consulting
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="services" value="tax" />
+              <span class="checkmark"></span>
+              Tax Preparation
+            </label>
+            <label class="checkbox-item">
+              <input type="checkbox" name="services" value="hr" />
+              <span class="checkmark"></span>
+              HR Services
+            </label>
+          </div>
+          <div class="field-error" data-error="services"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="budget" class="form-label">
+            Monthly Budget Range
+          </label>
+          <select id="budget" name="budget" class="form-select">
+            <option value="">Select Budget</option>
+            <option value="under-500">Under $500</option>
+            <option value="500-1000">$500 - $1,000</option>
+            <option value="1000-2500">$1,000 - $2,500</option>
+            <option value="2500-5000">$2,500 - $5,000</option>
+            <option value="5000+">$5,000+</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="timeline" class="form-label">
+            When do you need to start?
+          </label>
+          <select id="timeline" name="timeline" class="form-select">
+            <option value="">Select Timeline</option>
+            <option value="immediately">Immediately</option>
+            <option value="within-month">Within 1 month</option>
+            <option value="within-quarter">Within 3 months</option>
+            <option value="planning">Just planning ahead</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="btn btn-secondary prev-step" data-prev-step>
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button type="button" class="btn btn-primary next-step" data-next-step>
+          Next Step <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Message & Final Details -->
+    <div class="form-step" data-step="3">
+      <div class="step-header">
+        <h3>Additional Information</h3>
+        <p>Share more details about your needs and questions</p>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full-width">
+          <label for="message" class="form-label">
+            Message <span class="required">*</span>
+          </label>
+          <textarea 
+            id="message" 
+            name="message" 
+            class="form-textarea"
+            rows="6"
+            required
+            placeholder="Tell us about your specific needs, challenges, or questions..."
+          ></textarea>
+          <div class="field-error" data-error="message"></div>
+          <div class="character-count">
+            <span data-char-count>0</span> / 1000 characters
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="preferredContact" class="form-label">
+            Preferred Contact Method
+          </label>
+          <select id="preferredContact" name="preferredContact" class="form-select">
+            <option value="email">Email</option>
+            <option value="phone">Phone</option>
+            <option value="either">Either</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="bestTime" class="form-label">
+            Best Time to Contact
+          </label>
+          <select id="bestTime" name="bestTime" class="form-select">
+            <option value="">Any time</option>
+            <option value="morning">Morning (9 AM - 12 PM)</option>
+            <option value="afternoon">Afternoon (12 PM - 5 PM)</option>
+            <option value="evening">Evening (5 PM - 7 PM)</option>
+          </select>
+        </div>
+
+        {formType === 'consultation' && (
+          <div class="form-group full-width">
+            <label class="form-label">Available Dates</label>
+            <div class="date-picker-grid">
+              <!-- Date picker would be implemented here -->
+              <input type="date" name="preferredDate1" class="form-input" min={new Date().toISOString().split('T')[0]} />
+              <input type="date" name="preferredDate2" class="form-input" min={new Date().toISOString().split('T')[0]} />
+              <input type="date" name="preferredDate3" class="form-input" min={new Date().toISOString().split('T')[0]} />
+            </div>
+          </div>
+        )}
+
+        <div class="form-group full-width">
+          <label class="checkbox-item consent-checkbox">
+            <input type="checkbox" name="consent" required />
+            <span class="checkmark"></span>
+            I agree to receive communications from KPS Group and understand my information will be used according to the <a href="/privacy" target="_blank">Privacy Policy</a>
+          </label>
+          <div class="field-error" data-error="consent"></div>
+        </div>
+
+        <div class="form-group full-width">
+          <label class="checkbox-item">
+            <input type="checkbox" name="newsletter" />
+            <span class="checkmark"></span>
+            Subscribe to our newsletter for business tips and updates
+          </label>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="btn btn-secondary prev-step" data-prev-step>
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+        <button type="submit" class="btn btn-success submit-btn" data-submit>
+          <span class="btn-text">{config.submitText}</span>
+          <span class="btn-spinner" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="form-success" data-success style="display: none;">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Thank You!</h3>
+      <p class="success-message" data-success-message>
+        Your message has been sent successfully. We'll get back to you within 24 hours.
+      </p>
+      <div class="success-actions">
+        <button type="button" class="btn btn-primary" onclick="location.reload()">
+          Send Another Message
+        </button>
+        <a href="/" class="btn btn-secondary">Return to Homepage</a>
+      </div>
+    </div>
+  </form>
+
+  <!-- Form Sidebar -->
+  <div class="form-sidebar">
+    <div class="contact-info">
+      <h4>Contact Information</h4>
+      <div class="contact-item">
+        <i class="fas fa-phone"></i>
+        <div>
+          <strong>Phone</strong>
+          <p>(555) 123-4567</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-envelope"></i>
+        <div>
+          <strong>Email</strong>
+          <p>info@kpsgroup.com</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <i class="fas fa-clock"></i>
+        <div>
+          <strong>Business Hours</strong>
+          <p>Mon-Fri: 9 AM - 6 PM<br />Sat: 10 AM - 2 PM</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-preview">
+      <blockquote>
+        "KPS Group transformed our business operations. Their QuickBooks setup saved us hours every week!"
+      </blockquote>
+      <cite>— Sarah M., Austin TX</cite>
+    </div>
+
+    <div class="trust-indicators">
+      <div class="trust-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Secure & Confidential</span>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-clock"></i>
+        <span>24-Hour Response</span>
+      </div>
+      <div class="trust-item">
+        <i class="fas fa-award"></i>
+        <span>Certified Professionals</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .kps-enhanced-contact-form {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-header {
+    margin-bottom: 2rem;
+  }
+
+  .form-title {
+    color: #1e3a8a;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .form-subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0 0 1rem;
+    line-height: 1.6;
+  }
+
+  .location-context {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #059669;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    display: inline-flex;
+  }
+
+  .form-progress {
+    margin-bottom: 2rem;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700 0%, #f59e0b 100%);
+    border-radius: 2px;
+    width: 33.33%;
+    transition: width 0.3s ease;
+  }
+
+  .progress-steps {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+
+  .step-number {
+    width: 32px;
+    height: 32px;
+    background: #e5e7eb;
+    color: #6b7280;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .progress-step.active .step-number {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .progress-step.completed .step-number {
+    background: #10b981;
+    color: white;
+  }
+
+  .step-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    text-align: center;
+  }
+
+  .enhanced-form {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    position: relative;
+  }
+
+  .form-step {
+    display: none;
+  }
+
+  .form-step.active {
+    display: block;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .step-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .step-header h3 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+
+  .step-header p {
+    color: #64748b;
+    margin: 0;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .form-label {
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .required {
+    color: #ef4444;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    background: white;
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  }
+
+  .form-input.error,
+  .form-select.error,
+  .form-textarea.error {
+    border-color: #ef4444;
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+  }
+
+  .character-count {
+    text-align: right;
+    font-size: 0.8rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .checkbox-item:hover {
+    background: #f8f9fa;
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    display: none;
+  }
+
+  .checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .checkbox-item input[type="checkbox"]:checked + .checkmark {
+    background: #ffd700;
+    border-color: #ffd700;
+  }
+
+  .checkbox-item input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1e3a8a;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  .consent-checkbox {
+    padding: 1rem;
+    background: #f0f9ff;
+    border: 1px solid #0ea5e9;
+    border-radius: 8px;
+  }
+
+  .field-error {
+    color: #ef4444;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    min-height: 1rem;
+  }
+
+  .date-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .step-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffd700 0%, #f59e0b 100%);
+    color: #1e3a8a;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+  }
+
+  .btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .btn-secondary:hover {
+    background: #e2e8f0;
+  }
+
+  .btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+
+  .btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+  }
+
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 3rem 2rem;
+  }
+
+  .success-icon {
+    font-size: 4rem;
+    color: #10b981;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-success h3 {
+    color: #1e3a8a;
+    font-size: 2rem;
+    margin: 0 0 1rem;
+  }
+
+  .success-message {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin: 0 0 2rem;
+    line-height: 1.6;
+  }
+
+  .success-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .form-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .contact-info {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  .contact-info h4 {
+    color: #1e3a8a;
+    font-size: 1.25rem;
+    margin: 0 0 1.5rem;
+    font-weight: 700;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .contact-item i {
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-item strong {
+    color: #374151;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-item p {
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .testimonial-preview {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .testimonial-preview blockquote {
+    font-style: italic;
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  .testimonial-preview cite {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .trust-indicators {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: #374151;
+    font-weight: 500;
+  }
+
+  .trust-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .trust-item i {
+    color: #10b981;
+    font-size: 1.1rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .kps-enhanced-contact-form {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .kps-enhanced-contact-form {
+      padding: 1rem;
+    }
+
+    .form-title {
+      font-size: 2rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .checkbox-group {
+      grid-template-columns: 1fr;
+    }
+
+    .step-actions {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .step-actions .btn {
+      width: 100%;
+    }
+
+    .success-actions {
+      flex-direction: column;
+    }
+
+    .date-picker-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Enhanced Form Script -->
+<script is:inline define:vars={{ formId, formType, enableSmartRouting, requiredFields, cityData }}>
+  window.KPSContactForm = {
+    config: {
+      formId,
+      formType,
+      enableSmartRouting,
+      requiredFields,
+      cityData
+    },
+
+    currentStep: 1,
+    totalSteps: 3,
+    formData: {},
+    validationRules: {
+      name: /^[a-zA-Z\s]{2,50}$/,
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      phone: /^[\(\)\d\s\-\+\.\(\)]{10,}$/
+    },
+
+    init: function() {
+      this.container = document.querySelector(`[data-form-id="${this.config.formId}"]`);
+      if (!this.container) return;
+
+      this.form = this.container.querySelector('[data-enhanced-form]');
+      this.setupEventListeners();
+      this.updateProgress();
+
+      console.log('KPS Contact Form initialized');
+    },
+
+    setupEventListeners: function() {
+      // Step navigation
+      this.container.querySelectorAll('[data-next-step]').forEach(btn => {
+        btn.addEventListener('click', () => this.nextStep());
+      });
+
+      this.container.querySelectorAll('[data-prev-step]').forEach(btn => {
+        btn.addEventListener('click', () => this.prevStep());
+      });
+
+      // Form submission
+      this.form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.submitForm();
+      });
+
+      // Real-time validation
+      this.form.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('blur', () => this.validateField(field));
+        field.addEventListener('input', () => this.clearFieldError(field));
+      });
+
+      // Character count for textarea
+      const messageField = this.form.querySelector('#message');
+      if (messageField) {
+        messageField.addEventListener('input', () => this.updateCharacterCount());
+      }
+
+      // Smart routing based on selections
+      if (this.config.enableSmartRouting) {
+        this.setupSmartRouting();
+      }
+    },
+
+    nextStep: function() {
+      if (!this.validateCurrentStep()) return;
+
+      if (this.currentStep < this.totalSteps) {
+        this.hideStep(this.currentStep);
+        this.currentStep++;
+        this.showStep(this.currentStep);
+        this.updateProgress();
+        this.saveStepData();
+
+        // Track step completion
+        if (window.KPSAnalytics) {
+          window.KPSAnalytics.track('form_step_completed', {
+            step: this.currentStep - 1,
+            formType: this.config.formType
+          });
+        }
+      }
+    },
+
+    prevStep: function() {
+      if (this.currentStep > 1) {
+        this.hideStep(this.currentStep);
+        this.currentStep--;
+        this.showStep(this.currentStep);
+        this.updateProgress();
+      }
+    },
+
+    showStep: function(stepNumber) {
+      const step = this.container.querySelector(`[data-step="${stepNumber}"]`);
+      if (step) {
+        step.classList.add('active');
+        step.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    },
+
+    hideStep: function(stepNumber) {
+      const step = this.container.querySelector(`[data-step="${stepNumber}"]`);
+      if (step) {
+        step.classList.remove('active');
+      }
+    },
+
+    updateProgress: function() {
+      const progressFill = this.container.querySelector('[data-progress-fill]');
+      const progressSteps = this.container.querySelectorAll('.progress-step');
+      
+      if (progressFill) {
+        const percentage = (this.currentStep / this.totalSteps) * 100;
+        progressFill.style.width = `${percentage}%`;
+      }
+
+      progressSteps.forEach((step, index) => {
+        const stepNumber = index + 1;
+        step.classList.remove('active', 'completed');
+        
+        if (stepNumber === this.currentStep) {
+          step.classList.add('active');
+        } else if (stepNumber < this.currentStep) {
+          step.classList.add('completed');
+        }
+      });
+    },
+
+    validateCurrentStep: function() {
+      const currentStepEl = this.container.querySelector(`[data-step="${this.currentStep}"]`);
+      if (!currentStepEl) return true;
+
+      const fields = currentStepEl.querySelectorAll('input, select, textarea');
+      let isValid = true;
+
+      fields.forEach(field => {
+        if (!this.validateField(field)) {
+          isValid = false;
+        }
+      });
+
+      // Special validation for checkboxes in step 2
+      if (this.currentStep === 2) {
+        const serviceCheckboxes = currentStepEl.querySelectorAll('input[name="services"]:checked');
+        if (serviceCheckboxes.length === 0) {
+          this.showFieldError('services', 'Please select at least one service');
+          isValid = false;
+        }
+      }
+
+      return isValid;
+    },
+
+    validateField: function(field) {
+      const value = field.value.trim();
+      const isRequired = field.hasAttribute('required');
+      const validationType = field.dataset.validation;
+
+      this.clearFieldError(field);
+
+      // Required field check
+      if (isRequired && !value) {
+        this.showFieldError(field.name, 'This field is required');
+        return false;
+      }
+
+      // Type-specific validation
+      if (value && validationType && this.validationRules[validationType]) {
+        if (!this.validationRules[validationType].test(value)) {
+          const errorMessages = {
+            name: 'Please enter a valid name (2-50 characters, letters only)',
+            email: 'Please enter a valid email address',
+            phone: 'Please enter a valid phone number'
+          };
+          this.showFieldError(field.name, errorMessages[validationType]);
+          return false;
+        }
+      }
+
+      // Consent checkbox
+      if (field.name === 'consent' && isRequired && !field.checked) {
+        this.showFieldError('consent', 'You must agree to the terms to continue');
+        return false;
+      }
+
+      field.classList.remove('error');
+      return true;
+    },
+
+    showFieldError: function(fieldName, message) {
+      const errorEl = this.container.querySelector(`[data-error="${fieldName}"]`);
+      const field = this.container.querySelector(`[name="${fieldName}"]`);
+      
+      if (errorEl) {
+        errorEl.textContent = message;
+      }
+      
+      if (field) {
+        field.classList.add('error');
+      }
+    },
+
+    clearFieldError: function(field) {
+      const errorEl = this.container.querySelector(`[data-error="${field.name}"]`);
+      if (errorEl) {
+        errorEl.textContent = '';
+      }
+      field.classList.remove('error');
+    },
+
+    updateCharacterCount: function() {
+      const messageField = this.form.querySelector('#message');
+      const countEl = this.container.querySelector('[data-char-count]');
+      
+      if (messageField && countEl) {
+        const count = messageField.value.length;
+        countEl.textContent = count;
+        
+        if (count > 1000) {
+          countEl.style.color = '#ef4444';
+        } else {
+          countEl.style.color = '#6b7280';
+        }
+      }
+    },
+
+    saveStepData: function() {
+      const formData = new FormData(this.form);
+      for (let [key, value] of formData.entries()) {
+        this.formData[key] = value;
+      }
+      
+      // Save to localStorage for recovery
+      localStorage.setItem(`kps-form-${this.config.formId}`, JSON.stringify(this.formData));
+    },
+
+    setupSmartRouting: function() {
+      // Add intelligent form routing based on user selections
+      const industryField = this.form.querySelector('#industry');
+      const servicesCheckboxes = this.form.querySelectorAll('input[name="services"]');
+      
+      if (industryField) {
+        industryField.addEventListener('change', () => {
+          this.updateServiceRecommendations();
+        });
+      }
+
+      servicesCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          this.updateFormFlow();
+        });
+      });
+    },
+
+    updateServiceRecommendations: function() {
+      // Implement smart service recommendations based on industry
+      const industry = this.form.querySelector('#industry').value;
+      const recommendations = {
+        'technology': ['quickbooks', 'payroll', 'hr'],
+        'healthcare': ['quickbooks', 'bookkeeping', 'consulting'],
+        'retail': ['quickbooks', 'payroll', 'tax'],
+        'manufacturing': ['quickbooks', 'payroll', 'consulting'],
+        'construction': ['quickbooks', 'payroll', 'bookkeeping']
+      };
+      
+      if (recommendations[industry]) {
+        // Highlight recommended services
+        recommendations[industry].forEach(service => {
+          const checkbox = this.form.querySelector(`input[value="${service}"]`);
+          if (checkbox) {
+            checkbox.closest('.checkbox-item').style.background = 'rgba(255, 215, 0, 0.1)';
+          }
+        });
+      }
+    },
+
+    updateFormFlow: function() {
+      // Adjust form flow based on selected services
+      const selectedServices = Array.from(this.form.querySelectorAll('input[name="services"]:checked'))
+        .map(cb => cb.value);
+      
+      // Show/hide relevant fields based on services
+      this.adjustFieldsForServices(selectedServices);
+    },
+
+    adjustFieldsForServices: function(services) {
+      // Implementation for dynamic field adjustment
+      const hasQuickBooks = services.includes('quickbooks');
+      const hasPayroll = services.includes('payroll');
+      
+      // Add dynamic questions based on selected services
+      if (hasQuickBooks && !this.form.querySelector('#quickbooksVersion')) {
+        this.addQuickBooksFields();
+      }
+      
+      if (hasPayroll && !this.form.querySelector('#employeeCount')) {
+        this.addPayrollFields();
+      }
+    },
+
+    addQuickBooksFields: function() {
+      // Dynamically add QuickBooks-specific fields
+      const businessSection = this.form.querySelector('[data-step="2"] .form-grid');
+      const qbField = document.createElement('div');
+      qbField.className = 'form-group';
+      qbField.innerHTML = `
+        <label for="quickbooksVersion" class="form-label">Current QuickBooks Version</label>
+        <select id="quickbooksVersion" name="quickbooksVersion" class="form-select">
+          <option value="">Select Version</option>
+          <option value="online">QuickBooks Online</option>
+          <option value="desktop">QuickBooks Desktop</option>
+          <option value="none">Not currently using QuickBooks</option>
+        </select>
+      `;
+      businessSection.appendChild(qbField);
+    },
+
+    addPayrollFields: function() {
+      // Dynamically add payroll-specific fields
+      const businessSection = this.form.querySelector('[data-step="2"] .form-grid');
+      const payrollField = document.createElement('div');
+      payrollField.className = 'form-group';
+      payrollField.innerHTML = `
+        <label for="employeeCount" class="form-label">Number of Employees</label>
+        <select id="employeeCount" name="employeeCount" class="form-select">
+          <option value="">Select Count</option>
+          <option value="1-5">1-5 employees</option>
+          <option value="6-15">6-15 employees</option>
+          <option value="16-50">16-50 employees</option>
+          <option value="50+">50+ employees</option>
+        </select>
+      `;
+      businessSection.appendChild(payrollField);
+    },
+
+    submitForm: function() {
+      if (!this.validateCurrentStep()) return;
+
+      const submitBtn = this.container.querySelector('[data-submit]');
+      const btnText = submitBtn.querySelector('.btn-text');
+      const btnSpinner = submitBtn.querySelector('.btn-spinner');
+      
+      // Show loading state
+      submitBtn.disabled = true;
+      btnText.style.display = 'none';
+      btnSpinner.style.display = 'inline-flex';
+
+      // Collect all form data
+      const formData = new FormData(this.form);
+      
+      // Add additional context
+      formData.append('formType', this.config.formType);
+      if (this.config.cityData) {
+        formData.append('location', `${this.config.cityData.name}, ${this.config.cityData.stateCode}`);
+      }
+      formData.append('timestamp', new Date().toISOString());
+
+      // Submit to backend
+      this.sendFormData(formData)
+        .then(response => {
+          this.showSuccess(response);
+          
+          // Track conversion
+          if (window.KPSAnalytics) {
+            window.KPSAnalytics.trackConversion('form_submission', 1);
+          }
+          
+          // Clear saved data
+          localStorage.removeItem(`kps-form-${this.config.formId}`);
+        })
+        .catch(error => {
+          this.showError(error);
+        })
+        .finally(() => {
+          // Reset button state
+          submitBtn.disabled = false;
+          btnText.style.display = 'inline';
+          btnSpinner.style.display = 'none';
+        });
+    },
+
+    sendFormData: async function(formData) {
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        // Fallback to email if API fails
+        this.fallbackToEmail(formData);
+        throw error;
+      }
+    },
+
+    fallbackToEmail: function(formData) {
+      // Create mailto link as fallback
+      const subject = encodeURIComponent(`${this.config.formType} Form Submission`);
+      const body = encodeURIComponent(this.formatEmailBody(formData));
+      const mailtoLink = `mailto:info@kpsgroup.com?subject=${subject}&body=${body}`;
+      
+      window.open(mailtoLink);
+    },
+
+    formatEmailBody: function(formData) {
+      let body = `New ${this.config.formType} form submission:\n\n`;
+      
+      for (let [key, value] of formData.entries()) {
+        body += `${key}: ${value}\n`;
+      }
+      
+      return body;
+    },
+
+    showSuccess: function(response) {
+      // Hide form steps
+      this.container.querySelectorAll('.form-step').forEach(step => {
+        step.style.display = 'none';
+      });
+      
+      // Show success message
+      const successEl = this.container.querySelector('[data-success]');
+      const messageEl = this.container.querySelector('[data-success-message]');
+      
+      if (successEl) {
+        successEl.style.display = 'block';
+      }
+      
+      if (messageEl && response.message) {
+        messageEl.textContent = response.message;
+      }
+      
+      // Scroll to success message
+      successEl.scrollIntoView({ behavior: 'smooth' });
+    },
+
+    showError: function(error) {
+      alert('There was an error submitting your form. Please try again or contact us directly.');
+      console.error('Form submission error:', error);
+    }
+  };
+
+  // Auto-initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.KPSContactForm.init());
+  } else {
+    window.KPSContactForm.init();
+  }
+</script>

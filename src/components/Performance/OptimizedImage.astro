@@ -1,0 +1,319 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  aspectRatio?: string;
+  loading?: 'lazy' | 'eager';
+  priority?: boolean;
+  placeholder?: 'blur' | 'empty';
+  class?: string;
+  sizes?: string;
+  quality?: number;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  aspectRatio = '16/9',
+  loading = 'lazy',
+  priority = false,
+  placeholder = 'blur',
+  class: className = '',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  quality = 80
+} = Astro.props;
+
+// Generate responsive image sources
+const generateSrcSet = (baseSrc: string) => {
+  const widths = [320, 640, 768, 1024, 1280, 1536, 1920];
+  const format = baseSrc.includes('.webp') ? 'webp' : baseSrc.includes('.avif') ? 'avif' : 'jpg';
+  
+  return widths.map(w => {
+    const optimizedSrc = baseSrc.replace(/\.(jpg|jpeg|png|webp|avif)$/i, `-${w}.${format}`);
+    return `${optimizedSrc} ${w}w`;
+  }).join(', ');
+};
+
+// Create placeholder for loading state
+const createPlaceholder = () => {
+  if (placeholder === 'empty') return '';
+  
+  // Generate a simple blur placeholder using CSS
+  return `data:image/svg+xml;base64,${btoa(`
+    <svg width="100" height="56" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#f0f0f0;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#e0e0e0;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grad)" />
+    </svg>
+  `)}`;
+};
+
+const placeholderSrc = createPlaceholder();
+---
+
+<div 
+  class={`optimized-image-container relative overflow-hidden ${className}`}
+  style={`aspect-ratio: ${aspectRatio}`}
+  data-loading="true"
+>
+  <!-- Placeholder -->
+  {placeholder === 'blur' && (
+    <div 
+      class="absolute inset-0 bg-gray-100 animate-pulse placeholder-blur"
+      style={`background-image: url('${placeholderSrc}'); background-size: cover; background-position: center;`}
+    ></div>
+  )}
+  
+  <!-- Main Image -->
+  <picture class="w-full h-full">
+    <!-- WebP source for modern browsers -->
+    <source 
+      srcset={generateSrcSet(src.replace(/\.(jpg|jpeg|png)$/i, '.webp'))}
+      type="image/webp"
+      sizes={sizes}
+    />
+    
+    <!-- AVIF source for ultra-modern browsers -->
+    <source 
+      srcset={generateSrcSet(src.replace(/\.(jpg|jpeg|png)$/i, '.avif'))}
+      type="image/avif"
+      sizes={sizes}
+    />
+    
+    <!-- Fallback image -->
+    <img
+      src={src}
+      srcset={generateSrcSet(src)}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={priority ? 'eager' : loading}
+      decoding="async"
+      sizes={sizes}
+      class="optimized-image w-full h-full object-cover transition-all duration-300 opacity-0"
+      onload="this.style.opacity='1'; this.parentElement.parentElement.setAttribute('data-loading', 'false');"
+      onerror="this.parentElement.parentElement.querySelector('.error-fallback').style.display='block'; this.style.display='none';"
+    />
+  </picture>
+  
+  <!-- Error Fallback -->
+  <div class="error-fallback absolute inset-0 bg-gray-200 text-gray-500" style="display: none;">
+    <div class="flex items-center justify-center h-full">
+      <div class="text-center">
+        <svg class="w-12 h-12 mx-auto mb-2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <p class="text-sm">Image unavailable</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading indicator -->
+  <div class="loading-indicator absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div class="bg-white/90 rounded-lg p-3 shadow-lg">
+      <div class="flex items-center space-x-2">
+        <div class="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+        <span class="text-sm text-gray-700">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Intersection Observer for lazy loading optimization
+  if (typeof window !== 'undefined') {
+    const imageContainers = document.querySelectorAll('.optimized-image-container[data-loading="true"]');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const container = entry.target as HTMLElement;
+          const img = container.querySelector('.optimized-image') as HTMLImageElement;
+          const placeholder = container.querySelector('.placeholder-blur') as HTMLElement;
+          const loadingIndicator = container.querySelector('.loading-indicator') as HTMLElement;
+          
+          if (img && img.loading === 'lazy') {
+            // Start loading the image
+            const tempImg = new Image();
+            
+            tempImg.onload = () => {
+              // Image loaded successfully
+              img.src = tempImg.src;
+              img.style.opacity = '1';
+              
+              // Hide placeholder and loading indicator
+              if (placeholder) {
+                placeholder.style.opacity = '0';
+                setTimeout(() => placeholder.remove(), 300);
+              }
+              
+              if (loadingIndicator) {
+                loadingIndicator.style.opacity = '0';
+                setTimeout(() => loadingIndicator.remove(), 300);
+              }
+              
+              container.setAttribute('data-loading', 'false');
+              
+              // Analytics tracking
+              if (typeof (window as any).gtag === 'function') {
+                (window as any).gtag('event', 'image_load', {
+                  'image_src': img.src,
+                  'loading_method': 'lazy'
+                });
+              }
+            };
+            
+            tempImg.onerror = () => {
+              // Handle error
+              const errorFallback = container.querySelector('.error-fallback') as HTMLElement;
+              if (errorFallback) {
+                errorFallback.style.display = 'block';
+              }
+              
+              if (loadingIndicator) {
+                loadingIndicator.remove();
+              }
+              
+              container.setAttribute('data-loading', 'false');
+            };
+            
+            // Start loading
+            tempImg.src = img.src;
+          }
+          
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+    
+    imageContainers.forEach(container => {
+      imageObserver.observe(container);
+    });
+    
+    // Performance monitoring
+    const performanceObserver = new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry) => {
+        if (entry.entryType === 'largest-contentful-paint') {
+          // Track LCP for images
+          console.log('LCP:', entry.startTime);
+          
+          if (typeof (window as any).gtag === 'function') {
+            (window as any).gtag('event', 'web_vitals', {
+              'metric_name': 'LCP',
+              'metric_value': entry.startTime,
+              'metric_id': 'optimized-image'
+            });
+          }
+        }
+      });
+    });
+    
+    if ('observe' in performanceObserver) {
+      performanceObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+    }
+  }
+</script>
+
+<style>
+  .optimized-image-container[data-loading="false"] .loading-indicator {
+    display: none;
+  }
+  
+  .optimized-image-container[data-loading="false"] .placeholder-blur {
+    opacity: 0;
+  }
+  
+  .placeholder-blur {
+    transition: opacity 0.3s ease-in-out;
+    filter: blur(8px);
+    transform: scale(1.1);
+  }
+  
+  .optimized-image {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .loading-indicator {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .error-fallback {
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  /* Responsive image optimizations */
+  @media (max-width: 640px) {
+    .optimized-image-container {
+      /* Optimize for mobile performance */
+      contain: layout style paint;
+    }
+  }
+  
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .optimized-image,
+    .placeholder-blur,
+    .loading-indicator {
+      transition: none;
+    }
+    
+    .animate-spin {
+      animation: none;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .placeholder-blur {
+      background: #000;
+    }
+    
+    .error-fallback {
+      background: #fff;
+      color: #000;
+      border: 2px solid #000;
+    }
+  }
+</style>
+
+<!-- Critical CSS for above-the-fold images -->
+{priority && (
+  <style>
+    .optimized-image-container {
+      background: linear-gradient(
+        135deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+      );
+      background-size: 200% 200%;
+      animation: shimmer 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: 200% 200%; }
+      100% { background-position: -200% -200%; }
+    }
+  </style>
+)}
+
+<!-- Preload critical images -->
+{priority && (
+  <link 
+    rel="preload" 
+    as="image" 
+    href={src} 
+    slot="head"
+  />
+)}

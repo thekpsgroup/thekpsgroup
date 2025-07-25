@@ -1,0 +1,498 @@
+---
+// Advanced Analytics and Performance Tracking Component
+// Provides comprehensive tracking for user behavior, conversions, and performance metrics
+
+export interface Props {
+  pageType?: 'home' | 'location' | 'service' | 'about' | 'contact';
+  cityData?: any;
+  enableHeatmaps?: boolean;
+  enableScrollTracking?: boolean;
+  enableFormAnalytics?: boolean;
+  customEvents?: string[];
+}
+
+const { 
+  pageType = 'home', 
+  cityData, 
+  enableHeatmaps = true,
+  enableScrollTracking = true,
+  enableFormAnalytics = true,
+  customEvents = []
+} = Astro.props;
+
+// Generate tracking ID based on page and location
+const generateTrackingId = () => {
+  const base = `kps-${pageType}`;
+  return cityData ? `${base}-${cityData.stateCode.toLowerCase()}-${cityData.name.toLowerCase().replace(/\s+/g, '-')}` : base;
+};
+
+const trackingId = generateTrackingId();
+---
+
+<!-- Core Analytics Script -->
+<script is:inline define:vars={{ pageType, cityData, trackingId, enableHeatmaps, enableScrollTracking, enableFormAnalytics, customEvents }}>
+  // Advanced Analytics Manager
+  window.KPSAnalytics = {
+    config: {
+      pageType,
+      cityData,
+      trackingId,
+      enableHeatmaps,
+      enableScrollTracking,
+      enableFormAnalytics,
+      customEvents,
+      sessionId: crypto.randomUUID(),
+      userId: localStorage.getItem('kps-user-id') || crypto.randomUUID(),
+      startTime: Date.now()
+    },
+
+    // Core tracking functions
+    track: function(eventName, properties = {}) {
+      const event = {
+        id: crypto.randomUUID(),
+        timestamp: Date.now(),
+        sessionId: this.config.sessionId,
+        userId: this.config.userId,
+        pageType: this.config.pageType,
+        trackingId: this.config.trackingId,
+        eventName,
+        properties: {
+          ...properties,
+          url: window.location.href,
+          referrer: document.referrer,
+          userAgent: navigator.userAgent,
+          viewport: {
+            width: window.innerWidth,
+            height: window.innerHeight
+          },
+          screen: {
+            width: screen.width,
+            height: screen.height
+          }
+        }
+      };
+
+      // Send to analytics endpoint
+      this.sendEvent(event);
+      
+      // Store in local analytics queue
+      this.queueEvent(event);
+      
+      console.log('KPS Analytics:', eventName, properties);
+    },
+
+    // Performance tracking
+    trackPerformance: function() {
+      if (typeof performance !== 'undefined' && performance.timing) {
+        const timing = performance.timing;
+        const metrics = {
+          pageLoadTime: timing.loadEventEnd - timing.navigationStart,
+          domContentLoaded: timing.domContentLoadedEventEnd - timing.navigationStart,
+          firstPaint: performance.getEntriesByType('paint')[0]?.startTime || 0,
+          firstContentfulPaint: performance.getEntriesByType('paint')[1]?.startTime || 0,
+          timeToInteractive: timing.domInteractive - timing.navigationStart
+        };
+
+        this.track('page_performance', metrics);
+      }
+
+      // Core Web Vitals
+      if (typeof PerformanceObserver !== 'undefined') {
+        // Largest Contentful Paint
+        new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          const lastEntry = entries[entries.length - 1];
+          this.track('core_web_vitals', {
+            metric: 'LCP',
+            value: lastEntry.startTime,
+            rating: lastEntry.startTime < 2500 ? 'good' : lastEntry.startTime < 4000 ? 'needs-improvement' : 'poor'
+          });
+        }).observe({ entryTypes: ['largest-contentful-paint'] });
+
+        // First Input Delay
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            this.track('core_web_vitals', {
+              metric: 'FID',
+              value: entry.processingStart - entry.startTime,
+              rating: entry.processingStart - entry.startTime < 100 ? 'good' : entry.processingStart - entry.startTime < 300 ? 'needs-improvement' : 'poor'
+            });
+          }
+        }).observe({ entryTypes: ['first-input'] });
+
+        // Cumulative Layout Shift
+        let clsValue = 0;
+        new PerformanceObserver((list) => {
+          for (const entry of list.getEntries()) {
+            if (!entry.hadRecentInput) {
+              clsValue += entry.value;
+            }
+          }
+          this.track('core_web_vitals', {
+            metric: 'CLS',
+            value: clsValue,
+            rating: clsValue < 0.1 ? 'good' : clsValue < 0.25 ? 'needs-improvement' : 'poor'
+          });
+        }).observe({ entryTypes: ['layout-shift'] });
+      }
+    },
+
+    // Scroll depth tracking
+    trackScrollDepth: function() {
+      if (!this.config.enableScrollTracking) return;
+
+      let maxScroll = 0;
+      const milestones = [25, 50, 75, 100];
+      const tracked = new Set();
+
+      const trackScroll = () => {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        maxScroll = Math.max(maxScroll, scrollPercent);
+
+        milestones.forEach(milestone => {
+          if (scrollPercent >= milestone && !tracked.has(milestone)) {
+            tracked.add(milestone);
+            this.track('scroll_depth', { 
+              percentage: milestone,
+              timestamp: Date.now() - this.config.startTime
+            });
+          }
+        });
+      };
+
+      window.addEventListener('scroll', this.throttle(trackScroll, 250));
+    },
+
+    // Form analytics
+    trackFormInteractions: function() {
+      if (!this.config.enableFormAnalytics) return;
+
+      document.querySelectorAll('form').forEach((form, index) => {
+        const formId = form.id || `form-${index}`;
+        
+        // Track form starts
+        form.addEventListener('focusin', (e) => {
+          if (!form.dataset.started) {
+            form.dataset.started = 'true';
+            this.track('form_started', { 
+              formId,
+              firstField: e.target.name || e.target.id || 'unknown'
+            });
+          }
+        });
+
+        // Track form submissions
+        form.addEventListener('submit', (e) => {
+          const formData = new FormData(form);
+          const fields = {};
+          for (let [key, value] of formData.entries()) {
+            fields[key] = typeof value === 'string' ? value.length : 'file';
+          }
+
+          this.track('form_submitted', {
+            formId,
+            fieldCount: Object.keys(fields).length,
+            fields: Object.keys(fields)
+          });
+        });
+
+        // Track field interactions
+        form.querySelectorAll('input, textarea, select').forEach(field => {
+          field.addEventListener('blur', () => {
+            if (field.value) {
+              this.track('field_completed', {
+                formId,
+                fieldName: field.name || field.id || 'unknown',
+                fieldType: field.type || field.tagName.toLowerCase()
+              });
+            }
+          });
+        });
+      });
+    },
+
+    // Click tracking
+    trackClicks: function() {
+      document.addEventListener('click', (e) => {
+        const target = e.target.closest('a, button, [data-track]');
+        if (!target) return;
+
+        const trackingData = {
+          element: target.tagName.toLowerCase(),
+          text: target.textContent?.trim().substring(0, 100) || '',
+          href: target.href || '',
+          className: target.className || '',
+          dataTrack: target.dataset.track || ''
+        };
+
+        // Special tracking for CTAs
+        if (target.classList.contains('cta') || target.dataset.track === 'cta') {
+          this.track('cta_click', trackingData);
+        } else if (target.tagName === 'A') {
+          this.track('link_click', trackingData);
+        } else if (target.tagName === 'BUTTON') {
+          this.track('button_click', trackingData);
+        } else {
+          this.track('element_click', trackingData);
+        }
+      });
+    },
+
+    // Heatmap tracking
+    trackHeatmaps: function() {
+      if (!this.config.enableHeatmaps) return;
+
+      const heatmapData = [];
+      
+      document.addEventListener('click', (e) => {
+        heatmapData.push({
+          x: e.clientX,
+          y: e.clientY,
+          timestamp: Date.now(),
+          element: e.target.tagName.toLowerCase(),
+          className: e.target.className || ''
+        });
+
+        // Send heatmap data in batches
+        if (heatmapData.length >= 50) {
+          this.track('heatmap_batch', { interactions: [...heatmapData] });
+          heatmapData.length = 0;
+        }
+      });
+
+      // Send remaining heatmap data before page unload
+      window.addEventListener('beforeunload', () => {
+        if (heatmapData.length > 0) {
+          this.track('heatmap_batch', { interactions: [...heatmapData] });
+        }
+      });
+    },
+
+    // Engagement tracking
+    trackEngagement: function() {
+      let activeTime = 0;
+      let isActive = true;
+      let lastActivity = Date.now();
+
+      const trackActivity = () => {
+        if (isActive) {
+          activeTime += 1000; // Add 1 second
+        }
+      };
+
+      const handleActivity = () => {
+        isActive = true;
+        lastActivity = Date.now();
+      };
+
+      const handleInactivity = () => {
+        if (Date.now() - lastActivity > 5000) { // 5 seconds of inactivity
+          isActive = false;
+        }
+      };
+
+      // Track user activity
+      ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(event => {
+        document.addEventListener(event, handleActivity, true);
+      });
+
+      // Check for inactivity every second
+      setInterval(handleInactivity, 1000);
+      
+      // Track active time every second
+      setInterval(trackActivity, 1000);
+
+      // Send engagement data every 30 seconds
+      setInterval(() => {
+        if (activeTime > 0) {
+          this.track('engagement_update', { 
+            activeTime: activeTime / 1000, // Convert to seconds
+            totalTime: (Date.now() - this.config.startTime) / 1000,
+            engagementRate: (activeTime / (Date.now() - this.config.startTime)) * 100
+          });
+        }
+      }, 30000);
+    },
+
+    // Conversion tracking
+    trackConversion: function(conversionType, value = 0) {
+      this.track('conversion', {
+        type: conversionType,
+        value,
+        timestamp: Date.now() - this.config.startTime,
+        page: this.config.pageType,
+        location: this.config.cityData?.name || 'unknown'
+      });
+
+      // Send to external analytics
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'conversion', {
+          currency: 'USD',
+          value: value,
+          transaction_id: crypto.randomUUID()
+        });
+      }
+    },
+
+    // Utility functions
+    throttle: function(func, limit) {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    },
+
+    sendEvent: function(event) {
+      // Send to your analytics endpoint
+      fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(event)
+      }).catch(console.error);
+    },
+
+    queueEvent: function(event) {
+      const queue = JSON.parse(localStorage.getItem('kps-analytics-queue') || '[]');
+      queue.push(event);
+      
+      // Keep only last 100 events
+      if (queue.length > 100) {
+        queue.splice(0, queue.length - 100);
+      }
+      
+      localStorage.setItem('kps-analytics-queue', JSON.stringify(queue));
+    },
+
+    // Initialize all tracking
+    init: function() {
+      // Store user ID
+      localStorage.setItem('kps-user-id', this.config.userId);
+
+      // Track page view
+      this.track('page_view', {
+        title: document.title,
+        path: window.location.pathname,
+        search: window.location.search,
+        hash: window.location.hash,
+        cityData: this.config.cityData
+      });
+
+      // Initialize all tracking modules
+      this.trackPerformance();
+      this.trackScrollDepth();
+      this.trackFormInteractions();
+      this.trackClicks();
+      this.trackHeatmaps();
+      this.trackEngagement();
+
+      // Track custom events
+      this.config.customEvents.forEach(eventName => {
+        document.addEventListener(eventName, (e) => {
+          this.track(eventName, e.detail || {});
+        });
+      });
+
+      // Track page unload
+      window.addEventListener('beforeunload', () => {
+        this.track('page_unload', {
+          timeOnPage: Date.now() - this.config.startTime,
+          finalScrollPosition: window.scrollY
+        });
+      });
+
+      console.log('KPS Analytics initialized for:', this.config.trackingId);
+    }
+  };
+
+  // Auto-initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.KPSAnalytics.init());
+  } else {
+    window.KPSAnalytics.init();
+  }
+</script>
+
+<!-- Performance monitoring styles -->
+<style>
+  /* Visual performance indicators (dev only) */
+  .kps-perf-indicator {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 10000;
+    display: none;
+  }
+
+  .kps-perf-indicator.show {
+    display: block;
+  }
+
+  .kps-perf-good { background: rgba(76, 175, 80, 0.9); }
+  .kps-perf-warning { background: rgba(255, 152, 0, 0.9); }
+  .kps-perf-poor { background: rgba(244, 67, 54, 0.9); }
+
+  /* Heatmap overlay (dev only) */
+  .kps-heatmap-point {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.6) 0%, rgba(255, 0, 0, 0) 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    animation: kps-heatmap-fade 2s ease-out forwards;
+  }
+
+  @keyframes kps-heatmap-fade {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2); }
+  }
+</style>
+
+<!-- Development mode performance indicator -->
+<div id="kps-perf-indicator" class="kps-perf-indicator">
+  <div id="kps-perf-status">Analyzing...</div>
+</div>
+
+<script is:inline>
+  // Development mode performance monitoring
+  if (window.location.hostname === 'localhost' || window.location.hostname.includes('dev')) {
+    const indicator = document.getElementById('kps-perf-indicator');
+    const status = document.getElementById('kps-perf-status');
+    
+    if (indicator && status) {
+      indicator.classList.add('show');
+      
+      // Update performance status
+      const updatePerfStatus = () => {
+        const timing = performance.timing;
+        const loadTime = timing.loadEventEnd - timing.navigationStart;
+        
+        if (loadTime < 2000) {
+          indicator.className = 'kps-perf-indicator show kps-perf-good';
+          status.textContent = `Fast: ${loadTime}ms`;
+        } else if (loadTime < 4000) {
+          indicator.className = 'kps-perf-indicator show kps-perf-warning';
+          status.textContent = `OK: ${loadTime}ms`;
+        } else {
+          indicator.className = 'kps-perf-indicator show kps-perf-poor';
+          status.textContent = `Slow: ${loadTime}ms`;
+        }
+      };
+      
+      window.addEventListener('load', updatePerfStatus);
+    }
+  }
+</script>

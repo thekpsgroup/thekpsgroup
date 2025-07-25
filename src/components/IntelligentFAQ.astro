@@ -1,0 +1,1590 @@
+---
+// Intelligent FAQ Component
+// Location-aware FAQ with search, categorization, and dynamic content
+
+export interface Props {
+  cityData?: any;
+  maxFaqs?: number;
+  showSearch?: boolean;
+  showCategories?: boolean;
+  enableVoting?: boolean;
+  className?: string;
+}
+
+const {
+  cityData,
+  maxFaqs = 20,
+  showSearch = true,
+  showCategories = true,
+  enableVoting = true,
+  className = ""
+} = Astro.props;
+
+const faqId = `kps-intelligent-faq-${crypto.randomUUID().substring(0, 8)}`;
+
+// Comprehensive FAQ database with location-aware content
+const faqDatabase = [
+  {
+    id: 1,
+    category: 'quickbooks',
+    question: 'How much does QuickBooks setup cost?',
+    answer: 'Our QuickBooks setup starts at $497 for basic configuration. This includes chart of accounts setup, initial data entry, and 2 hours of training. Premium setups with integrations and advanced features range from $697-$997.',
+    keywords: ['quickbooks', 'setup', 'cost', 'price', 'installation'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'serving {cityName}',
+      withoutCity: 'in your area'
+    },
+    votes: { helpful: 45, notHelpful: 3 },
+    priority: 'high',
+    relatedServices: ['bookkeeping', 'payroll'],
+    lastUpdated: '2024-12-15'
+  },
+  {
+    id: 2,
+    category: 'payroll',
+    question: 'What payroll services do you offer?',
+    answer: 'We provide complete payroll management including payroll processing, tax filing, direct deposit, benefits administration, and compliance monitoring. Our services start at $150/month for 1-5 employees.',
+    keywords: ['payroll', 'services', 'tax', 'benefits', 'compliance'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'We serve businesses throughout {cityName} and {region}',
+      withoutCity: 'We serve businesses nationwide'
+    },
+    votes: { helpful: 52, notHelpful: 1 },
+    priority: 'high',
+    relatedServices: ['hr', 'quickbooks'],
+    lastUpdated: '2024-12-20'
+  },
+  {
+    id: 3,
+    category: 'bookkeeping',
+    question: 'How often will you update my books?',
+    answer: 'We update your books monthly with full reconciliation and financial reporting. For high-volume businesses, we offer weekly or bi-weekly updates. All clients receive monthly financial statements within 5 business days of month-end.',
+    keywords: ['bookkeeping', 'frequency', 'monthly', 'reports', 'reconciliation'],
+    locationSpecific: false,
+    votes: { helpful: 38, notHelpful: 2 },
+    priority: 'high',
+    relatedServices: ['quickbooks', 'consulting'],
+    lastUpdated: '2024-11-30'
+  },
+  {
+    id: 4,
+    category: 'consulting',
+    question: 'What business consulting services do you provide?',
+    answer: 'Our business consulting includes financial analysis, process optimization, growth planning, technology implementation, and strategic planning. We offer both hourly consulting ($200/hour) and monthly retainer packages.',
+    keywords: ['consulting', 'business', 'strategy', 'planning', 'optimization'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'We help {cityName} businesses',
+      withoutCity: 'We help businesses'
+    },
+    votes: { helpful: 41, notHelpful: 4 },
+    priority: 'medium',
+    relatedServices: ['quickbooks', 'bookkeeping'],
+    lastUpdated: '2024-12-10'
+  },
+  {
+    id: 5,
+    category: 'tax',
+    question: 'Do you prepare business tax returns?',
+    answer: 'Yes, we prepare all types of business tax returns including corporate, partnership, and LLC returns. We also provide tax planning, quarterly estimates, and audit support. Business tax prep starts at $700.',
+    keywords: ['tax', 'returns', 'corporate', 'LLC', 'planning', 'audit'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'serving {cityName} area businesses',
+      withoutCity: 'serving businesses nationwide'
+    },
+    votes: { helpful: 35, notHelpful: 1 },
+    priority: 'high',
+    relatedServices: ['bookkeeping', 'consulting'],
+    lastUpdated: '2024-12-01'
+  },
+  {
+    id: 6,
+    category: 'hr',
+    question: 'What HR services do you offer for small businesses?',
+    answer: 'We provide employee handbook creation, policy development, compliance monitoring, benefits administration, recruiting support, and performance management systems. HR services start at $275/month.',
+    keywords: ['hr', 'human resources', 'handbook', 'compliance', 'benefits', 'recruiting'],
+    locationSpecific: false,
+    votes: { helpful: 29, notHelpful: 3 },
+    priority: 'medium',
+    relatedServices: ['payroll', 'consulting'],
+    lastUpdated: '2024-11-15'
+  },
+  {
+    id: 7,
+    category: 'general',
+    question: 'How quickly can you get started with my business?',
+    answer: 'We can typically start working with new clients within 3-5 business days. For urgent needs, we offer expedited onboarding within 24-48 hours for an additional fee.',
+    keywords: ['timeline', 'start', 'onboarding', 'urgent', 'new client'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'For {cityName} businesses',
+      withoutCity: 'For new clients'
+    },
+    votes: { helpful: 47, notHelpful: 2 },
+    priority: 'high',
+    relatedServices: ['all'],
+    lastUpdated: '2024-12-18'
+  },
+  {
+    id: 8,
+    category: 'quickbooks',
+    question: 'Can you help migrate data from my old accounting system?',
+    answer: 'Absolutely! We specialize in data migration from Excel, other accounting software, and legacy systems into QuickBooks. Data migration services start at $250 and include data cleaning and validation.',
+    keywords: ['migration', 'data', 'excel', 'accounting software', 'legacy'],
+    locationSpecific: false,
+    votes: { helpful: 33, notHelpful: 1 },
+    priority: 'medium',
+    relatedServices: ['quickbooks', 'bookkeeping'],
+    lastUpdated: '2024-11-28'
+  },
+  {
+    id: 9,
+    category: 'general',
+    question: 'Do you work with businesses in my industry?',
+    answer: 'We work with businesses across all industries including technology, healthcare, construction, retail, professional services, manufacturing, and hospitality. Our team has specialized experience in industry-specific requirements.',
+    keywords: ['industry', 'experience', 'specialized', 'technology', 'healthcare', 'construction'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'We have extensive experience with {cityName} businesses in',
+      withoutCity: 'We have extensive experience with businesses in'
+    },
+    votes: { helpful: 42, notHelpful: 1 },
+    priority: 'high',
+    relatedServices: ['all'],
+    lastUpdated: '2024-12-12'
+  },
+  {
+    id: 10,
+    category: 'pricing',
+    question: 'Do you offer package deals for multiple services?',
+    answer: 'Yes! We offer bundled packages that can save you 15-25% compared to individual services. Popular bundles include QuickBooks + Bookkeeping, Payroll + HR, and our Complete Business Package.',
+    keywords: ['packages', 'bundle', 'deals', 'savings', 'multiple services'],
+    locationSpecific: false,
+    votes: { helpful: 39, notHelpful: 2 },
+    priority: 'high',
+    relatedServices: ['all'],
+    lastUpdated: '2024-12-05'
+  },
+  {
+    id: 11,
+    category: 'support',
+    question: 'What kind of ongoing support do you provide?',
+    answer: 'We provide unlimited email support, monthly check-in calls, quarterly business reviews, and phone support during business hours. Premium support packages include same-day response and after-hours availability.',
+    keywords: ['support', 'ongoing', 'email', 'phone', 'response time'],
+    locationSpecific: false,
+    votes: { helpful: 44, notHelpful: 1 },
+    priority: 'medium',
+    relatedServices: ['all'],
+    lastUpdated: '2024-11-20'
+  },
+  {
+    id: 12,
+    category: 'quickbooks',
+    question: 'Should I use QuickBooks Online or Desktop?',
+    answer: 'For most businesses, we recommend QuickBooks Online due to its accessibility, automatic updates, and collaboration features. QuickBooks Desktop is better for businesses with complex inventory or specific industry requirements.',
+    keywords: ['quickbooks online', 'quickbooks desktop', 'comparison', 'recommendation'],
+    locationSpecific: false,
+    votes: { helpful: 51, notHelpful: 4 },
+    priority: 'high',
+    relatedServices: ['quickbooks'],
+    lastUpdated: '2024-12-22'
+  },
+  {
+    id: 13,
+    category: 'payroll',
+    question: 'Do you handle payroll taxes and filing?',
+    answer: 'Yes, we handle all payroll tax calculations, deposits, and filings including federal, state, and local taxes. We also manage unemployment insurance, workers compensation reporting, and year-end forms like W-2s and 1099s.',
+    keywords: ['payroll taxes', 'filing', 'deposits', 'w2', '1099', 'unemployment'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'including {stateCode} state requirements',
+      withoutCity: 'including all state requirements'
+    },
+    votes: { helpful: 46, notHelpful: 1 },
+    priority: 'high',
+    relatedServices: ['payroll', 'tax'],
+    lastUpdated: '2024-12-08'
+  },
+  {
+    id: 14,
+    category: 'technology',
+    question: 'What technology integrations do you support?',
+    answer: 'We integrate with 50+ business applications including payment processors, CRMs, e-commerce platforms, time tracking, and industry-specific software. Popular integrations include Shopify, Stripe, Salesforce, and ADP.',
+    keywords: ['integrations', 'technology', 'crm', 'ecommerce', 'shopify', 'stripe'],
+    locationSpecific: false,
+    votes: { helpful: 37, notHelpful: 3 },
+    priority: 'medium',
+    relatedServices: ['quickbooks', 'consulting'],
+    lastUpdated: '2024-11-25'
+  },
+  {
+    id: 15,
+    category: 'general',
+    question: 'What makes KPS Group different from other firms?',
+    answer: 'We combine personalized service with cutting-edge technology. Our team has 15+ years of experience, we offer transparent pricing, provide proactive recommendations, and maintain 98% client retention through exceptional service.',
+    keywords: ['different', 'experience', 'retention', 'personalized', 'technology'],
+    locationSpecific: true,
+    dynamicContent: {
+      withCity: 'We\'ve served {cityName} businesses for over 10 years',
+      withoutCity: 'We\'ve served businesses nationwide for over 10 years'
+    },
+    votes: { helpful: 55, notHelpful: 2 },
+    priority: 'high',
+    relatedServices: ['all'],
+    lastUpdated: '2024-12-20'
+  }
+];
+
+// Category configuration
+const categoryConfig = {
+  quickbooks: {
+    name: 'QuickBooks',
+    icon: 'fas fa-calculator',
+    color: '#3b82f6',
+    description: 'QuickBooks setup, training, and support'
+  },
+  payroll: {
+    name: 'Payroll',
+    icon: 'fas fa-money-check-alt',
+    color: '#10b981',
+    description: 'Payroll processing and tax compliance'
+  },
+  bookkeeping: {
+    name: 'Bookkeeping',
+    icon: 'fas fa-book',
+    color: '#8b5cf6',
+    description: 'Monthly bookkeeping and financial reports'
+  },
+  consulting: {
+    name: 'Business Consulting',
+    icon: 'fas fa-chart-line',
+    color: '#f59e0b',
+    description: 'Strategic planning and optimization'
+  },
+  tax: {
+    name: 'Tax Services',
+    icon: 'fas fa-file-invoice-dollar',
+    color: '#ef4444',
+    description: 'Tax preparation and planning'
+  },
+  hr: {
+    name: 'HR Services',
+    icon: 'fas fa-users',
+    color: '#06b6d4',
+    description: 'Human resources and compliance'
+  },
+  technology: {
+    name: 'Technology',
+    icon: 'fas fa-laptop-code',
+    color: '#6366f1',
+    description: 'Tech integrations and solutions'
+  },
+  support: {
+    name: 'Support',
+    icon: 'fas fa-headset',
+    color: '#84cc16',
+    description: 'Customer support and assistance'
+  },
+  pricing: {
+    name: 'Pricing',
+    icon: 'fas fa-tag',
+    color: '#f97316',
+    description: 'Pricing and package information'
+  },
+  general: {
+    name: 'General',
+    icon: 'fas fa-question-circle',
+    color: '#6b7280',
+    description: 'General questions and information'
+  }
+};
+
+// Filter FAQs based on maxFaqs
+const displayFaqs = faqDatabase.slice(0, maxFaqs);
+---
+
+<div class={`kps-intelligent-faq ${className}`} data-faq-id={faqId}>
+  <!-- FAQ Header -->
+  <div class="faq-header">
+    <div class="header-content">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <p class="faq-subtitle">
+        {cityData ? 
+          `Find answers to common questions about our services in ${cityData.name}, ${cityData.stateCode}` :
+          'Find answers to common questions about our business services'
+        }
+      </p>
+    </div>
+
+    {showSearch && (
+      <div class="faq-search">
+        <div class="search-container">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search FAQs..." 
+            data-faq-search
+          />
+          <i class="fas fa-search search-icon"></i>
+        </div>
+        <div class="search-suggestions" data-search-suggestions style="display: none;">
+          <!-- Dynamic suggestions -->
+        </div>
+      </div>
+    )}
+  </div>
+
+  {showCategories && (
+    <div class="faq-categories">
+      <h3>Browse by Category</h3>
+      <div class="categories-grid">
+        <button class="category-filter active" data-category="" data-filter-category>
+          <i class="fas fa-th-large"></i>
+          <span>All Categories</span>
+          <span class="category-count">{displayFaqs.length}</span>
+        </button>
+        
+        {Object.entries(categoryConfig).map(([key, config]) => {
+          const count = displayFaqs.filter(faq => faq.category === key).length;
+          return count > 0 ? (
+            <button class="category-filter" data-category={key} data-filter-category>
+              <i class={config.icon} style={`color: ${config.color}`}></i>
+              <span>{config.name}</span>
+              <span class="category-count">{count}</span>
+            </button>
+          ) : null;
+        })}
+      </div>
+    </div>
+  )}
+
+  <!-- FAQ Content -->
+  <div class="faq-content">
+    <div class="faq-list" data-faq-list>
+      {displayFaqs.map(faq => {
+        const category = categoryConfig[faq.category];
+        const processedAnswer = faq.locationSpecific && cityData ? 
+          faq.answer.replace(faq.dynamicContent?.withCity || '', 
+            (faq.dynamicContent?.withCity || '').replace('{cityName}', cityData.name)
+              .replace('{stateCode}', cityData.stateCode)
+              .replace('{region}', cityData.region)) :
+          faq.answer;
+
+        return (
+          <div class="faq-item" 
+               data-faq-id={faq.id}
+               data-category={faq.category}
+               data-keywords={faq.keywords.join(',')}>
+            
+            <div class="faq-question" data-faq-toggle>
+              <div class="question-content">
+                <div class="category-badge" style={`background: ${category.color}20; color: ${category.color}`}>
+                  <i class={category.icon}></i>
+                  {category.name}
+                </div>
+                <h4 class="question-text">{faq.question}</h4>
+              </div>
+              
+              <div class="question-meta">
+                {faq.priority === 'high' && (
+                  <span class="priority-badge">Popular</span>
+                )}
+                <i class="fas fa-chevron-down toggle-icon"></i>
+              </div>
+            </div>
+
+            <div class="faq-answer" data-faq-answer>
+              <div class="answer-content">
+                <p class="answer-text">{processedAnswer}</p>
+                
+                {faq.relatedServices.length > 0 && faq.relatedServices[0] !== 'all' && (
+                  <div class="related-services">
+                    <strong>Related Services:</strong>
+                    <div class="service-tags">
+                      {faq.relatedServices.map(service => (
+                        <span class="service-tag">{service}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div class="answer-actions">
+                  <div class="answer-meta">
+                    <span class="last-updated">
+                      Updated: {new Date(faq.lastUpdated).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  {enableVoting && (
+                    <div class="answer-voting">
+                      <span class="voting-label">Was this helpful?</span>
+                      <button class="vote-btn helpful" data-vote-helpful data-faq-id={faq.id}>
+                        <i class="fas fa-thumbs-up"></i>
+                        <span class="vote-count">{faq.votes.helpful}</span>
+                      </button>
+                      <button class="vote-btn not-helpful" data-vote-not-helpful data-faq-id={faq.id}>
+                        <i class="fas fa-thumbs-down"></i>
+                        <span class="vote-count">{faq.votes.notHelpful}</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- No Results Message -->
+    <div class="no-results" data-no-results style="display: none;">
+      <div class="no-results-content">
+        <i class="fas fa-search"></i>
+        <h3>No FAQs Found</h3>
+        <p>We couldn't find any FAQs matching your search. Try different keywords or browse our categories.</p>
+        <button class="btn btn-primary" data-clear-search>Clear Search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact CTA -->
+  <div class="faq-cta">
+    <div class="cta-content">
+      <div class="cta-text">
+        <h3>Still Have Questions?</h3>
+        <p>Can't find what you're looking for? Our team is here to help with personalized answers.</p>
+      </div>
+      <div class="cta-actions">
+        <button class="btn btn-primary" data-contact-us>
+          Contact Us
+        </button>
+        <button class="btn btn-secondary" data-schedule-call>
+          Schedule a Call
+        </button>
+        <button class="btn btn-outline" data-submit-question>
+          Submit a Question
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Submission Modal -->
+  <div class="question-modal" data-question-modal style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Submit Your Question</h3>
+        <button class="modal-close" data-modal-close>
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form class="question-form" data-question-form>
+        <div class="form-group">
+          <label for="questionText">Your Question *</label>
+          <textarea 
+            id="questionText" 
+            name="question" 
+            rows="4" 
+            required
+            placeholder="What would you like to know about our services?"
+          ></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="questionName">Your Name *</label>
+            <input type="text" id="questionName" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="questionEmail">Email Address *</label>
+            <input type="email" id="questionEmail" name="email" required />
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="questionCategory">Category</label>
+          <select id="questionCategory" name="category">
+            <option value="">Select a category</option>
+            {Object.entries(categoryConfig).map(([key, config]) => (
+              <option value={key}>{config.name}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Question</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .kps-intelligent-faq {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+
+  .faq-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .faq-title {
+    color: #1e3a8a;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .faq-subtitle {
+    color: #64748b;
+    font-size: 1.2rem;
+    margin: 0 0 2rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .faq-search {
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .search-container {
+    position: relative;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+    background: white;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    font-size: 1.1rem;
+  }
+
+  .search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .suggestion-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s ease;
+  }
+
+  .suggestion-item:hover {
+    background: #f8f9fa;
+  }
+
+  .suggestion-item:last-child {
+    border-bottom: none;
+  }
+
+  .faq-categories {
+    margin-bottom: 3rem;
+  }
+
+  .faq-categories h3 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem;
+    text-align: center;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .category-filter {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .category-filter:hover {
+    border-color: #ffd700;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .category-filter.active {
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, 0.1);
+  }
+
+  .category-filter i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .category-filter span {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .category-count {
+    background: #6b7280;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .category-filter.active .category-count {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .faq-content {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .faq-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    overflow: hidden;
+  }
+
+  .faq-item:hover {
+    border-color: #ffd700;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .faq-item.active {
+    border-color: #ffd700;
+  }
+
+  .faq-question {
+    padding: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    transition: background-color 0.2s ease;
+  }
+
+  .faq-question:hover {
+    background: #f1f5f9;
+  }
+
+  .faq-item.active .faq-question {
+    background: rgba(255, 215, 0, 0.1);
+  }
+
+  .question-content {
+    flex: 1;
+  }
+
+  .category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .question-text {
+    color: #1e3a8a;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .question-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .priority-badge {
+    background: #ef4444;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .toggle-icon {
+    color: #6b7280;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+  }
+
+  .faq-item.active .toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-item.active .faq-answer {
+    max-height: 500px;
+  }
+
+  .answer-content {
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  .answer-text {
+    color: #374151;
+    line-height: 1.7;
+    margin: 0 0 1.5rem;
+    font-size: 1rem;
+  }
+
+  .related-services {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .related-services strong {
+    color: #1e3a8a;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .service-tag {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .answer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .answer-meta {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+
+  .answer-voting {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .voting-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .vote-btn {
+    background: transparent;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+  }
+
+  .vote-btn:hover {
+    background: #f3f4f6;
+  }
+
+  .vote-btn.helpful:hover {
+    border-color: #10b981;
+    color: #10b981;
+  }
+
+  .vote-btn.not-helpful:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
+
+  .vote-btn.voted {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .no-results-content i {
+    font-size: 4rem;
+    color: #d1d5db;
+    margin-bottom: 1.5rem;
+  }
+
+  .no-results-content h3 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    margin: 0 0 1rem;
+  }
+
+  .no-results-content p {
+    color: #6b7280;
+    margin: 0 0 2rem;
+    line-height: 1.6;
+  }
+
+  .faq-cta {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-top: 3rem;
+    text-align: center;
+  }
+
+  .cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .cta-text h3 {
+    font-size: 2rem;
+    margin: 0 0 1rem;
+  }
+
+  .cta-text p {
+    font-size: 1.1rem;
+    margin: 0 0 2rem;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .btn-secondary:hover {
+    background: white;
+    color: #1e3a8a;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Modal Styles */
+  .question-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .modal-header h3 {
+    color: #1e3a8a;
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+
+  .modal-close:hover {
+    background: #f3f4f6;
+  }
+
+  .question-form {
+    padding: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group label {
+    display: block;
+    color: #374151;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #ffd700;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .categories-grid {
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .kps-intelligent-faq {
+      padding: 1rem;
+    }
+
+    .faq-title {
+      font-size: 2rem;
+    }
+
+    .categories-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .faq-question {
+      padding: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .question-meta {
+      align-self: flex-end;
+    }
+
+    .answer-actions {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .answer-voting {
+      align-self: stretch;
+      justify-content: space-between;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+    }
+
+    .cta-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .form-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Animation for filtered items */
+  .faq-item.hidden {
+    display: none;
+  }
+
+  .faq-item.fade-in {
+    animation: fadeInUp 0.3s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- Intelligent FAQ Script -->
+<script is:inline define:vars={{ faqId, faqDatabase, categoryConfig, cityData }}>
+  window.KPSIntelligentFAQ = {
+    config: {
+      faqId,
+      faqDatabase,
+      categoryConfig,
+      cityData
+    },
+
+    currentFilter: '',
+    searchQuery: '',
+    openFaqId: null,
+    userVotes: new Set(),
+
+    init: function() {
+      this.container = document.querySelector(`[data-faq-id="${this.config.faqId}"]`);
+      if (!this.container) return;
+
+      this.setupEventListeners();
+      this.generateSearchSuggestions();
+      
+      console.log('KPS Intelligent FAQ initialized');
+    },
+
+    setupEventListeners: function() {
+      // Search functionality
+      const searchInput = this.container.querySelector('[data-faq-search]');
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+        searchInput.addEventListener('focus', () => this.showSearchSuggestions());
+        searchInput.addEventListener('blur', () => setTimeout(() => this.hideSearchSuggestions(), 200));
+      }
+
+      // Category filters
+      this.container.querySelectorAll('[data-filter-category]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.handleCategoryFilter(e.target.dataset.category));
+      });
+
+      // FAQ toggles
+      this.container.querySelectorAll('[data-faq-toggle]').forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+          const faqItem = e.target.closest('.faq-item');
+          const faqId = faqItem.dataset.faqId;
+          this.toggleFaq(faqId);
+        });
+      });
+
+      // Voting
+      this.container.querySelectorAll('[data-vote-helpful], [data-vote-not-helpful]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const faqId = e.target.closest('[data-vote-helpful], [data-vote-not-helpful]').dataset.faqId;
+          const isHelpful = e.target.closest('[data-vote-helpful]') !== null;
+          this.handleVote(faqId, isHelpful);
+        });
+      });
+
+      // CTA buttons
+      const contactBtn = this.container.querySelector('[data-contact-us]');
+      if (contactBtn) {
+        contactBtn.addEventListener('click', () => this.openContactForm());
+      }
+
+      const scheduleBtn = this.container.querySelector('[data-schedule-call]');
+      if (scheduleBtn) {
+        scheduleBtn.addEventListener('click', () => this.scheduleCall());
+      }
+
+      const submitQuestionBtn = this.container.querySelector('[data-submit-question]');
+      if (submitQuestionBtn) {
+        submitQuestionBtn.addEventListener('click', () => this.openQuestionModal());
+      }
+
+      // Modal controls
+      const modal = this.container.querySelector('[data-question-modal]');
+      if (modal) {
+        const closeBtn = modal.querySelector('[data-modal-close]');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => this.closeQuestionModal());
+        }
+
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) this.closeQuestionModal();
+        });
+
+        const form = modal.querySelector('[data-question-form]');
+        if (form) {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.submitQuestion(e.target);
+          });
+        }
+      }
+
+      // Clear search
+      const clearSearchBtn = this.container.querySelector('[data-clear-search]');
+      if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', () => this.clearSearch());
+      }
+    },
+
+    handleSearch: function(query) {
+      this.searchQuery = query.toLowerCase();
+      this.applyFilters();
+      
+      if (query.length > 0) {
+        this.updateSearchSuggestions(query);
+        this.showSearchSuggestions();
+      } else {
+        this.hideSearchSuggestions();
+      }
+
+      // Track search
+      if (window.KPSAnalytics && query.length > 2) {
+        window.KPSAnalytics.track('faq_search', {
+          query: query,
+          resultsCount: this.getVisibleFaqCount()
+        });
+      }
+    },
+
+    handleCategoryFilter: function(category) {
+      this.currentFilter = category;
+      
+      // Update active filter button
+      this.container.querySelectorAll('[data-filter-category]').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      this.container.querySelector(`[data-category="${category}"]`).classList.add('active');
+      
+      this.applyFilters();
+
+      // Track category filter
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('faq_category_filter', {
+          category: category || 'all',
+          resultsCount: this.getVisibleFaqCount()
+        });
+      }
+    },
+
+    applyFilters: function() {
+      const faqItems = this.container.querySelectorAll('.faq-item');
+      let visibleCount = 0;
+
+      faqItems.forEach(item => {
+        const shouldShow = this.shouldShowFaq(item);
+        
+        if (shouldShow) {
+          item.classList.remove('hidden');
+          item.classList.add('fade-in');
+          visibleCount++;
+        } else {
+          item.classList.add('hidden');
+          item.classList.remove('fade-in');
+        }
+      });
+
+      this.toggleNoResults(visibleCount === 0);
+    },
+
+    shouldShowFaq: function(faqItem) {
+      const category = faqItem.dataset.category;
+      const keywords = faqItem.dataset.keywords.toLowerCase();
+      const questionText = faqItem.querySelector('.question-text').textContent.toLowerCase();
+      const answerText = faqItem.querySelector('.answer-text').textContent.toLowerCase();
+
+      // Category filter
+      if (this.currentFilter && category !== this.currentFilter) {
+        return false;
+      }
+
+      // Search filter
+      if (this.searchQuery) {
+        const searchTargets = [keywords, questionText, answerText].join(' ');
+        return searchTargets.includes(this.searchQuery);
+      }
+
+      return true;
+    },
+
+    getVisibleFaqCount: function() {
+      return this.container.querySelectorAll('.faq-item:not(.hidden)').length;
+    },
+
+    toggleNoResults: function(show) {
+      const noResults = this.container.querySelector('[data-no-results]');
+      const faqList = this.container.querySelector('[data-faq-list]');
+      
+      if (show) {
+        noResults.style.display = 'block';
+        faqList.style.display = 'none';
+      } else {
+        noResults.style.display = 'none';
+        faqList.style.display = 'flex';
+      }
+    },
+
+    toggleFaq: function(faqId) {
+      const faqItem = this.container.querySelector(`[data-faq-id="${faqId}"]`);
+      if (!faqItem) return;
+
+      const isOpen = faqItem.classList.contains('active');
+      
+      // Close all other FAQs
+      this.container.querySelectorAll('.faq-item.active').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      // Toggle current FAQ
+      if (!isOpen) {
+        faqItem.classList.add('active');
+        this.openFaqId = faqId;
+
+        // Track FAQ open
+        if (window.KPSAnalytics) {
+          window.KPSAnalytics.track('faq_opened', {
+            faqId: faqId,
+            question: faqItem.querySelector('.question-text').textContent
+          });
+        }
+      } else {
+        this.openFaqId = null;
+      }
+    },
+
+    handleVote: function(faqId, isHelpful) {
+      const voteKey = `${faqId}-${isHelpful ? 'helpful' : 'not-helpful'}`;
+      
+      if (this.userVotes.has(voteKey)) {
+        return; // Already voted
+      }
+
+      // Mark as voted
+      this.userVotes.add(voteKey);
+      
+      // Update UI
+      const voteBtn = this.container.querySelector(`[data-faq-id="${faqId}"][data-vote-${isHelpful ? 'helpful' : 'not-helpful'}]`);
+      if (voteBtn) {
+        voteBtn.classList.add('voted');
+        const countEl = voteBtn.querySelector('.vote-count');
+        if (countEl) {
+          countEl.textContent = parseInt(countEl.textContent) + 1;
+        }
+      }
+
+      // Track vote
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('faq_vote', {
+          faqId: faqId,
+          helpful: isHelpful
+        });
+      }
+
+      // Save vote to backend
+      this.saveVote(faqId, isHelpful);
+    },
+
+    saveVote: async function(faqId, isHelpful) {
+      try {
+        await fetch('/api/faq-vote', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            faqId: faqId,
+            helpful: isHelpful,
+            timestamp: new Date().toISOString()
+          })
+        });
+      } catch (error) {
+        console.error('Error saving vote:', error);
+      }
+    },
+
+    generateSearchSuggestions: function() {
+      // Generate common search suggestions
+      this.searchSuggestions = [
+        'QuickBooks setup cost',
+        'payroll services',
+        'bookkeeping frequency',
+        'tax preparation',
+        'business consulting',
+        'HR services',
+        'pricing packages',
+        'support options'
+      ];
+    },
+
+    updateSearchSuggestions: function(query) {
+      const suggestions = this.searchSuggestions.filter(suggestion =>
+        suggestion.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 5);
+
+      const suggestionsEl = this.container.querySelector('[data-search-suggestions]');
+      if (!suggestionsEl) return;
+
+      suggestionsEl.innerHTML = suggestions.map(suggestion => 
+        `<div class="suggestion-item" data-suggestion="${suggestion}">${suggestion}</div>`
+      ).join('');
+
+      // Add click handlers to suggestions
+      suggestionsEl.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const searchInput = this.container.querySelector('[data-faq-search]');
+          searchInput.value = item.dataset.suggestion;
+          this.handleSearch(item.dataset.suggestion);
+          this.hideSearchSuggestions();
+        });
+      });
+    },
+
+    showSearchSuggestions: function() {
+      const suggestionsEl = this.container.querySelector('[data-search-suggestions]');
+      if (suggestionsEl && suggestionsEl.children.length > 0) {
+        suggestionsEl.style.display = 'block';
+      }
+    },
+
+    hideSearchSuggestions: function() {
+      const suggestionsEl = this.container.querySelector('[data-search-suggestions]');
+      if (suggestionsEl) {
+        suggestionsEl.style.display = 'none';
+      }
+    },
+
+    clearSearch: function() {
+      const searchInput = this.container.querySelector('[data-faq-search]');
+      if (searchInput) {
+        searchInput.value = '';
+        this.handleSearch('');
+      }
+    },
+
+    openContactForm: function() {
+      // Scroll to contact form or open contact modal
+      const contactForm = document.querySelector('[data-enhanced-form]');
+      if (contactForm) {
+        contactForm.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.open('/contact', '_blank');
+      }
+    },
+
+    scheduleCall: function() {
+      window.open('/schedule-consultation', '_blank');
+    },
+
+    openQuestionModal: function() {
+      const modal = this.container.querySelector('[data-question-modal]');
+      if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    },
+
+    closeQuestionModal: function() {
+      const modal = this.container.querySelector('[data-question-modal]');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    },
+
+    submitQuestion: async function(form) {
+      const formData = new FormData(form);
+      
+      // Add additional context
+      if (this.config.cityData) {
+        formData.append('location', `${this.config.cityData.name}, ${this.config.cityData.stateCode}`);
+      }
+      formData.append('formType', 'faq-question');
+      formData.append('timestamp', new Date().toISOString());
+
+      try {
+        const response = await fetch('/api/submit-question', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (response.ok) {
+          alert('Thank you! Your question has been submitted. We\'ll add it to our FAQ and get back to you within 24 hours.');
+          this.closeQuestionModal();
+          form.reset();
+
+          // Track question submission
+          if (window.KPSAnalytics) {
+            window.KPSAnalytics.track('faq_question_submitted', {
+              category: formData.get('category'),
+              hasLocation: !!this.config.cityData
+            });
+          }
+        } else {
+          throw new Error('Failed to submit question');
+        }
+      } catch (error) {
+        alert('There was an error submitting your question. Please try again or contact us directly.');
+        console.error('Question submission error:', error);
+      }
+    }
+  };
+
+  // Auto-initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.KPSIntelligentFAQ.init());
+  } else {
+    window.KPSIntelligentFAQ.init();
+  }
+</script>

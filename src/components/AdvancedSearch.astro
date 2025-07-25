@@ -1,0 +1,941 @@
+---
+// Advanced Search Component
+// Intelligent search with autocomplete, filters, and results
+
+export interface Props {
+  placeholder?: string;
+  showFilters?: boolean;
+  enableVoiceSearch?: boolean;
+  searchTypes?: ('services' | 'locations' | 'content')[];
+  maxResults?: number;
+  className?: string;
+}
+
+const {
+  placeholder = "Search services, locations, or content...",
+  showFilters = true,
+  enableVoiceSearch = true,
+  searchTypes = ['services', 'locations', 'content'],
+  maxResults = 10,
+  className = ""
+} = Astro.props;
+
+const searchId = `kps-search-${crypto.randomUUID().substring(0, 8)}`;
+---
+
+<div class={`kps-advanced-search ${className}`} data-search-id={searchId}>
+  <!-- Search Header -->
+  <div class="search-header">
+    <h3 class="search-title">Find What You Need</h3>
+    <p class="search-subtitle">Search across our services, locations, and resources</p>
+  </div>
+
+  <!-- Main Search Bar -->
+  <div class="search-container">
+    <div class="search-input-wrapper">
+      <div class="search-icon">
+        <i class="fas fa-search"></i>
+      </div>
+      
+      <input 
+        type="text" 
+        class="search-input"
+        placeholder={placeholder}
+        autocomplete="off"
+        spellcheck="false"
+        data-search-input
+      />
+      
+      <!-- Voice Search Button -->
+      {enableVoiceSearch && (
+        <button class="voice-search-btn" data-voice-search aria-label="Voice Search">
+          <i class="fas fa-microphone"></i>
+        </button>
+      )}
+      
+      <!-- Clear Button -->
+      <button class="clear-search-btn" data-clear-search aria-label="Clear Search" style="display: none;">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Search Suggestions -->
+    <div class="search-suggestions" data-suggestions style="display: none;">
+      <div class="suggestions-header">
+        <span>Quick Suggestions</span>
+      </div>
+      <div class="suggestions-list" data-suggestions-list></div>
+    </div>
+
+    <!-- Search Results -->
+    <div class="search-results" data-results style="display: none;">
+      <div class="results-header">
+        <span class="results-count" data-results-count>0 results</span>
+        <button class="close-results-btn" data-close-results>
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="results-list" data-results-list></div>
+      <div class="results-footer">
+        <button class="view-all-btn" data-view-all>View All Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Filters -->
+  {showFilters && (
+    <div class="search-filters" data-filters>
+      <div class="filter-section">
+        <label class="filter-label">Search Type:</label>
+        <div class="filter-options">
+          {searchTypes.map(type => (
+            <label class="filter-option">
+              <input type="checkbox" value={type} checked data-filter-type />
+              <span class="filter-text">{type.charAt(0).toUpperCase() + type.slice(1)}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <label class="filter-label">Location:</label>
+        <select class="location-filter" data-location-filter>
+          <option value="">All Locations</option>
+          <option value="tx">Texas</option>
+          <option value="ok">Oklahoma</option>
+          <option value="ca">California</option>
+          <option value="il">Illinois</option>
+          <option value="az">Arizona</option>
+        </select>
+      </div>
+
+      <div class="filter-section">
+        <label class="filter-label">Service Type:</label>
+        <select class="service-filter" data-service-filter>
+          <option value="">All Services</option>
+          <option value="quickbooks">QuickBooks</option>
+          <option value="payroll">Payroll</option>
+          <option value="bookkeeping">Bookkeeping</option>
+          <option value="tax">Tax Services</option>
+          <option value="consulting">Business Consulting</option>
+        </select>
+      </div>
+
+      <button class="reset-filters-btn" data-reset-filters>
+        <i class="fas fa-undo"></i>
+        Reset Filters
+      </button>
+    </div>
+  )}
+
+  <!-- Recent Searches -->
+  <div class="recent-searches" data-recent-searches style="display: none;">
+    <div class="recent-header">
+      <span>Recent Searches</span>
+      <button class="clear-recent-btn" data-clear-recent>Clear</button>
+    </div>
+    <div class="recent-list" data-recent-list></div>
+  </div>
+
+  <!-- Popular Searches -->
+  <div class="popular-searches">
+    <div class="popular-header">
+      <span>Popular Searches</span>
+    </div>
+    <div class="popular-tags">
+      <button class="popular-tag" data-popular-search="QuickBooks setup">QuickBooks Setup</button>
+      <button class="popular-tag" data-popular-search="payroll services">Payroll Services</button>
+      <button class="popular-tag" data-popular-search="business consulting">Business Consulting</button>
+      <button class="popular-tag" data-popular-search="tax preparation">Tax Preparation</button>
+      <button class="popular-tag" data-popular-search="bookkeeping">Bookkeeping</button>
+      <button class="popular-tag" data-popular-search="HR services">HR Services</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .kps-advanced-search {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kps-advanced-search::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+    pointer-events: none;
+  }
+
+  .search-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .search-title {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .search-subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .search-container {
+    position: relative;
+    margin-bottom: 2rem;
+    z-index: 10;
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    background: white;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .search-input-wrapper:focus-within {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .search-icon {
+    color: #6b7280;
+    margin-right: 1rem;
+    font-size: 1.1rem;
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    color: #1f2937;
+    background: transparent;
+  }
+
+  .search-input::placeholder {
+    color: #9ca3af;
+  }
+
+  .voice-search-btn,
+  .clear-search-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    margin-left: 0.5rem;
+  }
+
+  .voice-search-btn:hover,
+  .clear-search-btn:hover {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  .voice-search-btn.listening {
+    color: #ef4444;
+    animation: pulse-red 1.5s infinite;
+  }
+
+  @keyframes pulse-red {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .search-suggestions,
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    margin-top: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+  }
+
+  .suggestions-header,
+  .results-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+    color: #374151;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .close-results-btn {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .suggestions-list,
+  .results-list {
+    padding: 0.5rem 0;
+  }
+
+  .suggestion-item,
+  .result-item {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .suggestion-item:hover,
+  .result-item:hover {
+    background: #f8f9fa;
+  }
+
+  .suggestion-item:last-child,
+  .result-item:last-child {
+    border-bottom: none;
+  }
+
+  .result-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .result-icon {
+    width: 40px;
+    height: 40px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    flex-shrink: 0;
+  }
+
+  .result-content {
+    flex: 1;
+  }
+
+  .result-title {
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 0.25rem;
+    font-size: 0.95rem;
+  }
+
+  .result-description {
+    color: #6b7280;
+    font-size: 0.85rem;
+    margin: 0 0 0.25rem;
+    line-height: 1.4;
+  }
+
+  .result-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+
+  .results-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .view-all-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .view-all-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+
+  .search-filters {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .filter-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .filter-label {
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .filter-options {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .filter-option input[type="checkbox"] {
+    accent-color: #ffd700;
+  }
+
+  .location-filter,
+  .service-filter {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: #374151;
+    font-size: 0.9rem;
+    min-width: 150px;
+  }
+
+  .reset-filters-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .reset-filters-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .recent-searches {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .recent-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: white;
+    font-weight: 600;
+  }
+
+  .clear-recent-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
+  .recent-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .recent-item {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    border: none;
+  }
+
+  .recent-item:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .popular-searches {
+    position: relative;
+    z-index: 1;
+  }
+
+  .popular-header {
+    color: white;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .popular-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .popular-tag {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.75rem 1.25rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .popular-tag:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .kps-advanced-search {
+      padding: 1.5rem 1rem;
+    }
+
+    .search-title {
+      font-size: 1.5rem;
+    }
+
+    .search-filters {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .filter-section {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .filter-options {
+      flex-wrap: wrap;
+    }
+
+    .location-filter,
+    .service-filter {
+      width: 100%;
+    }
+
+    .popular-tags {
+      justify-content: center;
+    }
+  }
+
+  /* Animation for search loading */
+  .search-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: #6b7280;
+  }
+
+  .search-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 0.75rem;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+
+<!-- Search Functionality Script -->
+<script is:inline define:vars={{ searchId, searchTypes, maxResults }}>
+  window.KPSSearch = {
+    config: {
+      searchId,
+      searchTypes,
+      maxResults,
+      debounceTime: 300,
+      minQueryLength: 2
+    },
+    
+    searchData: {
+      services: [
+        { title: "QuickBooks Setup & Training", description: "Professional QuickBooks implementation and staff training", type: "service", url: "/services/quickbooks" },
+        { title: "Payroll Management", description: "Complete payroll processing and compliance", type: "service", url: "/services/payroll" },
+        { title: "Business Consulting", description: "Strategic business planning and optimization", type: "service", url: "/services/consulting" },
+        { title: "Tax Preparation", description: "Professional tax filing and planning services", type: "service", url: "/services/tax" },
+        { title: "Bookkeeping Services", description: "Accurate financial record keeping", type: "service", url: "/services/bookkeeping" },
+        { title: "HR Management", description: "Human resources support and compliance", type: "service", url: "/services/hr" }
+      ],
+      locations: [
+        { title: "Austin, TX", description: "QuickBooks and business services in Austin", type: "location", url: "/locations/tx/austin" },
+        { title: "Dallas, TX", description: "Professional business consulting in Dallas", type: "location", url: "/locations/tx/dallas" },
+        { title: "Houston, TX", description: "Comprehensive business services in Houston", type: "location", url: "/locations/tx/houston" },
+        { title: "Oklahoma City, OK", description: "Business support services in OKC", type: "location", url: "/locations/ok/oklahoma-city" }
+      ],
+      content: [
+        { title: "About KPS Group", description: "Learn about our company and team", type: "content", url: "/about" },
+        { title: "Contact Us", description: "Get in touch with our team", type: "content", url: "/contact" },
+        { title: "Success Stories", description: "Client testimonials and case studies", type: "content", url: "/testimonials" }
+      ]
+    },
+
+    debounceTimer: null,
+    searchHistory: JSON.parse(localStorage.getItem('kps-search-history') || '[]'),
+    isVoiceSearching: false,
+
+    init: function() {
+      const container = document.querySelector(`[data-search-id="${this.config.searchId}"]`);
+      if (!container) return;
+
+      this.container = container;
+      this.searchInput = container.querySelector('[data-search-input]');
+      this.suggestionsEl = container.querySelector('[data-suggestions]');
+      this.resultsEl = container.querySelector('[data-results]');
+      this.clearBtn = container.querySelector('[data-clear-search]');
+      this.voiceBtn = container.querySelector('[data-voice-search]');
+
+      this.setupEventListeners();
+      this.loadRecentSearches();
+
+      console.log('KPS Search initialized');
+    },
+
+    setupEventListeners: function() {
+      // Search input events
+      this.searchInput.addEventListener('input', (e) => {
+        this.handleSearchInput(e.target.value);
+      });
+
+      this.searchInput.addEventListener('focus', () => {
+        this.showSuggestions();
+      });
+
+      this.searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          this.performSearch(this.searchInput.value);
+        } else if (e.key === 'Escape') {
+          this.hideResults();
+        }
+      });
+
+      // Clear button
+      if (this.clearBtn) {
+        this.clearBtn.addEventListener('click', () => {
+          this.clearSearch();
+        });
+      }
+
+      // Voice search
+      if (this.voiceBtn) {
+        this.voiceBtn.addEventListener('click', () => {
+          this.startVoiceSearch();
+        });
+      }
+
+      // Filter events
+      this.container.querySelectorAll('[data-filter-type]').forEach(filter => {
+        filter.addEventListener('change', () => {
+          this.updateFilters();
+        });
+      });
+
+      // Popular searches
+      this.container.querySelectorAll('[data-popular-search]').forEach(tag => {
+        tag.addEventListener('click', (e) => {
+          const query = e.target.dataset.popularSearch;
+          this.searchInput.value = query;
+          this.performSearch(query);
+        });
+      });
+
+      // Close results when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!this.container.contains(e.target)) {
+          this.hideResults();
+        }
+      });
+    },
+
+    handleSearchInput: function(query) {
+      this.updateClearButton(query);
+      
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
+
+      this.debounceTimer = setTimeout(() => {
+        if (query.length >= this.config.minQueryLength) {
+          this.performSearch(query);
+        } else {
+          this.showSuggestions();
+        }
+      }, this.config.debounceTime);
+    },
+
+    performSearch: function(query) {
+      if (!query.trim()) return;
+
+      this.hidesuggestions();
+      this.showSearchResults(query);
+      this.addToSearchHistory(query);
+
+      // Track search
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('search_performed', {
+          query: query,
+          timestamp: Date.now()
+        });
+      }
+    },
+
+    showSearchResults: function(query) {
+      const results = this.searchContent(query);
+      const resultsCount = this.container.querySelector('[data-results-count]');
+      const resultsList = this.container.querySelector('[data-results-list]');
+
+      resultsCount.textContent = `${results.length} result${results.length !== 1 ? 's' : ''}`;
+      
+      resultsList.innerHTML = results.map(result => `
+        <div class="result-item" onclick="window.location.href='${result.url}'">
+          <div class="result-icon">
+            <i class="fas fa-${this.getResultIcon(result.type)}"></i>
+          </div>
+          <div class="result-content">
+            <h4 class="result-title">${this.highlightQuery(result.title, query)}</h4>
+            <p class="result-description">${this.highlightQuery(result.description, query)}</p>
+            <div class="result-meta">
+              <span>${result.type}</span>
+              <span>${result.url}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      this.resultsEl.style.display = 'block';
+    },
+
+    searchContent: function(query) {
+      const allContent = [
+        ...this.searchData.services,
+        ...this.searchData.locations,
+        ...this.searchData.content
+      ];
+
+      const activeFilters = this.getActiveFilters();
+      
+      return allContent
+        .filter(item => {
+          // Type filter
+          if (activeFilters.types.length > 0 && !activeFilters.types.includes(item.type)) {
+            return false;
+          }
+
+          // Text search
+          const searchText = `${item.title} ${item.description}`.toLowerCase();
+          return searchText.includes(query.toLowerCase());
+        })
+        .slice(0, this.config.maxResults);
+    },
+
+    getActiveFilters: function() {
+      const typeFilters = Array.from(this.container.querySelectorAll('[data-filter-type]:checked'))
+        .map(cb => cb.value);
+      
+      return {
+        types: typeFilters.length > 0 ? typeFilters : this.config.searchTypes
+      };
+    },
+
+    highlightQuery: function(text, query) {
+      if (!query) return text;
+      const regex = new RegExp(`(${query})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    },
+
+    getResultIcon: function(type) {
+      const icons = {
+        service: 'cog',
+        location: 'map-marker-alt',
+        content: 'file-alt'
+      };
+      return icons[type] || 'search';
+    },
+
+    showSuggestions: function() {
+      const suggestions = [
+        'QuickBooks setup',
+        'Payroll services',
+        'Business consulting',
+        'Tax preparation',
+        'Austin services',
+        'Dallas locations'
+      ];
+
+      const suggestionsList = this.container.querySelector('[data-suggestions-list]');
+      suggestionsList.innerHTML = suggestions.map(suggestion => `
+        <div class="suggestion-item" onclick="KPSSearch.selectSuggestion('${suggestion}')">
+          <i class="fas fa-search" style="margin-right: 0.75rem; color: #9ca3af;"></i>
+          ${suggestion}
+        </div>
+      `).join('');
+
+      this.suggestionsEl.style.display = 'block';
+    },
+
+    selectSuggestion: function(suggestion) {
+      this.searchInput.value = suggestion;
+      this.performSearch(suggestion);
+    },
+
+    hidesuggestions: function() {
+      if (this.suggestionsEl) {
+        this.suggestionsEl.style.display = 'none';
+      }
+    },
+
+    hideResults: function() {
+      if (this.resultsEl) {
+        this.resultsEl.style.display = 'none';
+      }
+      this.hidesuggestions();
+    },
+
+    updateClearButton: function(query) {
+      if (this.clearBtn) {
+        this.clearBtn.style.display = query.length > 0 ? 'block' : 'none';
+      }
+    },
+
+    clearSearch: function() {
+      this.searchInput.value = '';
+      this.hideResults();
+      this.updateClearButton('');
+      this.searchInput.focus();
+    },
+
+    startVoiceSearch: function() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert('Voice search is not supported in your browser');
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      this.voiceBtn.classList.add('listening');
+      this.isVoiceSearching = true;
+
+      recognition.onresult = (event) => {
+        const result = event.results[0][0].transcript;
+        this.searchInput.value = result;
+        this.performSearch(result);
+      };
+
+      recognition.onend = () => {
+        this.voiceBtn.classList.remove('listening');
+        this.isVoiceSearching = false;
+      };
+
+      recognition.onerror = () => {
+        this.voiceBtn.classList.remove('listening');
+        this.isVoiceSearching = false;
+        alert('Voice search failed. Please try again.');
+      };
+
+      recognition.start();
+    },
+
+    addToSearchHistory: function(query) {
+      this.searchHistory = this.searchHistory.filter(item => item !== query);
+      this.searchHistory.unshift(query);
+      this.searchHistory = this.searchHistory.slice(0, 10);
+      localStorage.setItem('kps-search-history', JSON.stringify(this.searchHistory));
+      this.loadRecentSearches();
+    },
+
+    loadRecentSearches: function() {
+      const recentEl = this.container.querySelector('[data-recent-searches]');
+      const recentList = this.container.querySelector('[data-recent-list]');
+      
+      if (this.searchHistory.length > 0 && recentList) {
+        recentList.innerHTML = this.searchHistory.map(query => `
+          <button class="recent-item" onclick="KPSSearch.selectSuggestion('${query}')">
+            ${query}
+          </button>
+        `).join('');
+        
+        if (recentEl) recentEl.style.display = 'block';
+      }
+    },
+
+    updateFilters: function() {
+      // Re-run search if there's a current query
+      if (this.searchInput.value.length >= this.config.minQueryLength) {
+        this.performSearch(this.searchInput.value);
+      }
+    }
+  };
+
+  // Auto-initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.KPSSearch.init());
+  } else {
+    window.KPSSearch.init();
+  }
+</script>

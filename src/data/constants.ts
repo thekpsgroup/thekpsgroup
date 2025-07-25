@@ -51,7 +51,7 @@ export const INDUSTRIES = {
     name: 'Plumbing Companies',
     slug: 'plumbing-companies', 
     keywords: ['plumbing QuickBooks', 'plumbing payroll', 'plumbing websites', 'plumbing business consulting'],
-    clientCount: '300+'
+    clientCount: '250+'
   },
   electrical: {
     name: 'Electrical Contractors',

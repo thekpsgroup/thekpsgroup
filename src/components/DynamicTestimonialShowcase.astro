@@ -1,0 +1,1410 @@
+---
+// Dynamic Testimonial Showcase Component
+// Rotating testimonials with filtering and social proof
+
+export interface Props {
+  showFilters?: boolean;
+  autoRotate?: boolean;
+  showSocialProof?: boolean;
+  maxTestimonials?: number;
+  cityData?: any;
+  className?: string;
+}
+
+const {
+  showFilters = true,
+  autoRotate = true,
+  showSocialProof = true,
+  maxTestimonials = 12,
+  cityData,
+  className = ""
+} = Astro.props;
+
+const showcaseId = `kps-testimonial-showcase-${crypto.randomUUID().substring(0, 8)}`;
+
+// Comprehensive testimonial data
+const testimonialData = [
+  {
+    id: 1,
+    name: "Sarah Mitchell",
+    company: "Austin Tech Solutions",
+    location: "Austin, TX",
+    service: "quickbooks",
+    rating: 5,
+    text: "KPS Group completely transformed our accounting process. The QuickBooks setup was seamless, and their team training saved us countless hours each month. Best investment we've made!",
+    image: "/team/testimonial-sarah.jpg",
+    videoUrl: "https://youtube.com/watch?v=testimonial1",
+    industry: "technology",
+    companySize: "6-20",
+    results: "Reduced accounting time by 75%",
+    featured: true
+  },
+  {
+    id: 2,
+    name: "Michael Rodriguez",
+    company: "Rodriguez Construction",
+    location: "Houston, TX",
+    service: "payroll",
+    rating: 5,
+    text: "Managing payroll for 25 employees was a nightmare until we found KPS Group. Their payroll service is accurate, timely, and takes all the stress away. Highly recommended!",
+    image: "/team/testimonial-michael.jpg",
+    industry: "construction",
+    companySize: "21-50",
+    results: "100% payroll accuracy",
+    featured: true
+  },
+  {
+    id: 3,
+    name: "Jennifer Walsh",
+    company: "DallasCare Medical",
+    location: "Dallas, TX",
+    service: "bookkeeping",
+    rating: 5,
+    text: "The bookkeeping services from KPS Group have been exceptional. They handle everything from reconciliations to financial reports, giving us clear visibility into our practice's finances.",
+    image: "/team/testimonial-jennifer.jpg",
+    industry: "healthcare",
+    companySize: "6-20",
+    results: "Monthly reports in 48 hours",
+    featured: true
+  },
+  {
+    id: 4,
+    name: "David Chen",
+    company: "Fort Worth Retail Group",
+    location: "Fort Worth, TX",
+    service: "consulting",
+    rating: 5,
+    text: "KPS Group's business consulting helped us optimize our operations and increase profitability by 30%. Their insights and recommendations were game-changing for our retail business.",
+    image: "/team/testimonial-david.jpg",
+    industry: "retail",
+    companySize: "16-50",
+    results: "30% increase in profitability",
+    featured: true
+  },
+  {
+    id: 5,
+    name: "Lisa Thompson",
+    company: "Thompson & Associates",
+    location: "San Antonio, TX",
+    service: "tax",
+    rating: 5,
+    text: "Tax season used to be stressful, but KPS Group made it simple. They handle all our business and personal taxes with precision and saved us thousands in deductions we missed before.",
+    image: "/team/testimonial-lisa.jpg",
+    industry: "professional-services",
+    companySize: "1-5",
+    results: "Saved $8,000 in taxes",
+    featured: false
+  },
+  {
+    id: 6,
+    name: "Robert Kim",
+    company: "Lone Star Manufacturing",
+    location: "Plano, TX",
+    service: "hr",
+    rating: 5,
+    text: "The HR services have been invaluable as we've grown from 15 to 45 employees. KPS Group handles everything from compliance to employee handbook updates professionally.",
+    image: "/team/testimonial-robert.jpg",
+    industry: "manufacturing",
+    companySize: "21-50",
+    results: "Zero compliance issues",
+    featured: false
+  },
+  {
+    id: 7,
+    name: "Amanda Foster",
+    company: "Foster Digital Marketing",
+    location: "Austin, TX",
+    service: "quickbooks",
+    rating: 5,
+    text: "As a growing digital agency, we needed better financial tracking. KPS Group's QuickBooks setup and training gave us the insights we needed to scale confidently.",
+    image: "/team/testimonial-amanda.jpg",
+    industry: "technology",
+    companySize: "6-20",
+    results: "Better financial visibility",
+    featured: false
+  },
+  {
+    id: 8,
+    name: "Carlos Gutierrez",
+    company: "Gutierrez Restaurant Group",
+    location: "El Paso, TX",
+    service: "bookkeeping",
+    rating: 5,
+    text: "Managing finances for multiple restaurant locations was complex until KPS Group took over our bookkeeping. Now we have clear, accurate reports for each location.",
+    image: "/team/testimonial-carlos.jpg",
+    industry: "hospitality",
+    companySize: "51-100",
+    results: "Multi-location tracking",
+    featured: false
+  },
+  {
+    id: 9,
+    name: "Emily Parker",
+    company: "Parker Law Firm",
+    location: "Corpus Christi, TX",
+    service: "consulting",
+    rating: 5,
+    text: "KPS Group's business consulting helped us streamline our operations and improve client billing processes. Their expertise in professional services is outstanding.",
+    image: "/team/testimonial-emily.jpg",
+    industry: "professional-services",
+    companySize: "6-20",
+    results: "Improved billing efficiency",
+    featured: false
+  },
+  {
+    id: 10,
+    name: "James Wilson",
+    company: "Wilson Automotive",
+    location: "Arlington, TX",
+    service: "payroll",
+    rating: 5,
+    text: "Switching to KPS Group for payroll was the best decision we made. They handle everything including benefits administration, and we've had zero issues.",
+    image: "/team/testimonial-james.jpg",
+    industry: "automotive",
+    companySize: "16-50",
+    results: "Zero payroll errors",
+    featured: false
+  },
+  {
+    id: 11,
+    name: "Nicole Brown",
+    company: "Brown Physical Therapy",
+    location: "Lubbock, TX",
+    service: "tax",
+    rating: 5,
+    text: "Tax preparation for healthcare practices can be complex, but KPS Group handles everything expertly. They saved us time and money while ensuring full compliance.",
+    image: "/team/testimonial-nicole.jpg",
+    industry: "healthcare",
+    companySize: "1-5",
+    results: "Full tax compliance",
+    featured: false
+  },
+  {
+    id: 12,
+    name: "Steve Martinez",
+    company: "Martinez Energy Solutions",
+    location: "Midland, TX",
+    service: "hr",
+    rating: 5,
+    text: "Growing our energy services company required professional HR support. KPS Group provided comprehensive HR services that scaled with our rapid growth.",
+    image: "/team/testimonial-steve.jpg",
+    industry: "energy",
+    companySize: "21-50",
+    results: "Scaled with growth",
+    featured: false
+  }
+];
+
+// Service mapping
+const serviceNames = {
+  quickbooks: "QuickBooks Setup",
+  bookkeeping: "Bookkeeping",
+  payroll: "Payroll",
+  consulting: "Business Consulting",
+  tax: "Tax Services",
+  hr: "HR Services"
+};
+
+// Industry mapping
+const industryNames = {
+  technology: "Technology",
+  construction: "Construction",
+  healthcare: "Healthcare",
+  retail: "Retail",
+  "professional-services": "Professional Services",
+  manufacturing: "Manufacturing",
+  hospitality: "Hospitality",
+  automotive: "Automotive",
+  energy: "Energy"
+};
+
+// Filter testimonials based on city if provided
+const relevantTestimonials = cityData ? 
+  testimonialData.filter(t => t.location.includes(cityData.stateCode)) : 
+  testimonialData;
+
+const displayTestimonials = relevantTestimonials.slice(0, maxTestimonials);
+---
+
+<div class={`kps-testimonial-showcase ${className}`} data-showcase-id={showcaseId}>
+  <!-- Showcase Header -->
+  <div class="showcase-header">
+    <div class="header-content">
+      <h2 class="showcase-title">What Our Clients Say</h2>
+      <p class="showcase-subtitle">
+        Join over 250+ businesses who trust KPS Group with their financial success
+      </p>
+      
+      {showSocialProof && (
+        <div class="social-proof">
+          <div class="proof-stats">
+            <div class="stat-item">
+              <span class="stat-number">4.9</span>
+              <div class="stat-details">
+                <div class="stars">★★★★★</div>
+                <span class="stat-label">Average Rating</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">250+</span>
+              <div class="stat-details">
+                <span class="stat-label">Happy Clients</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">98%</span>
+              <div class="stat-details">
+                <span class="stat-label">Client Retention</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
+    {showFilters && (
+      <div class="testimonial-filters">
+        <div class="filter-group">
+          <label>Filter by Service:</label>
+          <select class="filter-select" data-filter="service">
+            <option value="">All Services</option>
+            {Object.entries(serviceNames).map(([key, name]) => (
+              <option value={key}>{name}</option>
+            ))}
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label>Filter by Industry:</label>
+          <select class="filter-select" data-filter="industry">
+            <option value="">All Industries</option>
+            {Object.entries(industryNames).map(([key, name]) => (
+              <option value={key}>{name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Company Size:</label>
+          <select class="filter-select" data-filter="companySize">
+            <option value="">All Sizes</option>
+            <option value="1-5">1-5 employees</option>
+            <option value="6-20">6-20 employees</option>
+            <option value="21-50">21-50 employees</option>
+            <option value="51-100">51-100 employees</option>
+          </select>
+        </div>
+      </div>
+    )}
+  </div>
+
+  <!-- Featured Testimonials -->
+  <div class="featured-testimonials">
+    <h3>Featured Success Stories</h3>
+    <div class="featured-grid" data-featured-testimonials>
+      {displayTestimonials.filter(t => t.featured).map(testimonial => (
+        <div class="featured-testimonial" data-testimonial={testimonial.id}>
+          <div class="testimonial-header">
+            <div class="client-info">
+              <img src={testimonial.image} alt={testimonial.name} class="client-photo" loading="lazy" />
+              <div class="client-details">
+                <h4 class="client-name">{testimonial.name}</h4>
+                <p class="client-company">{testimonial.company}</p>
+                <p class="client-location">
+                  <i class="fas fa-map-marker-alt"></i>
+                  {testimonial.location}
+                </p>
+              </div>
+            </div>
+            <div class="testimonial-meta">
+              <div class="rating">
+                {Array(testimonial.rating).fill().map(() => (
+                  <i class="fas fa-star"></i>
+                ))}
+              </div>
+              <span class="service-badge">{serviceNames[testimonial.service]}</span>
+            </div>
+          </div>
+
+          <blockquote class="testimonial-text">
+            "{testimonial.text}"
+          </blockquote>
+
+          <div class="testimonial-footer">
+            <div class="results-highlight">
+              <i class="fas fa-chart-line"></i>
+              <span>{testimonial.results}</span>
+            </div>
+            {testimonial.videoUrl && (
+              <button class="video-testimonial-btn" data-video-url={testimonial.videoUrl}>
+                <i class="fas fa-play"></i>
+                Watch Video
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Testimonial Carousel -->
+  <div class="testimonial-carousel">
+    <h3>All Client Reviews</h3>
+    
+    <div class="carousel-container">
+      <button class="carousel-nav prev" data-carousel-prev>
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="carousel-track" data-carousel-track>
+        {displayTestimonials.map(testimonial => (
+          <div class="testimonial-card" 
+               data-testimonial={testimonial.id}
+               data-service={testimonial.service}
+               data-industry={testimonial.industry}
+               data-company-size={testimonial.companySize}>
+            
+            <div class="card-header">
+              <div class="rating">
+                {Array(testimonial.rating).fill().map(() => (
+                  <i class="fas fa-star"></i>
+                ))}
+              </div>
+              <span class="service-tag">{serviceNames[testimonial.service]}</span>
+            </div>
+
+            <blockquote class="card-text">
+              "{testimonial.text}"
+            </blockquote>
+
+            <div class="card-footer">
+              <div class="client-info">
+                <img src={testimonial.image} alt={testimonial.name} class="client-avatar" />
+                <div class="client-details">
+                  <h5 class="client-name">{testimonial.name}</h5>
+                  <p class="client-company">{testimonial.company}</p>
+                  <p class="client-location">{testimonial.location}</p>
+                </div>
+              </div>
+              
+              <div class="industry-tag">
+                {industryNames[testimonial.industry]}
+              </div>
+            </div>
+
+            <div class="results-banner">
+              <i class="fas fa-trophy"></i>
+              {testimonial.results}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <button class="carousel-nav next" data-carousel-next>
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="carousel-indicators" data-carousel-indicators>
+      <!-- Dynamic indicators -->
+    </div>
+  </div>
+
+  <!-- Testimonial Submission CTA -->
+  <div class="testimonial-cta">
+    <div class="cta-content">
+      <h3>Share Your Success Story</h3>
+      <p>Are you a KPS Group client? We'd love to hear about your experience!</p>
+      <div class="cta-actions">
+        <button class="btn btn-primary" data-submit-testimonial>
+          Submit Your Review
+        </button>
+        <button class="btn btn-secondary" data-record-video>
+          Record Video Testimonial
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Modal -->
+  <div class="video-modal" data-video-modal style="display: none;">
+    <div class="modal-content">
+      <button class="modal-close" data-modal-close>
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="video-container">
+        <iframe src="" frameborder="0" allowfullscreen data-video-iframe></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .kps-testimonial-showcase {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+
+  .showcase-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .header-content {
+    margin-bottom: 2rem;
+  }
+
+  .showcase-title {
+    color: #1e3a8a;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .showcase-subtitle {
+    color: #64748b;
+    font-size: 1.2rem;
+    margin: 0 0 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  .social-proof {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .proof-stats {
+    display: flex;
+    gap: 3rem;
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffd700;
+    line-height: 1;
+  }
+
+  .stat-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stars {
+    color: #ffd700;
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    color: #6b7280;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .testimonial-filters {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .filter-group label {
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .filter-select {
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background: white;
+    transition: border-color 0.2s ease;
+    min-width: 150px;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: #ffd700;
+  }
+
+  .featured-testimonials {
+    margin-bottom: 4rem;
+  }
+
+  .featured-testimonials h3 {
+    color: #1e3a8a;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 2rem;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+
+  .featured-testimonial {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .featured-testimonial:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: #ffd700;
+  }
+
+  .testimonial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+
+  .client-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .client-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffd700;
+  }
+
+  .client-details h4 {
+    color: #1e3a8a;
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .client-company {
+    color: #374151;
+    margin: 0 0 0.25rem;
+    font-weight: 500;
+  }
+
+  .client-location {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .testimonial-meta {
+    text-align: right;
+  }
+
+  .rating {
+    color: #ffd700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .service-badge {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .testimonial-text {
+    color: #374151;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    font-style: italic;
+    margin: 0 0 1.5rem;
+    position: relative;
+  }
+
+  .testimonial-text::before {
+    content: '"';
+    font-size: 4rem;
+    color: #ffd700;
+    position: absolute;
+    top: -1rem;
+    left: -1rem;
+    font-family: serif;
+    opacity: 0.3;
+  }
+
+  .testimonial-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .results-highlight {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #059669;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+  }
+
+  .video-testimonial-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+  }
+
+  .video-testimonial-btn:hover {
+    background: #dc2626;
+  }
+
+  .testimonial-carousel {
+    margin-bottom: 4rem;
+  }
+
+  .testimonial-carousel h3 {
+    color: #1e3a8a;
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: center;
+    margin: 0 0 2rem;
+  }
+
+  .carousel-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #f8fafc;
+    padding: 2rem 0;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 2rem;
+    padding: 0 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .testimonial-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    min-width: 350px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .service-tag {
+    background: #ffd700;
+    color: #1e3a8a;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .card-text {
+    color: #374151;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    font-style: italic;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .client-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .card-footer .client-details h5 {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .card-footer .client-company,
+  .card-footer .client-location {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.8rem;
+  }
+
+  .industry-tag {
+    background: #e5e7eb;
+    color: #374151;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .results-banner {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+
+  .carousel-nav:hover {
+    border-color: #ffd700;
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .carousel-nav.prev {
+    left: 1rem;
+  }
+
+  .carousel-nav.next {
+    right: 1rem;
+  }
+
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+    background: #d1d5db;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .indicator.active {
+    background: #ffd700;
+  }
+
+  .testimonial-cta {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .cta-content h3 {
+    font-size: 2rem;
+    margin: 0 0 1rem;
+  }
+
+  .cta-content p {
+    font-size: 1.1rem;
+    margin: 0 0 2rem;
+    opacity: 0.9;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+  }
+
+  .btn-secondary:hover {
+    background: white;
+    color: #1e3a8a;
+  }
+
+  /* Video Modal */
+  .video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+  }
+
+  .video-modal .modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .featured-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .proof-stats {
+      flex-direction: column;
+      gap: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-item {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .kps-testimonial-showcase {
+      padding: 1rem;
+    }
+
+    .showcase-title {
+      font-size: 2rem;
+    }
+
+    .testimonial-filters {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .featured-testimonial {
+      padding: 1.5rem;
+    }
+
+    .testimonial-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .testimonial-card {
+      min-width: 280px;
+    }
+
+    .carousel-nav {
+      width: 40px;
+      height: 40px;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+    }
+
+    .cta-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Animation for filtered testimonials */
+  .testimonial-card.hidden {
+    display: none;
+  }
+
+  .testimonial-card.fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<!-- Testimonial Showcase Script -->
+<script is:inline define:vars={{ showcaseId, testimonialData, serviceNames, industryNames, autoRotate }}>
+  window.KPSTestimonialShowcase = {
+    config: {
+      showcaseId,
+      testimonialData,
+      serviceNames,
+      industryNames,
+      autoRotate
+    },
+
+    currentFilters: {
+      service: '',
+      industry: '',
+      companySize: ''
+    },
+
+    currentSlide: 0,
+    totalSlides: 0,
+    autoRotateInterval: null,
+    carouselTrack: null,
+    indicators: [],
+
+    init: function() {
+      this.container = document.querySelector(`[data-showcase-id="${this.config.showcaseId}"]`);
+      if (!this.container) return;
+
+      this.carouselTrack = this.container.querySelector('[data-carousel-track]');
+      this.setupEventListeners();
+      this.setupCarousel();
+      this.initializeFilters();
+      
+      if (this.config.autoRotate) {
+        this.startAutoRotate();
+      }
+
+      console.log('KPS Testimonial Showcase initialized');
+    },
+
+    setupEventListeners: function() {
+      // Filter controls
+      this.container.querySelectorAll('[data-filter]').forEach(select => {
+        select.addEventListener('change', (e) => this.updateFilter(e.target));
+      });
+
+      // Carousel navigation
+      const prevBtn = this.container.querySelector('[data-carousel-prev]');
+      const nextBtn = this.container.querySelector('[data-carousel-next]');
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => this.prevSlide());
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => this.nextSlide());
+      }
+
+      // Video testimonials
+      this.container.querySelectorAll('[data-video-url]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.openVideoModal(e.target.dataset.videoUrl));
+      });
+
+      // Video modal
+      const videoModal = this.container.querySelector('[data-video-modal]');
+      if (videoModal) {
+        const closeBtn = videoModal.querySelector('[data-modal-close]');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => this.closeVideoModal());
+        }
+        
+        videoModal.addEventListener('click', (e) => {
+          if (e.target === videoModal) this.closeVideoModal();
+        });
+      }
+
+      // CTA buttons
+      const submitBtn = this.container.querySelector('[data-submit-testimonial]');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => this.openTestimonialForm());
+      }
+
+      const recordBtn = this.container.querySelector('[data-record-video]');
+      if (recordBtn) {
+        recordBtn.addEventListener('click', () => this.openVideoRecording());
+      }
+
+      // Pause auto-rotate on hover
+      if (this.config.autoRotate) {
+        this.container.addEventListener('mouseenter', () => this.pauseAutoRotate());
+        this.container.addEventListener('mouseleave', () => this.resumeAutoRotate());
+      }
+    },
+
+    setupCarousel: function() {
+      const testimonialCards = this.carouselTrack.querySelectorAll('.testimonial-card');
+      this.totalSlides = Math.ceil(testimonialCards.length / this.getVisibleSlides());
+      
+      this.createIndicators();
+      this.updateCarouselPosition();
+    },
+
+    getVisibleSlides: function() {
+      const containerWidth = this.container.offsetWidth;
+      if (containerWidth < 768) return 1;
+      if (containerWidth < 1024) return 2;
+      return 3;
+    },
+
+    createIndicators: function() {
+      const indicatorsContainer = this.container.querySelector('[data-carousel-indicators]');
+      if (!indicatorsContainer) return;
+
+      indicatorsContainer.innerHTML = '';
+      this.indicators = [];
+
+      for (let i = 0; i < this.totalSlides; i++) {
+        const indicator = document.createElement('div');
+        indicator.className = 'indicator';
+        if (i === 0) indicator.classList.add('active');
+        
+        indicator.addEventListener('click', () => this.goToSlide(i));
+        indicatorsContainer.appendChild(indicator);
+        this.indicators.push(indicator);
+      }
+    },
+
+    nextSlide: function() {
+      this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+      this.updateCarouselPosition();
+      this.updateIndicators();
+    },
+
+    prevSlide: function() {
+      this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+      this.updateCarouselPosition();
+      this.updateIndicators();
+    },
+
+    goToSlide: function(slideIndex) {
+      this.currentSlide = slideIndex;
+      this.updateCarouselPosition();
+      this.updateIndicators();
+    },
+
+    updateCarouselPosition: function() {
+      const slideWidth = this.getSlideWidth();
+      const transform = `translateX(-${this.currentSlide * slideWidth}px)`;
+      this.carouselTrack.style.transform = transform;
+    },
+
+    getSlideWidth: function() {
+      const visibleSlides = this.getVisibleSlides();
+      const containerWidth = this.carouselTrack.offsetWidth;
+      return containerWidth / visibleSlides;
+    },
+
+    updateIndicators: function() {
+      this.indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('active', index === this.currentSlide);
+      });
+    },
+
+    startAutoRotate: function() {
+      this.autoRotateInterval = setInterval(() => {
+        this.nextSlide();
+      }, 5000);
+    },
+
+    pauseAutoRotate: function() {
+      if (this.autoRotateInterval) {
+        clearInterval(this.autoRotateInterval);
+        this.autoRotateInterval = null;
+      }
+    },
+
+    resumeAutoRotate: function() {
+      if (this.config.autoRotate && !this.autoRotateInterval) {
+        this.startAutoRotate();
+      }
+    },
+
+    initializeFilters: function() {
+      // Set up initial filter state
+      this.applyFilters();
+    },
+
+    updateFilter: function(select) {
+      const filterType = select.dataset.filter;
+      this.currentFilters[filterType] = select.value;
+      this.applyFilters();
+      
+      // Track filter usage
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('testimonial_filter_used', {
+          filterType,
+          filterValue: select.value
+        });
+      }
+    },
+
+    applyFilters: function() {
+      const testimonialCards = this.container.querySelectorAll('.testimonial-card');
+      let visibleCount = 0;
+
+      testimonialCards.forEach(card => {
+        const shouldShow = this.shouldShowTestimonial(card);
+        
+        if (shouldShow) {
+          card.classList.remove('hidden');
+          card.classList.add('fade-in');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+          card.classList.remove('fade-in');
+        }
+      });
+
+      // Update carousel after filtering
+      this.currentSlide = 0;
+      this.setupCarousel();
+      
+      // Show "no results" message if needed
+      this.toggleNoResultsMessage(visibleCount === 0);
+    },
+
+    shouldShowTestimonial: function(card) {
+      const service = card.dataset.service;
+      const industry = card.dataset.industry;
+      const companySize = card.dataset.companySize;
+
+      return (
+        (!this.currentFilters.service || service === this.currentFilters.service) &&
+        (!this.currentFilters.industry || industry === this.currentFilters.industry) &&
+        (!this.currentFilters.companySize || companySize === this.currentFilters.companySize)
+      );
+    },
+
+    toggleNoResultsMessage: function(show) {
+      let noResultsMsg = this.container.querySelector('.no-results-message');
+      
+      if (show && !noResultsMsg) {
+        noResultsMsg = document.createElement('div');
+        noResultsMsg.className = 'no-results-message';
+        noResultsMsg.innerHTML = `
+          <div style="text-align: center; padding: 3rem; color: #6b7280;">
+            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; color: #d1d5db;"></i>
+            <h3>No testimonials found</h3>
+            <p>Try adjusting your filters to see more results.</p>
+            <button class="btn btn-secondary" onclick="this.closest('[data-showcase-id]').dispatchEvent(new CustomEvent('clearFilters'))">
+              Clear All Filters
+            </button>
+          </div>
+        `;
+        this.carouselTrack.appendChild(noResultsMsg);
+      } else if (!show && noResultsMsg) {
+        noResultsMsg.remove();
+      }
+    },
+
+    openVideoModal: function(videoUrl) {
+      const modal = this.container.querySelector('[data-video-modal]');
+      const iframe = modal.querySelector('[data-video-iframe]');
+      
+      // Convert YouTube watch URL to embed URL
+      const embedUrl = this.convertToEmbedUrl(videoUrl);
+      iframe.src = embedUrl;
+      
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      // Track video view
+      if (window.KPSAnalytics) {
+        window.KPSAnalytics.track('testimonial_video_opened', {
+          videoUrl: videoUrl
+        });
+      }
+    },
+
+    closeVideoModal: function() {
+      const modal = this.container.querySelector('[data-video-modal]');
+      const iframe = modal.querySelector('[data-video-iframe]');
+      
+      iframe.src = '';
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    },
+
+    convertToEmbedUrl: function(watchUrl) {
+      // Convert YouTube watch URL to embed URL
+      const videoId = watchUrl.split('v=')[1]?.split('&')[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : watchUrl;
+    },
+
+    openTestimonialForm: function() {
+      // Open testimonial submission form (could be a modal or redirect)
+      window.open('/submit-testimonial', '_blank');
+    },
+
+    openVideoRecording: function() {
+      // Open video recording interface
+      window.open('/record-testimonial', '_blank');
+    }
+  };
+
+  // Clear filters event listener
+  document.addEventListener('clearFilters', function(e) {
+    const showcase = window.KPSTestimonialShowcase;
+    if (showcase.container === e.target) {
+      // Reset all filters
+      showcase.currentFilters = { service: '', industry: '', companySize: '' };
+      
+      // Reset filter selects
+      showcase.container.querySelectorAll('[data-filter]').forEach(select => {
+        select.value = '';
+      });
+      
+      showcase.applyFilters();
+    }
+  });
+
+  // Auto-initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => window.KPSTestimonialShowcase.init());
+  } else {
+    window.KPSTestimonialShowcase.init();
+  }
+
+  // Handle resize for responsive carousel
+  window.addEventListener('resize', () => {
+    if (window.KPSTestimonialShowcase.container) {
+      window.KPSTestimonialShowcase.setupCarousel();
+    }
+  });
+</script>

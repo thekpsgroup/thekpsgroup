@@ -1,7 +1,38 @@
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
+import CRMDatabase from '../../utils/database.js';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
+
+// Helper function to estimate lead value
+function estimateLeadValue(service: string, budget: string): number {
+  const serviceMultipliers = {
+    'QuickBooks Consulting': 2500,
+    'QuickBooks Setup': 2500,
+    'Monthly Bookkeeping': 5000,
+    'Payroll Services': 5000,
+    'Tax Preparation': 3000,
+    'HR Services': 7500,
+    'Technology Consulting': 15000,
+    'Business Operations': 10000,
+    'Business Consulting': 8000,
+    'The Modern Suite': 25000,
+    'HVAC Consulting': 12000,
+    'Electrical Consulting': 12000
+  };
+
+  const budgetMultipliers = {
+    'Under $5,000': 0.5,
+    '$5,000 - $15,000': 1.0,
+    '$15,000 - $50,000': 1.5,
+    '$50,000+': 2.0
+  };
+
+  const baseValue = (serviceMultipliers as any)[service] || 5000;
+  const budgetModifier = (budgetMultipliers as any)[budget] || 1.0;
+  
+  return Math.round(baseValue * budgetModifier);
+}
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -98,6 +129,58 @@ export const POST: APIRoute = async ({ request }) => {
               <div class="label">💭 Message:</div>
               <div class="value">${message}</div>
             </div>
+            ` : ''}
+
+            <div class="field">
+              <div class="label">📅 Timestamp:</div>
+              <div class="value">${new Date().toLocaleString()}</div>
+            </div>
+          </div>
+
+          <div class="footer">
+            The KPS Group - Lead Management System<br>
+            <small>This lead has been automatically added to your analytics dashboard</small>
+          </div>
+        </body>
+      </html>
+    `;
+
+    // Save lead directly to database
+    try {
+      const leadData = {
+        name,
+        email,
+        phone,
+        service,
+        timeline,
+        budget: parseFloat(budget?.replace(/[^0-9.]/g, '') || '0') || 0,
+        source: 'contact_form',
+        status: 'new' as const,
+        notes: message,
+        value: estimateLeadValue(service || '', budget || ''),
+        created_at: new Date().toISOString()
+      };
+
+      const newLead = CRMDatabase.createLead(leadData);
+      
+      // Also track as analytics event
+      CRMDatabase.trackAnalyticsEvent({
+        event_type: 'lead_created',
+        page: '/contact',
+        action: 'form_submit',
+        value: newLead.id?.toString(),
+        user_agent: request.headers.get('user-agent') || '',
+        ip_address: request.headers.get('x-forwarded-for') || 
+                    request.headers.get('x-real-ip') || 
+                    'unknown',
+        session_id: Math.random().toString(36).substring(7)
+      });
+
+      console.log('Lead saved to database:', newLead.id);
+    } catch (databaseError) {
+      console.error('Failed to save lead to database:', databaseError);
+      // Continue with email sending even if database fails
+    }
             ` : ''}
 
             <div class="field">

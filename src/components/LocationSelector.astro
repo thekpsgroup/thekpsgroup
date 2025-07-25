@@ -1,0 +1,324 @@
+---
+import { MAJOR_CITIES, STATES } from '../data/cities';
+
+interface Props {
+  currentLocation?: string;
+  variant?: 'compact' | 'full';
+  className?: string;
+}
+
+const { currentLocation, variant = 'full', className = '' } = Astro.props;
+
+// Group cities by state
+const citiesByState = MAJOR_CITIES.reduce((acc: Record<string, typeof MAJOR_CITIES>, city) => {
+  if (!acc[city.state]) {
+    acc[city.state] = [];
+  }
+  acc[city.state].push(city);
+  return acc;
+}, {});
+
+// Sort cities within each state
+Object.keys(citiesByState).forEach(state => {
+  citiesByState[state].sort((a, b) => a.name.localeCompare(b.name));
+});
+---
+
+<div class={`location-selector ${className}`} data-variant={variant}>
+  <div class="location-selector-trigger">
+    <button 
+      type="button"
+      class="location-button"
+      aria-expanded="false"
+      aria-haspopup="true"
+      aria-label="Select your location"
+    >
+      <div class="flex items-center gap-3">
+        <div class="location-icon">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </div>
+        <div class="location-text">
+          <div class="selected-location">
+            {currentLocation || 'Select Location'}
+          </div>
+          {variant === 'full' && (
+            <div class="location-subtitle">
+              Choose your service area
+            </div>
+          )}
+        </div>
+        <div class="chevron">
+          <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <div class="location-dropdown" aria-hidden="true">
+    <div class="dropdown-content">
+      {variant === 'full' && (
+        <div class="dropdown-header">
+          <h3>Select Your Location</h3>
+          <p>Find local business consulting services in your area</p>
+        </div>
+      )}
+      
+      <!-- All Locations -->
+      <div class="location-section">
+        <a href="/locations" class="location-item featured">
+          <div class="location-item-icon">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+            </svg>
+          </div>
+          <div class="location-details">
+            <div class="location-name">All Locations</div>
+            <div class="location-meta">Complete service coverage</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- States -->
+      {variant === 'full' && (
+        <div class="location-section">
+          <div class="section-header">States</div>
+          {STATES.map(state => (
+            <a href={`/locations/${state.name.toLowerCase()}`} class="location-item">
+              <div class="location-item-icon state-icon">
+                {state.abbreviation}
+              </div>
+              <div class="location-details">
+                <div class="location-name">{state.name}</div>
+                <div class="location-meta">Statewide service</div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+
+      <!-- Major Cities by State -->
+      <div class="location-section">
+        <div class="section-header">Major Cities</div>
+        {Object.entries(citiesByState).map(([state, cities]) => (
+          <div class="state-group">
+            <div class="state-divider">{state}</div>
+            {cities.map(city => (
+              <a href={`/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}`} class="location-item">
+                <div class="location-item-icon city-icon">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m0 0h2M7 8h10M7 12h4m1 8l-1-1v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2l-1 1"/>
+                  </svg>
+                </div>
+                <div class="location-details">
+                  <div class="location-name">{city.name}</div>
+                  <div class="location-meta">{city.state} • Pop: {city.population.toLocaleString()}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const locationSelectors = document.querySelectorAll('.location-selector');
+    
+    locationSelectors.forEach(selector => {
+      const trigger = selector.querySelector('.location-button');
+      const dropdown = selector.querySelector('.location-dropdown');
+      const chevron = selector.querySelector('.chevron svg');
+      
+      if (!trigger || !dropdown || !chevron) return;
+      
+      function openDropdown() {
+        trigger.setAttribute('aria-expanded', 'true');
+        dropdown.setAttribute('aria-hidden', 'false');
+        dropdown.classList.add('show');
+        chevron.style.transform = 'rotate(180deg)';
+      }
+      
+      function closeDropdown() {
+        trigger.setAttribute('aria-expanded', 'false');
+        dropdown.setAttribute('aria-hidden', 'true');
+        dropdown.classList.remove('show');
+        chevron.style.transform = 'rotate(0deg)';
+      }
+      
+      function toggleDropdown() {
+        if (dropdown.classList.contains('show')) {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      }
+      
+      // Toggle dropdown on click
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleDropdown();
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!selector.contains(e.target as Node)) {
+          closeDropdown();
+        }
+      });
+      
+      // Handle keyboard navigation
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleDropdown();
+        } else if (e.key === 'Escape') {
+          closeDropdown();
+        }
+      });
+      
+      // Handle location item clicks
+      const locationItems = dropdown.querySelectorAll('.location-item');
+      locationItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          closeDropdown();
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .location-selector {
+    position: relative;
+    z-index: 20;
+  }
+  
+  .location-button {
+    @apply w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-left;
+    @apply hover:border-warning-400 hover:shadow-md transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-warning-400 focus:border-warning-400;
+  }
+  
+  .location-selector[data-variant="compact"] .location-button {
+    @apply px-3 py-2;
+  }
+  
+  .location-icon {
+    @apply flex-shrink-0 w-8 h-8 bg-warning-100 rounded-lg flex items-center justify-center;
+    @apply text-warning-600;
+  }
+  
+  .location-selector[data-variant="compact"] .location-icon {
+    @apply w-6 h-6;
+  }
+  
+  .selected-location {
+    @apply font-medium text-gray-900;
+  }
+  
+  .location-subtitle {
+    @apply text-sm text-gray-500;
+  }
+  
+  .chevron {
+    @apply flex-shrink-0 ml-auto text-gray-400;
+  }
+  
+  .location-dropdown {
+    @apply absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200;
+    @apply rounded-lg shadow-xl opacity-0 invisible transform scale-95;
+    @apply transition-all duration-200 max-h-96 overflow-hidden;
+  }
+  
+  .location-selector[data-variant="compact"] .location-dropdown {
+    @apply w-80;
+  }
+  
+  .location-dropdown.show {
+    @apply opacity-100 visible scale-100;
+  }
+  
+  .dropdown-content {
+    @apply p-4 max-h-80 overflow-y-auto;
+  }
+  
+  .dropdown-header {
+    @apply mb-4 pb-3 border-b border-gray-100;
+  }
+  
+  .dropdown-header h3 {
+    @apply font-semibold text-gray-900 mb-1;
+  }
+  
+  .dropdown-header p {
+    @apply text-sm text-gray-600;
+  }
+  
+  .location-section {
+    @apply mb-4 last:mb-0;
+  }
+  
+  .section-header {
+    @apply text-xs font-medium text-gray-500 uppercase tracking-wide mb-2;
+  }
+  
+  .state-group {
+    @apply mb-3 last:mb-0;
+  }
+  
+  .state-divider {
+    @apply text-xs font-medium text-gray-400 uppercase tracking-wide;
+    @apply bg-gray-50 px-2 py-1 rounded mb-1;
+  }
+  
+  .location-item {
+    @apply flex items-center gap-3 p-2 rounded-md text-gray-700;
+    @apply hover:bg-gray-50 hover:text-gray-900 transition-colors duration-150;
+    @apply focus:outline-none focus:bg-gray-50;
+  }
+  
+  .location-item.featured {
+    @apply bg-warning-50 text-warning-800 hover:bg-warning-100;
+  }
+  
+  .location-item-icon {
+    @apply flex-shrink-0 w-6 h-6 flex items-center justify-center;
+    @apply text-gray-400;
+  }
+  
+  .location-item.featured .location-item-icon {
+    @apply text-warning-600;
+  }
+  
+  .state-icon {
+    @apply bg-blue-100 text-blue-600 rounded text-xs font-bold;
+  }
+  
+  .city-icon {
+    @apply bg-gray-100 text-gray-500 rounded;
+  }
+  
+  .location-details {
+    @apply flex-1 min-w-0;
+  }
+  
+  .location-name {
+    @apply font-medium truncate;
+  }
+  
+  .location-meta {
+    @apply text-xs text-gray-500 truncate;
+  }
+  
+  .location-item.featured .location-meta {
+    @apply text-warning-600;
+  }
+</style>

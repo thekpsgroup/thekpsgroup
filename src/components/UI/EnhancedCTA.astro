@@ -1,0 +1,400 @@
+---
+import type { CityData } from '../../data/cities';
+
+interface Props {
+  variant?: 'primary' | 'secondary' | 'gradient' | 'minimal';
+  size?: 'small' | 'medium' | 'large';
+  city?: CityData;
+  serviceName?: string;
+  urgency?: 'low' | 'medium' | 'high';
+  showContactInfo?: boolean;
+  showTrustSignals?: boolean;
+  customMessage?: string;
+  trackingEvent?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'medium',
+  city,
+  serviceName,
+  urgency = 'medium',
+  showContactInfo = true,
+  showTrustSignals = true,
+  customMessage,
+  trackingEvent = 'cta_click'
+} = Astro.props;
+
+// Generate dynamic messaging based on context
+const generateMessage = () => {
+  if (customMessage) return customMessage;
+  
+  const location = city ? ` in ${city.name}, ${city.state}` : '';
+  const service = serviceName ? ` for ${serviceName}` : '';
+  
+  const messages = {
+    low: [
+      `Get expert business consulting${service}${location}`,
+      `Professional solutions${service} available${location}`,
+      `Transform your business${service}${location}`
+    ],
+    medium: [
+      `Ready to streamline your business${service}${location}?`,
+      `Start optimizing your operations${service}${location} today`,
+      `Get professional help${service}${location} now`
+    ],
+    high: [
+      `Don't wait - get expert help${service}${location} today!`,
+      `Limited availability${location} - contact us now!`,
+      `Transform your business${service}${location} this week!`
+    ]
+  };
+  
+  const messageArray = messages[urgency];
+  return messageArray[Math.floor(Math.random() * messageArray.length)];
+};
+
+const ctaMessage = generateMessage();
+
+// Trust signals
+const trustSignals = [
+  { icon: '⭐', text: '100+ Satisfied Clients' },
+  { icon: '🏆', text: 'QuickBooks Certified' },
+  { icon: '🔒', text: 'Secure & Confidential' },
+  { icon: '📞', text: 'Same-Day Response' }
+];
+
+// Contact methods
+const contactMethods = [
+  { 
+    type: 'phone',
+    value: '(469) 534-3392',
+    icon: '📞',
+    label: 'Call Now',
+    primary: true
+  },
+  {
+    type: 'email', 
+    value: 'sales@thekpsgroup.com',
+    icon: '✉️',
+    label: 'Email Us',
+    primary: false
+  },
+  {
+    type: 'form',
+    value: '/contact',
+    icon: '📝',
+    label: 'Get Quote',
+    primary: false
+  }
+];
+
+// Style classes based on variant and size
+const getClasses = () => {
+  const baseClasses = 'cta-container relative overflow-hidden transition-all duration-300';
+  
+  const variantClasses = {
+    primary: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-xl',
+    secondary: 'bg-white border-2 border-blue-600 text-blue-600 shadow-lg',
+    gradient: 'bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white shadow-2xl',
+    minimal: 'bg-gray-50 border border-gray-200 text-gray-900 shadow-md'
+  };
+  
+  const sizeClasses = {
+    small: 'p-4 rounded-lg',
+    medium: 'p-6 rounded-xl',
+    large: 'p-8 rounded-2xl'
+  };
+  
+  return `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`;
+};
+---
+
+<div class={getClasses()} id="enhanced-cta">
+  <!-- Background Animation -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-0 -left-4 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+    <div class="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="relative z-10">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      {urgency === 'high' && (
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 mb-3 animate-pulse">
+          🔥 Limited Time Offer
+        </div>
+      )}
+      
+      <h3 class={`font-bold leading-tight ${size === 'large' ? 'text-3xl' : size === 'medium' ? 'text-2xl' : 'text-xl'}`}>
+        {ctaMessage}
+      </h3>
+      
+      {showTrustSignals && (
+        <div class="flex flex-wrap justify-center items-center gap-4 mt-4">
+          {trustSignals.map(signal => (
+            <div class="flex items-center space-x-1 text-sm opacity-90">
+              <span>{signal.icon}</span>
+              <span>{signal.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <!-- Contact Methods -->
+    {showContactInfo && (
+      <div class="space-y-4">
+        {contactMethods.map(method => (
+          <div class={`contact-method ${method.primary ? 'primary' : 'secondary'}`}>
+            {method.type === 'phone' ? (
+              <a 
+                href={`tel:${method.value}`}
+                class={`contact-link ${method.primary ? 'primary' : 'secondary'}`}
+                data-tracking={trackingEvent}
+                data-method={method.type}
+              >
+                <div class="flex items-center justify-center space-x-3">
+                  <span class="text-2xl">{method.icon}</span>
+                  <div class="text-left">
+                    <div class={`font-bold ${size === 'large' ? 'text-lg' : 'text-base'}`}>
+                      {method.label}
+                    </div>
+                    <div class={`${size === 'large' ? 'text-base' : 'text-sm'} opacity-90`}>
+                      {method.value}
+                    </div>
+                  </div>
+                  <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            ) : method.type === 'email' ? (
+              <a 
+                href={`mailto:${method.value}`}
+                class={`contact-link ${method.primary ? 'primary' : 'secondary'}`}
+                data-tracking={trackingEvent}
+                data-method={method.type}
+              >
+                <div class="flex items-center justify-center space-x-3">
+                  <span class="text-2xl">{method.icon}</span>
+                  <div class="text-left">
+                    <div class={`font-bold ${size === 'large' ? 'text-lg' : 'text-base'}`}>
+                      {method.label}
+                    </div>
+                    <div class={`${size === 'large' ? 'text-base' : 'text-sm'} opacity-90`}>
+                      {method.value}
+                    </div>
+                  </div>
+                  <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            ) : (
+              <a 
+                href={method.value}
+                class={`contact-link ${method.primary ? 'primary' : 'secondary'}`}
+                data-tracking={trackingEvent}
+                data-method={method.type}
+              >
+                <div class="flex items-center justify-center space-x-3">
+                  <span class="text-2xl">{method.icon}</span>
+                  <div class="text-left">
+                    <div class={`font-bold ${size === 'large' ? 'text-lg' : 'text-base'}`}>
+                      {method.label}
+                    </div>
+                    <div class={`${size === 'large' ? 'text-base' : 'text-sm'} opacity-90`}>
+                      Free Consultation
+                    </div>
+                  </div>
+                  <svg class="w-5 h-5 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+    <!-- Additional Info -->
+    <div class="mt-6 text-center">
+      <p class={`${size === 'large' ? 'text-base' : 'text-sm'} opacity-80`}>
+        🚀 {city ? `Serving ${city.name} and surrounding areas` : 'Nationwide service available'}
+      </p>
+      <p class={`${size === 'large' ? 'text-sm' : 'text-xs'} opacity-70 mt-1`}>
+        No obligation consultation • Quick response guaranteed
+      </p>
+    </div>
+  </div>
+
+  <!-- Floating Action Indicators -->
+  <div class="absolute top-4 right-4 flex space-x-2">
+    <div class="w-3 h-3 bg-green-400 rounded-full animate-ping"></div>
+    <div class="w-3 h-3 bg-green-400 rounded-full animate-ping animation-delay-1000"></div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctaContainer = document.getElementById('enhanced-cta');
+    const contactLinks = document.querySelectorAll('.contact-link');
+    
+    // Intersection Observer for reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in-up');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    if (ctaContainer) {
+      observer.observe(ctaContainer);
+    }
+    
+    // Contact link interactions
+    contactLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const trackingEvent = this.getAttribute('data-tracking');
+        const method = this.getAttribute('data-method');
+        
+        // Add click animation
+        this.classList.add('animate-pulse');
+        setTimeout(() => {
+          this.classList.remove('animate-pulse');
+        }, 200);
+        
+        // Analytics tracking
+        if (typeof gtag === 'function') {
+          gtag('event', trackingEvent, {
+            'contact_method': method,
+            'cta_variant': '${variant}',
+            'cta_location': window.location.pathname
+          });
+        }
+        
+        // Custom event for other tracking systems
+        window.dispatchEvent(new CustomEvent('ctaClick', {
+          detail: { method, variant: '${variant}', location: window.location.pathname }
+        }));
+      });
+      
+      // Hover effects
+      link.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px) scale(1.02)';
+      });
+      
+      link.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+    
+    // Auto-rotate messaging for high urgency
+    if ('${urgency}' === 'high') {
+      const messages = [
+        '${ctaMessage}',
+        'Limited spots available - contact us now!',
+        'Expert help just one call away!',
+        'Don\'t miss out - get started today!'
+      ];
+      
+      let messageIndex = 0;
+      const titleElement = ctaContainer?.querySelector('h3');
+      
+      if (titleElement) {
+        setInterval(() => {
+          messageIndex = (messageIndex + 1) % messages.length;
+          titleElement.style.opacity = '0';
+          setTimeout(() => {
+            titleElement.textContent = messages[messageIndex];
+            titleElement.style.opacity = '1';
+          }, 200);
+        }, 5000);
+      }
+    }
+  });
+</script>
+
+<style>
+  .cta-container {
+    backdrop-filter: blur(10px);
+  }
+  
+  .contact-link {
+    display: block;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+  }
+  
+  .contact-link.primary {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .contact-link.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .contact-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Animations */
+  @keyframes blob {
+    0% { transform: translate(0px, 0px) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+    100% { transform: translate(0px, 0px) scale(1); }
+  }
+  
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  
+  .animation-delay-1000 {
+    animation-delay: 1s;
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .contact-link {
+      padding: 0.75rem;
+    }
+    
+    .contact-method {
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>

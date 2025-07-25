@@ -1,0 +1,337 @@
+---
+interface Service {
+  name: string;
+  category: string;
+  icon: string;
+  popular?: boolean;
+}
+
+interface Props {
+  services?: Service[];
+  showCategories?: boolean;
+  showSearch?: boolean;
+  maxDisplay?: number;
+}
+
+const {
+  services = [
+    { name: 'QuickBooks Setup', category: 'Accounting', icon: '📊', popular: true },
+    { name: 'Payroll Services', category: 'HR', icon: '💰', popular: true },
+    { name: 'Business Consulting', category: 'Strategy', icon: '🎯', popular: true },
+    { name: 'Tax Preparation', category: 'Accounting', icon: '📋' },
+    { name: 'HR Solutions', category: 'HR', icon: '👥' },
+    { name: 'Technology Consulting', category: 'Technology', icon: '💻' },
+    { name: 'Digital Marketing', category: 'Marketing', icon: '📱' },
+    { name: 'Financial Planning', category: 'Finance', icon: '📈' },
+    { name: 'Compliance Management', category: 'Legal', icon: '⚖️' },
+    { name: 'Process Optimization', category: 'Operations', icon: '⚙️' }
+  ],
+  showCategories = true,
+  showSearch = true,
+  maxDisplay = 20
+} = Astro.props;
+
+const categories = [...new Set(services.map(s => s.category))];
+---
+
+<div class="service-filter bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <h3 class="text-xl font-bold text-gray-900">Find Your Service</h3>
+    <div class="flex items-center space-x-2">
+      <span class="text-sm text-gray-500">{services.length} services</span>
+      <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  {showSearch && (
+    <div class="relative mb-6">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+      <input 
+        type="text" 
+        id="service-search"
+        class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+        placeholder="Search services..."
+        autocomplete="off"
+      />
+      <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+        <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  )}
+
+  <!-- Category Filters -->
+  {showCategories && (
+    <div class="mb-6">
+      <div class="flex flex-wrap gap-2">
+        <button 
+          class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-blue-600 text-white shadow-md hover:shadow-lg"
+          data-category="all"
+        >
+          All Services
+        </button>
+        {categories.map(category => (
+          <button 
+            class="category-filter px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md"
+            data-category={category}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Popular Services Badge -->
+  <div class="mb-4">
+    <div class="flex items-center space-x-2">
+      <div class="w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+      <span class="text-sm font-medium text-gray-600">Popular Services</span>
+    </div>
+  </div>
+
+  <!-- Services Grid -->
+  <div class="services-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {services.slice(0, maxDisplay).map(service => (
+      <div 
+        class="service-card p-4 rounded-lg border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 cursor-pointer group"
+        data-category={service.category}
+        data-service={service.name.toLowerCase()}
+      >
+        <div class="flex items-center space-x-3">
+          <div class="flex-shrink-0">
+            <div class="w-10 h-10 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex items-center justify-center text-lg group-hover:from-blue-100 group-hover:to-blue-200 transition-colors">
+              {service.icon}
+            </div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center space-x-2">
+              <h4 class="text-sm font-semibold text-gray-900 truncate">
+                {service.name}
+              </h4>
+              {service.popular && (
+                <div class="flex-shrink-0 w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full"></div>
+              )}
+            </div>
+            <p class="text-xs text-gray-500 mt-1">{service.category}</p>
+          </div>
+          <div class="flex-shrink-0">
+            <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <!-- View More Button -->
+  {services.length > maxDisplay && (
+    <div class="mt-6 text-center">
+      <button 
+        id="view-more-services"
+        class="inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-blue-600 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200"
+      >
+        View All {services.length} Services
+        <svg class="ml-2 -mr-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+    </div>
+  )}
+
+  <!-- No Results Message -->
+  <div id="no-results" class="hidden text-center py-8">
+    <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+      <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+    </div>
+    <h4 class="text-lg font-medium text-gray-900 mb-2">No services found</h4>
+    <p class="text-gray-500">Try adjusting your search or browse all categories.</p>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('service-search') as HTMLInputElement;
+    const categoryFilters = document.querySelectorAll('.category-filter');
+    const serviceCards = document.querySelectorAll('.service-card');
+    const noResults = document.getElementById('no-results');
+    const viewMoreBtn = document.getElementById('view-more-services');
+    
+    let currentCategory = 'all';
+    let currentSearch = '';
+    let showingAll = false;
+
+    // Search functionality
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        currentSearch = this.value.toLowerCase().trim();
+        filterServices();
+      });
+
+      // Clear search
+      const clearBtn = searchInput.parentElement?.querySelector('button');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+          searchInput.value = '';
+          currentSearch = '';
+          filterServices();
+        });
+      }
+    }
+
+    // Category filtering
+    categoryFilters.forEach(filter => {
+      filter.addEventListener('click', function() {
+        // Update active state
+        categoryFilters.forEach(f => {
+          f.classList.remove('bg-blue-600', 'text-white', 'shadow-md');
+          f.classList.add('bg-gray-100', 'text-gray-700');
+        });
+        
+        this.classList.remove('bg-gray-100', 'text-gray-700');
+        this.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+        
+        currentCategory = this.getAttribute('data-category') || 'all';
+        filterServices();
+      });
+    });
+
+    // View more functionality
+    if (viewMoreBtn) {
+      viewMoreBtn.addEventListener('click', function() {
+        showingAll = !showingAll;
+        
+        if (showingAll) {
+          serviceCards.forEach((card, index) => {
+            if (index >= parseInt('${maxDisplay}')) {
+              (card as HTMLElement).style.display = 'block';
+            }
+          });
+          this.innerHTML = `
+            View Less Services
+            <svg class="ml-2 -mr-1 w-4 h-4 transform rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          `;
+        } else {
+          serviceCards.forEach((card, index) => {
+            if (index >= parseInt('${maxDisplay}')) {
+              (card as HTMLElement).style.display = 'none';
+            }
+          });
+          this.innerHTML = `
+            View All ${services.length} Services
+            <svg class="ml-2 -mr-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          `;
+        }
+        
+        filterServices();
+      });
+    }
+
+    // Service card clicks
+    serviceCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const serviceName = this.getAttribute('data-service');
+        const serviceCategory = this.getAttribute('data-category');
+        
+        // Add click effect
+        this.classList.add('scale-95');
+        setTimeout(() => {
+          this.classList.remove('scale-95');
+        }, 150);
+        
+        // Analytics tracking (if available)
+        if (typeof gtag === 'function') {
+          gtag('event', 'service_filter_click', {
+            'service_name': serviceName,
+            'service_category': serviceCategory
+          });
+        }
+        
+        // Redirect to service page or trigger action
+        window.location.href = `/services/${serviceName}`;
+      });
+    });
+
+    function filterServices() {
+      let visibleCount = 0;
+      
+      serviceCards.forEach((card, index) => {
+        const cardElement = card as HTMLElement;
+        const cardCategory = cardElement.getAttribute('data-category') || '';
+        const cardService = cardElement.getAttribute('data-service') || '';
+        
+        // Check if should be shown based on pagination
+        const shouldShowByPagination = showingAll || index < parseInt('${maxDisplay}');
+        
+        // Check category filter
+        const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
+        
+        // Check search filter
+        const matchesSearch = currentSearch === '' || cardService.includes(currentSearch);
+        
+        if (shouldShowByPagination && matchesCategory && matchesSearch) {
+          cardElement.style.display = 'block';
+          visibleCount++;
+        } else {
+          cardElement.style.display = 'none';
+        }
+      });
+      
+      // Show/hide no results message
+      if (noResults) {
+        if (visibleCount === 0) {
+          noResults.style.display = 'block';
+        } else {
+          noResults.style.display = 'none';
+        }
+      }
+    }
+
+    // Initialize filter
+    filterServices();
+  });
+</script>
+
+<style>
+  .service-filter {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  }
+  
+  .service-card {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .service-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .category-filter {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .category-filter:hover {
+    transform: translateY(-1px);
+  }
+  
+  @media (max-width: 640px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

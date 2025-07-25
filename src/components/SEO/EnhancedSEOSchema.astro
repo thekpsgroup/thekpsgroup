@@ -1,0 +1,407 @@
+---
+import type { CityData } from '../../data/cities';
+
+interface BusinessHours {
+  dayOfWeek: string[];
+  opens: string;
+  closes: string;
+}
+
+interface ContactPoint {
+  contactType: string;
+  telephone: string;
+  email?: string;
+  availableLanguage?: string[];
+}
+
+interface Props {
+  city?: CityData;
+  pageType: 'LocalBusiness' | 'Service' | 'Organization' | 'WebPage';
+  serviceName?: string;
+  breadcrumbs?: Array<{ name: string; url: string }>;
+  faqItems?: Array<{ question: string; answer: string }>;
+  businessHours?: BusinessHours;
+  contactPoints?: ContactPoint[];
+  reviews?: {
+    aggregateRating: number;
+    reviewCount: number;
+    bestRating?: number;
+    worstRating?: number;
+  };
+  offers?: Array<{
+    name: string;
+    description: string;
+    priceRange?: string;
+    availability?: string;
+  }>;
+}
+
+const {
+  city,
+  pageType,
+  serviceName,
+  breadcrumbs = [],
+  faqItems = [],
+  businessHours = {
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+    opens: '08:00',
+    closes: '20:00'
+  },
+  contactPoints = [],
+  reviews,
+  offers = []
+} = Astro.props;
+
+// Generate comprehensive schema data
+const generateSchema = () => {
+  const baseUrl = 'https://thekpsgroup.com';
+  const schemas: any[] = [];
+
+  // 1. Organization Schema
+  const organizationSchema: any = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${baseUrl}/#organization`,
+    "name": "The KPS Group",
+    "alternateName": ["KPS Group", "The KPS Group LLC"],
+    "description": "Professional business consulting, QuickBooks setup, payroll services, HR solutions, and technology consulting for small to medium businesses.",
+    "url": baseUrl,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${baseUrl}/img/branding/kps-group-logo.png`,
+      "width": 300,
+      "height": 100
+    },
+    "image": `${baseUrl}/img/branding/kps-group-hero.jpg`,
+    "telephone": "+1-469-534-3392",
+    "email": "sales@thekpsgroup.com",
+    "foundingDate": "2020",
+    "numberOfEmployees": "10-25",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "US",
+      "addressRegion": city?.stateCode || "TX",
+      "addressLocality": city?.name || "Dallas",
+      "postalCode": city?.zipCodes?.[0] || "75201"
+    },
+    "areaServed": [
+      {
+        "@type": "State",
+        "name": "Texas"
+      },
+      {
+        "@type": "State", 
+        "name": "Oklahoma"
+      },
+      {
+        "@type": "Country",
+        "name": "United States"
+      }
+    ],
+    "serviceType": [
+      "Business Consulting",
+      "QuickBooks Consulting",
+      "Payroll Services",
+      "HR Services", 
+      "Technology Consulting",
+      "Digital Marketing"
+    ],
+    "sameAs": [
+      "https://www.facebook.com/OGKPSGroup",
+      "https://www.linkedin.com/company/thekpsgroup",
+      "https://twitter.com/thekpsgroup"
+    ],
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "telephone": "+1-469-534-3392",
+        "contactType": "sales",
+        "email": "sales@thekpsgroup.com",
+        "availableLanguage": ["English", "Spanish"],
+        "hoursAvailable": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": businessHours.dayOfWeek,
+          "opens": businessHours.opens,
+          "closes": businessHours.closes
+        }
+      },
+      ...contactPoints.map(cp => ({
+        "@type": "ContactPoint",
+        "contactType": cp.contactType,
+        "telephone": cp.telephone,
+        "email": cp.email,
+        "availableLanguage": cp.availableLanguage || ["English"]
+      }))
+    ],
+    "hasCredential": [
+      {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "Professional Certification",
+        "name": "QuickBooks ProAdvisor Certification"
+      }
+    ]
+  };
+
+  if (reviews) {
+    organizationSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": reviews.aggregateRating,
+      "reviewCount": reviews.reviewCount,
+      "bestRating": reviews.bestRating || 5,
+      "worstRating": reviews.worstRating || 1
+    };
+  }
+
+  schemas.push(organizationSchema);
+
+  // 2. Local Business Schema (if city provided)
+  if (city && pageType === 'LocalBusiness') {
+    const localBusinessSchema: any = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": `${baseUrl}/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}/#business`,
+      "name": `The KPS Group - ${city.name} Business Services`,
+      "description": `Professional business consulting services in ${city.name}, ${city.state}. QuickBooks setup, payroll services, HR solutions, and technology consulting.`,
+      "url": `${baseUrl}/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}`,
+      "image": `${baseUrl}/img/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}-services.jpg`,
+      "telephone": "+1-469-534-3392",
+      "email": "sales@thekpsgroup.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "",
+        "addressLocality": city.name,
+        "addressRegion": city.stateCode,
+        "postalCode": city.zipCodes[0],
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": city.latitude,
+        "longitude": city.longitude
+      },
+      "openingHours": `${businessHours.dayOfWeek.join(',')} ${businessHours.opens}-${businessHours.closes}`,
+      "priceRange": "$$",
+      "currenciesAccepted": "USD",
+      "paymentAccepted": ["Cash", "Credit Card", "Check", "Bank Transfer"],
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": city.name,
+          "containedInPlace": {
+            "@type": "State",
+            "name": city.state
+          }
+        },
+        {
+          "@type": "GeoCircle", 
+          "geoMidpoint": {
+            "@type": "GeoCoordinates",
+            "latitude": city.latitude,
+            "longitude": city.longitude
+          },
+          "geoRadius": "50000"
+        }
+      ],
+      "hasMap": `https://www.google.com/maps/search/?api=1&query=${city.latitude},${city.longitude}`,
+      "parentOrganization": {
+        "@id": `${baseUrl}/#organization`
+      }
+    };
+
+    if (reviews) {
+      localBusinessSchema.aggregateRating = organizationSchema.aggregateRating;
+    }
+
+    schemas.push(localBusinessSchema);
+  }
+
+  // 3. Service Schema (if service provided)
+  if (serviceName) {
+    const serviceSchema: any = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": `${baseUrl}/services/${serviceName.toLowerCase().replace(/\s+/g, '-')}/#service`,
+      "name": serviceName,
+      "description": `Professional ${serviceName.toLowerCase()} services ${city ? `in ${city.name}, ${city.state}` : 'nationwide'}.`,
+      "provider": {
+        "@id": `${baseUrl}/#organization`
+      },
+      "areaServed": city ? [
+        {
+          "@type": "City",
+          "name": city.name,
+          "containedInPlace": {
+            "@type": "State",
+            "name": city.state
+          }
+        }
+      ] : [
+        {
+          "@type": "Country",
+          "name": "United States"
+        }
+      ],
+      "serviceType": serviceName,
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceUrl": `${baseUrl}/services/${serviceName.toLowerCase().replace(/\s+/g, '-')}`,
+        "serviceSmsNumber": "+1-469-534-3392",
+        "servicePhone": "+1-469-534-3392"
+      }
+    };
+
+    if (offers.length > 0) {
+      serviceSchema.offers = offers.map(offer => ({
+        "@type": "Offer",
+        "name": offer.name,
+        "description": offer.description,
+        "priceRange": offer.priceRange || "$$",
+        "availability": offer.availability || "https://schema.org/InStock"
+      }));
+    }
+
+    schemas.push(serviceSchema);
+  }
+
+  // 4. Breadcrumb Schema
+  if (breadcrumbs.length > 0) {
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map((crumb, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": crumb.name,
+        "item": `${baseUrl}${crumb.url}`
+      }))
+    };
+
+    schemas.push(breadcrumbSchema);
+  }
+
+  // 5. FAQ Schema
+  if (faqItems.length > 0) {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+
+    schemas.push(faqSchema);
+  }
+
+  // 6. WebSite Schema with Search Action
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${baseUrl}/#website`,
+    "name": "The KPS Group",
+    "description": "Professional business consulting services nationwide",
+    "url": baseUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseUrl}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "publisher": {
+      "@id": `${baseUrl}/#organization`
+    }
+  };
+
+  schemas.push(websiteSchema);
+
+  return schemas;
+};
+
+const schemas = generateSchema();
+---
+
+{schemas.map((schema, index) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}
+
+<!-- Additional SEO Meta Tags -->
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<meta name="googlebot" content="index, follow" />
+
+{city && (
+  <>
+    <meta name="geo.region" content={`${city.stateCode}-${city.county}`} />
+    <meta name="geo.placename" content={city.name} />
+    <meta name="geo.position" content={`${city.latitude};${city.longitude}`} />
+    <meta name="ICBM" content={`${city.latitude}, ${city.longitude}`} />
+  </>
+)}
+
+<!-- Open Graph Enhanced -->
+<meta property="og:site_name" content="The KPS Group" />
+<meta property="og:type" content={pageType === 'LocalBusiness' ? 'business.business' : 'website'} />
+{city && (
+  <>
+    <meta property="business:contact_data:locality" content={city.name} />
+    <meta property="business:contact_data:region" content={city.state} />
+    <meta property="business:contact_data:postal_code" content={city.zipCodes[0]} />
+    <meta property="business:contact_data:country_name" content="United States" />
+  </>
+)}
+
+<!-- Twitter Card Enhanced -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@thekpsgroup" />
+<meta name="twitter:creator" content="@thekpsgroup" />
+
+<!-- Local Business Specific -->
+{city && pageType === 'LocalBusiness' && (
+  <>
+    <link rel="alternate" type="application/rss+xml" title={`The KPS Group ${city.name} Services`} href={`/feeds/${city.name.toLowerCase().replace(/\s+/g, '-')}.xml`} />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="distribution" content="Global" />
+    <meta name="rating" content="General" />
+  </>
+)}
+
+<!-- Preload Critical Resources -->
+<link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/img/branding/kps-group-logo.webp" as="image" />
+
+<!-- DNS Prefetch for External Resources -->
+<link rel="dns-prefetch" href="//www.google-analytics.com" />
+<link rel="dns-prefetch" href="//fonts.googleapis.com" />
+<link rel="dns-prefetch" href="//api.thekpsgroup.com" />
+
+<!-- Canonical and Alternate Languages -->
+{city && (
+  <link rel="alternate" hreflang="en-us" href={`https://thekpsgroup.com/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}`} />
+)}
+
+<style>
+  /* Enhanced print styles for better SEO */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    body {
+      -webkit-print-color-adjust: exact;
+      color-adjust: exact;
+    }
+    
+    .print-break-before {
+      page-break-before: always;
+    }
+    
+    .print-break-after {
+      page-break-after: always;
+    }
+  }
+</style>

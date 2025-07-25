@@ -1,0 +1,395 @@
+---
+import { MAJOR_CITIES } from '../data/cities';
+
+interface Props {
+  selectedCity?: string;
+  className?: string;
+  showPopups?: boolean;
+}
+
+const { selectedCity, className = '', showPopups = true } = Astro.props;
+
+// Group cities by state for better organization
+const citiesByState = MAJOR_CITIES.reduce((acc, city) => {
+  if (!acc[city.stateCode]) {
+    acc[city.stateCode] = [];
+  }
+  acc[city.stateCode].push(city);
+  return acc;
+}, {} as Record<string, typeof MAJOR_CITIES>);
+
+// Define state regions for visual grouping
+const stateRegions = {
+  'TX': { name: 'Texas', color: 'text-green-600', bgColor: 'bg-green-100', cities: citiesByState['TX'] || [] },
+  'OK': { name: 'Oklahoma', color: 'text-orange-600', bgColor: 'bg-orange-100', cities: citiesByState['OK'] || [] },
+  'CA': { name: 'California', color: 'text-blue-600', bgColor: 'bg-blue-100', cities: citiesByState['CA'] || [] },
+  'IL': { name: 'Illinois', color: 'text-purple-600', bgColor: 'bg-purple-100', cities: citiesByState['IL'] || [] },
+  'AZ': { name: 'Arizona', color: 'text-red-600', bgColor: 'bg-red-100', cities: citiesByState['AZ'] || [] },
+  'PA': { name: 'Pennsylvania', color: 'text-indigo-600', bgColor: 'bg-indigo-100', cities: citiesByState['PA'] || [] },
+  'CO': { name: 'Colorado', color: 'text-teal-600', bgColor: 'bg-teal-100', cities: citiesByState['CO'] || [] },
+  'TN': { name: 'Tennessee', color: 'text-yellow-600', bgColor: 'bg-yellow-100', cities: citiesByState['TN'] || [] },
+  'FL': { name: 'Florida', color: 'text-pink-600', bgColor: 'bg-pink-100', cities: citiesByState['FL'] || [] },
+  'WA': { name: 'Washington', color: 'text-gray-600', bgColor: 'bg-gray-100', cities: citiesByState['WA'] || [] }
+};
+---
+
+<div class={`interactive-location-map ${className}`}>
+  <!-- Map Header -->
+  <div class="map-header">
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">
+      Our Service Coverage
+    </h3>
+    <p class="text-gray-600 mb-6">
+      Interactive map of cities where we provide business consulting services
+    </p>
+  </div>
+
+  <!-- Map Container -->
+  <div class="map-container">
+    <!-- Visual US Map Representation -->
+    <div class="us-map-visual">
+      <div class="map-regions">
+        {Object.entries(stateRegions).map(([stateCode, region]) => (
+          <div class={`state-region ${region.bgColor} hover:shadow-lg transition-all duration-300`} data-state={stateCode}>
+            <div class="region-header">
+              <h4 class={`font-bold ${region.color}`}>{region.name}</h4>
+              <span class="text-sm text-gray-500">{region.cities.length} cities</span>
+            </div>
+            
+            <div class="cities-grid">
+              {region.cities.map(city => (
+                <button 
+                  type="button"
+                  class={`city-marker ${selectedCity === city.name ? 'selected' : ''}`}
+                  data-city={city.name}
+                  data-state={city.stateCode}
+                  data-population={city.population}
+                  data-metro={city.metro}
+                  data-opportunity={city.opportunity}
+                  aria-label={`${city.name}, ${city.state} - Population: ${city.population.toLocaleString()}`}
+                >
+                  <div class="city-marker-dot"></div>
+                  <span class="city-name">{city.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Map Legend -->
+    <div class="map-legend">
+      <h4 class="font-semibold text-gray-900 mb-3">Service Area Legend</h4>
+      <div class="legend-items">
+        <div class="legend-item">
+          <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+          <span class="text-sm text-gray-600">High Opportunity Markets</span>
+        </div>
+        <div class="legend-item">
+          <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+          <span class="text-sm text-gray-600">Medium Opportunity Markets</span>
+        </div>
+        <div class="legend-item">
+          <div class="w-3 h-3 bg-gray-400 rounded-full"></div>
+          <span class="text-sm text-gray-600">Emerging Markets</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- City Information Panel -->
+  {showPopups && (
+    <div class="city-info-panel" id="cityInfoPanel" style="display: none;">
+      <div class="panel-content">
+        <div class="panel-header">
+          <h4 class="city-info-name text-lg font-bold text-gray-900"></h4>
+          <button type="button" class="close-panel" aria-label="Close city information">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="panel-body">
+          <div class="city-stats">
+            <div class="stat-item">
+              <span class="stat-label">Population:</span>
+              <span class="stat-value city-info-population"></span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Metro Area:</span>
+              <span class="stat-value city-info-metro"></span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Market Opportunity:</span>
+              <span class="stat-value city-info-opportunity"></span>
+            </div>
+          </div>
+          
+          <div class="panel-actions">
+            <a href="" class="btn-view-city">
+              View City Services
+            </a>
+            <a href="/contact" class="btn-contact-city">
+              Get Consultation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cityMarkers = document.querySelectorAll('.city-marker');
+    const cityInfoPanel = document.getElementById('cityInfoPanel');
+    const closePanel = document.querySelector('.close-panel');
+    
+    if (!cityInfoPanel) return;
+    
+    // City marker click handlers
+    cityMarkers.forEach(marker => {
+      marker.addEventListener('click', (e) => {
+        const button = e.currentTarget as HTMLButtonElement;
+        const cityName = button.dataset.city;
+        const state = button.dataset.state;
+        const population = button.dataset.population;
+        const metro = button.dataset.metro;
+        const opportunity = button.dataset.opportunity;
+        
+        // Remove previous selections
+        cityMarkers.forEach(m => m.classList.remove('selected'));
+        button.classList.add('selected');
+        
+        // Update panel content
+        const nameEl = cityInfoPanel.querySelector('.city-info-name');
+        const populationEl = cityInfoPanel.querySelector('.city-info-population');
+        const metroEl = cityInfoPanel.querySelector('.city-info-metro');
+        const opportunityEl = cityInfoPanel.querySelector('.city-info-opportunity');
+        const viewCityBtn = cityInfoPanel.querySelector('.btn-view-city') as HTMLAnchorElement;
+        
+        if (nameEl) nameEl.textContent = `${cityName}, ${state}`;
+        if (populationEl) populationEl.textContent = parseInt(population || '0').toLocaleString();
+        if (metroEl) metroEl.textContent = metro || 'N/A';
+        if (opportunityEl) {
+          opportunityEl.textContent = opportunity || 'medium';
+          opportunityEl.className = `stat-value city-info-opportunity opportunity-${opportunity}`;
+        }
+        
+        if (viewCityBtn) {
+          viewCityBtn.href = `/locations/${cityName?.toLowerCase().replace(/\s+/g, '-')}`;
+        }
+        
+        // Show panel
+        cityInfoPanel.style.display = 'block';
+        setTimeout(() => cityInfoPanel.classList.add('show'), 10);
+      });
+      
+      // Hover effects
+      marker.addEventListener('mouseenter', () => {
+        marker.classList.add('hover');
+      });
+      
+      marker.addEventListener('mouseleave', () => {
+        marker.classList.remove('hover');
+      });
+    });
+    
+    // Close panel handler
+    if (closePanel) {
+      closePanel.addEventListener('click', () => {
+        cityInfoPanel.classList.remove('show');
+        setTimeout(() => {
+          cityInfoPanel.style.display = 'none';
+        }, 300);
+        
+        // Remove selections
+        cityMarkers.forEach(m => m.classList.remove('selected'));
+      });
+    }
+    
+    // Close panel when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!cityInfoPanel.contains(e.target as Node) && 
+          !Array.from(cityMarkers).some(marker => marker.contains(e.target as Node))) {
+        cityInfoPanel.classList.remove('show');
+        setTimeout(() => {
+          cityInfoPanel.style.display = 'none';
+        }, 300);
+        cityMarkers.forEach(m => m.classList.remove('selected'));
+      }
+    });
+  });
+</script>
+
+<style>
+  .interactive-location-map {
+    @apply bg-white rounded-xl shadow-lg p-6;
+  }
+  
+  .map-header {
+    @apply text-center mb-8;
+  }
+  
+  .map-container {
+    @apply flex flex-col lg:flex-row gap-8;
+  }
+  
+  .us-map-visual {
+    @apply flex-1;
+  }
+  
+  .map-regions {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+  
+  .state-region {
+    @apply p-4 rounded-lg border border-gray-200;
+  }
+  
+  .region-header {
+    @apply flex items-center justify-between mb-3 pb-2 border-b border-gray-200;
+  }
+  
+  .cities-grid {
+    @apply space-y-2;
+  }
+  
+  .city-marker {
+    @apply w-full flex items-center gap-2 p-2 rounded-md text-left;
+    @apply hover:bg-white hover:shadow-sm transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-warning-400;
+  }
+  
+  .city-marker.selected {
+    @apply bg-warning-100 shadow-sm;
+  }
+  
+  .city-marker.hover {
+    @apply scale-105;
+  }
+  
+  .city-marker-dot {
+    @apply w-2 h-2 rounded-full flex-shrink-0;
+    @apply bg-gray-400;
+  }
+  
+  .city-marker[data-opportunity="high"] .city-marker-dot {
+    @apply bg-green-500;
+  }
+  
+  .city-marker[data-opportunity="medium"] .city-marker-dot {
+    @apply bg-yellow-500;
+  }
+  
+  .city-marker[data-opportunity="low"] .city-marker-dot {
+    @apply bg-gray-400;
+  }
+  
+  .city-name {
+    @apply text-sm font-medium text-gray-700 truncate;
+  }
+  
+  .city-marker.selected .city-name {
+    @apply text-warning-700;
+  }
+  
+  .map-legend {
+    @apply lg:w-64 bg-gray-50 rounded-lg p-4;
+  }
+  
+  .legend-items {
+    @apply space-y-2;
+  }
+  
+  .legend-item {
+    @apply flex items-center gap-2;
+  }
+  
+  .city-info-panel {
+    @apply fixed bottom-4 right-4 w-80 bg-white rounded-lg shadow-xl border;
+    @apply opacity-0 transform translate-y-4 transition-all duration-300;
+    z-index: 50;
+  }
+  
+  .city-info-panel.show {
+    @apply opacity-100 transform translate-y-0;
+  }
+  
+  .panel-content {
+    @apply p-4;
+  }
+  
+  .panel-header {
+    @apply flex items-center justify-between mb-3 pb-2 border-b border-gray-200;
+  }
+  
+  .close-panel {
+    @apply text-gray-400 hover:text-gray-600 transition-colors;
+  }
+  
+  .city-stats {
+    @apply space-y-2 mb-4;
+  }
+  
+  .stat-item {
+    @apply flex justify-between text-sm;
+  }
+  
+  .stat-label {
+    @apply text-gray-600;
+  }
+  
+  .stat-value {
+    @apply font-medium text-gray-900;
+  }
+  
+  .opportunity-high {
+    @apply text-green-600;
+  }
+  
+  .opportunity-medium {
+    @apply text-yellow-600;
+  }
+  
+  .opportunity-low {
+    @apply text-gray-600;
+  }
+  
+  .panel-actions {
+    @apply flex gap-2;
+  }
+  
+  .btn-view-city {
+    @apply flex-1 bg-warning-500 text-white text-center py-2 px-3 rounded-md;
+    @apply hover:bg-warning-600 transition-colors text-sm font-medium;
+  }
+  
+  .btn-contact-city {
+    @apply flex-1 bg-gray-100 text-gray-700 text-center py-2 px-3 rounded-md;
+    @apply hover:bg-gray-200 transition-colors text-sm font-medium;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 1024px) {
+    .city-info-panel {
+      @apply bottom-4 left-4 right-4 w-auto;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .map-regions {
+      @apply grid-cols-1;
+    }
+    
+    .map-container {
+      @apply flex-col;
+    }
+    
+    .map-legend {
+      @apply w-full;
+    }
+  }
+</style>

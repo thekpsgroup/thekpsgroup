@@ -235,6 +235,89 @@ import { BUSINESS } from '../data/constants';
           </div>
         </div>
         
+        <!-- Locations Dropdown -->
+        <div class="relative group">
+          <button class="nav-link group flex items-center gap-1">
+            <span>Locations</span>
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+            <div class="nav-indicator"></div>
+          </button>
+          <div class="absolute top-full left-0 mt-2 w-80 bg-black/95 backdrop-blur-lg border border-accent-600/20 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <div class="p-6">
+              <div class="text-sm text-accent-400 font-medium mb-4">Service Areas</div>
+              <div class="grid grid-cols-2 gap-3">
+                <!-- States -->
+                <div class="col-span-2 border-b border-accent-600/20 pb-3 mb-3">
+                  <div class="text-xs text-accent-400 font-medium mb-2">STATES</div>
+                  <div class="flex gap-3">
+                    <a href="/locations/texas" class="dropdown-link-company group flex-1">
+                      <div class="text-center">
+                        <div class="font-medium text-white">Texas</div>
+                        <div class="text-xs text-gray-400">Statewide Service</div>
+                      </div>
+                    </a>
+                    <a href="/locations/oklahoma" class="dropdown-link-company group flex-1">
+                      <div class="text-center">
+                        <div class="font-medium text-white">Oklahoma</div>
+                        <div class="text-xs text-gray-400">Statewide Service</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                
+                <!-- Major Cities -->
+                <div class="text-xs text-accent-400 font-medium mb-2 col-span-2">MAJOR CITIES</div>
+                <a href="/locations/austin" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-white">Austin</div>
+                    <div class="text-xs text-gray-400">TX</div>
+                  </div>
+                </a>
+                <a href="/locations/dallas" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-white">Dallas</div>
+                    <div class="text-xs text-gray-400">TX</div>
+                  </div>
+                </a>
+                <a href="/locations/houston" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-white">Houston</div>
+                    <div class="text-xs text-gray-400">TX</div>
+                  </div>
+                </a>
+                <a href="/locations/oklahoma-city" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-white">Oklahoma City</div>
+                    <div class="text-xs text-gray-400">OK</div>
+                  </div>
+                </a>
+                <a href="/locations/chicago" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-white">Chicago</div>
+                    <div class="text-xs text-gray-400">IL</div>
+                  </div>
+                </a>
+                <a href="/locations/los-angeles" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-white">Los Angeles</div>
+                    <div class="text-xs text-gray-400">CA</div>
+                  </div>
+                </a>
+              </div>
+              <div class="mt-4 pt-3 border-t border-accent-600/20">
+                <a href="/locations" class="dropdown-link-company group">
+                  <div class="text-center">
+                    <div class="font-medium text-warning-400">View All Locations</div>
+                    <div class="text-xs text-gray-400">Complete service area coverage</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
         <!-- The Modern Suite Dropdown -->
         <div class="relative group">
           <button class="nav-link group flex items-center gap-1">
@@ -522,6 +605,76 @@ import { BUSINESS } from '../data/constants';
           <div>
             <div class="font-semibold">Modern OS</div>
             <div class="text-xs text-accent-400">All-in-One Platform</div>
+          </div>
+        </a>
+      </div>
+      
+      <!-- Locations Section -->
+      <div class="border-t border-accent-600/20 pt-3 mt-3">
+        <div class="text-accent-400 text-sm font-semibold mb-2 px-3">Service Locations</div>
+        
+        <!-- All Locations -->
+        <a href="/locations" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-semibold">All Locations</div>
+            <div class="text-xs text-accent-400">View service areas</div>
+          </div>
+        </a>
+        
+        <!-- States -->
+        <a href="/locations/texas" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-xs font-bold">
+            TX
+          </div>
+          <div>
+            <div class="font-semibold">Texas</div>
+            <div class="text-xs text-accent-400">Primary market</div>
+          </div>
+        </a>
+        
+        <a href="/locations/oklahoma" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white text-xs font-bold">
+            OK
+          </div>
+          <div>
+            <div class="font-semibold">Oklahoma</div>
+            <div class="text-xs text-accent-400">Regional expansion</div>
+          </div>
+        </a>
+        
+        <!-- Top Cities -->
+        <a href="/locations/austin" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+            AU
+          </div>
+          <div>
+            <div class="font-semibold">Austin</div>
+            <div class="text-xs text-accent-400">Texas</div>
+          </div>
+        </a>
+        
+        <a href="/locations/dallas" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+            DA
+          </div>
+          <div>
+            <div class="font-semibold">Dallas</div>
+            <div class="text-xs text-accent-400">Texas</div>
+          </div>
+        </a>
+        
+        <a href="/locations/houston" class="mobile-nav-link flex items-center gap-3 pl-6">
+          <div class="w-5 h-5 rounded-full bg-gradient-to-r from-teal-500 to-teal-600 flex items-center justify-center text-white text-xs font-bold">
+            HO
+          </div>
+          <div>
+            <div class="font-semibold">Houston</div>
+            <div class="text-xs text-accent-400">Texas</div>
           </div>
         </a>
       </div>

@@ -1,0 +1,522 @@
+---
+interface Testimonial {
+  id: string;
+  name: string;
+  title: string;
+  company: string;
+  location?: string;
+  rating: number;
+  content: string;
+  image?: string;
+  service?: string;
+  date?: string;
+  verified?: boolean;
+}
+
+interface Props {
+  testimonials?: Testimonial[];
+  autoplay?: boolean;
+  showFilters?: boolean;
+  showRatings?: boolean;
+  layout?: 'carousel' | 'grid' | 'masonry';
+  maxDisplay?: number;
+}
+
+const {
+  testimonials = [
+    {
+      id: '1',
+      name: 'Sarah Johnson',
+      title: 'CEO',
+      company: 'TechStart Solutions',
+      location: 'Dallas, TX',
+      rating: 5,
+      content: 'The KPS Group transformed our QuickBooks setup and streamlined our entire accounting process. Their expertise saved us countless hours and significantly improved our financial reporting accuracy.',
+      image: '/img/testimonials/sarah-j.jpg',
+      service: 'QuickBooks Setup',
+      date: '2024-01-15',
+      verified: true
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      title: 'Operations Manager',
+      company: 'Retail Plus Inc.',
+      location: 'Houston, TX',
+      rating: 5,
+      content: 'Outstanding payroll services! They handled our complex multi-state payroll requirements flawlessly. The team is knowledgeable, responsive, and always available when we need support.',
+      image: '/img/testimonials/michael-c.jpg',
+      service: 'Payroll Services',
+      date: '2024-02-03',
+      verified: true
+    },
+    {
+      id: '3',
+      name: 'Lisa Rodriguez',
+      title: 'Founder',
+      company: 'Creative Design Studio',
+      location: 'Austin, TX',
+      rating: 5,
+      content: 'Their business consulting helped us scale from 5 to 25 employees efficiently. The HR solutions they implemented have been game-changing for our growing team.',
+      image: '/img/testimonials/lisa-r.jpg',
+      service: 'Business Consulting',
+      date: '2024-01-28',
+      verified: true
+    },
+    {
+      id: '4',
+      name: 'David Thompson',
+      title: 'CFO',
+      company: 'Manufacturing Co.',
+      location: 'Oklahoma City, OK',
+      rating: 5,
+      content: 'Exceptional technology consulting services. They modernized our entire IT infrastructure and provided ongoing support that keeps our operations running smoothly.',
+      image: '/img/testimonials/david-t.jpg',
+      service: 'Technology Consulting',
+      date: '2024-02-10',
+      verified: true
+    },
+    {
+      id: '5',
+      name: 'Amanda White',
+      title: 'Owner',
+      company: 'Local Bistro',
+      location: 'Tulsa, OK',
+      rating: 5,
+      content: 'Perfect for small businesses! They set up our payroll and QuickBooks system perfectly. The team is professional, affordable, and truly cares about our success.',
+      image: '/img/testimonials/amanda-w.jpg',
+      service: 'Small Business Package',
+      date: '2024-01-20',
+      verified: true
+    },
+    {
+      id: '6',
+      name: 'Robert Kim',
+      title: 'Director',
+      company: 'E-commerce Solutions',
+      location: 'Fort Worth, TX',
+      rating: 5,
+      content: 'Their digital marketing strategies increased our online presence significantly. The ROI has been incredible, and they continue to provide valuable insights.',
+      image: '/img/testimonials/robert-k.jpg',
+      service: 'Digital Marketing',
+      date: '2024-02-05',
+      verified: true
+    }
+  ],
+  autoplay = true,
+  showFilters = true,
+  showRatings = true,
+  layout = 'carousel',
+  maxDisplay = 6
+} = Astro.props;
+
+const services = [...new Set(testimonials.map(t => t.service).filter(Boolean))];
+const averageRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length;
+---
+
+<div class="testimonial-showcase bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden">
+  <!-- Header -->
+  <div class="bg-white border-b border-gray-200 p-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h3 class="text-2xl font-bold text-gray-900">Client Success Stories</h3>
+        <div class="flex items-center space-x-2 mt-2">
+          <div class="flex items-center">
+            {Array.from({length: 5}, (_, i) => (
+              <svg class={`w-5 h-5 ${i < Math.floor(averageRating) ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+          <span class="text-sm text-gray-600">
+            {averageRating.toFixed(1)} average • {testimonials.length} reviews
+          </span>
+          <div class="flex items-center space-x-1">
+            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span class="text-xs text-green-600">All Verified</span>
+          </div>
+        </div>
+      </div>
+      
+      {showFilters && services.length > 0 && (
+        <div class="flex flex-wrap gap-2">
+          <button 
+            class="service-filter px-3 py-1 text-sm rounded-full bg-blue-600 text-white shadow-md transition-all duration-200"
+            data-service="all"
+          >
+            All Services
+          </button>
+          {services.slice(0, 4).map(service => (
+            <button 
+              class="service-filter px-3 py-1 text-sm rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200"
+              data-service={service}
+            >
+              {service}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Testimonials Container -->
+  <div class="relative">
+    {layout === 'carousel' ? (
+      <!-- Carousel Layout -->
+      <div class="testimonial-carousel" data-autoplay={autoplay ? 'true' : 'false'}>
+        <div class="testimonial-track flex transition-transform duration-500 ease-in-out">
+          {testimonials.map((testimonial, index) => (
+            <div 
+              class="testimonial-slide flex-shrink-0 w-full p-6"
+              data-service={testimonial.service}
+              data-index={index}
+            >
+              <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-6 h-full">
+                <!-- Header -->
+                <div class="flex items-start space-x-4 mb-4">
+                  <div class="flex-shrink-0">
+                    {testimonial.image ? (
+                      <img 
+                        src={testimonial.image} 
+                        alt={testimonial.name}
+                        class="w-12 h-12 rounded-full object-cover ring-2 ring-blue-100"
+                        onerror="this.src='/img/testimonials/default-avatar.svg'"
+                      />
+                    ) : (
+                      <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg">
+                        {testimonial.name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center space-x-2">
+                      <h4 class="text-lg font-semibold text-gray-900 truncate">
+                        {testimonial.name}
+                      </h4>
+                      {testimonial.verified && (
+                        <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                      )}
+                    </div>
+                    <p class="text-sm text-gray-600">
+                      {testimonial.title} at {testimonial.company}
+                    </p>
+                    {testimonial.location && (
+                      <p class="text-xs text-gray-500">{testimonial.location}</p>
+                    )}
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="flex items-center">
+                      {Array.from({length: 5}, (_, i) => (
+                        <svg class={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Content -->
+                <blockquote class="text-gray-700 text-base leading-relaxed mb-4">
+                  "{testimonial.content}"
+                </blockquote>
+
+                <!-- Footer -->
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                  {testimonial.service && (
+                    <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-md">
+                      {testimonial.service}
+                    </span>
+                  )}
+                  {testimonial.date && (
+                    <span>{new Date(testimonial.date).toLocaleDateString()}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex items-center justify-between px-6 py-4">
+          <button class="nav-btn prev-btn bg-white shadow-md hover:shadow-lg rounded-full p-2 transition-all duration-200">
+            <svg class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <div class="flex space-x-2">
+            {testimonials.map((_, index) => (
+              <button 
+                class={`indicator w-3 h-3 rounded-full transition-all duration-200 ${index === 0 ? 'bg-blue-600' : 'bg-gray-300'}`}
+                data-index={index}
+              ></button>
+            ))}
+          </div>
+          
+          <button class="nav-btn next-btn bg-white shadow-md hover:shadow-lg rounded-full p-2 transition-all duration-200">
+            <svg class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    ) : (
+      <!-- Grid Layout -->
+      <div class="testimonial-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+        {testimonials.slice(0, maxDisplay).map(testimonial => (
+          <div 
+            class="testimonial-card bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-all duration-300"
+            data-service={testimonial.service}
+          >
+            <!-- Same content structure as carousel slide -->
+            <div class="flex items-start space-x-4 mb-4">
+              <div class="flex-shrink-0">
+                {testimonial.image ? (
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.name}
+                    class="w-12 h-12 rounded-full object-cover ring-2 ring-blue-100"
+                    onerror="this.src='/img/testimonials/default-avatar.svg'"
+                  />
+                ) : (
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold text-lg">
+                    {testimonial.name.charAt(0)}
+                  </div>
+                )}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center space-x-2">
+                  <h4 class="text-lg font-semibold text-gray-900 truncate">
+                    {testimonial.name}
+                  </h4>
+                  {testimonial.verified && (
+                    <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                  )}
+                </div>
+                <p class="text-sm text-gray-600">
+                  {testimonial.title} at {testimonial.company}
+                </p>
+                {testimonial.location && (
+                  <p class="text-xs text-gray-500">{testimonial.location}</p>
+                )}
+              </div>
+            </div>
+
+            <div class="flex items-center mb-3">
+              {Array.from({length: 5}, (_, i) => (
+                <svg class={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+
+            <blockquote class="text-gray-700 text-sm leading-relaxed mb-4">
+              "{testimonial.content}"
+            </blockquote>
+
+            <div class="flex items-center justify-between text-xs text-gray-500">
+              {testimonial.service && (
+                <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-md">
+                  {testimonial.service}
+                </span>
+              )}
+              {testimonial.date && (
+                <span>{new Date(testimonial.date).toLocaleDateString()}</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.testimonial-carousel');
+    const track = document.querySelector('.testimonial-track');
+    const slides = document.querySelectorAll('.testimonial-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const serviceFilters = document.querySelectorAll('.service-filter');
+    
+    let currentIndex = 0;
+    let autoplayInterval: number;
+    const autoplay = carousel?.getAttribute('data-autoplay') === 'true';
+    
+    // Carousel functionality
+    if (carousel && track && slides.length > 0) {
+      function updateCarousel() {
+        const translateX = -currentIndex * 100;
+        track.style.transform = `translateX(${translateX}%)`;
+        
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+          if (index === currentIndex) {
+            indicator.classList.add('bg-blue-600');
+            indicator.classList.remove('bg-gray-300');
+          } else {
+            indicator.classList.remove('bg-blue-600');
+            indicator.classList.add('bg-gray-300');
+          }
+        });
+      }
+      
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateCarousel();
+      }
+      
+      function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateCarousel();
+      }
+      
+      // Navigation events
+      nextBtn?.addEventListener('click', nextSlide);
+      prevBtn?.addEventListener('click', prevSlide);
+      
+      // Indicator events
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          currentIndex = index;
+          updateCarousel();
+        });
+      });
+      
+      // Autoplay
+      if (autoplay) {
+        function startAutoplay() {
+          autoplayInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function stopAutoplay() {
+          clearInterval(autoplayInterval);
+        }
+        
+        startAutoplay();
+        
+        // Pause on hover
+        carousel.addEventListener('mouseenter', stopAutoplay);
+        carousel.addEventListener('mouseleave', startAutoplay);
+      }
+      
+      // Touch/swipe support
+      let startX = 0;
+      let isDragging = false;
+      
+      carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      });
+      
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+      });
+      
+      carousel.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        
+        const endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+        
+        if (Math.abs(diffX) > 50) {
+          if (diffX > 0) {
+            nextSlide();
+          } else {
+            prevSlide();
+          }
+        }
+        
+        isDragging = false;
+      });
+    }
+    
+    // Service filtering
+    serviceFilters.forEach(filter => {
+      filter.addEventListener('click', function() {
+        const service = this.getAttribute('data-service');
+        
+        // Update active filter
+        serviceFilters.forEach(f => {
+          f.classList.remove('bg-blue-600', 'text-white');
+          f.classList.add('bg-gray-100', 'text-gray-700');
+        });
+        this.classList.remove('bg-gray-100', 'text-gray-700');
+        this.classList.add('bg-blue-600', 'text-white');
+        
+        // Filter testimonials
+        const testimonialCards = document.querySelectorAll('.testimonial-card, .testimonial-slide');
+        testimonialCards.forEach(card => {
+          const cardService = card.getAttribute('data-service');
+          if (service === 'all' || cardService === service) {
+            (card as HTMLElement).style.display = 'block';
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+        
+        // Analytics
+        if (typeof gtag === 'function') {
+          gtag('event', 'testimonial_filter', {
+            'filter_service': service
+          });
+        }
+      });
+    });
+    
+    // Intersection Observer for animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-in');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.testimonial-card').forEach(card => {
+      observer.observe(card);
+    });
+  });
+</script>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+  }
+  
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .nav-btn:hover {
+    background: #f8fafc;
+    transform: scale(1.05);
+  }
+  
+  .indicator {
+    cursor: pointer;
+  }
+  
+  .indicator:hover {
+    transform: scale(1.2);
+  }
+  
+  /* Responsive grid */
+  @media (max-width: 768px) {
+    .testimonial-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

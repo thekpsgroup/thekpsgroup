@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../SEO/AdvancedSEOHead.astro';
+import LocationBreadcrumbs from '../LocationBreadcrumbs.astro';
+import LocationSelector from '../LocationSelector.astro';
 import { BUSINESS } from '../../data/constants';
 import type { CityData } from '../../data/cities';
 
@@ -104,6 +106,14 @@ const serviceAreas = [
   city.metro,
   city.county + ' County'
 ];
+
+// Breadcrumb navigation data
+const breadcrumbItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Locations', href: '/locations' },
+  { label: city.state, href: `/locations/${city.state.toLowerCase()}` },
+  { label: city.name } // Current page - no href
+];
 ---
 
 <BaseLayout
@@ -115,6 +125,9 @@ const serviceAreas = [
   pageType="LocalBusiness"
 >
   <AdvancedSEOHead {...seoProps} slot="head" />
+
+  <!-- Location Breadcrumbs -->
+  <LocationBreadcrumbs items={breadcrumbItems} />
 
   <!-- Hero Section -->
   <section class="relative py-20 sm:py-32 bg-gradient-to-b from-black to-gray-950">
@@ -555,6 +568,73 @@ const serviceAreas = [
             </div>
           </div>
 
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Explore Other Locations -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-4xl mx-auto text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+          Explore Services in Other Areas
+        </h2>
+        <p class="text-xl text-gray-600">
+          We provide business consulting services across major markets. Find local expertise in your area.
+        </p>
+      </div>
+      
+      <div class="max-w-2xl mx-auto">
+        <LocationSelector 
+          currentLocation={`${city.name}, ${city.state}`}
+          variant="full" 
+          className="mb-8"
+        />
+      </div>
+      
+      <!-- Quick Links to Popular Locations -->
+      <div class="mt-12">
+        <div class="text-center mb-6">
+          <div class="text-sm font-medium text-gray-500 uppercase tracking-wide mb-4">
+            Popular Service Areas
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <a href="/locations/austin" class="location-quick-link">
+            <div class="text-center p-4 bg-gray-50 hover:bg-warning-50 rounded-lg transition-colors duration-200">
+              <div class="font-medium text-gray-900">Austin</div>
+              <div class="text-sm text-gray-600">Texas</div>
+            </div>
+          </a>
+          <a href="/locations/dallas" class="location-quick-link">
+            <div class="text-center p-4 bg-gray-50 hover:bg-warning-50 rounded-lg transition-colors duration-200">
+              <div class="font-medium text-gray-900">Dallas</div>
+              <div class="text-sm text-gray-600">Texas</div>
+            </div>
+          </a>
+          <a href="/locations/houston" class="location-quick-link">
+            <div class="text-center p-4 bg-gray-50 hover:bg-warning-50 rounded-lg transition-colors duration-200">
+              <div class="font-medium text-gray-900">Houston</div>
+              <div class="text-sm text-gray-600">Texas</div>
+            </div>
+          </a>
+          <a href="/locations/oklahoma-city" class="location-quick-link">
+            <div class="text-center p-4 bg-gray-50 hover:bg-warning-50 rounded-lg transition-colors duration-200">
+              <div class="font-medium text-gray-900">Oklahoma City</div>
+              <div class="text-sm text-gray-600">Oklahoma</div>
+            </div>
+          </a>
+        </div>
+        
+        <div class="text-center mt-8">
+          <a href="/locations" class="inline-flex items-center gap-2 text-warning-600 hover:text-warning-700 font-medium">
+            View All Service Areas
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </a>
         </div>
       </div>
     </div>

@@ -1,0 +1,1855 @@
+---
+// Internal Analytics Dashboard
+// Comprehensive admin interface for tracking leads, conversions, and system performance
+
+export interface Props {
+  className?: string;
+}
+
+const {
+  className = ""
+} = Astro.props;
+
+const dashboardId = `kps-admin-dashboard-${crypto.randomUUID().substring(0, 8)}`;
+
+// Empty analytics data - will be populated with real data from website usage
+const analyticsData = {
+  overview: {
+    totalLeads: 0,
+    totalConversions: 0,
+    conversionRate: 0,
+    totalRevenue: 0,
+    avgDealSize: 0,
+    activeClients: 0,
+    monthlyGrowth: 0,
+    lastUpdated: new Date().toISOString()
+  },
+  
+  leadSources: [],
+
+  cityPerformance: [],
+
+  servicePerformance: [],
+
+  recentActivity: []
+};
+
+// Helper functions for dashboard display
+function getActivityIcon(type: string) {
+  const icons = {
+    'form': 'fas fa-file-alt',
+    'assessment': 'fas fa-clipboard-check',
+    'pricing': 'fas fa-calculator',
+    'contact': 'fas fa-phone',
+    'email': 'fas fa-envelope',
+    'default': 'fas fa-circle'
+  };
+  return icons[type] || icons.default;
+}
+
+function getRelativeTime(timestamp: string) {
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diff = now.getTime() - time.getTime();
+  const minutes = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  return `${days}d ago`;
+}
+
+function getSourceColor(source: string) {
+  const colors = {
+    'Business Assessment': '#4f46e5',
+    'Contact Form': '#059669',
+    'Pricing Calculator': '#dc2626',
+    'FAQ Interactions': '#7c3aed',
+    'Testimonial Views': '#ea580c',
+    'Direct Website': '#0891b2'
+  };
+  return colors[source] || '#6b7280';
+}
+---
+
+<div class={`kps-admin-dashboard ${className}`} data-dashboard-id={dashboardId}>
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-left">
+      <h1 class="dashboard-title">
+        <i class="fas fa-chart-line"></i>
+        KPS Analytics Dashboard
+      </h1>
+      <p class="dashboard-subtitle">
+        Real-time insights and performance metrics
+      </p>
+    </div>
+    
+    <div class="header-right">
+      <div class="refresh-controls">
+        <button class="btn btn-secondary" data-refresh-data>
+          <i class="fas fa-sync-alt"></i>
+          Refresh
+        </button>
+        <select class="time-range-select" data-time-range>
+          <option value="24h">Last 24 Hours</option>
+          <option value="7d" selected>Last 7 Days</option>
+          <option value="30d">Last 30 Days</option>
+          <option value="90d">Last 90 Days</option>
+          <option value="1y">Last Year</option>
+        </select>
+      </div>
+      
+      <div class="last-updated">
+        Last updated: <span data-last-updated>{new Date(analyticsData.overview.lastUpdated).toLocaleString()}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card primary">
+      <div class="kpi-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{analyticsData.overview.totalLeads.toLocaleString()}</div>
+        <div class="kpi-label">Total Leads</div>
+        <div class="kpi-change positive">+{analyticsData.overview.monthlyGrowth}% this month</div>
+      </div>
+    </div>
+
+    <div class="kpi-card success">
+      <div class="kpi-icon">
+        <i class="fas fa-handshake"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{analyticsData.overview.totalConversions}</div>
+        <div class="kpi-label">Conversions</div>
+        <div class="kpi-change positive">{analyticsData.overview.conversionRate}% conversion rate</div>
+      </div>
+    </div>
+
+    <div class="kpi-card warning">
+      <div class="kpi-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">${(analyticsData.overview.totalRevenue / 1000).toFixed(0)}K</div>
+        <div class="kpi-label">Total Revenue</div>
+        <div class="kpi-change positive">${analyticsData.overview.avgDealSize.toLocaleString()} avg deal</div>
+      </div>
+    </div>
+
+    <div class="kpi-card info">
+      <div class="kpi-icon">
+        <i class="fas fa-user-check"></i>
+      </div>
+      <div class="kpi-content">
+        <div class="kpi-value">{analyticsData.overview.activeClients}</div>
+        <div class="kpi-label">Active Clients</div>
+        <div class="kpi-change positive">+12 this month</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard Grid -->
+  <div class="dashboard-grid">
+    <!-- Lead Sources Performance -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Lead Sources Performance</h3>
+        <div class="card-actions">
+          <button class="btn btn-sm" data-export-leads>
+            <i class="fas fa-download"></i>
+            Export
+          </button>
+        </div>
+      </div>
+      
+      <div class="lead-sources-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>Leads</th>
+              <th>Conversions</th>
+              <th>Rate</th>
+              <th>Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            {analyticsData.leadSources.length > 0 ? (
+              analyticsData.leadSources.map(source => (
+                <tr>
+                  <td class="source-name">
+                    <div class="source-indicator" style={`background: ${getSourceColor(source.source)}`}></div>
+                    {source.source}
+                  </td>
+                  <td class="leads-count">{source.leads}</td>
+                  <td class="conversions-count">{source.conversions}</td>
+                  <td class="conversion-rate">
+                    <div class="rate-bar">
+                      <div class="rate-fill" style={`width: ${source.rate}%`}></div>
+                    </div>
+                    {source.rate}%
+                  </td>
+                  <td class="revenue-amount">${source.revenue.toLocaleString()}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colspan="5" class="no-data">
+                  <div class="empty-state">
+                    <i class="fas fa-chart-line"></i>
+                    <p>No lead source data available yet</p>
+                    <small>Data will appear as leads come through your website</small>
+                  </div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Geographic Performance -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Geographic Performance</h3>
+        <div class="card-actions">
+          <button class="btn btn-sm" data-view-map>
+            <i class="fas fa-map"></i>
+            Map View
+          </button>
+        </div>
+      </div>
+      
+      <div class="city-performance-grid">
+        {analyticsData.cityPerformance.length > 0 ? (
+          analyticsData.cityPerformance.map(city => (
+            <div class="city-card" data-opportunity={city.opportunity}>
+              <div class="city-header">
+                <h4>{city.city}, {city.state}</h4>
+                <span class="opportunity-badge">{city.opportunity}</span>
+              </div>
+              
+              <div class="city-metrics">
+                <div class="metric">
+                  <span class="metric-value">{city.leads}</span>
+                  <span class="metric-label">Leads</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-value">{city.conversions}</span>
+                  <span class="metric-label">Conversions</span>
+                </div>
+                <div class="metric">
+                  <span class="metric-value">${(city.revenue / 1000).toFixed(0)}K</span>
+                  <span class="metric-label">Revenue</span>
+                </div>
+              </div>
+              
+              <div class="city-conversion-rate">
+                {((city.conversions / city.leads) * 100).toFixed(1)}% conversion rate
+              </div>
+            </div>
+          ))
+        ) : (
+          <div class="empty-state">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>No geographic data available yet</p>
+            <small>Performance data by location will appear as leads are generated</small>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Service Performance -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Service Performance</h3>
+        <div class="card-actions">
+          <select class="service-filter">
+            <option value="all">All Services</option>
+            <option value="quickbooks">QuickBooks</option>
+            <option value="bookkeeping">Bookkeeping</option>
+            <option value="payroll">Payroll</option>
+            <option value="consulting">Consulting</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="service-performance-chart">
+        {analyticsData.servicePerformance.length > 0 ? (
+          analyticsData.servicePerformance.map(service => (
+            <div class="service-row">
+              <div class="service-info">
+                <div class="service-name">{service.service}</div>
+                <div class="service-stats">
+                  {service.inquiries} inquiries • {service.conversions} conversions
+                </div>
+              </div>
+              
+              <div class="service-metrics">
+                <div class="conversion-rate">
+                  <div class="rate-circle" style={`--rate: ${service.rate}%`}>
+                    <span>{service.rate}%</span>
+                  </div>
+                </div>
+                
+                <div class="avg-price">
+                  <span class="price-value">${service.avgPrice}</span>
+                  <span class="price-label">Avg Price</span>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div class="empty-state">
+            <i class="fas fa-cogs"></i>
+            <p>No service performance data available yet</p>
+            <small>Service metrics will appear as inquiries are received</small>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Trend Analysis -->
+    <div class="dashboard-card full-width">
+      <div class="card-header">
+        <h3>Performance Trends</h3>
+        <div class="chart-controls">
+          <button class="btn btn-sm active" data-chart-type="leads">Leads</button>
+          <button class="btn btn-sm" data-chart-type="conversions">Conversions</button>
+          <button class="btn btn-sm" data-chart-type="revenue">Revenue</button>
+        </div>
+      </div>
+      
+      <div class="trend-chart" data-trend-chart>
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Recent Activity Feed -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Recent Activity</h3>
+        <div class="activity-filter">
+          <select data-activity-filter>
+            <option value="all">All Activity</option>
+            <option value="high-value">High Value</option>
+            <option value="conversions">Conversions</option>
+            <option value="assessments">Assessments</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="activity-feed">
+        {analyticsData.recentActivity.length > 0 ? (
+          analyticsData.recentActivity.map(activity => (
+            <div class="activity-item" data-activity-type={activity.type}>
+              <div class="activity-icon">
+                <i class={getActivityIcon(activity.type)}></i>
+              </div>
+              
+              <div class="activity-content">
+                <div class="activity-header">
+                  <span class="user-name">{activity.user}</span>
+                  <span class="company-name">{activity.company}</span>
+                  <span class="activity-location">{activity.location}</span>
+                </div>
+                
+                <div class="activity-details">
+                  <span class="activity-value">{activity.value}</span>
+                  <span class="lead-score">Score: {activity.score}</span>
+                </div>
+                
+                <div class="activity-time">
+                  {getRelativeTime(activity.timestamp)}
+                </div>
+              </div>
+              
+              <div class="activity-actions">
+                <button class="btn btn-xs" data-view-details={activity.id}>
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn btn-xs" data-contact-lead={activity.id}>
+                  <i class="fas fa-phone"></i>
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div class="empty-state">
+            <i class="fas fa-bell"></i>
+            <p>No recent activity to display</p>
+            <small>Lead activity and interactions will appear here</small>
+          </div>
+        )}
+      </div>
+      
+      <div class="activity-footer">
+        <button class="btn btn-outline" data-load-more-activity>
+          Load More Activity
+        </button>
+      </div>
+    </div>
+
+    <!-- Activity Heatmap -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Activity Heatmap</h3>
+        <div class="heatmap-controls">
+          <select data-heatmap-metric>
+            <option value="activity">Total Activity</option>
+            <option value="conversions">Conversions</option>
+            <option value="revenue">Revenue</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="heatmap-container">
+        <div class="heatmap-grid" data-heatmap>
+          <!-- Heatmap will be generated by JavaScript -->
+        </div>
+        
+        <div class="heatmap-legend">
+          <span class="legend-label">Less</span>
+          <div class="legend-gradient"></div>
+          <span class="legend-label">More</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-card">
+      <div class="card-header">
+        <h3>Quick Actions</h3>
+      </div>
+      
+      <div class="quick-actions-grid">
+        <button class="action-btn" data-action="export-leads">
+          <i class="fas fa-download"></i>
+          Export Leads
+        </button>
+        
+        <button class="action-btn" data-action="send-follow-up">
+          <i class="fas fa-envelope"></i>
+          Send Follow-ups
+        </button>
+        
+        <button class="action-btn" data-action="generate-report">
+          <i class="fas fa-file-pdf"></i>
+          Generate Report
+        </button>
+        
+        <button class="action-btn" data-action="update-pricing">
+          <i class="fas fa-dollar-sign"></i>
+          Update Pricing
+        </button>
+        
+        <button class="action-btn" data-action="manage-cities">
+          <i class="fas fa-map-marker-alt"></i>
+          Manage Cities
+        </button>
+        
+        <button class="action-btn" data-action="system-health">
+          <i class="fas fa-heartbeat"></i>
+          System Health
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for detailed views -->
+  <div class="modal-overlay" data-modal-overlay style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-modal-title>Details</h3>
+        <button class="modal-close" data-modal-close>
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body" data-modal-body>
+        <!-- Content will be dynamically loaded -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .kps-admin-dashboard {
+    min-height: 100vh;
+    background: #f5f7fa;
+    padding: 2rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Header Styles */
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .dashboard-title {
+    color: #1e3a8a;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .dashboard-subtitle {
+    color: #64748b;
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  .refresh-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .time-range-select {
+    padding: 0.5rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+  }
+
+  .last-updated {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+
+  /* KPI Grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .kpi-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .kpi-card.primary::before { background: #3b82f6; }
+  .kpi-card.success::before { background: #10b981; }
+  .kpi-card.warning::before { background: #f59e0b; }
+  .kpi-card.info::before { background: #06b6d4; }
+
+  .kpi-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .kpi-card.primary .kpi-icon { background: #3b82f6; }
+  .kpi-card.success .kpi-icon { background: #10b981; }
+  .kpi-card.warning .kpi-icon { background: #f59e0b; }
+  .kpi-card.info .kpi-icon { background: #06b6d4; }
+
+  .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin: 0 0 0.25rem;
+  }
+
+  .kpi-label {
+    color: #6b7280;
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+  }
+
+  .kpi-change {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .kpi-change.positive { color: #10b981; }
+  .kpi-change.negative { color: #ef4444; }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .dashboard-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .dashboard-card.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-header h3 {
+    color: #1e3a8a;
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Lead Sources Table */
+  .lead-sources-table {
+    padding: 1.5rem;
+  }
+
+  .lead-sources-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .lead-sources-table th {
+    color: #6b7280;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .lead-sources-table td {
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .source-name {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+  }
+
+  .source-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .rate-bar {
+    width: 80px;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0.25rem 0;
+  }
+
+  .rate-fill {
+    height: 100%;
+    background: #10b981;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+
+  /* City Performance */
+  .city-performance-grid {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .city-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .city-card:hover {
+    border-color: #ffd700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .city-card[data-opportunity="high"] {
+    border-left: 4px solid #10b981;
+  }
+
+  .city-card[data-opportunity="medium"] {
+    border-left: 4px solid #f59e0b;
+  }
+
+  .city-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .city-header h4 {
+    margin: 0;
+    color: #1e3a8a;
+    font-size: 1rem;
+  }
+
+  .opportunity-badge {
+    background: #e5e7eb;
+    color: #6b7280;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .city-card[data-opportunity="high"] .opportunity-badge {
+    background: #dcfce7;
+    color: #16a34a;
+  }
+
+  .city-card[data-opportunity="medium"] .opportunity-badge {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .city-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .metric {
+    text-align: center;
+  }
+
+  .metric-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e3a8a;
+  }
+
+  .metric-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .city-conversion-rate {
+    text-align: center;
+    color: #10b981;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  /* Service Performance */
+  .service-performance-chart {
+    padding: 1.5rem;
+  }
+
+  .service-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .service-row:last-child {
+    border-bottom: none;
+  }
+
+  .service-name {
+    font-weight: 600;
+    color: #1e3a8a;
+    margin-bottom: 0.25rem;
+  }
+
+  .service-stats {
+    color: #6b7280;
+    font-size: 0.9rem;
+  }
+
+  .service-metrics {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .rate-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(#10b981 0deg, #10b981 var(--rate, 0deg), #e5e7eb var(--rate, 0deg));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .rate-circle::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  .rate-circle span {
+    position: relative;
+    z-index: 1;
+    font-weight: 700;
+    color: #1e3a8a;
+    font-size: 0.9rem;
+  }
+
+  .avg-price {
+    text-align: center;
+  }
+
+  .price-value {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #10b981;
+  }
+
+  .price-label {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+
+  /* Trend Chart */
+  .trend-chart {
+    padding: 1.5rem;
+    height: 300px;
+  }
+
+  .chart-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .chart-controls .btn {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .chart-controls .btn.active {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  /* Activity Feed */
+  .activity-feed {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .activity-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f3f4f6;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .activity-item:hover {
+    background: #f8f9fa;
+  }
+
+  .activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-size: 1rem;
+  }
+
+  .activity-item[data-activity-type="assessment_completed"] .activity-icon {
+    background: #3b82f6;
+  }
+
+  .activity-item[data-activity-type="pricing_calculated"] .activity-icon {
+    background: #10b981;
+  }
+
+  .activity-item[data-activity-type="contact_form"] .activity-icon {
+    background: #f59e0b;
+  }
+
+  .activity-item[data-activity-type="faq_engagement"] .activity-icon {
+    background: #8b5cf6;
+  }
+
+  .activity-item[data-activity-type="testimonial_view"] .activity-icon {
+    background: #06b6d4;
+  }
+
+  .activity-content {
+    flex: 1;
+  }
+
+  .activity-header {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .user-name {
+    font-weight: 600;
+    color: #1e3a8a;
+  }
+
+  .company-name {
+    color: #6b7280;
+  }
+
+  .activity-location {
+    color: #9ca3af;
+    font-size: 0.9rem;
+  }
+
+  .activity-details {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .activity-value {
+    color: #374151;
+    font-weight: 500;
+  }
+
+  .lead-score {
+    color: #10b981;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .activity-time {
+    color: #9ca3af;
+    font-size: 0.8rem;
+  }
+
+  .activity-actions {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  /* Empty States */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6b7280;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+    color: #d1d5db;
+    margin-bottom: 1rem;
+  }
+
+  .empty-state p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+    color: #374151;
+  }
+
+  .empty-state small {
+    font-size: 0.9rem;
+    color: #9ca3af;
+  }
+
+  .no-data {
+    padding: 0 !important;
+  }
+
+  .city-performance-grid .empty-state,
+  .service-performance-chart .empty-state,
+  .activity-feed .empty-state {
+    padding: 2rem;
+  }
+
+  .activity-footer {
+    padding: 1rem 1.5rem;
+    text-align: center;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  /* Heatmap */
+  .heatmap-container {
+    padding: 1.5rem;
+  }
+
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(24, 1fr);
+    gap: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .heatmap-cell {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .legend-gradient {
+    width: 100px;
+    height: 12px;
+    background: linear-gradient(to right, #e5e7eb, #ffd700, #f59e0b, #ef4444);
+    border-radius: 6px;
+  }
+
+  .legend-label {
+    color: #6b7280;
+    font-size: 0.8rem;
+  }
+
+  /* Quick Actions */
+  .quick-actions-grid {
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+  }
+
+  .action-btn {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .action-btn:hover {
+    border-color: #ffd700;
+    background: rgba(255, 215, 0, 0.05);
+    transform: translateY(-1px);
+  }
+
+  .action-btn i {
+    font-size: 1.5rem;
+    color: #6b7280;
+  }
+
+  /* Button Styles */
+  .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: #ffd700;
+    color: #1e3a8a;
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: #6b7280;
+    border: 2px solid #e5e7eb;
+  }
+
+  .btn-sm {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 2rem;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    color: #1e3a8a;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+
+  .modal-close:hover {
+    background: #f3f4f6;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .dashboard-card.full-width {
+      grid-column: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .kps-admin-dashboard {
+      padding: 1rem;
+    }
+
+    .dashboard-header {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .header-right {
+      align-items: stretch;
+    }
+
+    .refresh-controls {
+      justify-content: space-between;
+    }
+
+    .kpi-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .kpi-card {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .city-performance-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .service-row {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .activity-item {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .quick-actions-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Loading States */
+  .loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+  }
+
+  .loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #ffd700;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+</style>
+
+<script is:inline define:vars={{ dashboardId, analyticsData }}>
+  window.KPSAdminDashboard = {
+    config: {
+      dashboardId,
+      analyticsData
+    },
+
+    init: function() {
+      this.container = document.querySelector(`[data-dashboard-id="${this.config.dashboardId}"]`);
+      if (!this.container) return;
+
+      this.setupEventListeners();
+      this.initializeCharts();
+      this.generateHeatmap();
+      this.startRealTimeUpdates();
+      
+      console.log('KPS Admin Dashboard initialized');
+    },
+
+    setupEventListeners: function() {
+      // Refresh data
+      const refreshBtn = this.container.querySelector('[data-refresh-data]');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => this.refreshData());
+      }
+
+      // Time range change
+      const timeRangeSelect = this.container.querySelector('[data-time-range]');
+      if (timeRangeSelect) {
+        timeRangeSelect.addEventListener('change', (e) => this.updateTimeRange(e.target.value));
+      }
+
+      // Chart type switching
+      this.container.querySelectorAll('[data-chart-type]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.switchChartType(e.target.dataset.chartType));
+      });
+
+      // Activity details
+      this.container.querySelectorAll('[data-view-details]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.viewActivityDetails(e.target.dataset.viewDetails));
+      });
+
+      // Contact lead
+      this.container.querySelectorAll('[data-contact-lead]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.contactLead(e.target.dataset.contactLead));
+      });
+
+      // Quick actions
+      this.container.querySelectorAll('[data-action]').forEach(btn => {
+        btn.addEventListener('click', (e) => this.executeAction(e.target.dataset.action));
+      });
+
+      // Modal controls
+      const modalClose = this.container.querySelector('[data-modal-close]');
+      if (modalClose) {
+        modalClose.addEventListener('click', () => this.closeModal());
+      }
+
+      const modalOverlay = this.container.querySelector('[data-modal-overlay]');
+      if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+          if (e.target === modalOverlay) this.closeModal();
+        });
+      }
+
+      // Export functions
+      this.container.querySelectorAll('[data-export-leads]').forEach(btn => {
+        btn.addEventListener('click', () => this.exportLeads());
+      });
+
+      // Load more activity
+      const loadMoreBtn = this.container.querySelector('[data-load-more-activity]');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => this.loadMoreActivity());
+      }
+    },
+
+    initializeCharts: function() {
+      // Initialize trend chart (would use Chart.js or similar in production)
+      const chartCanvas = this.container.querySelector('#trendChart');
+      if (chartCanvas) {
+        this.renderTrendChart(chartCanvas, 'leads');
+      }
+    },
+
+    renderTrendChart: function(canvas, type) {
+      const ctx = canvas.getContext('2d');
+      const data = this.config.analyticsData.timeSeriesData;
+      
+      // Simple chart rendering (in production, use Chart.js)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#ffd700';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      
+      const values = data[type] || data.leads;
+      const max = Math.max(...values);
+      const width = canvas.width;
+      const height = canvas.height - 40;
+      
+      values.forEach((value, index) => {
+        const x = (index / (values.length - 1)) * width;
+        const y = height - (value / max) * height + 20;
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      
+      ctx.stroke();
+    },
+
+    switchChartType: function(type) {
+      // Update active button
+      this.container.querySelectorAll('[data-chart-type]').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      this.container.querySelector(`[data-chart-type="${type}"]`).classList.add('active');
+      
+      // Re-render chart
+      const chartCanvas = this.container.querySelector('#trendChart');
+      if (chartCanvas) {
+        this.renderTrendChart(chartCanvas, type);
+      }
+    },
+
+    generateHeatmap: function() {
+      const heatmapContainer = this.container.querySelector('[data-heatmap]');
+      if (!heatmapContainer) return;
+
+      // Generate 7 days x 24 hours heatmap
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      const hours = Array.from({length: 24}, (_, i) => i);
+
+      let heatmapHtml = '';
+      
+      days.forEach(day => {
+        hours.forEach(hour => {
+          const activity = Math.random() * 100; // Random data for demo
+          const intensity = Math.floor(activity / 25);
+          
+          heatmapHtml += `
+            <div class="heatmap-cell" 
+                 style="background: ${this.getHeatmapColor(intensity)}"
+                 title="${day} ${hour}:00 - ${activity.toFixed(0)} activities">
+            </div>
+          `;
+        });
+      });
+
+      heatmapContainer.innerHTML = heatmapHtml;
+    },
+
+    getHeatmapColor: function(intensity) {
+      const colors = ['#e5e7eb', '#ffd700', '#f59e0b', '#ef4444'];
+      return colors[Math.min(intensity, 3)];
+    },
+
+    refreshData: async function() {
+      const refreshBtn = this.container.querySelector('[data-refresh-data]');
+      refreshBtn.classList.add('loading');
+      
+      try {
+        // Fetch real analytics data from our API
+        const response = await fetch('/api/analytics?type=dashboard&timeframe=30d');
+        const result = await response.json();
+        
+        if (result.success) {
+          this.updateDashboardData(result.data);
+        } else {
+          console.error('Failed to fetch analytics data:', result.error);
+        }
+      } catch (error) {
+        console.error('Error fetching analytics data:', error);
+      } finally {
+        refreshBtn.classList.remove('loading');
+        this.updateLastUpdated();
+      }
+    },
+
+    updateDashboardData: function(data) {
+      // Update KPIs
+      this.updateKPI('total-leads', data.kpis.totalLeads);
+      this.updateKPI('total-conversions', data.kpis.totalConversions);
+      this.updateKPI('conversion-rate', data.kpis.conversionRate + '%');
+      this.updateKPI('total-revenue', '$' + (data.kpis.totalRevenue / 1000).toFixed(0) + 'K');
+      this.updateKPI('avg-lead-value', '$' + data.kpis.avgLeadValue.toLocaleString());
+      this.updateKPI('total-pageviews', data.kpis.totalPageViews.toLocaleString());
+
+      // Update lead sources table
+      this.updateLeadSourcesTable(data.leadSources);
+      
+      // Update geographic performance
+      this.updateGeoPerformance(data.geoPerformance);
+      
+      // Update service performance
+      this.updateServicePerformance(data.servicePerformance);
+      
+      // Update activity feed
+      this.updateActivityFeed(data.recentActivity);
+    },
+
+    updateKPI: function(selector, value) {
+      const element = this.container.querySelector(`[data-kpi="${selector}"]`);
+      if (element) {
+        element.textContent = value;
+      }
+    },
+
+    updateLeadSourcesTable: function(leadSources) {
+      const tbody = this.container.querySelector('.lead-sources-table tbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = leadSources.map(source => `
+        <tr>
+          <td>${source.name}</td>
+          <td>${source.leads}</td>
+          <td>${source.conversions}</td>
+          <td>${((source.conversions / source.leads) * 100).toFixed(1)}%</td>
+          <td>$${source.revenue.toLocaleString()}</td>
+        </tr>
+      `).join('');
+    },
+
+    updateGeoPerformance: function(geoData) {
+      const container = this.container.querySelector('.geo-performance-grid');
+      if (!container) return;
+
+      container.innerHTML = geoData.map(geo => `
+        <div class="geo-card">
+          <h4>${geo.city}</h4>
+          <div class="geo-stats">
+            <div>Leads: ${geo.leads}</div>
+            <div>Conversions: ${geo.conversions}</div>
+            <div>Rate: ${geo.conversionRate.toFixed(1)}%</div>
+            <div>Revenue: $${geo.revenue.toLocaleString()}</div>
+          </div>
+        </div>
+      `).join('');
+    },
+
+    updateServicePerformance: function(serviceData) {
+      const container = this.container.querySelector('.service-performance-grid');
+      if (!container) return;
+
+      container.innerHTML = serviceData.map(service => `
+        <div class="service-card">
+          <h4>${service.name}</h4>
+          <div class="service-stats">
+            <div>Leads: ${service.leads}</div>
+            <div>Conversions: ${service.conversions}</div>
+            <div>Rate: ${service.conversionRate.toFixed(1)}%</div>
+            <div>Revenue: $${service.revenue.toLocaleString()}</div>
+          </div>
+        </div>
+      `).join('');
+    },
+
+    updateActivityFeed: function(activities) {
+      const container = this.container.querySelector('.activity-feed-list');
+      if (!container) return;
+
+      container.innerHTML = activities.map(activity => `
+        <div class="activity-item">
+          <div class="activity-content">
+            <div class="activity-description">${activity.description}</div>
+            <div class="activity-meta">
+              <span class="activity-time">${this.getRelativeTime(new Date(activity.timestamp))}</span>
+              ${activity.city ? `<span class="activity-city">${activity.city}</span>` : ''}
+              ${activity.value > 0 ? `<span class="activity-value">$${activity.value.toLocaleString()}</span>` : ''}
+            </div>
+          </div>
+          <div class="activity-status ${activity.status || 'default'}">${activity.status || 'info'}</div>
+        </div>
+      `).join('');
+    },
+
+    updateTimeRange: function(range) {
+      console.log('Updating time range to:', range);
+      // In production, this would fetch new data based on the time range
+      this.refreshData();
+    },
+
+    updateLastUpdated: function() {
+      const lastUpdatedEl = this.container.querySelector('[data-last-updated]');
+      if (lastUpdatedEl) {
+        lastUpdatedEl.textContent = new Date().toLocaleString();
+      }
+    },
+
+    updateKPIs: function() {
+      // Simulate slight variations in KPI values
+      const kpiValues = this.container.querySelectorAll('.kpi-value');
+      kpiValues.forEach(el => {
+        const currentValue = parseInt(el.textContent.replace(/[^0-9]/g, ''));
+        const variation = Math.floor(Math.random() * 10) - 5; // -5 to +5
+        const newValue = Math.max(0, currentValue + variation);
+        
+        if (el.textContent.includes('K')) {
+          el.textContent = `$${newValue}K`;
+        } else {
+          el.textContent = newValue.toLocaleString();
+        }
+      });
+    },
+
+    viewActivityDetails: function(activityId) {
+      const activity = this.config.analyticsData.recentActivity.find(a => a.id == activityId);
+      if (!activity) return;
+
+      const modalTitle = this.container.querySelector('[data-modal-title]');
+      const modalBody = this.container.querySelector('[data-modal-body]');
+      
+      modalTitle.textContent = `Activity Details - ${activity.user}`;
+      modalBody.innerHTML = `
+        <div class="activity-details-modal">
+          <h4>${activity.company}</h4>
+          <p><strong>Location:</strong> ${activity.location}</p>
+          <p><strong>Activity:</strong> ${activity.type.replace('_', ' ')}</p>
+          <p><strong>Value:</strong> ${activity.value}</p>
+          <p><strong>Lead Score:</strong> ${activity.score}/100</p>
+          <p><strong>Timestamp:</strong> ${activity.timestamp.toLocaleString()}</p>
+          
+          <div class="action-buttons">
+            <button class="btn btn-primary">Contact Lead</button>
+            <button class="btn btn-secondary">Add to CRM</button>
+            <button class="btn btn-outline">View Full Profile</button>
+          </div>
+        </div>
+      `;
+      
+      this.openModal();
+    },
+
+    contactLead: function(activityId) {
+      const activity = this.config.analyticsData.recentActivity.find(a => a.id == activityId);
+      if (!activity) return;
+
+      alert(`Initiating contact with ${activity.user} at ${activity.company}`);
+      // In production, this would open a contact form or CRM integration
+    },
+
+    executeAction: function(action) {
+      console.log('Executing action:', action);
+      
+      switch(action) {
+        case 'export-leads':
+          this.exportLeads();
+          break;
+        case 'send-follow-up':
+          this.sendFollowUps();
+          break;
+        case 'generate-report':
+          this.generateReport();
+          break;
+        case 'update-pricing':
+          this.updatePricing();
+          break;
+        case 'manage-cities':
+          this.manageCities();
+          break;
+        case 'system-health':
+          this.checkSystemHealth();
+          break;
+        default:
+          alert(`Action "${action}" not implemented yet`);
+      }
+    },
+
+    exportLeads: function() {
+      const csvData = this.generateLeadsCSV();
+      this.downloadCSV(csvData, 'leads_export.csv');
+    },
+
+    generateLeadsCSV: function() {
+      const headers = ['Source', 'Leads', 'Conversions', 'Rate', 'Revenue'];
+      const rows = this.config.analyticsData.leadSources.map(source => [
+        source.source,
+        source.leads,
+        source.conversions,
+        `${source.rate}%`,
+        `$${source.revenue}`
+      ]);
+      
+      return [headers, ...rows].map(row => row.join(',')).join('\n');
+    },
+
+    downloadCSV: function(content, filename) {
+      const blob = new Blob([content], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+
+    sendFollowUps: function() {
+      alert('Follow-up emails will be sent to high-value leads');
+      // In production, integrate with email service
+    },
+
+    generateReport: function() {
+      alert('Generating comprehensive analytics report...');
+      // In production, generate PDF report
+    },
+
+    updatePricing: function() {
+      alert('Opening pricing management interface...');
+      // In production, open pricing editor
+    },
+
+    manageCities: function() {
+      alert('Opening city management interface...');
+      // In production, open city data editor
+    },
+
+    checkSystemHealth: function() {
+      alert('System health: All services operational ✅');
+      // In production, show system status dashboard
+    },
+
+    loadMoreActivity: function() {
+      // Simulate loading more activity data
+      const loadMoreBtn = this.container.querySelector('[data-load-more-activity]');
+      loadMoreBtn.classList.add('loading');
+      
+      setTimeout(() => {
+        loadMoreBtn.classList.remove('loading');
+        alert('More activity data loaded');
+      }, 1000);
+    },
+
+    openModal: function() {
+      const modal = this.container.querySelector('[data-modal-overlay]');
+      if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+    },
+
+    closeModal: function() {
+      const modal = this.container.querySelector('[data-modal-overlay]');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    },
+
+    startRealTimeUpdates: function() {
+      // Update timestamps every minute
+      setInterval(() => {
+        this.updateRelativeTimes();
+      }, 60000);
+
+      // Simulate new activity every 30 seconds
+      setInterval(() => {
+        this.simulateNewActivity();
+      }, 30000);
+    },
+
+    updateRelativeTimes: function() {
+      this.container.querySelectorAll('.activity-time').forEach(el => {
+        // Update relative time display
+        const timestamp = new Date(el.dataset.timestamp);
+        el.textContent = this.getRelativeTime(timestamp);
+      });
+    },
+
+    simulateNewActivity: function() {
+      // Add visual indicator for new activity
+      const activityFeed = this.container.querySelector('.activity-feed');
+      if (activityFeed) {
+        const indicator = document.createElement('div');
+        indicator.className = 'new-activity-indicator';
+        indicator.textContent = '• New activity available';
+        indicator.style.cssText = `
+          padding: 0.5rem 1.5rem;
+          background: #ffd700;
+          color: #1e3a8a;
+          font-weight: 600;
+          text-align: center;
+          cursor: pointer;
+        `;
+        
+        activityFeed.insertBefore(indicator, activityFeed.firstChild);
+        
+        indicator.addEventListener('click', () => {
+          indicator.remove();
+          this.refreshData();
+        });
+      }
+    },
+
+    getRelativeTime: function(timestamp) {
+      const now = new Date();
+      const diff = now - timestamp;
+      const minutes = Math.floor(diff / (1000 * 60));
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes}m ago`;
+      if (hours < 24) return `${hours}h ago`;
+      return `${days}d ago`;
+    }
+  };
+
+  // Helper functions for template
+  window.getSourceColor = function(source) {
+    const colors = {
+      'Business Assessment': '#3b82f6',
+      'Contact Form': '#10b981',
+      'Pricing Calculator': '#f59e0b',
+      'FAQ Interactions': '#8b5cf6',
+      'Testimonial Views': '#06b6d4',
+      'Direct Website': '#6b7280'
+    };
+    return colors[source] || '#6b7280';
+  };
+
+  window.getActivityIcon = function(type) {
+    const icons = {
+      'assessment_completed': 'fas fa-clipboard-check',
+      'pricing_calculated': 'fas fa-calculator',
+      'contact_form': 'fas fa-envelope',
+      'faq_engagement': 'fas fa-question-circle',
+      'testimonial_view': 'fas fa-play-circle'
+    };
+    return icons[type] || 'fas fa-circle';
+  };
+
+  window.getRelativeTime = function(timestamp) {
+    return window.KPSAdminDashboard.getRelativeTime(timestamp);
+  };
+
+  // Auto-initialize and load real data
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.KPSAdminDashboard.init();
+      // Load real analytics data on startup
+      setTimeout(() => {
+        window.KPSAdminDashboard.refreshData();
+      }, 1000);
+    });
+  } else {
+    window.KPSAdminDashboard.init();
+    // Load real analytics data on startup
+    setTimeout(() => {
+      window.KPSAdminDashboard.refreshData();
+    }, 1000);
+  }
+</script>

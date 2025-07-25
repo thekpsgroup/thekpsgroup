@@ -1,0 +1,149 @@
+<script is:inline>
+// KPS Group Analytics Tracker
+// This script tracks page views and interactions to populate the admin dashboard
+
+(function() {
+  'use strict';
+
+  const analytics = {
+    init: function() {
+      this.trackPageView();
+      this.trackInteractions();
+      this.trackFormSubmissions();
+    },
+
+    trackPageView: function() {
+      const data = {
+        type: 'pageview',
+        page: window.location.pathname,
+        referrer: document.referrer,
+        userAgent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+        city: this.estimateLocation()
+      };
+
+      this.sendToAnalytics(data);
+    },
+
+    trackInteractions: function() {
+      // Track button clicks
+      document.addEventListener('click', (e) => {
+        const button = e.target && e.target.closest ? e.target.closest('button, a[href], [role="button"]') : null;
+        if (button) {
+          const data = {
+            type: 'interaction',
+            action: 'click',
+            element: this.getElementDescription(button),
+            page: window.location.pathname,
+            timestamp: new Date().toISOString()
+          };
+          this.sendToAnalytics(data);
+        }
+      });
+
+      // Track contact links
+      document.addEventListener('click', (e) => {
+        const link = e.target && e.target.closest ? e.target.closest('a[href*="contact"], a[href*="mailto"], a[href*="tel"]') : null;
+        if (link) {
+          const data = {
+            type: 'interaction',
+            action: 'contact_click',
+            element: link.href,
+            page: window.location.pathname,
+            timestamp: new Date().toISOString()
+          };
+          this.sendToAnalytics(data);
+        }
+      });
+
+      // Track service page visits
+      if (window.location.pathname.includes('services') || 
+          window.location.pathname.includes('quickbooks') ||
+          window.location.pathname.includes('payroll') ||
+          window.location.pathname.includes('technology')) {
+        const data = {
+          type: 'interaction',
+          action: 'service_page_view',
+          element: window.location.pathname,
+          page: window.location.pathname,
+          timestamp: new Date().toISOString()
+        };
+        this.sendToAnalytics(data);
+      }
+    },
+
+    trackFormSubmissions: function() {
+      // Track contact form submissions
+      const contactForms = document.querySelectorAll('form[action*="send-lead"], form[action*="contact"]');
+      contactForms.forEach((form) => {
+        form.addEventListener('submit', (e) => {
+          const formData = new FormData(form);
+          const data = {
+            type: 'lead',
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            service: formData.get('service'),
+            timeline: formData.get('timeline'),
+            budget: formData.get('budget'),
+            message: formData.get('message'),
+            source: 'contact_form',
+            status: 'new',
+            timestamp: new Date().toISOString(),
+            city: this.estimateLocation()
+          };
+          this.sendToAnalytics(data);
+        });
+      });
+    },
+
+    getElementDescription: function(element) {
+      if (element.textContent && element.textContent.trim()) {
+        return element.textContent.trim().substring(0, 50);
+      }
+      if (element.title) return element.title;
+      if (element.alt) return element.alt;
+      if (element.className) return element.tagName + '.' + element.className.split(' ')[0];
+      return element.tagName;
+    },
+
+    estimateLocation: function() {
+      // Simple timezone-based location estimation
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const locationMap = {
+        'America/Chicago': 'Dallas',
+        'America/New_York': 'New York',
+        'America/Los_Angeles': 'Los Angeles',
+        'America/Denver': 'Denver',
+        'America/Phoenix': 'Phoenix',
+        'America/Detroit': 'Detroit'
+      };
+      return locationMap[timezone] || 'Unknown';
+    },
+
+    sendToAnalytics: function(data) {
+      // Send to our analytics API
+      fetch('/api/analytics', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      }).catch((error) => {
+        console.debug('Analytics tracking failed:', error);
+        // Fail silently to not disrupt user experience
+      });
+    }
+  };
+
+  // Initialize analytics tracking when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => analytics.init());
+  } else {
+    analytics.init();
+  }
+
+  // Make analytics available globally for manual tracking
+  window.KPSAnalytics = analytics;
+})();
+</script>

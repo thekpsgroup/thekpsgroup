@@ -1,0 +1,88 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+  className?: string;
+}
+
+const { items, className = '' } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class={`breadcrumb-nav ${className}`}>
+  <ol class="breadcrumb-list">
+    {items.map((item, index) => (
+      <li class="breadcrumb-item">
+        {item.href ? (
+          <a href={item.href} class="breadcrumb-link">
+            {item.label}
+          </a>
+        ) : (
+          <span class="breadcrumb-current" aria-current="page">
+            {item.label}
+          </span>
+        )}
+        
+        {index < items.length - 1 && (
+          <svg 
+            class="breadcrumb-separator" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .breadcrumb-nav {
+    @apply bg-gray-50 border-b border-gray-200 py-3;
+  }
+  
+  .breadcrumb-list {
+    @apply flex items-center gap-2 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply text-sm;
+  }
+  
+  .breadcrumb-item {
+    @apply flex items-center gap-2;
+  }
+  
+  .breadcrumb-link {
+    @apply text-gray-600 hover:text-warning-600 transition-colors duration-200;
+    @apply focus:outline-none focus:underline;
+  }
+  
+  .breadcrumb-current {
+    @apply text-gray-900 font-medium;
+  }
+  
+  .breadcrumb-separator {
+    @apply w-4 h-4 text-gray-400 flex-shrink-0;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 640px) {
+    .breadcrumb-list {
+      @apply text-xs overflow-x-auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .breadcrumb-list::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .breadcrumb-item {
+      @apply flex-shrink-0;
+    }
+  }
+</style>
