@@ -141,11 +141,20 @@ const description = "The KPS Group brings together six specialized companies und
     </div>
   </div>
 
-  <!-- Clean scroll indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 animate-bounce">
+  <!-- Enhanced scroll indicator with better mobile positioning -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/60 animate-bounce hidden sm:flex">
     <div class="flex flex-col items-center gap-2">
       <span class="text-xs font-medium tracking-wider uppercase">Discover Our Companies</span>
       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+      </svg>
+    </div>
+  </div>
+  
+  <!-- Mobile-optimized scroll indicator -->
+  <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 sm:hidden">
+    <div class="animate-bounce">
+      <svg class="w-5 h-5 text-gold/60 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
       </svg>
     </div>
