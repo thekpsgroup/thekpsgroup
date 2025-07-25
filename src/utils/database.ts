@@ -318,6 +318,89 @@ export class CRMDatabase {
   }
 
   // ================================
+  // ENHANCED CRM FUNCTIONALITY
+  // ================================
+
+  static assignLead(assignmentData: {
+    leadId: number;
+    assignedTo: string;
+    notes?: string;
+    followUpDate?: string;
+    assignedAt: string;
+  }): any {
+    const { leadId, assignedTo, notes, followUpDate, assignedAt } = assignmentData;
+
+    // Update the lead with assignment information
+    const stmt = db.prepare(`
+      UPDATE leads 
+      SET assignedTo = ?, assignmentNotes = ?, nextFollowUp = ?, assignedAt = ?
+      WHERE id = ?
+    `);
+
+    return stmt.run(assignedTo, notes || '', followUpDate || null, assignedAt, leadId);
+  }
+
+  static updateLeadStatus(leadId: number, status: string): any {
+    const stmt = db.prepare('UPDATE leads SET status = ?, updatedAt = ? WHERE id = ?');
+    return stmt.run(status, new Date().toISOString(), leadId);
+  }
+
+  static convertLeadToClient(conversionData: {
+    leadId: number;
+    dealAmount: number;
+    services: string[];
+  }): { client: Client; deal: Deal } {
+    const { leadId, dealAmount, services } = conversionData;
+
+    // Get lead data
+    const lead = db.prepare('SELECT * FROM leads WHERE id = ?').get(leadId) as Lead;
+    if (!lead) {
+      throw new Error(`Lead with ID ${leadId} not found`);
+    }
+
+    // Create client from lead using existing createClient method
+    const clientData = {
+      lead_id: leadId,
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      company: lead.company,
+      total_value: dealAmount,
+      status: 'active' as const,
+      notes: `Converted from lead #${leadId}`
+    };
+
+    const client = this.createClient(clientData);
+
+    // Create deal record using existing createDeal method
+    const dealData = {
+      client_id: client.id,
+      amount: dealAmount,
+      services: services,
+      status: 'closed_won' as const,
+      closed_at: new Date().toISOString()
+    };
+
+    const deal = this.createDeal(dealData);
+
+    // Update lead status to converted
+    this.updateLeadStatus(leadId, 'closed-won');
+
+    return { client, deal };
+  }
+
+  static reactivateLead(leadId: number): any {
+    const stmt = db.prepare(`
+      UPDATE leads 
+      SET status = 'new', updated_at = ?, reactivated_at = ?
+      WHERE id = ?
+    `);
+    
+    const now = new Date().toISOString();
+    return stmt.run(now, now, leadId);
+  }
+
+  // ================================
   // UTILITIES
   // ================================
   

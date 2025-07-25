@@ -154,6 +154,14 @@ function getPriorityLevel(lead: Lead): string {
           <i class="fas fa-plus"></i>
           New Lead
         </button>
+        <button class="btn btn-primary" data-action="new-client">
+          <i class="fas fa-user-plus"></i>
+          New Client
+        </button>
+        <button class="btn btn-info" data-action="toggle-kanban">
+          <i class="fas fa-columns"></i>
+          Kanban View
+        </button>
         <button class="btn btn-secondary" data-action="send-bulk-emails">
           <i class="fas fa-envelope-bulk"></i>
           Bulk Email
@@ -220,7 +228,206 @@ function getPriorityLevel(lead: Lead): string {
     </div>
   </div>
 
-  <div class="dashboard-grid">
+  <!-- Kanban Pipeline View (hidden by default) -->
+  <div class="kanban-pipeline" id="kanbanPipeline" style="display: none;">
+    <div class="kanban-header">
+      <h2>Sales Pipeline</h2>
+      <div class="pipeline-stats">
+        <span class="stat">Total Value: <span id="pipelineTotal">{formatCurrency(crmData.leads.reduce((total, lead) => total + lead.value, 0))}</span></span>
+        <span class="stat">Leads: <span id="pipelineCount">{crmData.leads.length}</span></span>
+      </div>
+    </div>
+    
+    <div class="kanban-board">
+      <div class="kanban-column" data-status="new">
+        <div class="column-header">
+          <h3>New Leads</h3>
+          <span class="column-count">{crmData.leads.filter(l => l.status === 'new').length}</span>
+        </div>
+        <div class="kanban-cards" data-status="new">
+          {crmData.leads.filter(lead => lead.status === 'new').map(lead => (
+            <div class="kanban-card" data-lead-id={lead.id} draggable="true">
+              <div class="card-header">
+                <h4>{lead.name}</h4>
+                <span class="card-value">{formatCurrency(lead.value)}</span>
+              </div>
+              <div class="card-details">
+                <p class="service">{lead.service}</p>
+                <p class="contact">{lead.email}</p>
+                <p class="location">{lead.city}</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-xs" data-action="assign-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-user-check"></i>
+                </button>
+                <button class="btn btn-xs" data-action="email-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-envelope"></i>
+                </button>
+                <button class="btn btn-xs" data-action="edit-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kanban-column" data-status="contacted">
+        <div class="column-header">
+          <h3>Contacted</h3>
+          <span class="column-count">{crmData.leads.filter(l => l.status === 'contacted').length}</span>
+        </div>
+        <div class="kanban-cards" data-status="contacted">
+          {crmData.leads.filter(lead => lead.status === 'contacted').map(lead => (
+            <div class="kanban-card" data-lead-id={lead.id} draggable="true">
+              <div class="card-header">
+                <h4>{lead.name}</h4>
+                <span class="card-value">{formatCurrency(lead.value)}</span>
+              </div>
+              <div class="card-details">
+                <p class="service">{lead.service}</p>
+                <p class="contact">{lead.email}</p>
+                <p class="location">{lead.city}</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-xs" data-action="assign-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-user-check"></i>
+                </button>
+                <button class="btn btn-xs" data-action="email-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-envelope"></i>
+                </button>
+                <button class="btn btn-xs" data-action="edit-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kanban-column" data-status="qualified">
+        <div class="column-header">
+          <h3>Qualified</h3>
+          <span class="column-count">{crmData.leads.filter(l => l.status === 'qualified').length}</span>
+        </div>
+        <div class="kanban-cards" data-status="qualified">
+          {crmData.leads.filter(lead => lead.status === 'qualified').map(lead => (
+            <div class="kanban-card" data-lead-id={lead.id} draggable="true">
+              <div class="card-header">
+                <h4>{lead.name}</h4>
+                <span class="card-value">{formatCurrency(lead.value)}</span>
+              </div>
+              <div class="card-details">
+                <p class="service">{lead.service}</p>
+                <p class="contact">{lead.email}</p>
+                <p class="location">{lead.city}</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-xs" data-action="assign-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-user-check"></i>
+                </button>
+                <button class="btn btn-xs" data-action="convert-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-handshake"></i>
+                </button>
+                <button class="btn btn-xs" data-action="edit-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kanban-column" data-status="proposal">
+        <div class="column-header">
+          <h3>Proposal Sent</h3>
+          <span class="column-count">{crmData.leads.filter(l => l.status === 'proposal').length}</span>
+        </div>
+        <div class="kanban-cards" data-status="proposal">
+          {crmData.leads.filter(lead => lead.status === 'proposal').map(lead => (
+            <div class="kanban-card" data-lead-id={lead.id} draggable="true">
+              <div class="card-header">
+                <h4>{lead.name}</h4>
+                <span class="card-value">{formatCurrency(lead.value)}</span>
+              </div>
+              <div class="card-details">
+                <p class="service">{lead.service}</p>
+                <p class="contact">{lead.email}</p>
+                <p class="location">{lead.city}</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-xs" data-action="convert-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-handshake"></i>
+                </button>
+                <button class="btn btn-xs" data-action="follow-up" data-lead-id={lead.id}>
+                  <i class="fas fa-clock"></i>
+                </button>
+                <button class="btn btn-xs" data-action="edit-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kanban-column" data-status="closed-won">
+        <div class="column-header success">
+          <h3>Closed Won</h3>
+          <span class="column-count">{crmData.leads.filter(l => l.status === 'closed-won').length}</span>
+        </div>
+        <div class="kanban-cards" data-status="closed-won">
+          {crmData.leads.filter(lead => lead.status === 'closed-won').map(lead => (
+            <div class="kanban-card success" data-lead-id={lead.id}>
+              <div class="card-header">
+                <h4>{lead.name}</h4>
+                <span class="card-value">{formatCurrency(lead.value)}</span>
+              </div>
+              <div class="card-details">
+                <p class="service">{lead.service}</p>
+                <p class="contact">{lead.email}</p>
+                <p class="location">{lead.city}</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-xs" data-action="view-client" data-lead-id={lead.id}>
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="kanban-column" data-status="closed-lost">
+        <div class="column-header danger">
+          <h3>Closed Lost</h3>
+          <span class="column-count">{crmData.leads.filter(l => l.status === 'closed-lost').length}</span>
+        </div>
+        <div class="kanban-cards" data-status="closed-lost">
+          {crmData.leads.filter(lead => lead.status === 'closed-lost').map(lead => (
+            <div class="kanban-card danger" data-lead-id={lead.id}>
+              <div class="card-header">
+                <h4>{lead.name}</h4>
+                <span class="card-value">{formatCurrency(lead.value)}</span>
+              </div>
+              <div class="card-details">
+                <p class="service">{lead.service}</p>
+                <p class="contact">{lead.email}</p>
+                <p class="location">{lead.city}</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-xs" data-action="reactivate-lead" data-lead-id={lead.id}>
+                  <i class="fas fa-redo"></i>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid" id="dashboardGrid">
     <!-- Leads Management -->
     <div class="dashboard-card leads-card">
       <div class="card-header">
@@ -673,6 +880,205 @@ function getPriorityLevel(lead: Lead): string {
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
     margin-bottom: 2rem;
+  }
+
+  /* Kanban Pipeline Styles */
+  .kanban-pipeline {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .kanban-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .kanban-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .pipeline-stats {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .pipeline-stats .stat {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .kanban-board {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    min-height: 600px;
+  }
+
+  .kanban-column {
+    flex: 1;
+    min-width: 280px;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 2px dashed transparent;
+    transition: all 0.2s ease;
+  }
+
+  .kanban-column.drag-over {
+    border-color: #3b82f6;
+    background: #eff6ff;
+  }
+
+  .column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .column-header.success {
+    border-bottom-color: #10b981;
+  }
+
+  .column-header.danger {
+    border-bottom-color: #ef4444;
+  }
+
+  .column-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .column-header.success h3 {
+    color: #10b981;
+  }
+
+  .column-header.danger h3 {
+    color: #ef4444;
+  }
+
+  .column-count {
+    background: #6b7280;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .column-header.success .column-count {
+    background: #10b981;
+  }
+
+  .column-header.danger .column-count {
+    background: #ef4444;
+  }
+
+  .kanban-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 200px;
+  }
+
+  .kanban-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #e5e7eb;
+    cursor: grab;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .kanban-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .kanban-card:active {
+    cursor: grabbing;
+  }
+
+  .kanban-card.success {
+    border-left-color: #10b981;
+  }
+
+  .kanban-card.danger {
+    border-left-color: #ef4444;
+  }
+
+  .kanban-card.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+  }
+
+  .kanban-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    padding: 0;
+    border: none;
+  }
+
+  .kanban-card .card-header h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #374151;
+    line-height: 1.3;
+  }
+
+  .card-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #059669;
+    background: #d1fae5;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .kanban-card .card-details {
+    margin-bottom: 0.75rem;
+  }
+
+  .kanban-card .card-details p {
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+    line-height: 1.3;
+  }
+
+  .kanban-card .card-details .service {
+    color: #3730a3;
+    font-weight: 500;
+  }
+
+  .kanban-card .card-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  .kanban-card .card-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
   }
 
   .dashboard-card {
@@ -1479,4 +1885,422 @@ function getPriorityLevel(lead: Lead): string {
   }
 
   // Additional CRM functions can be added here
+
+  // New Lead Creation
+  function handleNewLead() {
+    showCrmModal('Create New Lead', `
+      <form id="newLeadForm" class="new-lead-form">
+        <div class="form-group">
+          <label for="leadName">Full Name:</label>
+          <input type="text" id="leadName" name="name" required placeholder="Enter full name">
+        </div>
+        
+        <div class="form-group">
+          <label for="leadEmail">Email:</label>
+          <input type="email" id="leadEmail" name="email" required placeholder="Enter email address">
+        </div>
+        
+        <div class="form-group">
+          <label for="leadPhone">Phone:</label>
+          <input type="tel" id="leadPhone" name="phone" required placeholder="Enter phone number">
+        </div>
+        
+        <div class="form-group">
+          <label for="leadService">Service Interest:</label>
+          <select id="leadService" name="service" required>
+            <option value="">Select a service</option>
+            <option value="QuickBooks Setup">QuickBooks Setup</option>
+            <option value="Monthly Bookkeeping">Monthly Bookkeeping</option>
+            <option value="Payroll Services">Payroll Services</option>
+            <option value="Business Consulting">Business Consulting</option>
+            <option value="Tax Preparation">Tax Preparation</option>
+            <option value="Financial Planning">Financial Planning</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="leadCity">City/Location:</label>
+          <input type="text" id="leadCity" name="city" required placeholder="Enter city">
+        </div>
+        
+        <div class="form-group">
+          <label for="leadValue">Estimated Value:</label>
+          <input type="number" id="leadValue" name="value" min="0" step="0.01" placeholder="Enter estimated value">
+        </div>
+        
+        <div class="form-group">
+          <label for="leadStatus">Initial Status:</label>
+          <select id="leadStatus" name="status" required>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="qualified">Qualified</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="leadNotes">Initial Notes:</label>
+          <textarea id="leadNotes" name="notes" rows="3" placeholder="Add any initial notes about this lead"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" onclick="closeCrmModal()" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Lead</button>
+        </div>
+      </form>
+    `);
+
+    document.getElementById('newLeadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const leadData = {
+        type: 'create_lead',
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        service: formData.get('service'),
+        city: formData.get('city'),
+        value: parseFloat(formData.get('value')) || 0,
+        status: formData.get('status'),
+        notes: formData.get('notes'),
+        timestamp: new Date().toISOString()
+      };
+      
+      try {
+        const response = await fetch('/api/analytics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(leadData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          closeCrmModal();
+          refreshCrmData();
+          showNotification('New lead created successfully!', 'success');
+        } else {
+          showNotification('Failed to create lead: ' + result.error, 'error');
+        }
+      } catch (error) {
+        showNotification('Error creating lead: ' + error.message, 'error');
+      }
+    });
+  }
+
+  // New Client Creation
+  function handleNewClient() {
+    showCrmModal('Create New Client', `
+      <form id="newClientForm" class="new-client-form">
+        <div class="form-group">
+          <label for="clientName">Client Name:</label>
+          <input type="text" id="clientName" name="name" required placeholder="Enter client name">
+        </div>
+        
+        <div class="form-group">
+          <label for="clientEmail">Email:</label>
+          <input type="email" id="clientEmail" name="email" required placeholder="Enter email address">
+        </div>
+        
+        <div class="form-group">
+          <label for="clientPhone">Phone:</label>
+          <input type="tel" id="clientPhone" name="phone" required placeholder="Enter phone number">
+        </div>
+        
+        <div class="form-group">
+          <label for="clientCompany">Company:</label>
+          <input type="text" id="clientCompany" name="company" placeholder="Enter company name">
+        </div>
+        
+        <div class="form-group">
+          <label for="clientServices">Services:</label>
+          <select id="clientServices" name="services" multiple required>
+            <option value="QuickBooks Setup">QuickBooks Setup</option>
+            <option value="Monthly Bookkeeping">Monthly Bookkeeping</option>
+            <option value="Payroll Services">Payroll Services</option>
+            <option value="Business Consulting">Business Consulting</option>
+            <option value="Tax Preparation">Tax Preparation</option>
+            <option value="Financial Planning">Financial Planning</option>
+          </select>
+          <small>Hold Ctrl/Cmd to select multiple services</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="clientValue">Initial Contract Value:</label>
+          <input type="number" id="clientValue" name="totalValue" min="0" step="0.01" placeholder="Enter contract value">
+        </div>
+        
+        <div class="form-group">
+          <label for="clientStatus">Client Status:</label>
+          <select id="clientStatus" name="status" required>
+            <option value="active">Active</option>
+            <option value="onboarding">Onboarding</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="clientNotes">Notes:</label>
+          <textarea id="clientNotes" name="notes" rows="3" placeholder="Add any notes about this client"></textarea>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" onclick="closeCrmModal()" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Client</button>
+        </div>
+      </form>
+    `);
+
+    document.getElementById('newClientForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const clientData = {
+        type: 'create_client',
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        company: formData.get('company'),
+        services: Array.from(formData.getAll('services')),
+        totalValue: parseFloat(formData.get('totalValue')) || 0,
+        status: formData.get('status'),
+        notes: formData.get('notes'),
+        joinedAt: new Date().toISOString()
+      };
+      
+      try {
+        const response = await fetch('/api/analytics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(clientData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          closeCrmModal();
+          refreshCrmData();
+          showNotification('New client created successfully!', 'success');
+        } else {
+          showNotification('Failed to create client: ' + result.error, 'error');
+        }
+      } catch (error) {
+        showNotification('Error creating client: ' + error.message, 'error');
+      }
+    });
+  }
+
+  // Lead Assignment Function
+  function handleAssignLead(leadId) {
+    showCrmModal('Assign Lead', `
+      <form id="assignLeadForm" class="assign-lead-form">
+        <div class="form-group">
+          <label for="assignTo">Assign to Team Member:</label>
+          <select id="assignTo" name="assignedTo" required>
+            <option value="">Select team member</option>
+            <option value="karson">Karson (CEO)</option>
+            <option value="brandon">Brandon (CRO)</option>
+            <option value="allie">Allie (CAO)</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="assignmentNotes">Assignment Notes:</label>
+          <textarea id="assignmentNotes" name="notes" rows="3" placeholder="Add notes about this assignment"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="followUpDate">Follow-up Date:</label>
+          <input type="datetime-local" id="followUpDate" name="followUpDate">
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" onclick="closeCrmModal()" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Assign Lead</button>
+        </div>
+      </form>
+    `);
+
+    document.getElementById('assignLeadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const assignmentData = {
+        type: 'assign_lead',
+        leadId: parseInt(leadId),
+        assignedTo: formData.get('assignedTo'),
+        notes: formData.get('notes'),
+        followUpDate: formData.get('followUpDate'),
+        assignedAt: new Date().toISOString()
+      };
+      
+      try {
+        const response = await fetch('/api/analytics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(assignmentData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          closeCrmModal();
+          refreshCrmData();
+          showNotification('Lead assigned successfully!', 'success');
+        } else {
+          showNotification('Failed to assign lead: ' + result.error, 'error');
+        }
+      } catch (error) {
+        showNotification('Error assigning lead: ' + error.message, 'error');
+      }
+    });
+  }
+
+  // Kanban Toggle Function
+  function toggleKanbanView() {
+    const kanbanPipeline = document.getElementById('kanbanPipeline');
+    const dashboardGrid = document.getElementById('dashboardGrid');
+    const toggleBtn = document.querySelector('[data-action="toggle-kanban"]');
+    
+    if (kanbanPipeline.style.display === 'none') {
+      kanbanPipeline.style.display = 'block';
+      dashboardGrid.style.display = 'none';
+      toggleBtn.innerHTML = '<i class="fas fa-table"></i> Table View';
+    } else {
+      kanbanPipeline.style.display = 'none';
+      dashboardGrid.style.display = 'grid';
+      toggleBtn.innerHTML = '<i class="fas fa-columns"></i> Kanban View';
+    }
+  }
+
+  // Kanban Drag and Drop Functionality
+  function initializeKanbanDragDrop() {
+    const kanbanCards = document.querySelectorAll('.kanban-card');
+    const kanbanColumns = document.querySelectorAll('.kanban-cards');
+    
+    kanbanCards.forEach(card => {
+      card.addEventListener('dragstart', handleDragStart);
+      card.addEventListener('dragend', handleDragEnd);
+    });
+    
+    kanbanColumns.forEach(column => {
+      column.addEventListener('dragover', handleDragOver);
+      column.addEventListener('drop', handleDrop);
+      column.addEventListener('dragenter', handleDragEnter);
+      column.addEventListener('dragleave', handleDragLeave);
+    });
+  }
+
+  function handleDragStart(e) {
+    e.target.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', e.target.dataset.leadId);
+  }
+
+  function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
+
+  function handleDragEnter(e) {
+    e.preventDefault();
+    e.target.closest('.kanban-column').classList.add('drag-over');
+  }
+
+  function handleDragLeave(e) {
+    if (!e.target.closest('.kanban-column').contains(e.relatedTarget)) {
+      e.target.closest('.kanban-column').classList.remove('drag-over');
+    }
+  }
+
+  async function handleDrop(e) {
+    e.preventDefault();
+    const leadId = e.dataTransfer.getData('text/plain');
+    const newStatus = e.target.dataset.status;
+    const column = e.target.closest('.kanban-column');
+    
+    column.classList.remove('drag-over');
+    
+    if (!newStatus) return;
+    
+    try {
+      const response = await fetch('/api/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'update_lead_status',
+          leadId: parseInt(leadId),
+          status: newStatus,
+          updatedAt: new Date().toISOString()
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        refreshCrmData();
+        showNotification(`Lead moved to ${newStatus}!`, 'success');
+      } else {
+        showNotification('Failed to update lead status: ' + result.error, 'error');
+      }
+    } catch (error) {
+      showNotification('Error updating lead status: ' + error.message, 'error');
+    }
+  }
+
+  // Update the main CRM actions handler
+  function handleCrmActionsEnhanced(event) {
+    const action = event.target.closest('[data-action]')?.dataset.action;
+    if (!action) return;
+
+    event.preventDefault();
+    
+    switch (action) {
+      case 'new-lead':
+        handleNewLead();
+        break;
+      case 'new-client':
+        handleNewClient();
+        break;
+      case 'assign-lead':
+        handleAssignLead(event.target.closest('[data-lead-id]').dataset.leadId);
+        break;
+      case 'toggle-kanban':
+        toggleKanbanView();
+        break;
+      case 'email-lead':
+        handleEmailLead(event.target.closest('[data-lead-id]').dataset.leadId);
+        break;
+      case 'convert-lead':
+        handleConvertLead(event.target.closest('[data-lead-id]').dataset.leadId);
+        break;
+      case 'edit-lead':
+        handleEditLead(event.target.closest('[data-lead-id]').dataset.leadId);
+        break;
+      case 'view-client':
+        handleViewClient(event.target.closest('[data-lead-id]').dataset.leadId);
+        break;
+      case 'reactivate-lead':
+        handleReactivateLead(event.target.closest('[data-lead-id]').dataset.leadId);
+        break;
+      default:
+        // Fall back to original handler
+        handleCrmActions(event);
+    }
+  }
+
+  // Initialize enhanced CRM functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    // Replace the original event listener with enhanced version
+    document.removeEventListener('click', handleCrmActions);
+    document.addEventListener('click', handleCrmActionsEnhanced);
+    
+    // Initialize Kanban drag and drop
+    initializeKanbanDragDrop();
+    
+    // Initialize filters
+    initializeFilters();
+  });
 </script>

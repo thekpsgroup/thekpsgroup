@@ -160,6 +160,104 @@ export const POST: APIRoute = async ({ request }) => {
           headers: { 'Content-Type': 'application/json' }
         });
 
+      case 'create_lead':
+        // Create new lead from CRM dashboard
+        const crmLeadData = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          service: data.service,
+          status: data.status || 'new',
+          value: parseFloat(data.value) || 0,
+          city: data.city,
+          notes: data.notes || '',
+          source: 'crm_manual'
+        };
+
+        const crmLead = CRMDatabase.createLead(crmLeadData);
+        
+        return new Response(JSON.stringify({ 
+          success: true, 
+          lead: crmLead 
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+      case 'create_client':
+        // Create new client from CRM dashboard
+        const clientData = {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          company: data.company || '',
+          services: data.services || [],
+          totalValue: parseFloat(data.totalValue) || 0,
+          status: data.status || 'active',
+          notes: data.notes || '',
+          joinedAt: data.joinedAt || timestamp
+        };
+
+        const newClient = CRMDatabase.createClient(clientData);
+        
+        return new Response(JSON.stringify({ 
+          success: true, 
+          client: newClient 
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+      case 'assign_lead':
+        // Assign lead to team member
+        const assignmentData = {
+          leadId: data.leadId,
+          assignedTo: data.assignedTo,
+          notes: data.notes || '',
+          followUpDate: data.followUpDate,
+          assignedAt: data.assignedAt || timestamp
+        };
+
+        const assignmentResult = CRMDatabase.assignLead(assignmentData);
+        
+        return new Response(JSON.stringify({ 
+          success: true, 
+          assignment: assignmentResult 
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+      case 'update_lead_status':
+        // Update lead status (for Kanban board)
+        const statusUpdateResult = CRMDatabase.updateLeadStatus(data.leadId, data.status);
+        
+        return new Response(JSON.stringify({ 
+          success: true, 
+          updated: statusUpdateResult 
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+      case 'convert_lead':
+        // Convert lead to client (existing functionality, just documenting)
+        const conversionData = {
+          leadId: data.leadId,
+          dealAmount: data.dealAmount,
+          services: data.services
+        };
+
+        const conversionResult = CRMDatabase.convertLeadToClient(conversionData);
+        
+        return new Response(JSON.stringify({ 
+          success: true, 
+          conversion: conversionResult 
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+
       default:
         // Generic analytics event
         const genericResult = CRMDatabase.trackAnalyticsEvent({
