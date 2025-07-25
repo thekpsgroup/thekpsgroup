@@ -12,7 +12,7 @@ const leaders = [
     title: 'Founder & CEO',
     location: 'Dallas, TX',
     subtitle: 'Systems Architect | Financial Strategist | Ex-Big Tech Operator',
-    image: '/team/karson/CEO-Karson.png.jpg',
+    image: '/team/karson/karson.jpg',
     galleryImages: [
       '/team/karson/karson.jpg',
       '/team/karson/karson-w-girls.jpg',
@@ -41,9 +41,11 @@ const leaders = [
     title: 'Chief Revenue Officer',
     location: 'Dallas, TX',
     subtitle: 'Sales Leader | Field Services Veteran | Revenue System Builder',
-    image: '/team/brandon/CRO-Brandon.jpg.jpg',
+    image: '/team/brandon/brandon.jpg',
     galleryImages: [
-      // Add more photos here when available
+      '/team/brandon/brandon-working-hard.jpg',
+      '/team/brandon/brandon-with-spouse.jpg',
+      '/team/brandon/brandon.jpg'
     ],
     bio: 'Brandon has spent the last 15 years in the trenches of service business sales — building and leading high-performing teams across HVAC, solar, roofing, and construction. He\'s trained closers, rebuilt CRMs, built lead-to-close pipelines, and turned sales chaos into structured, scalable revenue engines.',
     experience: [
@@ -133,7 +135,7 @@ const leaders = [
                       <img
                         src={image}
                         alt={`${leader.name} - Personal photo ${imgIndex + 1}`}
-                        class="w-full h-64 object-contain bg-gray-800 group-hover:scale-105 transition-transform duration-300"
+                        class="w-full h-64 object-cover bg-gray-800 group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -153,7 +155,7 @@ const leaders = [
                     <img
                       src={leader.image}
                       alt={`${leader.name}, ${leader.title}`}
-                      class="w-full h-80 object-contain bg-gray-800 rounded-2xl mb-6"
+                      class="w-full h-80 object-cover bg-gray-800 rounded-2xl mb-6"
                       loading="lazy"
                     />
                     <div class="text-center">
