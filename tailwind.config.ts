@@ -20,19 +20,19 @@ export default {
           950: '#020617',
         },
         
-        // Professional accent - sophisticated blue
+        // Dark blue accent palette (#313F57 base)
         accent: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+          50: '#f1f3f6',
+          100: '#e3e7ed',
+          200: '#c7d0db',
+          300: '#a1afc2',
+          400: '#7688a4',
+          500: '#56668a',
+          600: '#435371',
+          700: '#313F57', // Your preferred dark blue
+          800: '#2b3548',
+          900: '#252d3c',
+          950: '#1a1e28',
         },
         
         // Success/positive actions
@@ -49,18 +49,18 @@ export default {
           900: '#14532d',
         },
         
-        // Warning/attention
+        // Yellow accent palette (#f8d673 base)
         warning: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+          50: '#fffdf7',
+          100: '#fefaee',
+          200: '#fdf2d5',
+          300: '#fce7b3',
+          400: '#f8d673', // Your preferred yellow
+          500: '#f4c842',
+          600: '#e6b429',
+          700: '#d19e1e',
+          800: '#a8801b',
+          900: '#8a6a1b',
         },
         
         // Sophisticated grays
@@ -87,10 +87,10 @@ export default {
           darker: '#020617',
         },
         
-        // Legacy gold colors for gradual migration
-        gold: "#2563eb",
-        goldLight: "#3b82f6",
-        goldDark: "#1d4ed8",
+        // Legacy gold colors updated to yellow theme
+        gold: "#f8d673", // Your preferred yellow
+        goldLight: "#fce7b3",
+        goldDark: "#e6b429",
       },
       fontFamily: {
         // Premium typography stack

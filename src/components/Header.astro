@@ -14,13 +14,16 @@ import { BUSINESS } from '../data/constants';
     // Header scroll effect
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
-      if (header) {
+      const headerBg = document.querySelector('#headerBg');
+      if (header && headerBg) {
         if (scrollY > 50) {
-          header.classList.add('bg-black/95', 'backdrop-blur-lg', 'shadow-xl');
-          header.classList.remove('bg-transparent');
+          headerBg.classList.add('opacity-100');
+          headerBg.classList.remove('opacity-0');
+          header.classList.add('shadow-xl');
         } else {
-          header.classList.remove('bg-black/95', 'backdrop-blur-lg', 'shadow-xl');
-          header.classList.add('bg-transparent');
+          headerBg.classList.remove('opacity-100');
+          headerBg.classList.add('opacity-0');
+          header.classList.remove('shadow-xl');
         }
       }
     });
@@ -107,11 +110,14 @@ import { BUSINESS } from '../data/constants';
 
 <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent" role="banner">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Background blur effect -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black/95 via-accent-700/95 to-black/95 backdrop-blur-lg opacity-0 transition-opacity duration-300" id="headerBg"></div>
+    
     <!-- Main header flex container -->
     <div class="flex items-center justify-between h-16 lg:h-20">
       
       <!-- Logo section -->
-      <div class="flex-shrink-0">
+      <div class="flex-shrink-0 relative z-10">
         <a href="/" class="flex items-center space-x-3 group" aria-label="The KPS Group home">
           <div class="relative">
             <img
@@ -122,16 +128,16 @@ import { BUSINESS } from '../data/constants';
               loading="eager"
               decoding="async"
             />
-            <div class="absolute inset-0 bg-accent-500/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
+            <div class="absolute inset-0 bg-warning-400/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
           </div>
-          <span class="hidden sm:block text-lg lg:text-xl font-bold text-accent-400 group-hover:text-accent-300 transition-colors duration-300">
+          <span class="hidden sm:block text-lg lg:text-xl font-bold text-white group-hover:text-warning-400 transition-colors duration-300">
             {BUSINESS.brand}
           </span>
         </a>
       </div>
 
       <!-- Desktop navigation - hidden on mobile (md:768px+) -->
-      <nav class="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
+      <nav class="hidden md:flex items-center space-x-8 relative z-10" role="navigation" aria-label="Main navigation">
         <a href="/" class="nav-link group">
           <span>Home</span>
           <div class="nav-indicator"></div>
@@ -282,7 +288,7 @@ import { BUSINESS } from '../data/constants';
   <!-- Mobile navigation menu -->
   <nav
     id="mobileMenu"
-    class="md:hidden hidden fixed inset-x-0 top-16 lg:top-20 opacity-0 scale-95 transform transition-all duration-200 ease-in-out bg-black/95 backdrop-blur-lg border-t border-accent-600/20 shadow-xl"
+    class="md:hidden hidden fixed inset-x-0 top-16 lg:top-20 opacity-0 scale-95 transform transition-all duration-200 ease-in-out bg-gradient-to-b from-accent-700/95 to-black/95 backdrop-blur-lg border-t border-warning-400/20 shadow-xl"
     role="navigation"
     aria-label="Mobile navigation"
   >
@@ -402,11 +408,11 @@ import { BUSINESS } from '../data/constants';
 
 <style>
   .nav-link {
-    @apply relative px-3 py-2 text-sm font-medium text-accent-400/90 hover:text-accent-300 transition-all duration-300;
+    @apply relative px-3 py-2 text-sm font-medium text-white/90 hover:text-warning-400 transition-all duration-300;
   }
   
   .nav-indicator {
-    @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-accent-500 to-accent-400 transition-all duration-300 transform -translate-x-1/2;
+    @apply absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-warning-500 to-warning-400 transition-all duration-300 transform -translate-x-1/2;
   }
   
   .nav-link:hover .nav-indicator {
@@ -414,11 +420,11 @@ import { BUSINESS } from '../data/constants';
   }
   
   .dropdown-link {
-    @apply flex items-center gap-3 px-4 py-3 text-sm font-medium text-accent-400/90 hover:text-accent-300 hover:bg-accent-500/10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500;
+    @apply flex items-center gap-3 px-4 py-3 text-sm font-medium text-white/90 hover:text-warning-400 hover:bg-accent-700/20 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-warning-400;
   }
   
   .dropdown-link-company {
-    @apply flex items-center gap-3 px-4 py-3 text-sm font-medium text-accent-400/90 hover:text-accent-300 hover:bg-accent-500/10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500;
+    @apply flex items-center gap-3 px-4 py-3 text-sm font-medium text-white/90 hover:text-warning-400 hover:bg-accent-700/20 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-warning-400;
   }
   
   .dropdown-link-company:hover .company-icon {
@@ -426,11 +432,11 @@ import { BUSINESS } from '../data/constants';
   }
   
   .mobile-nav-link {
-    @apply block px-4 py-3 text-base font-medium text-accent-400/90 hover:text-accent-300 hover:bg-accent-500/10 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-accent-500;
+    @apply block px-4 py-3 text-base font-medium text-white/90 hover:text-warning-400 hover:bg-accent-700/20 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-warning-400;
   }
   
   .btn-primary {
-    @apply relative inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-accent-600 to-accent-500 text-white font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-black overflow-hidden;
+    @apply relative inline-flex items-center justify-center px-6 py-2.5 bg-gradient-to-r from-warning-500 to-warning-400 text-accent-700 font-semibold rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-warning-400 focus:ring-offset-2 focus:ring-offset-black overflow-hidden;
   }
 
   @keyframes shimmer {

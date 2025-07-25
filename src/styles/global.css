@@ -12,8 +12,8 @@
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
-  --gradient-primary: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #D4AF37 100%);
-  --gradient-surface: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  --gradient-primary: linear-gradient(135deg, #f8d673 0%, #fce7b3 50%, #f8d673 100%);
+  --gradient-surface: linear-gradient(135deg, rgba(49,63,87,0.1) 0%, rgba(49,63,87,0.05) 100%);
   --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
@@ -78,7 +78,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* High contrast focus for keyboard users */
 .focus-visible {
-  outline: 3px solid #D4AF37;
+  outline: 3px solid #f8d673;
   outline-offset: 2px;
 }
 
@@ -138,7 +138,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   top: -40px;
   left: 6px;
-  background: #D4AF37;
+  background: #f8d673;
   color: #000;
   padding: 8px;
   z-index: 1000;
@@ -165,8 +165,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .mobile-nav-link:hover,
 .mobile-nav-link:focus {
-  background-color: rgba(212, 175, 55, 0.1);
-  color: #D4AF37;
+  background-color: rgba(248, 214, 115, 0.1);
+  color: #f8d673;
   transform: translateX(4px);
 }
 
@@ -681,11 +681,11 @@ button, input[type="submit"], input[type="button"] {
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #D4AF37, #FFD700, #8C6E3D);
+  background: linear-gradient(135deg, #f8d673, #fce7b3, #e6b429);
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #FFD700, #D4AF37);
+  background: linear-gradient(135deg, #fce7b3, #f8d673);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
