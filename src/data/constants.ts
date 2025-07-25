@@ -197,7 +197,7 @@ export const PORTFOLIO_COMPANIES = {
     name: 'Modern Brands',
     tagline: 'Digital Presence',
     description: 'Professional websites, branding, and digital marketing for service businesses.',
-    url: '/services/branding',
+    url: 'https://modernbrands.com',
     color: 'purple',
     icon: 'palette',
     services: ['Website Design', 'Logo Design', 'Brand Strategy', 'Digital Marketing']

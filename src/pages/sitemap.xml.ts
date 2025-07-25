@@ -28,7 +28,6 @@ export async function GET() {
   const servicePages = [
     { path: '/services/quickbooks-consulting', priority: '0.9', changefreq: 'weekly' },
     { path: '/services/peo-payroll', priority: '0.9', changefreq: 'weekly' },
-    { path: '/services/branding', priority: '0.9', changefreq: 'weekly' },
   ];
 
   // Major Texas cities with high search volume
