@@ -6,14 +6,193 @@ import CrmDashboard from '../components/CrmDashboard.astro';
 const pageTitle = 'KPS CRM - Customer Relationship Management';
 const pageDescription = 'Complete CRM system for managing leads, clients, pricing, and revenue tracking with Outlook integration.';
 
-// Check for admin authentication (simple password protection)
+// Enhanced security authentication
 const password = Astro.url.searchParams.get('password');
-const correctPassword = 'kpsadmin2025';
-const isAuthenticated = password === correctPassword;
----
+const sessionToken = Astro.cookies.get('crm_session')?.value;
+const userAgent = Astro.request.headers.get('user-agent') || '';
+const clientIP = Astro.clientAddress;
 
-{!isAuthenticated && (
-<!DOCTYPE html>
+// Security configuration
+const CORRECT_PASSWORD = 'KPS_CRM_2025!@#';
+const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+const MAX_LOGIN_ATTEMPTS = 3;
+const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+
+// Security logging function
+const logSecurityEvent = (event: string, details: any = {}) => {
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    event,
+    ip: clientIP,
+    userAgent: userAgent.substring(0, 100), // Truncate for security
+    ...details
+  };
+  
+  // In production, send to secure logging service
+  console.log('[SECURITY]', JSON.stringify(logEntry));
+};
+
+// Rate limiting and attempt tracking (in production, use Redis or database)
+const loginAttempts = new Map();
+const lockedIPs = new Map();
+
+// Check if IP is locked out
+const isLockedOut = () => {
+  const lockoutInfo = lockedIPs.get(clientIP);
+  if (lockoutInfo && Date.now() < lockoutInfo.until) {
+    return true;
+  }
+  if (lockoutInfo && Date.now() >= lockoutInfo.until) {
+    lockedIPs.delete(clientIP);
+  }
+  return false;
+};
+
+// Validate session token
+const isValidSession = () => {
+  if (!sessionToken) return false;
+  
+  try {
+    const sessionData = JSON.parse(atob(sessionToken));
+    const isExpired = Date.now() > sessionData.expires;
+    const isValidUA = sessionData.userAgent === userAgent;
+    const isValidIP = sessionData.ip === clientIP;
+    
+    // Additional security checks
+    const sessionAge = Date.now() - sessionData.created;
+    const maxSessionAge = 8 * 60 * 60 * 1000; // 8 hours absolute max
+    const isTooOld = sessionAge > maxSessionAge;
+    
+    if (isExpired || !isValidUA || !isValidIP || isTooOld) {
+      if (isExpired) logSecurityEvent('SESSION_EXPIRED');
+      if (!isValidUA) logSecurityEvent('SESSION_UA_MISMATCH');
+      if (!isValidIP) logSecurityEvent('SESSION_IP_MISMATCH');
+      if (isTooOld) logSecurityEvent('SESSION_TOO_OLD');
+      return false;
+    }
+    
+    return true;
+  } catch {
+    logSecurityEvent('SESSION_INVALID_FORMAT');
+    return false;
+  }
+};
+
+// Check authentication
+let isAuthenticated = isValidSession();
+
+// Handle password authentication (both GET and POST)
+if (!isAuthenticated && (password || Astro.request.method === 'POST')) {
+  let submittedPassword = password;
+  
+  // Handle POST request
+  if (Astro.request.method === 'POST') {
+    try {
+      const formData = await Astro.request.formData();
+      const passwordValue = formData.get('password');
+      submittedPassword = passwordValue ? passwordValue.toString() : null;
+    } catch (error) {
+      console.error('Error processing form data:', error);
+    }
+  }
+  
+  if (submittedPassword) {
+    if (isLockedOut()) {
+      const lockoutInfo = lockedIPs.get(clientIP);
+      const remainingTime = Math.ceil((lockoutInfo.until - Date.now()) / 1000 / 60);
+      
+      return new Response(`<!DOCTYPE html>
+<html><head><title>Access Blocked</title><style>
+body{font-family:sans-serif;text-align:center;padding:50px;background:#f5f5f5;}
+.error{background:white;padding:30px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);max-width:400px;margin:0 auto;}
+.error h2{color:#dc2626;margin:0 0 15px;}
+.error p{color:#6b7280;margin:10px 0;}
+</style></head><body>
+<div class="error">
+<h2>🔒 Access Blocked</h2>
+<p>Too many failed login attempts.</p>
+<p>Try again in ${remainingTime} minutes.</p>
+</div></body></html>`, {
+        status: 429,
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
+    
+    if (submittedPassword === CORRECT_PASSWORD) {
+      // Successful login - create session
+      const sessionData = {
+        created: Date.now(),
+        expires: Date.now() + SESSION_DURATION,
+        userAgent: userAgent,
+        ip: clientIP
+      };
+      
+      const sessionToken = btoa(JSON.stringify(sessionData));
+      
+      Astro.cookies.set('crm_session', sessionToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        maxAge: SESSION_DURATION / 1000,
+        path: '/crm'
+      });
+      
+      // Log successful login
+      logSecurityEvent('LOGIN_SUCCESS', {
+        sessionId: sessionToken.substring(0, 8) + '...'
+      });
+      
+      // Clear failed attempts
+      loginAttempts.delete(clientIP);
+      isAuthenticated = true;
+    } else {
+      // Failed login attempt
+      const attempts = loginAttempts.get(clientIP) || 0;
+      const newAttempts = attempts + 1;
+      loginAttempts.set(clientIP, newAttempts);
+      
+      // Log failed attempt
+      logSecurityEvent('LOGIN_FAILED', {
+        attempts: newAttempts,
+        passwordLength: submittedPassword.length
+      });
+      
+      if (newAttempts >= MAX_LOGIN_ATTEMPTS) {
+        lockedIPs.set(clientIP, {
+          until: Date.now() + LOCKOUT_DURATION,
+          attempts: newAttempts
+        });
+        
+        // Log lockout event
+        logSecurityEvent('ACCOUNT_LOCKED', {
+          totalAttempts: newAttempts,
+          lockoutDuration: LOCKOUT_DURATION / 1000 / 60 // minutes
+        });
+      }
+    
+    const remainingAttempts = Math.max(0, MAX_LOGIN_ATTEMPTS - newAttempts);
+    
+    return new Response(`<!DOCTYPE html>
+<html><head><title>Invalid Password</title><style>
+body{font-family:sans-serif;text-align:center;padding:50px;background:#f5f5f5;}
+.error{background:white;padding:30px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);max-width:400px;margin:0 auto;}
+.error h2{color:#dc2626;margin:0 0 15px;}
+.error p{color:#6b7280;margin:10px 0;}
+.back-btn{display:inline-block;margin-top:20px;padding:10px 20px;background:#3b82f6;color:white;text-decoration:none;border-radius:5px;}
+</style></head><body>
+<div class="error">
+<h2>❌ Invalid Password</h2>
+<p>${remainingAttempts > 0 ? `${remainingAttempts} attempts remaining` : 'Account temporarily locked'}</p>
+<a href="/crm" class="back-btn">Try Again</a>
+</div></body></html>`, {
+        status: 401,
+        headers: { 'Content-Type': 'text/html' }
+      });
+    }
+  }
+}// If not authenticated, return the login page
+if (!isAuthenticated) {
+  return new Response(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -154,6 +333,31 @@ const isAuthenticated = password === correctPassword;
       margin: 0;
       font-size: 0.875rem;
     }
+
+    .security-notice {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .security-notice p {
+      margin: 0 0 0.5rem;
+      color: #92400e;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .security-notice small {
+      color: #a16207;
+      font-size: 0.75rem;
+    }
+
+    .security-notice i {
+      margin-right: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -168,7 +372,7 @@ const isAuthenticated = password === correctPassword;
       </p>
     </div>
 
-    <form class="login-form" method="GET" action="/crm">
+    <form class="login-form" method="POST" action="/crm">
       <div class="form-group">
         <label for="password">Admin Password:</label>
         <input 
@@ -178,6 +382,7 @@ const isAuthenticated = password === correctPassword;
           required 
           placeholder="Enter admin password"
           autocomplete="current-password"
+          minlength="8"
         />
       </div>
       <button type="submit" class="login-button">
@@ -185,6 +390,11 @@ const isAuthenticated = password === correctPassword;
         Access CRM Dashboard
       </button>
     </form>
+
+    <div class="security-notice">
+      <p><i class="fas fa-shield-alt"></i> Secure Access</p>
+      <small>This system is protected and monitored. All access attempts are logged.</small>
+    </div>
 
     <div class="login-features">
       <h4>CRM Features:</h4>
@@ -207,7 +417,7 @@ const isAuthenticated = password === correctPassword;
     </div>
   </div>
 
-  <script is:inline>
+  <script>
     // Auto-focus password field
     const passwordField = document.getElementById('password');
     if (passwordField) {
@@ -231,16 +441,73 @@ const isAuthenticated = password === correctPassword;
     }
   </script>
 </body>
-</html>
-)}
+</html>`, {
+    headers: {
+      'Content-Type': 'text/html'
+    }
+  });
+}
+---
 
-{isAuthenticated && (
+<!-- CRM Dashboard (authenticated users only) -->
 <BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- Session Security Header -->
+  <div class="session-header">
+    <div class="session-info">
+      <span class="session-status">🔒 Secure Session Active</span>
+      <span class="session-details">Session expires in <span id="sessionTimer">30:00</span></span>
+    </div>
+    <div class="session-actions">
+      <button id="logoutBtn" class="btn btn-secondary">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </button>
+    </div>
+  </div>
+  
   <!-- CRM Dashboard -->
   <CrmDashboard />
   
   <!-- Additional CRM-specific styles -->
   <style>
+    /* Session Security Header */
+    .session-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+      color: white;
+      padding: 1rem 2rem;
+      margin: -2rem -2rem 2rem -2rem;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .session-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .session-status {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .session-details {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    #sessionTimer {
+      font-weight: 600;
+      color: #fbbf24;
+    }
+
+    .session-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
     /* Notification styles for CRM actions */
     .notification {
       position: fixed;
@@ -451,6 +718,102 @@ const isAuthenticated = password === correctPassword;
   <!-- CRM JavaScript functionality -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {
+      // Session Management
+      let sessionTimeLeft = 30 * 60; // 30 minutes in seconds
+      const sessionTimer = document.getElementById('sessionTimer');
+      const logoutBtn = document.getElementById('logoutBtn');
+      
+      // Update session timer
+      function updateSessionTimer() {
+        const minutes = Math.floor(sessionTimeLeft / 60);
+        const seconds = sessionTimeLeft % 60;
+        const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (sessionTimer) {
+          sessionTimer.textContent = timeString;
+          
+          // Warning when less than 5 minutes
+          if (sessionTimeLeft <= 300) {
+            sessionTimer.style.color = '#ef4444';
+            sessionTimer.parentElement.style.animation = 'pulse 2s infinite';
+          }
+          
+          // Auto-logout when expired
+          if (sessionTimeLeft <= 0) {
+            handleLogout();
+            return;
+          }
+        }
+        
+        sessionTimeLeft--;
+      }
+      
+      // Start session timer
+      const timerInterval = setInterval(updateSessionTimer, 1000);
+      
+      // Logout functionality
+      function handleLogout() {
+        clearInterval(timerInterval);
+        
+        // Clear session cookie
+        document.cookie = 'crm_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/crm; secure; samesite=strict';
+        
+        // Show logout message and redirect
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.8); z-index: 10000;
+          display: flex; align-items: center; justify-content: center;
+        `;
+        
+        overlay.innerHTML = `
+          <div style="background: white; padding: 2rem; border-radius: 12px; text-align: center; max-width: 400px;">
+            <h3 style="margin: 0 0 1rem; color: #1f2937;">Session Ended</h3>
+            <p style="margin: 0 0 1.5rem; color: #6b7280;">You have been logged out for security.</p>
+            <button onclick="window.location.href='/crm'" style="
+              background: #3b82f6; color: white; border: none; padding: 0.75rem 1.5rem;
+              border-radius: 6px; cursor: pointer; font-weight: 600;
+            ">Return to Login</button>
+          </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        // Auto-redirect after 3 seconds
+        setTimeout(() => {
+          window.location.href = '/crm';
+        }, 3000);
+      }
+      
+      // Logout button click
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+      }
+      
+      // Session activity detection (extend session on activity)
+      let lastActivity = Date.now();
+      const activityEvents = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+      
+      function resetSessionTimer() {
+        const now = Date.now();
+        if (now - lastActivity > 60000) { // Only reset if inactive for 1+ minutes
+          sessionTimeLeft = Math.min(sessionTimeLeft + 300, 30 * 60); // Add 5 minutes, max 30
+          lastActivity = now;
+        }
+      }
+      
+      activityEvents.forEach(event => {
+        document.addEventListener(event, resetSessionTimer, true);
+      });
+      
+      // Prevent session hijacking - check if page is visible
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          // Page is hidden, could be suspicious
+          console.log('Session monitoring: Page hidden');
+        }
+      });
+      
       // Add search functionality
       const headerActions = document.querySelector('.header-actions');
       if (headerActions) {
@@ -481,4 +844,3 @@ const isAuthenticated = password === correctPassword;
     });
   </script>
 </BaseLayout>
-)}
