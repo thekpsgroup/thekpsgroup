@@ -1,113 +1,491 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const title = 'About The KPS Group | Elite Workforce Leadership & Business Infrastructure | Austin TX';
-const description = 'Learn about The KPS Group, elite workforce leadership specialists and business infrastructure experts serving all 50 states from Austin. Comprehensive organizational development and strategic workforce solutions.';
+const title = 'Leadership Team | The KPS Group | Dallas TX';
+const description = 'Meet the leadership team of The KPS Group - seasoned operators who have lived both sides: the corporate grind and the entrepreneurial fire. We install infrastructure, not fluff.';
 ---
 
 <BaseLayout {title} {description}>
-  <section class="relative py-20 sm:py-32 px-6 max-w-6xl mx-auto min-h-screen bg-black">
-    <!-- Enhanced background decoration -->
-    <div class="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-goldLight/5 rounded-3xl"></div>
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-gold/3 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-goldLight/3 rounded-full blur-3xl"></div>
-    
-    <div class="relative z-10">
-      <div class="text-center mb-12 sm:mb-16">
-        <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold text-goldLight mb-6 sm:mb-8 leading-tight">
-          About <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-goldLight">The KPS Group</span>
+  <div class="bg-black min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
+      <!-- Background decoration -->
+      <div class="absolute inset-0 bg-gradient-to-br from-gold/5 via-transparent to-goldLight/5 rounded-3xl pointer-events-none"></div>
+      <div class="absolute top-1/4 left-1/4 w-72 h-72 lg:w-96 lg:h-96 bg-gold/3 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-72 h-72 lg:w-96 lg:h-96 bg-goldLight/3 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 text-center">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-goldLight mb-4 sm:mb-6 leading-tight">
+          🧠 <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-goldLight">Leadership Team</span>
         </h1>
-        <p class="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
-          We are elite workforce leadership specialists and business infrastructure experts serving organizations across all 50 states from our Austin headquarters. Our expert team creates comprehensive systems for organizational excellence and sustainable growth.
+        <p class="text-lg sm:text-xl lg:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-6 sm:mb-8">
+          We've Done the Work — Now We Systemize It
+        </p>
+        <p class="text-base sm:text-lg text-goldLight/80 max-w-5xl mx-auto leading-relaxed">
+          The KPS Group is led by a team of seasoned operators who've lived both sides: the corporate grind and the entrepreneurial fire. We've advised the biggest, cleaned up the messiest, and built the systems that turn chaos into control. We're not here to sell fluff — we're here to fix what's broken, and scale what works.
         </p>
       </div>
+    </section>
 
-      <!-- About Story -->
-      <div class="mb-16">
-        <p class="text-lg text-goldLight/80 leading-relaxed max-w-4xl mx-auto text-center">
-          At The KPS Group, we develop organizational systems and leadership capabilities that don't just look professional—they perform like strategic assets. We're an elite consulting partner that moves fast, thinks systemically, and delivers measurable workforce excellence that elevates your competitive positioning while maximizing ROI.
-        </p>
-
-        <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto mt-12">
-          <div class="p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
-            <div class="text-3xl font-bold text-gold mb-2">250+</div>
-            <div class="text-goldLight/80 text-sm">Organizational Transformations</div>
+    <!-- Karson Lawrence - CEO -->
+    <section class="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div class="order-2 lg:order-1 space-y-6">
+          <!-- Header -->
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gold">👨‍💼 Karson Lawrence</h2>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="bg-gold/20 text-gold px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold">Founder & CEO</span>
+              <span class="text-goldLight/60 text-sm sm:text-base">Dallas, TX</span>
+            </div>
+            <p class="text-goldLight/80 font-medium text-sm sm:text-base">Systems Architect | Financial Strategist | Ex-Big Tech Operator</p>
           </div>
-          <div class="p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
-            <div class="text-3xl font-bold text-gold mb-2">4.9★</div>
-            <div class="text-goldLight/80 text-sm">Client Rating</div>
-          </div>
-          <div class="p-6 bg-white/5 border border-gold/20 rounded-xl backdrop-blur-sm">
-            <div class="text-3xl font-bold text-gold mb-2">48hr</div>
-            <div class="text-goldLight/80 text-sm">Average Turnaround</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Values Section -->
-      <div class="grid md:grid-cols-3 gap-8 mb-16">
-        <div class="text-center">
-          <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-gold mb-2">Fast Delivery</h3>
-          <p class="text-goldLight/80">Most projects completed within 48-72 hours</p>
-        </div>
-
-        <div class="text-center">
-          <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-gold mb-2">Quality Guaranteed</h3>
-          <p class="text-goldLight/80">100% satisfaction guarantee on every project</p>
-        </div>
-
-        <div class="text-center">
-          <div class="w-16 h-16 bg-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold text-gold mb-2">Transparent Pricing</h3>
-          <p class="text-goldLight/80">No hidden fees or surprises</p>
-        </div>
-      </div>
-
-      <!-- CTA Section -->
-      <div class="text-center">
-        <h3 class="text-2xl sm:text-3xl font-bold text-goldLight mb-4">Ready to Transform Your Business?</h3>
-        <p class="text-goldLight/80 mb-8 max-w-2xl mx-auto">
-          Join 200+ successful businesses who've transformed their operations with The Modern Suite.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <a
-            href="/contact"
-            class="inline-flex items-center gap-2 bg-gold text-black px-8 py-4 rounded-full font-semibold hover:bg-goldLight hover:scale-105 transition-all duration-300 shadow-lg"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-            </svg>
-            Get Your Free Consultation
-          </a>
           
-          <a
-            href="/contact"
-            class="inline-flex items-center gap-2 border border-gold/30 text-gold px-8 py-4 rounded-full font-semibold hover:border-gold hover:bg-gold/10 transition-all duration-300"
-          >
-            View Our Packages
-          </a>
+          <!-- Content -->
+          <div class="space-y-4 sm:space-y-6 text-goldLight/90 text-base sm:text-lg leading-relaxed">
+            <p>
+              Karson is the founder and visionary force behind The KPS Group and the entire Modern Suite. Before stepping into the small business arena, he spent a decade inside Big Tech, managing high-value enterprise accounts for PwC, IBM, and Microsoft. That experience sharpened his skills in system architecture, enterprise operations, and strategic finance — all of which now inform his work rebuilding Main Street businesses from the inside out.
+            </p>
+            
+            <div class="bg-white/5 border border-gold/20 rounded-xl p-4 sm:p-6">
+              <h4 class="text-gold font-semibold mb-3 text-base sm:text-lg">Track Record:</h4>
+              <ul class="space-y-2 text-goldLight/80 text-sm sm:text-base">
+                <li>• 10 years in big tech managing Fortune 500 accounts</li>
+                <li>• Background in systems thinking, ops architecture, and account profitability</li>
+                <li>• Fractional COO and turnaround advisor to dozens of service-based firms</li>
+                <li>• Creator of Modern OS, the ERP/CRM/FSM engine powering the Modern Suite</li>
+              </ul>
+            </div>
+
+            <p>
+              Karson sees through the noise and targets the root. Whether it's cash flow confusion, bloated headcount, or a complete lack of visibility — he brings the strategy, structure, and software to fix it.
+            </p>
+            
+            <blockquote class="border-l-4 border-gold/40 pl-4 sm:pl-6 py-2">
+              <p class="text-lg sm:text-xl font-semibold text-gold italic">
+                "My job is to build the system the owner wishes they had 5 years ago — and make it scalable."
+              </p>
+            </blockquote>
+          </div>
         </div>
         
-        <div class="mt-4 text-xs text-gold/60">
-          🔥 Limited time: Free rush delivery on all packages this week
+        <!-- Photos -->
+        <div class="order-1 lg:order-2">
+          <div class="grid grid-cols-2 gap-3 sm:gap-4">
+            <div class="space-y-3 sm:space-y-4">
+              <img 
+                src="/team/karson/CEO-Karson.png.jpg" 
+                alt="Karson Lawrence - CEO of The KPS Group" 
+                class="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+              <img 
+                src="/team/karson/karson.jpg" 
+                alt="Karson Lawrence professional photo" 
+                class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+            </div>
+            <div class="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
+              <img 
+                src="/team/karson/karson-w-girls.jpg" 
+                alt="Karson Lawrence with family" 
+                class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+              <img 
+                src="/team/karson/karson-w-girls2.jpg" 
+                alt="Karson Lawrence with daughters" 
+                class="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Brandon Gibson - CRO -->
+    <section class="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="bg-white/5 border border-gold/20 rounded-3xl p-6 sm:p-8 lg:p-12 backdrop-blur-sm">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <!-- Photos -->
+          <div class="lg:order-1">
+            <div class="grid grid-cols-2 gap-3 sm:gap-4">
+              <div class="space-y-3 sm:space-y-4">
+                <img 
+                  src="/team/brandon/CRO-Brandon.jpg.jpg" 
+                  alt="Brandon Gibson - Chief Revenue Officer of The KPS Group" 
+                  class="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                  loading="lazy"
+                />
+                <img 
+                  src="/team/brandon/brandon.jpg" 
+                  alt="Brandon Gibson professional photo" 
+                  class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                  loading="lazy"
+                />
+              </div>
+              <div class="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
+                <img 
+                  src="/team/brandon/brandon-working-hard.jpg" 
+                  alt="Brandon Gibson at work" 
+                  class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                  loading="lazy"
+                />
+                <img 
+                  src="/team/brandon/brandon-with-spouse.jpg" 
+                  alt="Brandon Gibson with spouse" 
+                  class="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="lg:order-2 space-y-6">
+            <!-- Header -->
+            <div class="space-y-4">
+              <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gold">👨‍💼 Brandon Gibson</h2>
+              </div>
+              <div class="flex flex-wrap items-center gap-3">
+                <span class="bg-gold/20 text-gold px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold">Chief Revenue Officer</span>
+                <span class="text-goldLight/60 text-sm sm:text-base">Dallas, TX</span>
+              </div>
+              <p class="text-goldLight/80 font-medium text-sm sm:text-base">Sales Leader | Field Services Veteran | Revenue System Builder</p>
+            </div>
+            
+            <!-- Content -->
+            <div class="space-y-4 sm:space-y-6 text-goldLight/90 text-base sm:text-lg leading-relaxed">
+              <p>
+                Brandon has spent the last 15 years in the trenches of service business sales — building and leading high-performing teams across HVAC, solar, roofing, and construction. He's trained closers, rebuilt CRMs, built lead-to-close pipelines, and turned sales chaos into structured, scalable revenue engines.
+              </p>
+              
+              <div class="bg-white/5 border border-gold/20 rounded-xl p-4 sm:p-6">
+                <h4 class="text-gold font-semibold mb-3 text-base sm:text-lg">Track Record:</h4>
+                <ul class="space-y-2 text-goldLight/80 text-sm sm:text-base">
+                  <li>• Former VP of Sales across multiple 7-figure field service firms</li>
+                  <li>• Expert in objection handling, deal psychology, and performance accountability</li>
+                  <li>• Leads the development of the Modern Consulting sales training ecosystem</li>
+                  <li>• Primary author of sales manuals, script packets, and live training programs</li>
+                </ul>
+              </div>
+
+              <p>
+                His zone of genius? Turning talented but underperforming sales teams into high-output closers with consistent activity and trackable results.
+              </p>
+              
+              <blockquote class="border-l-4 border-gold/40 pl-4 sm:pl-6 py-2">
+                <p class="text-lg sm:text-xl font-semibold text-gold italic">
+                  "Sales isn't magic. It's a math equation most companies haven't solved."
+                </p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Allie Banks - CAO -->
+    <section class="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div class="order-2 lg:order-1 space-y-6">
+          <!-- Header -->
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+              <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gold">👩‍💼 Allie Banks</h2>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+              <span class="bg-gold/20 text-gold px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold">Chief Administrative Officer</span>
+              <span class="text-goldLight/60 text-sm sm:text-base">Georgia</span>
+            </div>
+            <p class="text-goldLight/80 font-medium text-sm sm:text-base">HR Compliance Expert | Payroll Veteran | Enterprise-Grade Operator</p>
+          </div>
+          
+          <!-- Content -->
+          <div class="space-y-4 sm:space-y-6 text-goldLight/90 text-base sm:text-lg leading-relaxed">
+            <p>
+              Allie brings enterprise experience with small business empathy. She spent nearly a decade leading operations inside ADP, where she managed payroll, compliance, and HR support for thousands of employees. At The KPS Group, she translates that rigor into lean, automated back-office systems for small business teams.
+            </p>
+            
+            <div class="bg-white/5 border border-gold/20 rounded-xl p-4 sm:p-6">
+              <h4 class="text-gold font-semibold mb-3 text-base sm:text-lg">Track Record:</h4>
+              <ul class="space-y-2 text-goldLight/80 text-sm sm:text-base">
+                <li>• Former ADP senior account lead for national accounts</li>
+                <li>• Direct experience with complex payroll, W-2/1099 compliance, PTO tracking, and benefits</li>
+                <li>• Designs all onboarding and compliance flows for Modern Pay</li>
+                <li>• Oversees all internal KPS HR, SOPs, and administrative systems</li>
+              </ul>
+            </div>
+
+            <p>
+              Allie ensures your business isn't just operating — it's protected. From the first hire to the final paycheck, she builds the guardrails most small businesses skip.
+            </p>
+            
+            <blockquote class="border-l-4 border-gold/40 pl-4 sm:pl-6 py-2">
+              <p class="text-lg sm:text-xl font-semibold text-gold italic">
+                "Structure creates freedom. And most teams are drowning in the absence of it."
+              </p>
+            </blockquote>
+          </div>
+        </div>
+        
+        <!-- Photos -->
+        <div class="order-1 lg:order-2">
+          <div class="grid grid-cols-2 gap-3 sm:gap-4">
+            <div class="space-y-3 sm:space-y-4">
+              <img 
+                src="/team/allie/CAO-Allie.jpeg.jpg" 
+                alt="Allie Banks - Chief Administrative Officer of The KPS Group" 
+                class="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+            </div>
+            <div class="space-y-3 sm:space-y-4 mt-6 sm:mt-8">
+              <img 
+                src="/team/allie/allie-with-family.jpg" 
+                alt="Allie Banks with family" 
+                class="w-full h-36 sm:h-40 lg:h-48 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+              <img 
+                src="/team/allie/allie-with-spouse.jpg" 
+                alt="Allie Banks with spouse" 
+                class="w-full h-48 sm:h-56 lg:h-64 object-cover rounded-xl border-2 border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Why -->
+    <section class="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="bg-gradient-to-br from-gold/10 to-goldLight/10 border border-gold/20 rounded-3xl p-6 sm:p-8 lg:p-12 backdrop-blur-sm">
+        <div class="text-center space-y-8 sm:space-y-12">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gold">💡 Our Why</h2>
+          
+          <div class="space-y-6 sm:space-y-8">
+            <p class="text-xl sm:text-2xl text-goldLight/90 leading-relaxed max-w-4xl mx-auto">
+              We didn't create The KPS Group to offer services.<br/>
+              <span class="text-gold font-semibold">We created it because we saw business owners being told to "scale" without being handed a system — or the truth.</span>
+            </p>
+          </div>
+
+          <div class="space-y-8">
+            <h3 class="text-xl sm:text-2xl font-bold text-gold">We believe:</h3>
+            <div class="grid sm:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
+              <div class="bg-white/5 border border-gold/20 rounded-xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
+                <p class="text-goldLight/90 text-base sm:text-lg font-medium">You can't grow what you don't understand.</p>
+              </div>
+              <div class="bg-white/5 border border-gold/20 rounded-xl p-4 sm:p-6 hover:bg-white/10 transition-all duration-300">
+                <p class="text-goldLight/90 text-base sm:text-lg font-medium">Finance isn't just reporting — it's strategy.</p>
+              </div>
+              <div class="bg-white/5 border border-gold/20 rounded-xl p-4 sm:p-6 sm:col-span-2 hover:bg-white/10 transition-all duration-300">
+                <p class="text-goldLight/90 text-base sm:text-lg font-medium text-center">Your ops should run even when you're not there.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-6 sm:space-y-8">
+            <div class="space-y-4">
+              <p class="text-xl sm:text-2xl text-goldLight/90 leading-relaxed max-w-3xl mx-auto">
+                <span class="text-gold font-semibold">We don't sell fluff.</span><br/>
+                We install infrastructure.
+              </p>
+              <p class="text-lg sm:text-xl text-goldLight/80 max-w-3xl mx-auto">
+                The Modern Suite isn't a vendor. It's your outsourced back office — with real operators behind it.
+              </p>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+              <a
+                href="/contact"
+                class="group inline-flex items-center gap-2 bg-gold text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-goldLight hover:scale-105 transition-all duration-300 shadow-lg text-sm sm:text-base w-full sm:w-auto justify-center"
+                aria-label="Contact us to install your business infrastructure"
+              >
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                </svg>
+                Let's Install Your Infrastructure
+              </a>
+              
+              <a
+                href="/services"
+                class="group inline-flex items-center gap-2 border border-gold/30 text-gold px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:border-gold hover:bg-gold/10 transition-all duration-300 text-sm sm:text-base w-full sm:w-auto justify-center"
+                aria-label="Explore our Modern Suite services"
+              >
+                <svg class="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+                Explore The Modern Suite
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
+
+<style>
+  /* Hide any scroll indicators that might be appearing from cached styles */
+  .animate-bounce {
+    display: none !important;
+  }
+  
+  /* Ensure no floating scroll indicators appear */
+  div[class*="bottom-8"]:has(svg[viewBox="0 0 24 24"]) {
+    display: none !important;
+  }
+  
+  /* Hide any absolute positioned scroll indicators */
+  .absolute.bottom-8.left-1\/2 {
+    display: none !important;
+  }
+  
+  /* Enhanced mobile responsiveness and performance */
+  @media (max-width: 768px) {
+    .absolute[class*="animate-bounce"] {
+      display: none !important;
+    }
+    
+    /* Fix any centering issues with scroll indicators */
+    div[class*="transform"][class*="-translate-x-1/2"] {
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+    
+    /* Optimize mobile image loading */
+    img {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+  }
+  
+  /* Enhanced accessibility and focus states */
+  a {
+    outline: none;
+  }
+  
+  a:focus-visible {
+    outline: 2px solid theme('colors.gold');
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+  
+  /* Improved button hover states */
+  .group:hover svg {
+    transform: scale(1.1);
+  }
+  
+  /* Smooth scrolling performance */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Optimize image loading */
+  img {
+    content-visibility: auto;
+    contain-intrinsic-size: 300px 200px;
+  }
+  
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  /* Enhanced contrast for better readability */
+  @media (prefers-contrast: high) {
+    .text-goldLight\/80 {
+      color: rgb(248 214 115 / 0.95) !important;
+    }
+    
+    .text-goldLight\/90 {
+      color: rgb(248 214 115) !important;
+    }
+    
+    .border-gold\/20 {
+      border-color: rgb(248 214 115 / 0.4) !important;
+    }
+  }
+  
+  /* Dark mode optimizations */
+  @media (prefers-color-scheme: dark) {
+    .bg-white\/5 {
+      background-color: rgb(255 255 255 / 0.08);
+    }
+  }
+  
+  /* Performance optimizations */
+  .bg-gradient-to-br {
+    will-change: transform;
+  }
+  
+  /* Intersection observer optimization for images */
+  img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  img[loading="lazy"].loaded {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  // Enhanced image lazy loading with intersection observer
+  document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+    
+    if ('IntersectionObserver' in window) {
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '50px',
+        threshold: 0.1
+      });
+
+      images.forEach(img => {
+        imageObserver.observe(img);
+      });
+    } else {
+      // Fallback for browsers without IntersectionObserver
+      images.forEach(img => {
+        img.classList.add('loaded');
+      });
+    }
+  });
+
+  // Performance monitoring
+  if ('performance' in window && 'measure' in window.performance) {
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const paintTimings = performance.getEntriesByType('paint');
+        const fcp = paintTimings.find(entry => entry.name === 'first-contentful-paint');
+        if (fcp) {
+          console.log(`First Contentful Paint: ${fcp.startTime.toFixed(2)}ms`);
+        }
+      }, 0);
+    });
+  }
+</script>
