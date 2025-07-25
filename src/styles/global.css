@@ -515,6 +515,13 @@ button, input[type="submit"], input[type="button"] {
   box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
 }
 
+.btn-primary-compact {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-accent-500 text-white font-medium rounded-lg;
+  @apply hover:bg-accent-600 hover:scale-105 transition-all duration-300;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+  font-size: 0.875rem;
+}
+
 .btn-secondary {
   @apply inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-accent-500 text-accent-500 font-semibold rounded-full;
   @apply hover:bg-accent-500 hover:text-white transition-all duration-300;
