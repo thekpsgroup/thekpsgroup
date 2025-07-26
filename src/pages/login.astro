@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LoginForm from '../components/LoginForm.astro';
+
+const pageTitle = 'Login - KPS Group CRM';
+const pageDescription = 'Login to access the KPS Group CRM system';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <LoginForm 
+    title="Login to KPS CRM"
+    subtitle="Enter your credentials to access the Customer Relationship Management system"
+  />
+</BaseLayout>

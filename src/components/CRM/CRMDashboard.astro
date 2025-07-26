@@ -1,0 +1,237 @@
+---
+import KanbanBoard from './KanbanBoard.astro';
+import EmailIntegration from './EmailIntegration.astro';
+import CalendarIntegration from './CalendarIntegration.astro';
+import ContactManager from './ContactManager.astro';
+import TeamsIntegration from './TeamsIntegration.astro';
+import ActivityFeed from './ActivityFeed.astro';
+import DashboardStats from './DashboardStats.astro';
+import TaskManager from './TaskManager.astro';
+---
+
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+  <!-- CRM Header -->
+  <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <div class="max-w-full px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">KPS CRM</h1>
+          <nav class="hidden md:flex space-x-8">
+            <button class="crm-nav-button active" data-view="dashboard">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m8 7V3a2 2 0 012-2h4a2 2 0 012 2v4"/>
+              </svg>
+              Dashboard
+            </button>
+            <button class="crm-nav-button" data-view="contacts">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+              Contacts
+            </button>
+            <button class="crm-nav-button" data-view="deals">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+              Deals
+            </button>
+            <button class="crm-nav-button" data-view="tasks">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+              Tasks
+            </button>
+            <button class="crm-nav-button" data-view="calendar">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Calendar
+            </button>
+            <button class="crm-nav-button" data-view="email">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              Email
+            </button>
+          </nav>
+        </div>
+        
+        <div class="flex items-center gap-4">
+          <!-- Search -->
+          <div class="relative">
+            <input 
+              type="text" 
+              placeholder="Search contacts, deals, tasks..." 
+              class="w-80 pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+          
+          <!-- Quick Actions -->
+          <button class="btn-primary flex items-center gap-2" id="newContactBtn">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            New Contact
+          </button>
+          
+          <!-- Teams Status -->
+          <div class="flex items-center gap-2 px-3 py-2 bg-green-100 dark:bg-green-900 rounded-lg">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-sm text-green-800 dark:text-green-200">Teams Connected</span>
+          </div>
+          
+          <!-- User Menu -->
+          <div class="relative">
+            <button class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700">
+              <img src="/team/karson/CEO-Karson.png.jpg" alt="User" class="w-8 h-8 rounded-full" />
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Karson</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main CRM Content -->
+  <main class="flex-1 overflow-hidden">
+    <!-- Dashboard View -->
+    <div id="dashboard-view" class="crm-view active">
+      <div class="p-6 space-y-6">
+        <!-- Stats Overview -->
+        <DashboardStats />
+        
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left Column - Kanban Board -->
+          <div class="lg:col-span-2">
+            <KanbanBoard />
+          </div>
+          
+          <!-- Right Column - Activity Feed -->
+          <div class="space-y-6">
+            <ActivityFeed />
+            <TeamsIntegration />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contacts View -->
+    <div id="contacts-view" class="crm-view">
+      <ContactManager />
+    </div>
+
+    <!-- Deals View -->
+    <div id="deals-view" class="crm-view">
+      <div class="p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Deal Pipeline</h2>
+        <KanbanBoard dealView={true} />
+      </div>
+    </div>
+
+    <!-- Tasks View -->
+    <div id="tasks-view" class="crm-view">
+      <TaskManager />
+    </div>
+
+    <!-- Calendar View -->
+    <div id="calendar-view" class="crm-view">
+      <CalendarIntegration />
+    </div>
+
+    <!-- Email View -->
+    <div id="email-view" class="crm-view">
+      <EmailIntegration />
+    </div>
+  </main>
+</div>
+
+<!-- CRM Modals and Overlays -->
+<div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div id="modal-content" class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <!-- Modal content will be injected here -->
+    </div>
+  </div>
+</div>
+
+<style>
+  .crm-nav-button {
+    @apply flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors;
+  }
+  
+  .crm-nav-button.active {
+    @apply text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20;
+  }
+  
+  .crm-view {
+    @apply hidden;
+  }
+  
+  .crm-view.active {
+    @apply block;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Navigation handling
+    const navButtons = document.querySelectorAll('.crm-nav-button');
+    const views = document.querySelectorAll('.crm-view');
+    
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const viewName = button.getAttribute('data-view');
+        
+        // Update active nav button
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Show corresponding view
+        views.forEach(view => view.classList.remove('active'));
+        document.getElementById(`${viewName}-view`)?.classList.add('active');
+      });
+    });
+    
+    // Modal handling
+    const modal = document.getElementById('modal-overlay');
+    const modalContent = document.getElementById('modal-content');
+    
+    window.openModal = (content: string) => {
+      if (modalContent) {
+        modalContent.innerHTML = content;
+        modal?.classList.remove('hidden');
+      }
+    };
+    
+    window.closeModal = () => {
+      modal?.classList.add('hidden');
+    };
+    
+    // Close modal on overlay click
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        window.closeModal();
+      }
+    });
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        window.closeModal();
+      }
+    });
+  });
+</script>

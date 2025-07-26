@@ -1,5 +1,35 @@
-import type { APIRoute } from 'astro';
-import CRMDatabase from '../../utils/database.js';
+﻿import type { APIRoute } from 'astro';
+import { Database } from '../../utils/database.ts';
+
+// Helper function to estimate lead value based on service and budget
+function estimateLeadValue(service: string, budget: string): number {
+  const serviceMultipliers: Record<string, number> = {
+    'QuickBooks Consulting': 2500,
+    'QuickBooks Setup': 2500,
+    'Monthly Bookkeeping': 5000,
+    'Payroll Services': 5000,
+    'Tax Preparation': 3000,
+    'HR Services': 7500,
+    'Technology Consulting': 15000,
+    'Business Operations': 10000,
+    'Business Consulting': 8000,
+    'The Modern Suite': 25000,
+    'HVAC Consulting': 12000,
+    'Electrical Consulting': 12000
+  };
+
+  const budgetMultipliers: Record<string, number> = {
+    'Under $5,000': 0.5,
+    '$5,000 - $15,000': 1.0,
+    '$15,000 - $50,000': 1.5,
+    '$50,000+': 2.0
+  };
+
+  const baseValue = serviceMultipliers[service] || 5000;
+  const budgetModifier = budgetMultipliers[budget] || 1.0;
+  
+  return Math.round(baseValue * budgetModifier);
+}
 
 export const GET: APIRoute = async ({ request, url }) => {
   try {
@@ -8,7 +38,8 @@ export const GET: APIRoute = async ({ request, url }) => {
     
     if (type === 'dashboard') {
       // Get comprehensive analytics data from database
-      const analytics = CRMDatabase.getAnalytics();
+      const database = new Database();
+      const analytics = database.getAnalyticsData();
       
       // Track the analytics page view
       const userAgent = request.headers.get('user-agent') || '';
@@ -16,7 +47,7 @@ export const GET: APIRoute = async ({ request, url }) => {
                  request.headers.get('x-real-ip') || 
                  'unknown';
 
-      CRMDatabase.trackAnalyticsEvent({
+      database.trackAnalyticsEvent({
         event_type: 'page_view',
         page: '/api/analytics',
         action: 'fetch_dashboard',
@@ -39,7 +70,8 @@ export const GET: APIRoute = async ({ request, url }) => {
     }
 
     // For backward compatibility, return basic analytics
-    const analytics = CRMDatabase.getAnalytics();
+    const database = new Database();
+    const analytics = database.getAnalyticsData();
     
     return new Response(JSON.stringify(analytics), {
       status: 200,
@@ -66,13 +98,12 @@ export const GET: APIRoute = async ({ request, url }) => {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const data = await request.json();
-    const timestamp = new Date().toISOString();
-    
-    // Handle different types of analytics events
-    switch (data.type) {
+    const { eventType, data } = await request.json();
+    const database = new Database();
+
+    switch (eventType) {
       case 'lead':
-        // Create new lead in database
+        // Enhanced lead creation with CRM integration
         const leadData = {
           name: data.name,
           email: data.email,
@@ -90,10 +121,10 @@ export const POST: APIRoute = async ({ request }) => {
           notes: data.notes
         };
 
-        const newLead = CRMDatabase.createLead(leadData);
+        const newLead = database.createLead(leadData);
         
         // Also track as analytics event
-        CRMDatabase.trackAnalyticsEvent({
+        database.trackAnalyticsEvent({
           event_type: 'lead_created',
           page: data.page || '/contact',
           action: 'form_submit',
@@ -116,7 +147,7 @@ export const POST: APIRoute = async ({ request }) => {
 
       case 'pageview':
         // Track page view
-        const result = CRMDatabase.trackAnalyticsEvent({
+        database.trackAnalyticsEvent({
           event_type: 'page_view',
           page: data.page,
           action: 'view',
@@ -129,157 +160,37 @@ export const POST: APIRoute = async ({ request }) => {
           session_id: data.session_id || Math.random().toString(36).substring(7)
         });
 
-        return new Response(JSON.stringify({ 
-          success: true, 
-          id: result.lastInsertRowid 
-        }), {
+        return new Response(JSON.stringify({ success: true }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' }
         });
 
       case 'interaction':
-        // Track user interaction
-        const interactionResult = CRMDatabase.trackAnalyticsEvent({
+        // Track user interactions
+        database.trackAnalyticsEvent({
           event_type: 'interaction',
           page: data.page,
           action: data.action,
-          element: data.element,
           value: data.value,
           user_agent: request.headers.get('user-agent') || '',
           ip_address: request.headers.get('x-forwarded-for') || 
                       request.headers.get('x-real-ip') || 
                       'unknown',
+          city: data.city,
           session_id: data.session_id || Math.random().toString(36).substring(7)
         });
 
-        return new Response(JSON.stringify({ 
-          success: true, 
-          id: interactionResult.lastInsertRowid 
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-
-      case 'create_lead':
-        // Create new lead from CRM dashboard
-        const crmLeadData = {
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          service: data.service,
-          status: data.status || 'new',
-          value: parseFloat(data.value) || 0,
-          city: data.city,
-          notes: data.notes || '',
-          source: 'crm_manual'
-        };
-
-        const crmLead = CRMDatabase.createLead(crmLeadData);
-        
-        return new Response(JSON.stringify({ 
-          success: true, 
-          lead: crmLead 
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-
-      case 'create_client':
-        // Create new client from CRM dashboard
-        const clientData = {
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          company: data.company || '',
-          services: data.services || [],
-          totalValue: parseFloat(data.totalValue) || 0,
-          status: data.status || 'active',
-          notes: data.notes || '',
-          joinedAt: data.joinedAt || timestamp
-        };
-
-        const newClient = CRMDatabase.createClient(clientData);
-        
-        return new Response(JSON.stringify({ 
-          success: true, 
-          client: newClient 
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-
-      case 'assign_lead':
-        // Assign lead to team member
-        const assignmentData = {
-          leadId: data.leadId,
-          assignedTo: data.assignedTo,
-          notes: data.notes || '',
-          followUpDate: data.followUpDate,
-          assignedAt: data.assignedAt || timestamp
-        };
-
-        const assignmentResult = CRMDatabase.assignLead(assignmentData);
-        
-        return new Response(JSON.stringify({ 
-          success: true, 
-          assignment: assignmentResult 
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-
-      case 'update_lead_status':
-        // Update lead status (for Kanban board)
-        const statusUpdateResult = CRMDatabase.updateLeadStatus(data.leadId, data.status);
-        
-        return new Response(JSON.stringify({ 
-          success: true, 
-          updated: statusUpdateResult 
-        }), {
-          status: 200,
-          headers: { 'Content-Type': 'application/json' }
-        });
-
-      case 'convert_lead':
-        // Convert lead to client (existing functionality, just documenting)
-        const conversionData = {
-          leadId: data.leadId,
-          dealAmount: data.dealAmount,
-          services: data.services
-        };
-
-        const conversionResult = CRMDatabase.convertLeadToClient(conversionData);
-        
-        return new Response(JSON.stringify({ 
-          success: true, 
-          conversion: conversionResult 
-        }), {
+        return new Response(JSON.stringify({ success: true }), {
           status: 200,
           headers: { 'Content-Type': 'application/json' }
         });
 
       default:
-        // Generic analytics event
-        const genericResult = CRMDatabase.trackAnalyticsEvent({
-          event_type: data.event_type || 'custom',
-          page: data.page,
-          action: data.action,
-          element: data.element,
-          value: data.value,
-          user_agent: request.headers.get('user-agent') || '',
-          ip_address: request.headers.get('x-forwarded-for') || 
-                      request.headers.get('x-real-ip') || 
-                      'unknown',
-          city: data.city,
-          referrer: data.referrer,
-          session_id: data.session_id || Math.random().toString(36).substring(7)
-        });
-
         return new Response(JSON.stringify({ 
-          success: true, 
-          id: genericResult.lastInsertRowid 
+          success: false, 
+          error: 'Unknown event type' 
         }), {
-          status: 200,
+          status: 400,
           headers: { 'Content-Type': 'application/json' }
         });
     }
@@ -287,42 +198,14 @@ export const POST: APIRoute = async ({ request }) => {
     console.error('Analytics POST error:', error);
     
     return new Response(JSON.stringify({ 
-      success: false, 
-      error: 'Failed to save analytics data',
+      success: false,
+      error: 'Failed to process analytics event',
       message: error instanceof Error ? error.message : 'Unknown error'
     }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   }
 };
-
-// Helper function to estimate lead value based on service and budget
-function estimateLeadValue(service: string, budget: string): number {
-  const serviceMultipliers = {
-    'QuickBooks Consulting': 2500,
-    'QuickBooks Setup': 2500,
-    'Monthly Bookkeeping': 5000,
-    'Payroll Services': 5000,
-    'Tax Preparation': 3000,
-    'HR Services': 7500,
-    'Technology Consulting': 15000,
-    'Business Operations': 10000,
-    'Business Consulting': 8000,
-    'The Modern Suite': 25000,
-    'HVAC Consulting': 12000,
-    'Electrical Consulting': 12000
-  };
-
-  const budgetMultipliers = {
-    'Under $5,000': 0.5,
-    '$5,000 - $15,000': 1.0,
-    '$15,000 - $50,000': 1.5,
-    '$50,000+': 2.0
-  };
-
-  const baseValue = (serviceMultipliers as any)[service] || 5000;
-  const budgetModifier = (budgetMultipliers as any)[budget] || 1.0;
-  
-  return Math.round(baseValue * budgetModifier);
-}

@@ -1,7 +1,211 @@
 ---
-// Enhanced Accessibility Component for improved UX and WCAG compliance
-const { skipToContent = true, reducedMotion = true, highContrast = false } = Astro.props;
+// Define typed props
+interface AccessibilityProps {
+  skipToContent?: boolean;
+  reducedMotion?: boolean;
+  highContrast?: boolean;
+}
+const { skipToContent = true, reducedMotion = true, highContrast = false } = Astro.props as AccessibilityProps;
 ---
+
+<script>
+class AccessibilityManager {
+  focusManager;
+  liveRegion;
+
+  constructor() {
+    this.focusManager = document.querySelector('[data-focus-manager]');
+    this.liveRegion = document.querySelector('[data-live-region]');
+    this.init();
+  }
+
+  init() {
+    this.setupFocusManagement();
+    this.setupAccessibilityToggles();
+    this.setupKeyboardNavigation();
+    this.setupReducedMotion();
+  }
+
+  setupFocusManagement() {
+    let focusOutline = document.querySelector('.focus-outline');
+    if (!focusOutline) return;
+
+    // Enhanced focus visibility
+    document.addEventListener('focusin', (e) => {
+      const target = e.target;
+      if (target instanceof Element && target.matches('button, a, input, textarea, select, [tabindex]')) {
+        this.showFocusOutline(target);
+      }
+    });
+
+    document.addEventListener('focusout', () => {
+      this.hideFocusOutline();
+    });
+
+    // Keyboard-only focus (not mouse)
+    document.addEventListener('mousedown', () => {
+      document.body.classList.add('mouse-user');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        document.body.classList.remove('mouse-user');
+      }
+    });
+  }
+
+  showFocusOutline(element) {
+    const rect = element.getBoundingClientRect();
+    const outline = document.querySelector('.focus-outline');
+    if (!outline) return;
+
+    const o = outline;
+    o.style.display = 'block';
+    o.style.left = `${rect.left - 4}px`;
+    o.style.top = `${rect.top - 4}px`;
+    o.style.width = `${rect.width + 8}px`;
+    o.style.height = `${rect.height + 8}px`;
+  }
+
+  hideFocusOutline() {
+    const outline = document.querySelector('.focus-outline');
+    if (outline) {
+      outline.style.display = 'none';
+    }
+  }
+
+  setupAccessibilityToggles() {
+    // High contrast toggle
+    const highContrastToggle = document.querySelector('[data-toggle="high-contrast"]');
+    if (highContrastToggle) {
+      highContrastToggle.addEventListener('click', () => {
+        document.body.classList.toggle('high-contrast');
+        this.announceChange('High contrast mode toggled');
+      });
+    }
+
+    // Large text toggle
+    const largeTextToggle = document.querySelector('[data-toggle="large-text"]');
+    if (largeTextToggle) {
+      largeTextToggle.addEventListener('click', () => {
+        document.body.classList.toggle('large-text');
+        this.announceChange('Text size toggled');
+      });
+    }
+
+    // Reduced motion toggle
+    const reducedMotionToggle = document.querySelector('[data-toggle="reduced-motion"]');
+    if (reducedMotionToggle) {
+      reducedMotionToggle.addEventListener('click', () => {
+        document.body.classList.toggle('reduced-motion-override');
+        this.announceChange('Animation settings changed');
+      });
+    }
+  }
+
+  setupKeyboardNavigation() {
+    // Enhanced keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      // Escape key handling
+      if (e.key === 'Escape') {
+        this.handleEscapeKey();
+      }
+
+      // Arrow key navigation for grids/lists
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        this.handleArrowNavigation(e);
+      }
+
+      // Enter/Space for button activation
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="button"]')) {
+        e.preventDefault();
+        e.target.click();
+      }
+    });
+  }
+
+  setupReducedMotion() {
+    // Respect user's reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    
+    if (prefersReducedMotion.matches) {
+      document.body.classList.add('reduced-motion');
+    }
+
+    prefersReducedMotion.addEventListener('change', (e) => {
+      if (e.matches) {
+        document.body.classList.add('reduced-motion');
+      } else {
+        document.body.classList.remove('reduced-motion');
+      }
+    });
+  }
+
+  handleEscapeKey() {
+    // Close modals, dropdowns, etc.
+    const openModal = document.querySelector('.modal[style*="block"], .modal.open');
+    if (openModal) {
+      const closeBtn = openModal.querySelector('[data-modal-close], .modal-close');
+      if (closeBtn) closeBtn.click();
+    }
+
+    // Close mobile menu
+    const mobileMenu = document.querySelector('.mobile-menu.open');
+    if (mobileMenu) {
+      const closeBtn = mobileMenu.querySelector('[data-menu-close]');
+      if (closeBtn) closeBtn.click();
+    }
+  }
+
+  handleArrowNavigation(e) {
+    const currentElement = e.target;
+    const container = currentElement.closest('[role="grid"], [role="listbox"], .navigation-grid');
+    
+    if (!container) return;
+
+    const focusableElements = container.querySelectorAll('[tabindex="0"], button, a, input');
+    const currentIndex = Array.from(focusableElements).indexOf(currentElement);
+    
+    let nextIndex = currentIndex;
+
+    switch (e.key) {
+      case 'ArrowUp':
+        nextIndex = currentIndex - 1;
+        break;
+      case 'ArrowDown':
+        nextIndex = currentIndex + 1;
+        break;
+      case 'ArrowLeft':
+        nextIndex = currentIndex - 1;
+        break;
+      case 'ArrowRight':
+        nextIndex = currentIndex + 1;
+        break;
+      default:
+        nextIndex = currentIndex;
+        break;
+    }
+
+    if (typeof nextIndex === 'number' && nextIndex >= 0 && nextIndex < focusableElements.length) {
+      e.preventDefault();
+      focusableElements[nextIndex].focus();
+    }
+  }
+
+  announceChange(message) {
+    if (this.liveRegion) {
+      this.liveRegion.textContent = message;
+    }
+  }
+}
+
+// Initialize on DOM ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => new AccessibilityManager());
+} else {
+  new AccessibilityManager();
+}
+</script>
 
 <!-- Skip to Main Content for Screen Readers -->
 {skipToContent && (
@@ -55,202 +259,6 @@ const { skipToContent = true, reducedMotion = true, highContrast = false } = Ast
   class="sr-only"
   data-live-region
 ></div>
-
-<script>
-  class AccessibilityManager {
-    constructor() {
-      this.focusManager = document.querySelector('[data-focus-manager]');
-      this.liveRegion = document.querySelector('[data-live-region]');
-      this.init();
-    }
-
-    init() {
-      this.setupFocusManagement();
-      this.setupAccessibilityToggles();
-      this.setupKeyboardNavigation();
-      this.setupReducedMotion();
-    }
-
-    setupFocusManagement() {
-      let focusOutline = document.querySelector('.focus-outline');
-      if (!focusOutline) return;
-
-      // Enhanced focus visibility
-      document.addEventListener('focusin', (e) => {
-        const target = e.target;
-        if (target.matches('button, a, input, textarea, select, [tabindex]')) {
-          this.showFocusOutline(target);
-        }
-      });
-
-      document.addEventListener('focusout', () => {
-        this.hideFocusOutline();
-      });
-
-      // Keyboard-only focus (not mouse)
-      document.addEventListener('mousedown', () => {
-        document.body.classList.add('mouse-user');
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-          document.body.classList.remove('mouse-user');
-        }
-      });
-    }
-
-    showFocusOutline(element) {
-      const rect = element.getBoundingClientRect();
-      const outline = document.querySelector('.focus-outline');
-      if (!outline) return;
-
-      outline.style.display = 'block';
-      outline.style.left = `${rect.left - 4}px`;
-      outline.style.top = `${rect.top - 4}px`;
-      outline.style.width = `${rect.width + 8}px`;
-      outline.style.height = `${rect.height + 8}px`;
-    }
-
-    hideFocusOutline() {
-      const outline = document.querySelector('.focus-outline');
-      if (outline) {
-        outline.style.display = 'none';
-      }
-    }
-
-    setupAccessibilityToggles() {
-      // High contrast toggle
-      const highContrastToggle = document.querySelector('[data-toggle="high-contrast"]');
-      if (highContrastToggle) {
-        highContrastToggle.addEventListener('click', () => {
-          document.body.classList.toggle('high-contrast');
-          this.announceChange('High contrast mode toggled');
-        });
-      }
-
-      // Large text toggle
-      const largeTextToggle = document.querySelector('[data-toggle="large-text"]');
-      if (largeTextToggle) {
-        largeTextToggle.addEventListener('click', () => {
-          document.body.classList.toggle('large-text');
-          this.announceChange('Text size toggled');
-        });
-      }
-
-      // Reduced motion toggle
-      const reducedMotionToggle = document.querySelector('[data-toggle="reduced-motion"]');
-      if (reducedMotionToggle) {
-        reducedMotionToggle.addEventListener('click', () => {
-          document.body.classList.toggle('reduced-motion-override');
-          this.announceChange('Animation settings changed');
-        });
-      }
-    }
-
-    setupKeyboardNavigation() {
-      // Enhanced keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        // Escape key handling
-        if (e.key === 'Escape') {
-          this.handleEscapeKey();
-        }
-
-        // Arrow key navigation for grids/lists
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-          this.handleArrowNavigation(e);
-        }
-
-        // Enter/Space for button activation
-        if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="button"]')) {
-          e.preventDefault();
-          e.target.click();
-        }
-      });
-    }
-
-    setupReducedMotion() {
-      // Respect user's reduced motion preference
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      
-      if (prefersReducedMotion.matches) {
-        document.body.classList.add('reduced-motion');
-      }
-
-      prefersReducedMotion.addEventListener('change', (e) => {
-        if (e.matches) {
-          document.body.classList.add('reduced-motion');
-        } else {
-          document.body.classList.remove('reduced-motion');
-        }
-      });
-    }
-
-    handleEscapeKey() {
-      // Close modals, dropdowns, etc.
-      const openModal = document.querySelector('.modal[style*="block"], .modal.open');
-      if (openModal) {
-        const closeBtn = openModal.querySelector('[data-modal-close], .modal-close');
-        if (closeBtn) closeBtn.click();
-      }
-
-      // Close mobile menu
-      const mobileMenu = document.querySelector('.mobile-menu.open');
-      if (mobileMenu) {
-        const closeBtn = mobileMenu.querySelector('[data-menu-close]');
-        if (closeBtn) closeBtn.click();
-      }
-    }
-
-    handleArrowNavigation(e) {
-      const currentElement = e.target;
-      const container = currentElement.closest('[role="grid"], [role="listbox"], .navigation-grid');
-      
-      if (!container) return;
-
-      const focusableElements = container.querySelectorAll('[tabindex="0"], button, a, input');
-      const currentIndex = Array.from(focusableElements).indexOf(currentElement);
-      
-      let nextIndex;
-      
-      switch (e.key) {
-        case 'ArrowUp':
-          nextIndex = currentIndex - 1;
-          break;
-        case 'ArrowDown':
-          nextIndex = currentIndex + 1;
-          break;
-        case 'ArrowLeft':
-          nextIndex = currentIndex - 1;
-          break;
-        case 'ArrowRight':
-          nextIndex = currentIndex + 1;
-          break;
-      }
-
-      if (nextIndex >= 0 && nextIndex < focusableElements.length) {
-        e.preventDefault();
-        focusableElements[nextIndex].focus();
-      }
-    }
-
-    announceChange(message) {
-      if (this.liveRegion) {
-        this.liveRegion.textContent = message;
-        // Clear after announcement
-        setTimeout(() => {
-          this.liveRegion.textContent = '';
-        }, 1000);
-      }
-    }
-  }
-
-  // Initialize on DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new AccessibilityManager());
-  } else {
-    new AccessibilityManager();
-  }
-</script>
 
 <style>
   /* Enhanced Focus Outline */

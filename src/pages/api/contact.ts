@@ -1,12 +1,12 @@
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
-import { CRMDatabase } from '../../utils/database.js';
+import { Database } from '../../utils/database.ts';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 // Helper function to estimate lead value
 function estimateLeadValue(service: string, budget: string): number {
-  const serviceMultipliers = {
+  const serviceMultipliers: Record<string, number> = {
     'QuickBooks Consulting': 2500,
     'QuickBooks Setup': 2500,
     'Monthly Bookkeeping': 5000,
@@ -21,15 +21,15 @@ function estimateLeadValue(service: string, budget: string): number {
     'Electrical Consulting': 12000
   };
 
-  const budgetMultipliers = {
+  const budgetMultipliers: Record<string, number> = {
     'Under $5,000': 0.5,
     '$5,000 - $15,000': 1.0,
     '$15,000 - $50,000': 1.5,
     '$50,000+': 2.0
   };
 
-  const baseValue = (serviceMultipliers as any)[service] || 5000;
-  const budgetModifier = (budgetMultipliers as any)[budget] || 1.0;
+  const baseValue = serviceMultipliers[service] || 5000;
+  const budgetModifier = budgetMultipliers[budget] || 1.0;
   
   return Math.round(baseValue * budgetModifier);
 }
@@ -102,10 +102,11 @@ export const POST: APIRoute = async ({ request }) => {
         notes: message || ''
       };
 
-      const newLead = CRMDatabase.createLead(leadData);
+      const database = new Database();
+      const newLead = database.createLead(leadData);
 
       // Track analytics event
-      CRMDatabase.trackAnalyticsEvent({
+      database.trackAnalyticsEvent({
         event_type: 'lead_created',
         page: '/contact',
         action: 'form_submit',

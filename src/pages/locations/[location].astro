@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCityBySlug, MAJOR_CITIES } from '../../data/cities';
+import { MAJOR_CITIES, type CityData } from '../../data/cities';
 import EnhancedSEOSchema from '../../components/SEO/EnhancedSEOSchema.astro';
 import InteractiveLocationMap from '../../components/InteractiveLocationMap.astro';
 import ServiceFilter from '../../components/UI/ServiceFilter.astro';
@@ -16,34 +16,63 @@ export async function getStaticPaths() {
   }));
 }
 
-const { city } = Astro.props;
+// Get city data from location parameter
+const { location } = Astro.params;
+let city: CityData;
 
-// Enhanced local content
+// Try to get city from props first (static generation)
+if (Astro.props.city) {
+  city = Astro.props.city;
+} else {
+  // Fallback for dynamic rendering - find city by location slug
+  const foundCity = MAJOR_CITIES.find(c => {
+    if (!c || !c.name) {
+      console.error('Invalid city entry found:', c);
+      return false;
+    }
+    return c.name.toLowerCase().replace(/\s+/g, '-') === location;
+  });
+  
+  if (!foundCity) {
+    // List available cities for debugging
+    const availableCities = MAJOR_CITIES.map(c => c.name.toLowerCase().replace(/\s+/g, '-'));
+    throw new Error(`City data not found for location: ${location}. Available cities: ${availableCities.join(', ')}`);
+  }
+  
+  city = foundCity;
+}
+
+// Enhanced local content - ensure city is defined before using
+if (!city) {
+  throw new Error(`City data is undefined for location: ${location}`);
+}
+
+const cityName = city.name;
 const localServices = [
   {
     name: 'QuickBooks Setup',
-    description: `Professional QuickBooks setup and training in ${city.name}. Get your books organized with local expertise.`,
+    description: `Professional QuickBooks setup and training in ${cityName}. Get your books organized with local expertise.`,
     features: ['Chart of Accounts Setup', 'Bank Reconciliation', 'Report Configuration', 'User Training'],
     pricing: 'Starting at $299',
     popular: true
   },
   {
     name: 'Payroll Services',
-    description: `Comprehensive payroll management for ${city.name} businesses. State and local tax compliance included.`,
+    description: `Comprehensive payroll management for ${cityName} businesses. State and local tax compliance included.`,
     features: ['Direct Deposit Setup', 'Tax Filing', 'Employee Self-Service', 'Compliance Management'],
     pricing: 'From $49/month',
     popular: true
   },
   {
     name: 'Business Consulting',
-    description: `Strategic business consulting to help ${city.name} companies grow and optimize operations.`,
+    description: `Strategic business consulting to help ${cityName} companies grow and optimize operations.`,
     features: ['Process Optimization', 'Growth Strategy', 'Technology Planning', 'Performance Analytics'],
     pricing: 'Custom Pricing',
     popular: false
   },
   {
     name: 'HR Solutions',
-    description: `Complete HR support for ${city.name} businesses. From hiring to compliance.`,
+    description: `Complete HR support for ${cityName} businesses. From hiring to compliance.`,
     features: ['Employee Handbook', 'Policy Development', 'Benefits Administration', 'Compliance Training'],
     pricing: 'Starting at $199/month',
     popular: false
@@ -52,10 +81,10 @@ const localServices = [
 
 // Local statistics and insights
 const localInsights = {
-  businessCount: city.businessCount || Math.floor(city.population * 0.08),
-  averageEmployees: city.averageEmployees || '12',
-  topIndustries: city.topIndustries || ['Professional Services', 'Retail', 'Healthcare'],
-  economicGrowth: city.economicGrowth || '+3.2%'
+  businessCount: Math.floor(city.population * 0.08),
+  averageEmployees: '12',
+  topIndustries: city.industries.slice(0, 3),
+  economicGrowth: '+3.2%'
 };
 
 // Local competitors and advantages
@@ -85,31 +114,35 @@ const competitiveAdvantages = [
 // FAQs specific to the location
 const locationFAQs = [
   {
-    question: `What business services does The KPS Group offer in ${city.name}?`,
-    answer: `We provide comprehensive business services in ${city.name} including QuickBooks setup and training, payroll processing, HR solutions, business consulting, and technology consulting. Our local team understands ${city.state} regulations and can help with state-specific compliance requirements.`
+    question: `What business services does The KPS Group offer in ${cityName}?`,
+    answer: `We provide comprehensive business services in ${cityName} including QuickBooks setup and training, payroll processing, HR solutions, business consulting, and technology consulting. Our local team understands ${city.state} regulations and can help with state-specific compliance requirements.`
   },
   {
-    question: `How quickly can you respond to service requests in ${city.name}?`,
-    answer: `We typically respond to service requests in ${city.name} within 2-4 hours during business hours. For urgent matters, we offer same-day support and can schedule emergency consultations as needed.`
+    question: `How quickly can you respond to service requests in ${cityName}?`,
+    answer: `We typically respond to service requests in ${cityName} within 2-4 hours during business hours. For urgent matters, we offer same-day support and can schedule emergency consultations as needed.`
   },
   {
-    question: `Do you provide on-site services in ${city.name}?`,
-    answer: `Yes, we provide on-site consultations and setup services throughout ${city.name} and the surrounding areas. We can also provide remote support for ongoing services and training.`
+    question: `Do you provide on-site services in ${cityName}?`,
+    answer: `Yes, we provide on-site consultations and setup services throughout ${cityName} and the surrounding areas. We can also provide remote support for ongoing services and training.`
   },
   {
-    question: `What makes The KPS Group different from other business consultants in ${city.name}?`,
-    answer: `Our local expertise combined with comprehensive service offerings sets us apart. We understand the ${city.name} business environment, provide personalized service with direct access to senior consultants, and offer competitive pricing that's often 40% less than larger firms.`
+    question: `What makes The KPS Group different from other business consultants in ${cityName}?`,
+    answer: `Our local expertise combined with comprehensive service offerings sets us apart. We understand the ${cityName} business environment, provide personalized service with direct access to senior consultants, and offer competitive pricing that's often 40% less than larger firms.`
   }
 ];
 
-const pageTitle = `Business Services in ${city.name}, ${city.state} | QuickBooks & Payroll Experts`;
-const pageDescription = `Professional business consulting, QuickBooks setup, and payroll services in ${city.name}, ${city.state}. Local expertise with ${localInsights.businessCount}+ businesses served. Get your free consultation today.`;
+const pageTitle = `Business Services in ${cityName}, ${city.state} | QuickBooks & Payroll Experts`;
+const pageDescription = `Professional business consulting, QuickBooks setup, and payroll services in ${cityName}, ${city.state}. Local expertise with ${localInsights.businessCount}+ businesses served. Get your free consultation today.`;
 ---
 
 <BaseLayout 
   title={pageTitle}
   description={pageDescription}
-  canonicalURL={`https://thekpsgroup.com/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}`}
+  canonicalURL={`https://thekpsgroup.com/locations/${cityName.toLowerCase().replace(/\s+/g, '-')}`}
+  cityName={cityName}
+  location={`${cityName}, ${city.state}`}
+  isLocationPage={true}
+  pageType="LocalBusiness"
 >
   <!-- Enhanced SEO Schema -->
   <EnhancedSEOSchema 
@@ -118,7 +151,7 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
     breadcrumbs={[
       { name: 'Home', url: 'https://thekpsgroup.com' },
       { name: 'Locations', url: 'https://thekpsgroup.com/locations' },
-      { name: `${city.name}, ${city.state}`, url: `https://thekpsgroup.com/locations/${city.name.toLowerCase().replace(/\s+/g, '-')}` }
+      { name: `${cityName}, ${city.state}`, url: `https://thekpsgroup.com/locations/${cityName.toLowerCase().replace(/\s+/g, '-')}` }
     ]}
     faqItems={locationFAQs}
     reviews={{
@@ -148,18 +181,18 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            {city.name}, {city.state}
+            {cityName}, {city.state}
           </div>
           
           <h1 class="text-4xl lg:text-6xl font-bold leading-tight mb-6">
             Business Services in 
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-              {city.name}
+              {cityName}
             </span>
           </h1>
           
           <p class="text-xl text-blue-100 mb-8 leading-relaxed">
-            Professional QuickBooks setup, payroll services, and business consulting for {city.name} companies. 
+            Professional QuickBooks setup, payroll services, and business consulting for {cityName} companies. 
             Local expertise serving {localInsights.businessCount}+ businesses with personalized solutions.
           </p>
           
@@ -209,7 +242,7 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
         <!-- Interactive Map -->
         <div class="relative">
           <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-6">
-            <InteractiveLocationMap highlightCity={city.name} />
+            <InteractiveLocationMap selectedCity={cityName} />
           </div>
         </div>
       </div>
@@ -221,10 +254,10 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
     <div class="max-w-7xl mx-auto px-4">
       <div class="text-center mb-16">
         <h2 class="text-4xl font-bold text-gray-900 mb-4">
-          Professional Services in {city.name}
+          Professional Services in {cityName}
         </h2>
         <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-          Comprehensive business solutions tailored for {city.name} companies. 
+          Comprehensive business solutions tailored for {cityName} companies. 
           From QuickBooks setup to full HR management, we've got you covered.
         </p>
       </div>
@@ -290,7 +323,7 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
     <div class="max-w-7xl mx-auto px-4">
       <div class="text-center mb-16">
         <h2 class="text-4xl font-bold text-gray-900 mb-4">
-          Why Choose Us in {city.name}?
+          Why Choose Us in {cityName}?
         </h2>
         <p class="text-xl text-gray-600">
           Local expertise meets professional excellence
@@ -317,11 +350,11 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div>
           <h2 class="text-4xl font-bold mb-6">
-            {city.name} Business Landscape
+            {cityName} Business Landscape
           </h2>
           <p class="text-xl text-blue-100 mb-8">
             Understanding the local business environment helps us provide better services 
-            tailored to {city.name} companies.
+            tailored to {cityName} companies.
           </p>
           
           <div class="grid grid-cols-2 gap-6">

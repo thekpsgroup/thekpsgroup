@@ -4,7 +4,7 @@
  * Run this to set up the SQLite database with sample data
  */
 
-import CRMDatabase from '../src/utils/database.js';
+import { Database } from '../src/utils/database.ts';
 
 console.log('🚀 Initializing KPS CRM Database...');
 
@@ -14,6 +14,8 @@ try {
 
   // Add some sample data for testing
   console.log('📝 Adding sample data...');
+
+  const database = new Database();
 
   // Sample leads
   const sampleLeads = [
@@ -71,8 +73,12 @@ try {
   ];
 
   sampleLeads.forEach((lead, index) => {
-    const createdLead = CRMDatabase.createLead(lead);
-    console.log(`  ✓ Lead ${index + 1}: ${createdLead.name} (ID: ${createdLead.id})`);
+    const result = database.createLead(lead);
+    if (result.success) {
+      console.log(`  ✓ Lead ${index + 1}: ${lead.name} (ID: ${result.id})`);
+    } else {
+      console.log(`  ❌ Failed to create lead ${index + 1}: ${result.error}`);
+    }
   });
 
   // Sample clients (converted leads)
@@ -98,44 +104,43 @@ try {
   ];
 
   sampleClients.forEach((client, index) => {
-    const createdClient = CRMDatabase.createClient(client);
-    console.log(`  ✓ Client ${index + 1}: ${createdClient.name} (ID: ${createdClient.id})`);
-  });
-
-  // Sample deals
-  const sampleDeals = [
-    {
-      client_id: 1,
-      title: 'QuickBooks Enterprise Setup',
-      description: 'Complete setup and migration to QuickBooks Enterprise',
-      amount: 8500,
-      status: 'proposal' as const,
-      probability: 80,
-      expected_close_date: '2024-02-15'
-    },
-    {
-      client_id: 2,
-      title: 'Annual Tax Preparation',
-      description: 'Complete business tax preparation and filing',
-      amount: 3200,
-      status: 'negotiation' as const,
-      probability: 90,
-      expected_close_date: '2024-03-01'
+    const result = database.createClient(client);
+    if (result.success) {
+      console.log(`  ✓ Client ${index + 1}: ${client.name} (ID: ${result.id})`);
+    } else {
+      console.log(`  ❌ Failed to create client ${index + 1}: ${result.error}`);
     }
-  ];
-
-  sampleDeals.forEach((deal, index) => {
-    const createdDeal = CRMDatabase.createDeal(deal);
-    console.log(`  ✓ Deal ${index + 1}: ${createdDeal.title} (ID: ${createdDeal.id})`);
   });
+
+  // Create default admin user
+  console.log('🔐 Creating default admin user...');
+  const adminResult = database.createUser({
+    username: 'admin',
+    email: 'admin@kpsgroup.com',
+    password: 'kpsadmin', // Should be changed in production
+    first_name: 'System',
+    last_name: 'Administrator',
+    role: 'admin',
+    department: 'IT'
+  });
+
+  if (adminResult.success) {
+    console.log('  ✓ Admin user created successfully (ID: ' + adminResult.id + ')');
+    console.log('  📝 Username: admin');
+    console.log('  📧 Email: admin@kpsgroup.com');
+    console.log('  🔑 Password: kpsadmin (change this in production!)');
+  } else {
+    console.log('  ❌ Failed to create admin user: ' + adminResult.error);
+  }
 
   // Get analytics to verify everything works
-  const analytics = CRMDatabase.getAnalytics();
-  console.log('\n📊 Database Summary:');
-  console.log(`  • Total Leads: ${analytics.kpis.totalLeads}`);
-  console.log(`  • Total Clients: ${analytics.kpis.totalClients}`);
-  console.log(`  • Pipeline Value: $${analytics.kpis.pipelineValue.toLocaleString()}`);
-  console.log(`  • Conversion Rate: ${analytics.kpis.conversionRate}%`);
+  const analytics = database.getAnalyticsData();
+  if (analytics.success) {
+    console.log('\n📊 Database Summary:');
+    console.log(`  • Database initialized successfully`);
+    console.log(`  • Sample data created`);
+    console.log(`  • Analytics tracking enabled`);
+  }
 
   console.log('\n✅ Database initialization complete!');
   console.log('🎯 You can now start the CRM and see real data in the dashboard.');
@@ -143,7 +148,4 @@ try {
 } catch (error) {
   console.error('❌ Database initialization failed:', error);
   process.exit(1);
-} finally {
-  // Close database connection
-  CRMDatabase.close();
 }

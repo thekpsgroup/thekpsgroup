@@ -7,6 +7,7 @@ import VercelAnalytics from '../components/VercelAnalytics.astro';
 import EnhancedAccessibility from '../components/UI/EnhancedAccessibility.astro';
 import CoreWebVitals from '../components/Performance/CoreWebVitals.astro';
 import { BUSINESS, CITIES } from '../data/constants';
+import { MAJOR_CITIES } from '../data/cities';
 
 const {
   title = 'The KPS Group | Modern Business Infrastructure Engine | Austin TX',
@@ -28,6 +29,33 @@ const {
 
 const siteUrl = Astro.site?.href ?? 'https://thekpsgroup.com';
 const currentUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
+
+// Dynamic geographic data for location pages
+let geoData = {
+  city: 'Austin',
+  state: 'Texas',
+  stateCode: 'TX',
+  latitude: 30.3916,
+  longitude: -97.7416,
+  region: 'Central Texas',
+  zipcode: '78731'
+};
+
+// Override with city-specific data for location pages
+if (isLocationPage && cityName) {
+  const cityData = MAJOR_CITIES.find(c => c.name === cityName);
+  if (cityData) {
+    geoData = {
+      city: cityData.name,
+      state: cityData.state,
+      stateCode: cityData.stateCode,
+      latitude: cityData.latitude,
+      longitude: cityData.longitude,
+      region: cityData.region || cityData.state,
+      zipcode: cityData.zipCodes?.[0] || '78731' // Use first zip code or default
+    };
+  }
+}
 
 // Aggressive nationwide SEO keyword strategy
 const defaultKeywords = [
@@ -313,31 +341,31 @@ if (isServicePage) {
     <meta name="business-type" content="Business Infrastructure Engine" />
     
     <!-- ENHANCED GEOGRAPHIC TARGETING -->
-    <meta name="geo.region" content="US-TX" />
-    <meta name="geo.placename" content="Austin, Texas" />
-    <meta name="geo.position" content="30.3916;-97.7416" />
-    <meta name="ICBM" content="30.3916, -97.7416" />
+    <meta name="geo.region" content={`US-${geoData.stateCode}`} />
+    <meta name="geo.placename" content={`${geoData.city}, ${geoData.state}`} />
+    <meta name="geo.position" content={`${geoData.latitude};${geoData.longitude}`} />
+    <meta name="ICBM" content={`${geoData.latitude}, ${geoData.longitude}`} />
     <meta name="DC.title" content={optimizedTitle} />
-    <meta name="DC.subject" content={`Professional ${service} services nationwide from Austin, Texas`} />
+    <meta name="DC.subject" content={`Professional ${service} services nationwide from ${geoData.city}, ${geoData.state}`} />
     <meta name="DC.description" content={optimizedDescription} />
     <meta name="DC.creator" content="The KPS Group LLC" />
     <meta name="DC.publisher" content="The KPS Group LLC" />
     <meta name="DC.rights" content={`© ${new Date().getFullYear()} The KPS Group LLC. All rights reserved.`} />
     
     <!-- LOCAL BUSINESS TARGETING -->
-    <meta name="city" content="Austin" />
-    <meta name="state" content="Texas" />
+    <meta name="city" content={geoData.city} />
+    <meta name="state" content={geoData.state} />
     <meta name="country" content="United States" />
-    <meta name="zipcode" content="78731" />
+    <meta name="zipcode" content={geoData.zipcode} />
     <meta name="areacode" content="469" />
-    <meta name="region" content="Central Texas" />
+    <meta name="region" content={geoData.region} />
     <meta name="coverage" content="Nationwide" />
     
     <!-- BUSINESS CONTACT & VERIFICATION -->
     <meta name="business:contact_data:street_address" content="5900 Balcones Drive, Suite 15292" />
-    <meta name="business:contact_data:locality" content="Austin" />
-    <meta name="business:contact_data:region" content="Texas" />
-    <meta name="business:contact_data:postal_code" content="78731" />
+    <meta name="business:contact_data:locality" content={isLocationPage ? geoData.city : "Austin"} />
+    <meta name="business:contact_data:region" content={isLocationPage ? geoData.state : "Texas"} />
+    <meta name="business:contact_data:postal_code" content={isLocationPage ? geoData.zipcode : "78731"} />
     <meta name="business:contact_data:country_name" content="United States" />
     <meta name="business:contact_data:email" content={BUSINESS.email} />
     <meta name="business:contact_data:phone_number" content={`+1-${BUSINESS.phone}`} />

@@ -1,7 +1,7 @@
----
+﻿---
 // CRM Admin Page - Complete Customer Relationship Management System
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CrmDashboard from '../components/CrmDashboard.astro';
+import AdminDashboard from '../components/AdminDashboard.astro';
 
 const pageTitle = 'KPS CRM - Customer Relationship Management';
 const pageDescription = 'Complete CRM system for managing leads, clients, pricing, and revenue tracking with Outlook integration.';
@@ -134,7 +134,10 @@ body{font-family:sans-serif;text-align:center;padding:50px;background:#f5f5f5;}
         secure: true,
         sameSite: 'strict',
         maxAge: SESSION_DURATION / 1000,
-        path: '/crm'
+        path: '/crm',
+        expires: new Date(Date.now() + SESSION_DURATION),
+        domain: undefined,
+        encode: undefined
       });
       
       // Log successful login
@@ -471,7 +474,7 @@ if (!isAuthenticated) {
   </div>
   
   <!-- CRM Dashboard -->
-  <CrmDashboard />
+  <AdminDashboard />
   
   <!-- Additional CRM-specific styles -->
   <style>

@@ -107,6 +107,36 @@ function getSourceColor(source: string) {
     </div>
   </div>
 
+  <!-- Navigation Menu -->
+  <div class="dashboard-nav">
+    <nav class="nav-menu">
+      <a href="/crm" class="nav-item active">
+        <i class="fas fa-chart-line"></i>
+        Dashboard
+      </a>
+      <a href="/user-management" class="nav-item">
+        <i class="fas fa-users-cog"></i>
+        User Management
+      </a>
+      <a href="/crm#leads" class="nav-item">
+        <i class="fas fa-user-plus"></i>
+        Leads
+      </a>
+      <a href="/crm#clients" class="nav-item">
+        <i class="fas fa-handshake"></i>
+        Clients
+      </a>
+      <a href="/crm#analytics" class="nav-item">
+        <i class="fas fa-chart-pie"></i>
+        Analytics
+      </a>
+      <a href="/crm#settings" class="nav-item">
+        <i class="fas fa-cog"></i>
+        Settings
+      </a>
+    </nav>
+  </div>
+
   <!-- Overview KPIs -->
   <div class="kpi-grid">
     <div class="kpi-card primary">
@@ -539,6 +569,50 @@ function getSourceColor(source: string) {
   .last-updated {
     color: #6b7280;
     font-size: 0.9rem;
+  }
+
+  /* Navigation Menu */
+  .dashboard-nav {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+
+  .nav-menu {
+    display: flex;
+    gap: 0;
+    padding: 0;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-item:hover {
+    color: #1e3a8a;
+    background: #f8fafc;
+  }
+
+  .nav-item.active {
+    color: #1e3a8a;
+    border-bottom-color: #3b82f6;
+    background: #f8fafc;
+  }
+
+  .nav-item i {
+    font-size: 1rem;
   }
 
   /* KPI Grid */

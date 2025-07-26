@@ -368,10 +368,13 @@ const hasActiveChild = (children?: NavItem[]) => {
 
     // Submenu toggles
     submenuToggles.forEach(toggle => {
-      toggle.addEventListener('click', function() {
-        const targetId = this.getAttribute('data-target');
+      toggle.addEventListener('click', (event) => {
+        const target = event.currentTarget as HTMLElement;
+        const targetId = target.getAttribute('data-target');
+        if (!targetId) return;
+        
         const submenu = document.getElementById(targetId);
-        const icon = this.querySelector('svg');
+        const icon = target.querySelector('svg');
         
         if (submenu && icon) {
           if (submenu.classList.contains('hidden')) {
@@ -394,10 +397,10 @@ const hasActiveChild = (children?: NavItem[]) => {
       if (nav && !nav.classList.contains('bg-transparent')) {
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
           // Scrolling down
-          nav.style.transform = 'translateY(-100%)';
+          (nav as HTMLElement).style.transform = 'translateY(-100%)';
         } else {
           // Scrolling up
-          nav.style.transform = 'translateY(0)';
+          (nav as HTMLElement).style.transform = 'translateY(0)';
         }
       }
       

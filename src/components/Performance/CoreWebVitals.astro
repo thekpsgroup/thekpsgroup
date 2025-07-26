@@ -1,11 +1,19 @@
 ---
-// Performance & Core Web Vitals Optimization Component
-const { 
-  enableLazyLoading = true, 
+// import web-vitals dynamically in measureCoreWebVitals
+// Declare gtag for TypeScript
+declare var gtag: (...args: any[]) => void;
+// Component props
+const {
+  enableLazyLoading = true,
   enableImageOptimization = true,
   enablePrefetch = true,
-  enableServiceWorker = false 
-} = Astro.props;
+  enableServiceWorker = false
+} = Astro.props as {
+  enableLazyLoading?: boolean;
+  enableImageOptimization?: boolean;
+  enablePrefetch?: boolean;
+  enableServiceWorker?: boolean;
+};
 ---
 
 <!-- Critical Resource Hints -->
@@ -48,18 +56,19 @@ const {
       const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const img = entry.target;
+                const img = entry.target;
             
             // Load the actual image
-            if (img.dataset.src) {
-              img.src = img.dataset.src;
-              img.removeAttribute('data-src');
+            const imageEl = img as HTMLImageElement;
+            if (imageEl.dataset.src) {
+              imageEl.src = imageEl.dataset.src;
+              imageEl.removeAttribute('data-src');
             }
             
             // Load srcset if available
-            if (img.dataset.srcset) {
-              img.srcset = img.dataset.srcset;
-              img.removeAttribute('data-srcset');
+            if (imageEl.dataset.srcset) {
+              imageEl.srcset = imageEl.dataset.srcset;
+              imageEl.removeAttribute('data-srcset');
             }
             
             // Remove loading class and add loaded class
@@ -75,9 +84,10 @@ const {
       });
 
       // Observe all lazy images
-      document.querySelectorAll('img[data-src]').forEach(img => {
-        img.classList.add('loading');
-        imageObserver.observe(img);
+      document.querySelectorAll('img[data-src]').forEach((img) => {
+        const image = img;
+        image.classList.add('loading');
+        imageObserver.observe(image);
       });
     }
 
@@ -86,10 +96,10 @@ const {
       const animationObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            const element = entry.target;
-            
+            const element = entry.target as HTMLElement;
             // Add animation class
-            element.classList.add('animate-in-view');
+            const l = link as HTMLLinkElement;
+            this.prefetchLink(l.href);
             
             // Unobserve after animation
             animationObserver.unobserve(element);
@@ -111,26 +121,28 @@ const {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
       
       if (prefersReducedMotion.matches) {
-        document.documentElement.style.setProperty('--animation-duration', '0.01ms');
-        document.documentElement.style.setProperty('--transition-duration', '0.01ms');
+        const docEl = document.documentElement as HTMLElement;
+        docEl.style.setProperty('--animation-duration', '0.01ms');
+        docEl.style.setProperty('--transition-duration', '0.01ms');
       }
 
       // Use transform and opacity for better performance
       const animatedElements = document.querySelectorAll('.animate-fade-in-up, .hover-lift');
-      animatedElements.forEach(el => {
-        el.style.willChange = 'transform, opacity';
+      animatedElements.forEach((el: Element) => {
+        const element = el as HTMLElement;
+        element.style.willChange = 'transform, opacity';
       });
     }
 
     measureCoreWebVitals() {
       // Measure and report Core Web Vitals
       try {
-        import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-          getCLS(this.sendToAnalytics);
-          getFID(this.sendToAnalytics);
-          getFCP(this.sendToAnalytics);
-          getLCP(this.sendToAnalytics);
-          getTTFB(this.sendToAnalytics);
+        import('web-vitals').then(({ onCLS, onFID, onFCP, onLCP, onTTFB }) => {
+          onCLS(this.sendToAnalytics.bind(this));
+          onFID(this.sendToAnalytics.bind(this));
+          onFCP(this.sendToAnalytics.bind(this));
+          onLCP(this.sendToAnalytics.bind(this));
+          onTTFB(this.sendToAnalytics.bind(this));
         });
       } catch (error) {
         console.log('Web Vitals measurement not available');
@@ -138,15 +150,12 @@ const {
     }
 
     sendToAnalytics(metric) {
-      // Send Core Web Vitals to analytics
-      if (typeof gtag !== 'undefined') {
-        gtag('event', metric.name, {
-          event_category: 'Web Vitals',
-          value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-          event_label: metric.id,
-          non_interaction: true,
-        });
-      }
+      // Send metric to Google Analytics
+      gtag('event', metric.name, {
+        event_category: metric.label,
+        value: Math.round(metric.value),
+        event_label: metric.id
+      });
     }
 
     enablePrefetching() {
@@ -233,7 +242,7 @@ const {
 
 <!-- Service Worker Registration -->
 {enableServiceWorker && (
-  <script>
+  <script lang="ts">
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')

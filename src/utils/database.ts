@@ -1,430 +1,931 @@
-import Database from 'better-sqlite3';
-import path from 'path';
+import SQLite from 'better-sqlite3';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
-import type { 
-  Lead, Client, Deal, AnalyticsEvent, SecurityLog, 
-  LeadFilters, ClientFilters, DealFilters, AnalyticsData,
-  DatabaseResult 
-} from '../types/database.js';
+import { dirname, join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = dirname(__filename);
 
-// Database configuration
-const DB_PATH = path.join(process.cwd(), 'database', 'kps_crm.db');
-const SCHEMA_PATH = path.join(process.cwd(), 'database', 'schema.sql');
+export class Database {
+  private db: SQLite.Database | null = null;
 
-// Ensure database directory exists
-const dbDir = path.dirname(DB_PATH);
-if (!fs.existsSync(dbDir)) {
-  fs.mkdirSync(dbDir, { recursive: true });
-}
-
-// Initialize database connection
-const db = new Database(DB_PATH);
-
-// Enable foreign key constraints
-db.pragma('foreign_keys = ON');
-
-// Initialize database with schema if needed
-export function initializeDatabase() {
-  try {
-    // Check if database is initialized
-    const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all();
-    
-    if (tables.length === 0) {
-      console.log('Initializing database with schema...');
-      
-      // Read and execute schema
-      const schema = fs.readFileSync(SCHEMA_PATH, 'utf8');
-      db.exec(schema);
-      
-      console.log('Database initialized successfully');
+  constructor() {
+    try {
+      // Initialize database connection
+      const dbPath = join(__dirname, '../../database/kps_crm.db');
+      this.db = new SQLite(dbPath);
+      this.initializeTables();
+    } catch (error) {
+      console.error('Database initialization failed:', error);
     }
-  } catch (error) {
-    console.error('Database initialization error:', error);
-    throw error;
-  }
-}
-
-// Database helper functions
-export class CRMDatabase {
-  
-  // ================================
-  // LEADS MANAGEMENT
-  // ================================
-  
-  static createLead(leadData: Partial<Lead>): Lead {
-    const {
-      name, email, phone, company, service, timeline, budget,
-      status = 'new', priority = 'medium', source = 'website',
-      value = 0, city, state, country = 'US', notes
-    } = leadData;
-
-    const stmt = db.prepare(`
-      INSERT INTO leads (
-        name, email, phone, company, service, timeline, budget,
-        status, priority, source, value, city, state, country, notes
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    const result = stmt.run(
-      name, email, phone, company, service, timeline, budget,
-      status, priority, source, value, city, state, country, notes
-    );
-
-    return { id: Number(result.lastInsertRowid), ...leadData } as Lead;
   }
 
-  static getLeads(filters: LeadFilters = {}): Lead[] {
-    let query = 'SELECT * FROM leads WHERE 1=1';
-    const params = [];
-
-    if (filters.status) {
-      query += ' AND status = ?';
-      params.push(filters.status);
+  /**
+   * Initialize all required database tables
+   */
+  initializeTables() {
+    if (!this.db) {
+      throw new Error('Database not initialized');
     }
 
-    if (filters.priority) {
-      query += ' AND priority = ?';
-      params.push(filters.priority);
+    const tables = [
+      // Analytics events table
+      `CREATE TABLE IF NOT EXISTS analytics_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        event_type TEXT NOT NULL,
+        page TEXT NOT NULL,
+        action TEXT NOT NULL,
+        element TEXT,
+        value TEXT,
+        user_agent TEXT,
+        ip_address TEXT,
+        city TEXT,
+        referrer TEXT,
+        session_id TEXT,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )`,
+
+      // Leads table
+      `CREATE TABLE IF NOT EXISTS leads (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        phone TEXT,
+        company TEXT,
+        service TEXT,
+        timeline TEXT,
+        budget REAL DEFAULT 0,
+        status TEXT DEFAULT 'new',
+        priority TEXT DEFAULT 'medium',
+        source TEXT DEFAULT 'website',
+        value REAL DEFAULT 0,
+        notes TEXT,
+        assigned_to TEXT,
+        city TEXT,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT
+      )`,
+
+      // Clients table
+      `CREATE TABLE IF NOT EXISTS clients (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        phone TEXT,
+        company TEXT,
+        address TEXT,
+        status TEXT DEFAULT 'active',
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT
+      )`,
+
+      // Users table for CRM access
+      `CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        role TEXT DEFAULT 'user',
+        department TEXT,
+        phone TEXT,
+        avatar_url TEXT,
+        is_active BOOLEAN DEFAULT 1,
+        last_login TEXT,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT,
+        created_by INTEGER,
+        FOREIGN KEY (created_by) REFERENCES users(id)
+      )`,
+
+      // User sessions table
+      `CREATE TABLE IF NOT EXISTS user_sessions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        session_token TEXT UNIQUE NOT NULL,
+        expires_at TEXT NOT NULL,
+        ip_address TEXT,
+        user_agent TEXT,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      )`
+    ];
+
+    const indexes = [
+      'CREATE INDEX IF NOT EXISTS idx_analytics_events_type ON analytics_events(event_type)',
+      'CREATE INDEX IF NOT EXISTS idx_analytics_events_page ON analytics_events(page)',
+      'CREATE INDEX IF NOT EXISTS idx_analytics_events_created_at ON analytics_events(created_at)',
+      'CREATE INDEX IF NOT EXISTS idx_leads_email ON leads(email)',
+      'CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status)',
+      'CREATE INDEX IF NOT EXISTS idx_clients_email ON clients(email)',
+      'CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)',
+      'CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)',
+      'CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)',
+      'CREATE INDEX IF NOT EXISTS idx_user_sessions_token ON user_sessions(session_token)',
+      'CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id)'
+    ];
+
+    try {
+      tables.forEach(tableSQL => this.db!.exec(tableSQL));
+      indexes.forEach(indexSQL => this.db!.exec(indexSQL));
+      console.log('All database tables initialized successfully');
+    } catch (error) {
+      console.error('Error initializing database tables:', error);
+      throw error;
     }
-
-    if (filters.service) {
-      query += ' AND service = ?';
-      params.push(filters.service);
-    }
-
-    if (filters.search) {
-      query += ' AND (name LIKE ? OR email LIKE ? OR company LIKE ?)';
-      const searchTerm = `%${filters.search}%`;
-      params.push(searchTerm, searchTerm, searchTerm);
-    }
-
-    query += ' ORDER BY created_at DESC';
-
-    if (filters.limit) {
-      query += ' LIMIT ?';
-      params.push(filters.limit);
-    }
-
-    const stmt = db.prepare(query);
-    return stmt.all(...params);
   }
 
-  static updateLead(id: number, updateData: Partial<Lead>): DatabaseResult {
-    const fields = Object.keys(updateData);
-    const values = Object.values(updateData);
-    
-    const setClause = fields.map(field => `${field} = ?`).join(', ');
-    const query = `UPDATE leads SET ${setClause}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
-    
-    const stmt = db.prepare(query);
-    return stmt.run(...values, id);
-  }
-
-  static deleteLead(id: number): DatabaseResult {
-    const stmt = db.prepare('DELETE FROM leads WHERE id = ?');
-    return stmt.run(id);
-  }
-
-  static getLeadById(id: number): Lead | null {
-    const stmt = db.prepare('SELECT * FROM leads WHERE id = ?');
-    return stmt.get(id);
-  }
-
-  // ================================
-  // CLIENTS MANAGEMENT
-  // ================================
-  
-  static createClient(clientData: Partial<Client>): Client {
-    const {
-      lead_id, name, email, phone, company, total_value = 0,
-      status = 'active', notes
-    } = clientData;
-
-    const stmt = db.prepare(`
-      INSERT INTO clients (lead_id, name, email, phone, company, total_value, status, notes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    const result = stmt.run(lead_id, name, email, phone, company, total_value, status, notes);
-    return { id: Number(result.lastInsertRowid), ...clientData } as Client;
-  }
-
-  static getClients(filters: ClientFilters = {}): Client[] {
-    let query = `
-      SELECT c.*, l.service as original_service 
-      FROM clients c 
-      LEFT JOIN leads l ON c.lead_id = l.id 
-      WHERE 1=1
-    `;
-    const params = [];
-
-    if (filters.status) {
-      query += ' AND c.status = ?';
-      params.push(filters.status);
-    }
-
-    query += ' ORDER BY c.joined_at DESC';
-
-    const stmt = db.prepare(query);
-    return stmt.all(...params);
-  }
-
-  // ================================
-  // DEALS MANAGEMENT
-  // ================================
-  
-  static createDeal(dealData: Partial<Deal>): Deal {
-    const {
-      client_id, lead_id, title, description, amount,
-      status = 'proposal', probability = 50, expected_close_date
-    } = dealData;
-
-    const stmt = db.prepare(`
-      INSERT INTO deals (client_id, lead_id, title, description, amount, status, probability, expected_close_date)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    const result = stmt.run(client_id, lead_id, title, description, amount, status, probability, expected_close_date);
-    return { id: Number(result.lastInsertRowid), ...dealData } as Deal;
-  }
-
-  static getDeals(filters: DealFilters = {}): Deal[] {
-    let query = `
-      SELECT d.*, c.name as client_name, l.name as lead_name
-      FROM deals d
-      LEFT JOIN clients c ON d.client_id = c.id
-      LEFT JOIN leads l ON d.lead_id = l.id
-      WHERE 1=1
-    `;
-    const params = [];
-
-    if (filters.status) {
-      query += ' AND d.status = ?';
-      params.push(filters.status);
-    }
-
-    query += ' ORDER BY d.created_at DESC';
-
-    const stmt = db.prepare(query);
-    return stmt.all(...params);
-  }
-
-  // ================================
-  // ANALYTICS & REPORTING
-  // ================================
-  
-  static getAnalytics(): AnalyticsData {
-    // Get key metrics
-    const totalLeads = db.prepare('SELECT COUNT(*) as count FROM leads').get();
-    const totalClients = db.prepare('SELECT COUNT(*) as count FROM clients WHERE status = ?').get('active');
-    const totalRevenue = db.prepare('SELECT COALESCE(SUM(amount), 0) as total FROM deals WHERE status = ?').get('closed_won');
-    const monthlyLeads = db.prepare(`
-      SELECT COUNT(*) as count 
-      FROM leads 
-      WHERE created_at >= date('now', '-30 days')
-    `).get();
-
-    // Lead conversion rate
-    const convertedLeads = db.prepare('SELECT COUNT(*) as count FROM clients').get();
-    const conversionRate = totalLeads.count > 0 ? (convertedLeads.count / totalLeads.count * 100).toFixed(1) : 0;
-
-    // Recent activity
-    const recentLeads = this.getLeads({ limit: 5 });
-    const recentClients = this.getClients({ limit: 5 });
-
-    // Pipeline metrics
-    const pipelineValue = db.prepare(`
-      SELECT COALESCE(SUM(amount), 0) as total 
-      FROM deals 
-      WHERE status IN (?, ?, ?)
-    `).get('proposal', 'negotiation', 'review');
-
-    // Lead sources
-    const leadSources = db.prepare(`
-      SELECT source, COUNT(*) as count 
-      FROM leads 
-      GROUP BY source 
-      ORDER BY count DESC
-    `).all();
-
-    // Monthly trends
-    const monthlyTrends = db.prepare(`
-      SELECT 
-        strftime('%Y-%m', created_at) as month,
-        COUNT(*) as leads,
-        COALESCE(AVG(value), 0) as avg_value
-      FROM leads 
-      WHERE created_at >= date('now', '-12 months')
-      GROUP BY strftime('%Y-%m', created_at)
-      ORDER BY month DESC
-    `).all();
-
-    return {
-      kpis: {
-        totalLeads: totalLeads.count,
-        totalClients: totalClients.count,
-        totalRevenue: totalRevenue.total,
-        monthlyLeads: monthlyLeads.count,
-        conversionRate: parseFloat(conversionRate),
-        pipelineValue: pipelineValue.total
-      },
-      recentActivity: {
-        leads: recentLeads,
-        clients: recentClients
-      },
-      charts: {
-        leadSources,
-        monthlyTrends: monthlyTrends.slice(0, 6).reverse()
+  /**
+   * Tracks an analytics event in the database.
+   * @param eventData - The analytics event data
+   * @returns Database operation result
+   */
+  trackAnalyticsEvent(eventData: {
+    event_type: string;
+    page: string;
+    action: string;
+    element?: string;
+    value?: string;
+    user_agent?: string;
+    ip_address?: string;
+    city?: string;
+    referrer?: string;
+    session_id?: string;
+  }) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
       }
-    };
-  }
 
-  // ================================
-  // SECURITY & AUDIT
-  // ================================
-  
-  static logSecurityEvent(eventData: Partial<SecurityLog>): DatabaseResult {
-    const {
-      event_type, user_id, ip_address, user_agent,
-      details = {}, severity = 'info'
-    } = eventData;
+      // Validate required fields
+      if (!eventData.event_type || !eventData.page || !eventData.action) {
+        throw new Error('Missing required fields: event_type, page, and action are required');
+      }
 
-    const stmt = db.prepare(`
-      INSERT INTO security_logs (event_type, user_id, ip_address, user_agent, details, severity)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
+      const stmt = this.db.prepare(`
+        INSERT INTO analytics_events (
+          event_type, 
+          page, 
+          action, 
+          element, 
+          value, 
+          user_agent, 
+          ip_address, 
+          city, 
+          referrer, 
+          session_id, 
+          created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
 
-    return stmt.run(event_type, user_id, ip_address, user_agent, JSON.stringify(details), severity);
-  }
+      const result = stmt.run(
+        eventData.event_type,
+        eventData.page,
+        eventData.action,
+        eventData.element || null,
+        eventData.value || null,
+        eventData.user_agent || '',
+        eventData.ip_address || '',
+        eventData.city || null,
+        eventData.referrer || null,
+        eventData.session_id || '',
+        new Date().toISOString()
+      );
 
-  static trackAnalyticsEvent(eventData: Partial<AnalyticsEvent>): DatabaseResult {
-    const {
-      event_type, page, action, element, value,
-      user_agent, ip_address, city, referrer, session_id
-    } = eventData;
+      return {
+        success: true,
+        id: result.lastInsertRowid,
+        changes: result.changes
+      };
 
-    const stmt = db.prepare(`
-      INSERT INTO analytics_events (
-        event_type, page, action, element, value,
-        user_agent, ip_address, city, referrer, session_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    return stmt.run(event_type, page, action, element, value, user_agent, ip_address, city, referrer, session_id);
-  }
-
-  // ================================
-  // ENHANCED CRM FUNCTIONALITY
-  // ================================
-
-  static assignLead(assignmentData: {
-    leadId: number;
-    assignedTo: string;
-    notes?: string;
-    followUpDate?: string;
-    assignedAt: string;
-  }): any {
-    const { leadId, assignedTo, notes, followUpDate, assignedAt } = assignmentData;
-
-    // Update the lead with assignment information
-    const stmt = db.prepare(`
-      UPDATE leads 
-      SET assignedTo = ?, assignmentNotes = ?, nextFollowUp = ?, assignedAt = ?
-      WHERE id = ?
-    `);
-
-    return stmt.run(assignedTo, notes || '', followUpDate || null, assignedAt, leadId);
-  }
-
-  static updateLeadStatus(leadId: number, status: string): any {
-    const stmt = db.prepare('UPDATE leads SET status = ?, updatedAt = ? WHERE id = ?');
-    return stmt.run(status, new Date().toISOString(), leadId);
-  }
-
-  static convertLeadToClient(conversionData: {
-    leadId: number;
-    dealAmount: number;
-    services: string[];
-  }): { client: Client; deal: Deal } {
-    const { leadId, dealAmount, services } = conversionData;
-
-    // Get lead data
-    const lead = db.prepare('SELECT * FROM leads WHERE id = ?').get(leadId) as Lead;
-    if (!lead) {
-      throw new Error(`Lead with ID ${leadId} not found`);
+    } catch (error) {
+      console.error('Error tracking analytics event:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error'
+      };
     }
-
-    // Create client from lead using existing createClient method
-    const clientData = {
-      lead_id: leadId,
-      name: lead.name,
-      email: lead.email,
-      phone: lead.phone,
-      company: lead.company,
-      total_value: dealAmount,
-      status: 'active' as const,
-      notes: `Converted from lead #${leadId}`
-    };
-
-    const client = this.createClient(clientData);
-
-    // Create deal record using existing createDeal method
-    const dealData = {
-      client_id: client.id,
-      amount: dealAmount,
-      services: services,
-      status: 'closed_won' as const,
-      closed_at: new Date().toISOString()
-    };
-
-    const deal = this.createDeal(dealData);
-
-    // Update lead status to converted
-    this.updateLeadStatus(leadId, 'closed-won');
-
-    return { client, deal };
   }
 
-  static reactivateLead(leadId: number): any {
-    const stmt = db.prepare(`
-      UPDATE leads 
-      SET status = 'new', updated_at = ?, reactivated_at = ?
-      WHERE id = ?
-    `);
-    
-    const now = new Date().toISOString();
-    return stmt.run(now, now, leadId);
+  /**
+   * Get analytics data from the database
+   * @param filters - Filter criteria
+   * @returns Analytics data
+   */
+  getAnalyticsData(filters: {
+    startDate?: string;
+    endDate?: string;
+    eventType?: string;
+    page?: string;
+  } = {}) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const { startDate, endDate, eventType, page } = filters;
+      let query = 'SELECT * FROM analytics_events WHERE 1=1';
+      const params: any[] = [];
+
+      if (startDate) {
+        query += ' AND created_at >= ?';
+        params.push(startDate);
+      }
+      if (endDate) {
+        query += ' AND created_at <= ?';
+        params.push(endDate);
+      }
+      if (eventType) {
+        query += ' AND event_type = ?';
+        params.push(eventType);
+      }
+      if (page) {
+        query += ' AND page = ?';
+        params.push(page);
+      }
+
+      query += ' ORDER BY created_at DESC';
+      
+      const stmt = this.db.prepare(query);
+      const results = stmt.all(...params);
+
+      return {
+        success: true,
+        data: results,
+        count: results.length
+      };
+    } catch (error) {
+      console.error('Error getting analytics data:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
   }
 
-  // ================================
-  // UTILITIES
-  // ================================
-  
-  static backup(): Promise<string> {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const backupPath = path.join(process.cwd(), 'database', `backup_${timestamp}.db`);
-    
-    return new Promise((resolve, reject) => {
-      db.backup(backupPath)
-        .then(() => {
-          console.log(`Database backed up to ${backupPath}`);
-          resolve(backupPath);
-        })
-        .catch(reject);
-    });
+  /**
+   * Create a new lead in the database
+   * @param leadData - Lead information
+   * @returns Result
+   */
+  createLead(leadData: {
+    name: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    service?: string;
+    timeline?: string;
+    budget?: number;
+    status?: string;
+    priority?: string;
+    source?: string;
+    value?: number;
+    notes?: string;
+  }) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        INSERT INTO leads (
+          name, email, phone, company, service, timeline, budget, 
+          status, priority, source, value, notes, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
+      const result = stmt.run(
+        leadData.name,
+        leadData.email,
+        leadData.phone || null,
+        leadData.company || null,
+        leadData.service || null,
+        leadData.timeline || null,
+        leadData.budget || 0,
+        leadData.status || 'new',
+        leadData.priority || 'medium',
+        leadData.source || 'website',
+        leadData.value || 0,
+        leadData.notes || null,
+        new Date().toISOString()
+      );
+
+      return {
+        success: true,
+        id: result.lastInsertRowid,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error creating lead:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
   }
 
-  static close(): void {
-    db.close();
+  /**
+   * Create a new client in the database
+   * @param clientData - Client information
+   * @returns Result
+   */
+  createClient(clientData: {
+    name: string;
+    email: string;
+    phone?: string;
+    company?: string;
+    address?: string;
+  }) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        INSERT INTO clients (
+          name, email, phone, company, address, status, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      `);
+
+      const result = stmt.run(
+        clientData.name,
+        clientData.email,
+        clientData.phone || null,
+        clientData.company || null,
+        clientData.address || null,
+        'active',
+        new Date().toISOString()
+      );
+
+      return {
+        success: true,
+        id: result.lastInsertRowid,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error creating client:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Assign a lead to a team member
+   * @param leadId - Lead ID
+   * @param assignedTo - Team member
+   * @returns Result
+   */
+  assignLead(leadId: number, assignedTo: string) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        UPDATE leads 
+        SET assigned_to = ?, status = 'assigned', updated_at = ?
+        WHERE id = ?
+      `);
+
+      const result = stmt.run(assignedTo, new Date().toISOString(), leadId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error assigning lead:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Update lead status
+   * @param leadId - Lead ID
+   * @param status - New status
+   * @returns Result
+   */
+  updateLeadStatus(leadId: number, status: string) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        UPDATE leads 
+        SET status = ?, updated_at = ?
+        WHERE id = ?
+      `);
+
+      const result = stmt.run(status, new Date().toISOString(), leadId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error updating lead status:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Convert lead to client
+   * @param leadId - Lead ID
+   * @returns Result
+   */
+  convertLeadToClient(leadId: number) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      // Get lead data
+      const leadStmt = this.db.prepare('SELECT * FROM leads WHERE id = ?');
+      const lead = leadStmt.get(leadId) as any;
+
+      if (!lead) {
+        throw new Error('Lead not found');
+      }
+
+      // Create client
+      const clientResult = this.createClient({
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        company: lead.company
+      });
+
+      if (!clientResult.success) {
+        throw new Error(clientResult.error);
+      }
+
+      // Update lead status
+      const updateResult = this.updateLeadStatus(leadId, 'converted');
+
+      return {
+        success: true,
+        clientId: clientResult.id,
+        leadUpdated: updateResult.success
+      };
+    } catch (error) {
+      console.error('Error converting lead to client:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Close database connection
+   */
+  close() {
+    if (this.db) {
+      this.db.close();
+      this.db = null;
+    }
+  }
+
+  // ==================== USER MANAGEMENT METHODS ====================
+
+  /**
+   * Create a new user
+   * @param userData - User data
+   * @returns Result with user ID
+   */
+  createUser(userData: {
+    username: string;
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    role?: string;
+    department?: string;
+    phone?: string;
+    avatar_url?: string;
+    created_by?: number;
+  }) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      // Hash password (in production, use bcrypt or similar)
+      const passwordHash = this.hashPassword(userData.password);
+
+      const stmt = this.db.prepare(`
+        INSERT INTO users (
+          username, email, password_hash, first_name, last_name, 
+          role, department, phone, avatar_url, created_by, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      `);
+
+      const result = stmt.run(
+        userData.username,
+        userData.email,
+        passwordHash,
+        userData.first_name,
+        userData.last_name,
+        userData.role || 'user',
+        userData.department,
+        userData.phone,
+        userData.avatar_url,
+        userData.created_by
+      );
+
+      return {
+        success: true,
+        id: result.lastInsertRowid,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error creating user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Get all users
+   * @param includeInactive - Include inactive users
+   * @returns List of users
+   */
+  getUsers(includeInactive: boolean = false) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const query = includeInactive 
+        ? 'SELECT id, username, email, first_name, last_name, role, department, phone, avatar_url, is_active, last_login, created_at FROM users ORDER BY created_at DESC'
+        : 'SELECT id, username, email, first_name, last_name, role, department, phone, avatar_url, is_active, last_login, created_at FROM users WHERE is_active = 1 ORDER BY created_at DESC';
+
+      const stmt = this.db.prepare(query);
+      const users = stmt.all();
+
+      return {
+        success: true,
+        data: users,
+        count: users.length
+      };
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Get user by ID
+   * @param userId - User ID
+   * @returns User data
+   */
+  getUserById(userId: number) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        SELECT id, username, email, first_name, last_name, role, department, 
+               phone, avatar_url, is_active, last_login, created_at 
+        FROM users WHERE id = ?
+      `);
+      
+      const user = stmt.get(userId);
+
+      if (user) {
+        return { success: true, data: user };
+      } else {
+        return { success: false, error: 'User not found' };
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Get user by username or email
+   * @param identifier - Username or email
+   * @returns User data
+   */
+  getUserByIdentifier(identifier: string) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        SELECT id, username, email, password_hash, first_name, last_name, role, 
+               department, phone, avatar_url, is_active, last_login, created_at 
+        FROM users WHERE username = ? OR email = ?
+      `);
+      
+      const user = stmt.get(identifier, identifier);
+
+      if (user) {
+        return { success: true, data: user };
+      } else {
+        return { success: false, error: 'User not found' };
+      }
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Update user information
+   * @param userId - User ID
+   * @param updates - Fields to update
+   * @returns Result
+   */
+  updateUser(userId: number, updates: {
+    username?: string;
+    email?: string;
+    first_name?: string;
+    last_name?: string;
+    role?: string;
+    department?: string;
+    phone?: string;
+    avatar_url?: string;
+    is_active?: boolean;
+  }) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const fields = Object.keys(updates).filter(key => updates[key as keyof typeof updates] !== undefined);
+      const values = fields.map(key => updates[key as keyof typeof updates]);
+      
+      if (fields.length === 0) {
+        return { success: false, error: 'No fields to update' };
+      }
+
+      const setClause = fields.map(field => `${field} = ?`).join(', ');
+      const query = `UPDATE users SET ${setClause}, updated_at = CURRENT_TIMESTAMP WHERE id = ?`;
+      
+      const stmt = this.db.prepare(query);
+      const result = stmt.run(...values, userId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Update user password
+   * @param userId - User ID
+   * @param newPassword - New password
+   * @returns Result
+   */
+  updateUserPassword(userId: number, newPassword: string) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const passwordHash = this.hashPassword(newPassword);
+      
+      const stmt = this.db.prepare(`
+        UPDATE users SET password_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+      `);
+      
+      const result = stmt.run(passwordHash, userId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error updating password:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Deactivate user (soft delete)
+   * @param userId - User ID
+   * @returns Result
+   */
+  deactivateUser(userId: number) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        UPDATE users SET is_active = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+      `);
+      
+      const result = stmt.run(userId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error deactivating user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Activate user
+   * @param userId - User ID
+   * @returns Result
+   */
+  activateUser(userId: number) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        UPDATE users SET is_active = 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?
+      `);
+      
+      const result = stmt.run(userId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error activating user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Delete user permanently
+   * @param userId - User ID
+   * @returns Result
+   */
+  deleteUser(userId: number) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare('DELETE FROM users WHERE id = ?');
+      const result = stmt.run(userId);
+
+      return {
+        success: true,
+        changes: result.changes
+      };
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Authenticate user
+   * @param identifier - Username or email
+   * @param password - Password
+   * @returns Authentication result
+   */
+  authenticateUser(identifier: string, password: string) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const userResult = this.getUserByIdentifier(identifier);
+      if (!userResult.success || !userResult.data) {
+        return { success: false, error: 'Invalid credentials' };
+      }
+
+      const user = userResult.data as any;
+      
+      if (!user.is_active) {
+        return { success: false, error: 'Account is deactivated' };
+      }
+
+      if (this.verifyPassword(password, user.password_hash)) {
+        // Update last login
+        const updateStmt = this.db.prepare(`
+          UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?
+        `);
+        updateStmt.run(user.id);
+
+        // Return user data without password hash
+        const { password_hash, ...userWithoutPassword } = user;
+        return { 
+          success: true, 
+          user: userWithoutPassword
+        };
+      } else {
+        return { success: false, error: 'Invalid credentials' };
+      }
+    } catch (error) {
+      console.error('Error authenticating user:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Get users by role
+   * @param role - User role
+   * @returns List of users
+   */
+  getUsersByRole(role: string) {
+    try {
+      if (!this.db) {
+        throw new Error('Database not initialized');
+      }
+
+      const stmt = this.db.prepare(`
+        SELECT id, username, email, first_name, last_name, role, department, 
+               phone, avatar_url, is_active, last_login, created_at 
+        FROM users WHERE role = ? AND is_active = 1
+        ORDER BY first_name, last_name
+      `);
+      
+      const users = stmt.all(role);
+
+      return {
+        success: true,
+        data: users,
+        count: users.length
+      };
+    } catch (error) {
+      console.error('Error fetching users by role:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      };
+    }
+  }
+
+  /**
+   * Simple password hashing (use bcrypt in production)
+   * @param password - Plain text password
+   * @returns Hashed password
+   */
+  private hashPassword(password: string): string {
+    // This is a simple hash for demo purposes
+    // In production, use bcrypt or similar
+    const crypto = require('crypto');
+    return crypto.createHash('sha256').update(password + 'kps_salt').digest('hex');
+  }
+
+  /**
+   * Verify password against hash
+   * @param password - Plain text password
+   * @param hash - Stored hash
+   * @returns Boolean
+   */
+  private verifyPassword(password: string, hash: string): boolean {
+    return this.hashPassword(password) === hash;
   }
 }
 
-// Initialize database on module load
-initializeDatabase();
-
-export { db };
-export default CRMDatabase;
+// Export singleton instance
+export const database = new Database();

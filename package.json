@@ -12,12 +12,20 @@
     "crm:start": "npm run db:init && npm run dev"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.52.1",
+    "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
+    "@types/cookie": "^0.6.0",
+    "@types/uuid": "^10.0.0",
     "@vercel/analytics": "^1.5.0",
     "astro": "^5.12.2",
+    "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.2.0",
+    "cookie": "^1.0.2",
     "resend": "^4.7.0",
-    "web-vitals": "^4.2.4"
+    "uuid": "^11.1.0",
+    "web-vitals": "^4.2.4",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.4.1",

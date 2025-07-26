@@ -1,0 +1,672 @@
+---
+// Email Integration with Outlook/Office 365
+---
+
+<div class="h-full flex flex-col bg-white dark:bg-gray-800">
+  <!-- Email Header -->
+  <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex items-center gap-4">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Email</h2>
+      <div class="flex items-center gap-2">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span class="text-sm text-green-600 dark:text-green-400">Outlook Connected</span>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-3">
+      <button class="btn-secondary" id="syncEmailBtn">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Sync
+      </button>
+      <button class="btn-primary" id="composeEmailBtn">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        Compose
+      </button>
+    </div>
+  </div>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Email Sidebar -->
+    <div class="w-64 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+      <!-- Folders -->
+      <div class="p-4">
+        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">Folders</h3>
+        <nav class="space-y-1">
+          <button class="email-folder-btn active" data-folder="inbox">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
+            </svg>
+            <span>Inbox</span>
+            <span class="bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full px-2 py-1">12</span>
+          </button>
+          
+          <button class="email-folder-btn" data-folder="sent">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+            <span>Sent</span>
+          </button>
+          
+          <button class="email-folder-btn" data-folder="drafts">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+            <span>Drafts</span>
+            <span class="bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs rounded-full px-2 py-1">3</span>
+          </button>
+          
+          <button class="email-folder-btn" data-folder="followup">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>Follow-up</span>
+            <span class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full px-2 py-1">5</span>
+          </button>
+        </nav>
+      </div>
+      
+      <!-- Email Templates -->
+      <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">Templates</h3>
+        <div class="space-y-2">
+          <button class="email-template-btn" data-template="welcome">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
+            </svg>
+            Welcome Email
+          </button>
+          
+          <button class="email-template-btn" data-template="followup">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+            Follow-up
+          </button>
+          
+          <button class="email-template-btn" data-template="proposal">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            Proposal
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email List -->
+    <div class="w-96 border-r border-gray-200 dark:border-gray-700 overflow-y-auto">
+      <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="relative">
+          <input 
+            type="text" 
+            placeholder="Search emails..." 
+            class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+          />
+          <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- Email List Items -->
+      <div class="divide-y divide-gray-200 dark:divide-gray-700">
+        <!-- Email 1 -->
+        <div class="email-item" data-email-id="1">
+          <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+            <div class="flex items-start justify-between">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-sm font-semibold">
+                    JS
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">John Smith</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">john@acmecorp.com</p>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-900 dark:text-white font-medium truncate mb-1">Re: Website Redesign Project</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">Thanks for the detailed proposal. We'd like to move forward with the project. When can we schedule a kickoff meeting?</p>
+              </div>
+              <div class="ml-2 flex flex-col items-end">
+                <span class="text-xs text-gray-500 dark:text-gray-400">2h ago</span>
+                <div class="flex items-center gap-1 mt-1">
+                  <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <svg class="w-3 h-3 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Email 2 -->
+        <div class="email-item" data-email-id="2">
+          <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+            <div class="flex items-start justify-between">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-8 h-8 bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center text-sm font-semibold">
+                    SJ
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Sarah Johnson</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">sarah@techstart.com</p>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-900 dark:text-white font-medium truncate mb-1">QuickBooks Implementation Questions</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">Hi! I have some questions about the QuickBooks setup process. Could we schedule a call this week?</p>
+              </div>
+              <div class="ml-2 flex flex-col items-end">
+                <span class="text-xs text-gray-500 dark:text-gray-400">4h ago</span>
+                <div class="flex items-center gap-1 mt-1">
+                  <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Email 3 -->
+        <div class="email-item" data-email-id="3">
+          <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer bg-gray-50 dark:bg-gray-700">
+            <div class="flex items-start justify-between">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-sm font-semibold">
+                    MC
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">Mike Chen</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">mike@globalind.com</p>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-700 dark:text-gray-300 truncate mb-1">Payroll Service Inquiry</p>
+                <p class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">Looking for a comprehensive payroll solution for our 50+ employees. Can you provide more details about your services?</p>
+              </div>
+              <div class="ml-2 flex flex-col items-end">
+                <span class="text-xs text-gray-500 dark:text-gray-400">1d ago</span>
+                <div class="flex items-center gap-1 mt-1">
+                  <svg class="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div id="email-content" class="flex-1 overflow-y-auto">
+        <!-- Email Header -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-lg font-semibold">
+                JS
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">John Smith</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">john@acmecorp.com</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="Reply">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+                </svg>
+              </button>
+              <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="Forward">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+                </svg>
+              </button>
+              <button class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="Archive">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8l6 6 6-6"/>
+                </svg>
+              </button>
+              <button class="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700" title="Delete">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Re: Website Redesign Project</h2>
+            <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+              <span>Today, 2:45 PM</span>
+              <span>•</span>
+              <span>To: sales@thekpsgroup.com</span>
+              <span>•</span>
+              <span class="flex items-center gap-1">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                Important
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Email Body -->
+        <div class="p-6">
+          <div class="prose dark:prose-invert max-w-none">
+            <p>Hi Karson,</p>
+            
+            <p>Thanks for the detailed proposal for our website redesign project. The team has reviewed everything and we're impressed with your approach and timeline.</p>
+            
+            <p>We'd like to move forward with the project. A few questions:</p>
+            
+            <ul>
+              <li>When can we schedule a kickoff meeting?</li>
+              <li>What's the best way to share our current brand assets?</li>
+              <li>Can we get access to a staging environment early in the process?</li>
+            </ul>
+            
+            <p>Our budget is approved for the $25,000 as quoted. Let me know the next steps!</p>
+            
+            <p>Best regards,<br>John Smith<br>Acme Corp</p>
+          </div>
+          
+          <!-- Quick Actions -->
+          <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">Quick Actions</h4>
+            <div class="flex flex-wrap gap-2">
+              <button class="quick-action-btn" data-action="schedule-meeting">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"/>
+                </svg>
+                Schedule Meeting
+              </button>
+              <button class="quick-action-btn" data-action="create-deal">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Create Deal
+              </button>
+              <button class="quick-action-btn" data-action="add-task">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                </svg>
+                Add Task
+              </button>
+              <button class="quick-action-btn" data-action="update-contact">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Update Contact
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Reply Section -->
+      <div class="border-t border-gray-200 dark:border-gray-700 p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <button class="btn-primary" id="replyBtn">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/>
+            </svg>
+            Reply
+          </button>
+          <button class="btn-secondary" id="forwardBtn">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
+            </svg>
+            Forward
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .email-folder-btn {
+    @apply w-full flex items-center justify-between px-3 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors;
+  }
+  
+  .email-folder-btn.active {
+    @apply bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400;
+  }
+  
+  .email-template-btn {
+    @apply w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors;
+  }
+  
+  .email-item.selected {
+    @apply bg-blue-50 dark:bg-blue-900/20 border-r-2 border-blue-500;
+  }
+  
+  .quick-action-btn {
+    @apply inline-flex items-center gap-2 px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Email item selection
+    const emailItems = document.querySelectorAll('.email-item');
+    
+    emailItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Remove selection from all items
+        emailItems.forEach(i => i.classList.remove('selected'));
+        // Add selection to clicked item
+        item.classList.add('selected');
+        
+        // Load email content (mock for now)
+        const emailId = item.getAttribute('data-email-id');
+        loadEmailContent(emailId);
+      });
+    });
+    
+    // Folder navigation
+    const folderButtons = document.querySelectorAll('.email-folder-btn');
+    
+    folderButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        folderButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        const folder = button.getAttribute('data-folder');
+        loadEmailFolder(folder);
+      });
+    });
+    
+    // Template selection
+    const templateButtons = document.querySelectorAll('.email-template-btn');
+    
+    templateButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const template = button.getAttribute('data-template');
+        loadEmailTemplate(template);
+      });
+    });
+    
+    // Quick actions
+    const quickActionButtons = document.querySelectorAll('.quick-action-btn');
+    
+    quickActionButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const action = button.getAttribute('data-action');
+        handleQuickAction(action);
+      });
+    });
+    
+    // Compose email
+    document.getElementById('composeEmailBtn')?.addEventListener('click', () => {
+      openComposeModal();
+    });
+    
+    // Reply
+    document.getElementById('replyBtn')?.addEventListener('click', () => {
+      openReplyModal();
+    });
+    
+    // Forward
+    document.getElementById('forwardBtn')?.addEventListener('click', () => {
+      openForwardModal();
+    });
+    
+    // Sync emails
+    document.getElementById('syncEmailBtn')?.addEventListener('click', () => {
+      syncOutlookEmails();
+    });
+    
+    // Functions
+    function loadEmailContent(emailId: string | null) {
+      console.log(`Loading email content for ID: ${emailId}`);
+      // In a real implementation, this would fetch the email content from the API
+    }
+    
+    function loadEmailFolder(folder: string | null) {
+      console.log(`Loading folder: ${folder}`);
+      // In a real implementation, this would fetch emails from the specified folder
+    }
+    
+    function loadEmailTemplate(template: string | null) {
+      console.log(`Loading template: ${template}`);
+      // In a real implementation, this would load the email template
+      
+      const templates = {
+        welcome: {
+          subject: 'Welcome to The KPS Group!',
+          body: `Hi {{firstName}},
+
+Welcome to The KPS Group! We're excited to work with you on your business needs.
+
+Our team is here to help you succeed. If you have any questions, please don't hesitate to reach out.
+
+Best regards,
+The KPS Group Team`
+        },
+        followup: {
+          subject: 'Following up on our conversation',
+          body: `Hi {{firstName}},
+
+I wanted to follow up on our recent conversation about {{topic}}.
+
+Please let me know if you have any questions or if there's anything else I can help you with.
+
+Best regards,
+{{senderName}}`
+        },
+        proposal: {
+          subject: 'Proposal for {{companyName}}',
+          body: `Hi {{firstName}},
+
+Thank you for your interest in our services. Please find attached our proposal for {{projectName}}.
+
+We're excited about the opportunity to work with {{companyName}} and look forward to hearing from you.
+
+Best regards,
+{{senderName}}`
+        }
+      };
+      
+      const selectedTemplate = templates[template as keyof typeof templates];
+      if (selectedTemplate) {
+        openComposeModal(selectedTemplate.subject, selectedTemplate.body);
+      }
+    }
+    
+    function handleQuickAction(action: string | null) {
+      switch (action) {
+        case 'schedule-meeting':
+          // Integration with calendar to schedule meeting
+          window.open('https://outlook.live.com/calendar/', '_blank');
+          break;
+        case 'create-deal':
+          // Open deal creation modal
+          openDealModal('new');
+          break;
+        case 'add-task':
+          // Open task creation modal
+          openTaskModal('new');
+          break;
+        case 'update-contact':
+          // Open contact update modal
+          openContactModal('update');
+          break;
+      }
+    }
+    
+    function openComposeModal(subject = '', body = '') {
+      const modalContent = `
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Compose Email</h3>
+            <button onclick="window.closeModal()" class="text-gray-400 hover:text-gray-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">To</label>
+              <input type="email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="recipient@example.com" />
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">CC</label>
+                <input type="email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="cc@example.com" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">BCC</label>
+                <input type="email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="bcc@example.com" />
+              </div>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+              <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" value="${subject}" placeholder="Email subject" />
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+              <textarea rows="12" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Write your message...">${body}</textarea>
+            </div>
+          </div>
+          
+          <div class="flex justify-between mt-6">
+            <div class="flex gap-2">
+              <button class="btn-secondary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.586-6.586a2 2 0 00-2.828-2.828z"/>
+                </svg>
+                Attach File
+              </button>
+              <button class="btn-secondary">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z"/>
+                </svg>
+                Schedule Send
+              </button>
+            </div>
+            <div class="flex gap-2">
+              <button onclick="window.closeModal()" class="btn-secondary">Save Draft</button>
+              <button class="btn-primary">Send Email</button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      if (window.openModal) {
+        window.openModal(modalContent);
+      }
+    }
+    
+    function openReplyModal() {
+      const modalContent = `
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Reply to John Smith</h3>
+            <button onclick="window.closeModal()" class="text-gray-400 hover:text-gray-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">To</label>
+              <input type="email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" value="john@acmecorp.com" readonly />
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+              <input type="text" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" value="Re: Website Redesign Project" />
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+              <textarea rows="10" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white" placeholder="Hi John,
+
+Thank you for your email. I'm excited to move forward with the project!
+
+For the kickoff meeting, I have availability next week. Would Tuesday or Wednesday work better for you?
+
+Best regards,
+Karson"></textarea>
+            </div>
+          </div>
+          
+          <div class="flex justify-end gap-2 mt-6">
+            <button onclick="window.closeModal()" class="btn-secondary">Save Draft</button>
+            <button class="btn-primary">Send Reply</button>
+          </div>
+        </div>
+      `;
+      
+      if (window.openModal) {
+        window.openModal(modalContent);
+      }
+    }
+    
+    function openForwardModal() {
+      // Similar to reply modal but for forwarding
+      openComposeModal('Fwd: Website Redesign Project', 'Forwarding this conversation...');
+    }
+    
+    async function syncOutlookEmails() {
+      try {
+        // Show loading state
+        const syncBtn = document.getElementById('syncEmailBtn');
+        if (syncBtn) {
+          syncBtn.innerHTML = '<svg class="w-4 h-4 mr-2 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Syncing...';
+        }
+        
+        // Call API to sync with Outlook
+        const response = await fetch('/api/email/sync-outlook', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to sync emails');
+        }
+        
+        const result = await response.json();
+        console.log('Sync result:', result);
+        
+        // Reset button
+        if (syncBtn) {
+          syncBtn.innerHTML = '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Sync';
+        }
+        
+        // Refresh email list
+        location.reload();
+        
+      } catch (error) {
+        console.error('Error syncing emails:', error);
+        alert('Failed to sync emails. Please try again.');
+      }
+    }
+  });
+</script>
