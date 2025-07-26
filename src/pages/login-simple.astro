@@ -1,12 +1,16 @@
 ---
-// Simple login page that handles both password visibility and authentication
+// Simple login page that handles both password visibility and database initialization
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const pageTitle = 'Login - KPS Group CRM';
 const pageDescription = 'Login to access the KPS Group CRM system';
 
 // Handle form submission
+const password = Astro.url.searchParams.get('password');
+const email = Astro.url.searchParams.get('email') || Astro.url.searchParams.get('identifier');
+
 let loginError = '';
+let isAuthenticated = false;
 
 if (Astro.request.method === 'POST') {
   try {
