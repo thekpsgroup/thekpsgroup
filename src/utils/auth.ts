@@ -21,10 +21,22 @@ export interface AuthSession {
 export function isAuthenticated(request: Request): boolean {
   const authHeader = request.headers.get('authorization');
   const sessionCookie = getCookie(request, 'kps_session');
+  const crmSessionCookie = getCookie(request, 'crm_session');
   
-  // Check for authorization header or session cookie
-  if (!authHeader && !sessionCookie) {
+  // Check for any valid session cookie
+  if (!authHeader && !sessionCookie && !crmSessionCookie) {
     return false;
+  }
+
+  // Validate CRM session cookie format
+  if (crmSessionCookie) {
+    try {
+      const sessionData = JSON.parse(atob(crmSessionCookie));
+      const isExpired = Date.now() > sessionData.expires;
+      return !isExpired;
+    } catch {
+      return false;
+    }
   }
 
   // For demo purposes, return true if any auth token exists
