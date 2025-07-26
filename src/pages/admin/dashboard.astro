@@ -1,0 +1,584 @@
+---
+// filepath: src/pages/admin/dashboard.astro
+import { authManager } from '../../utils/auth';
+import AdminDashboard from '../../components/Admin/AdminDashboard.astro';
+
+// Check authentication
+const token = Astro.cookies.get('kps_auth_token')?.value || 
+              (typeof window !== 'undefined' ? localStorage.getItem('kps_auth_token') : null);
+
+let currentUser = null;
+let isAuthenticated = false;
+
+if (token) {
+  const validation = await authManager.validateToken(token);
+  if (validation.valid && validation.user) {
+    currentUser = validation.user;
+    isAuthenticated = true;
+  }
+}
+
+// Redirect to login if not authenticated
+if (!isAuthenticated) {
+  return Astro.redirect('/admin/login');
+}
+
+// Check if user has admin permissions
+if (currentUser && !authManager.hasPermission(currentUser, 'dashboard', 'read')) {
+  return Astro.redirect('/admin/unauthorized');
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - KPS Group CRM</title>
+    <meta name="description" content="KPS Group CRM Admin Dashboard - Comprehensive business management and analytics">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Admin Dashboard - KPS Group CRM">
+    <meta property="og:description" content="Comprehensive business management and analytics dashboard">
+    <meta property="og:image" content="/images/dashboard-preview.jpg">
+    
+    <!-- Additional Styles -->
+    <style>
+        /* Critical CSS for faster loading */
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #D4AF37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .error-content {
+            text-align: center;
+            max-width: 500px;
+        }
+        
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+        
+        .error-message {
+            font-size: 1.125rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn.primary {
+            background: #D4AF37;
+            color: white;
+        }
+        
+        .btn.primary:hover {
+            background: #b8941f;
+            transform: translateY(-1px);
+        }
+        
+        .btn.secondary {
+            background: #f8fafc;
+            color: #374151;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .btn.secondary:hover {
+            background: #f1f5f9;
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        /* Focus Styles for Accessibility */
+        *:focus {
+            outline: 2px solid #D4AF37;
+            outline-offset: 2px;
+        }
+        
+        /* Reduced Motion Support */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .admin-dashboard {
+                color: black !important;
+                background: white !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <main id="mainContent" style="opacity: 0;">
+        <AdminDashboard user={currentUser} />
+    </main>
+
+    <!-- Error Handling -->
+    <div id="errorPage" class="error-page" style="display: none;">
+        <div class="error-content">
+            <div class="error-title">🚫 Access Error</div>
+            <div class="error-message" id="errorMessage">
+                Unable to load the dashboard. Please check your connection and try again.
+            </div>
+            <div class="error-actions">
+                <a href="/admin/login" class="btn secondary">
+                    🔐 Login Again
+                </a>
+                <button onclick="window.location.reload()" class="btn primary">
+                    🔄 Retry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Monitoring -->
+    <script>
+        // Performance monitoring
+        const perfMonitor = {
+            startTime: performance.now(),
+            
+            logMetric(name, value) {
+                if (window.gtag) {
+                    gtag('event', 'timing_complete', {
+                        name: name,
+                        value: Math.round(value)
+                    });
+                }
+                console.log(`⚡ ${name}: ${Math.round(value)}ms`);
+            },
+            
+            init() {
+                // Page Load Time
+                window.addEventListener('load', () => {
+                    const loadTime = performance.now() - this.startTime;
+                    this.logMetric('page_load_time', loadTime);
+                });
+                
+                // First Contentful Paint
+                if ('PerformanceObserver' in window) {
+                    const observer = new PerformanceObserver((entryList) => {
+                        for (const entry of entryList.getEntries()) {
+                            if (entry.name === 'first-contentful-paint') {
+                                this.logMetric('first_contentful_paint', entry.startTime);
+                            }
+                        }
+                    });
+                    observer.observe({ entryTypes: ['paint'] });
+                }
+                
+                // Core Web Vitals
+                this.observeCoreWebVitals();
+            },
+            
+            observeCoreWebVitals() {
+                // Largest Contentful Paint
+                if ('PerformanceObserver' in window) {
+                    const lcpObserver = new PerformanceObserver((entryList) => {
+                        const entries = entryList.getEntries();
+                        const lastEntry = entries[entries.length - 1];
+                        this.logMetric('largest_contentful_paint', lastEntry.startTime);
+                    });
+                    lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+                }
+                
+                // First Input Delay
+                if ('PerformanceObserver' in window) {
+                    const fidObserver = new PerformanceObserver((entryList) => {
+                        for (const entry of entryList.getEntries()) {
+                            this.logMetric('first_input_delay', entry.processingStart - entry.startTime);
+                        }
+                    });
+                    fidObserver.observe({ entryTypes: ['first-input'] });
+                }
+            }
+        };
+        
+        // Initialize performance monitoring
+        perfMonitor.init();
+    </script>
+
+    <!-- Dashboard Initialization -->
+    <script>
+        class DashboardLoader {
+            constructor() {
+                this.loadingOverlay = document.getElementById('loadingOverlay');
+                this.mainContent = document.getElementById('mainContent');
+                this.errorPage = document.getElementById('errorPage');
+                this.currentUser = {currentUser ? JSON.stringify(currentUser) : 'null'};
+                
+                this.init();
+            }
+            
+            async init() {
+                try {
+                    // Validate authentication
+                    await this.validateAuth();
+                    
+                    // Load dashboard
+                    await this.loadDashboard();
+                    
+                    // Initialize features
+                    this.initializeFeatures();
+                    
+                    // Hide loading overlay
+                    this.hideLoading();
+                    
+                } catch (error) {
+                    console.error('Dashboard initialization error:', error);
+                    this.showError(error.message);
+                }
+            }
+            
+            async validateAuth() {
+                const token = localStorage.getItem('kps_auth_token');
+                
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+                
+                // Additional client-side validation if needed
+                const tokenParts = token.split('.');
+                if (tokenParts.length !== 3) {
+                    throw new Error('Invalid token format');
+                }
+                
+                // Check token expiration (basic check)
+                try {
+                    const payload = JSON.parse(atob(tokenParts[1]));
+                    const now = Date.now() / 1000;
+                    
+                    if (payload.exp && payload.exp < now) {
+                        throw new Error('Token expired');
+                    }
+                } catch (e) {
+                    console.warn('Token validation warning:', e);
+                }
+            }
+            
+            async loadDashboard() {
+                // Simulate dashboard data loading
+                return new Promise((resolve) => {
+                    setTimeout(resolve, 500);
+                });
+            }
+            
+            initializeFeatures() {
+                // Enable tooltips
+                this.enableTooltips();
+                
+                // Set up keyboard shortcuts
+                this.setupKeyboardShortcuts();
+                
+                // Initialize theme
+                this.initializeTheme();
+                
+                // Set up error boundary
+                this.setupErrorBoundary();
+            }
+            
+            enableTooltips() {
+                const tooltipElements = document.querySelectorAll('[data-tooltip]');
+                tooltipElements.forEach(element => {
+                    element.addEventListener('mouseenter', (e) => {
+                        this.showTooltip(e.target, e.target.dataset.tooltip);
+                    });
+                    
+                    element.addEventListener('mouseleave', () => {
+                        this.hideTooltip();
+                    });
+                });
+            }
+            
+            showTooltip(element, text) {
+                const tooltip = document.createElement('div');
+                tooltip.id = 'tooltip';
+                tooltip.innerHTML = text;
+                tooltip.style.cssText = `
+                    position: absolute;
+                    background: #1e293b;
+                    color: white;
+                    padding: 0.5rem 0.75rem;
+                    border-radius: 6px;
+                    font-size: 0.875rem;
+                    z-index: 10000;
+                    pointer-events: none;
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+                `;
+                
+                document.body.appendChild(tooltip);
+                
+                const rect = element.getBoundingClientRect();
+                tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+                tooltip.style.top = rect.top - tooltip.offsetHeight - 8 + 'px';
+                
+                setTimeout(() => {
+                    tooltip.style.opacity = '1';
+                }, 10);
+            }
+            
+            hideTooltip() {
+                const tooltip = document.getElementById('tooltip');
+                if (tooltip) {
+                    tooltip.remove();
+                }
+            }
+            
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ctrl/Cmd + K for search
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                        e.preventDefault();
+                        this.focusSearch();
+                    }
+                    
+                    // Ctrl/Cmd + N for new lead
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                        e.preventDefault();
+                        document.getElementById('addLeadBtn')?.click();
+                    }
+                    
+                    // Escape to close modals
+                    if (e.key === 'Escape') {
+                        const modal = document.querySelector('.modal[style*="block"]');
+                        if (modal) {
+                            modal.style.display = 'none';
+                        }
+                    }
+                });
+            }
+            
+            focusSearch() {
+                const searchInput = document.querySelector('input[type="search"], input[placeholder*="search" i]');
+                if (searchInput) {
+                    searchInput.focus();
+                } else {
+                    console.log('Search functionality coming soon!');
+                }
+            }
+            
+            initializeTheme() {
+                // Check for saved theme preference
+                const savedTheme = localStorage.getItem('kps_dashboard_theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+                this.setTheme(theme);
+                
+                // Listen for system theme changes
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (!localStorage.getItem('kps_dashboard_theme')) {
+                        this.setTheme(e.matches ? 'dark' : 'light');
+                    }
+                });
+            }
+            
+            setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('kps_dashboard_theme', theme);
+            }
+            
+            setupErrorBoundary() {
+                window.addEventListener('error', (e) => {
+                    console.error('Global error caught:', e.error);
+                    this.logError('javascript_error', e.error.message, e.filename, e.lineno);
+                });
+                
+                window.addEventListener('unhandledrejection', (e) => {
+                    console.error('Unhandled promise rejection:', e.reason);
+                    this.logError('promise_rejection', e.reason);
+                });
+            }
+            
+            logError(type, message, file, line) {
+                // Log to console
+                console.error(`[${type}] ${message}`, { file, line });
+                
+                // Send to analytics if available
+                if (window.gtag) {
+                    gtag('event', 'exception', {
+                        description: `${type}: ${message}`,
+                        fatal: false
+                    });
+                }
+                
+                // Could also send to error tracking service here
+            }
+            
+            hideLoading() {
+                this.loadingOverlay.classList.add('hidden');
+                this.mainContent.style.opacity = '1';
+                this.mainContent.style.transition = 'opacity 0.3s ease';
+                
+                setTimeout(() => {
+                    this.loadingOverlay.style.display = 'none';
+                }, 300);
+            }
+            
+            showError(message) {
+                this.loadingOverlay.style.display = 'none';
+                this.mainContent.style.display = 'none';
+                this.errorPage.style.display = 'flex';
+                
+                const errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    errorMessage.textContent = message;
+                }
+            }
+        }
+        
+        // Initialize dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.dashboardLoader = new DashboardLoader();
+        });
+        
+        // Service Worker Registration (for offline support)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (window.adminDashboard) {
+                window.adminDashboard.destroy();
+            }
+        });
+    </script>
+    
+    <!-- Analytics (replace with your tracking code) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'GA_MEASUREMENT_ID', {
+            page_title: 'Admin Dashboard',
+            page_location: window.location.href
+        });
+    </script>
+</body>
+</html>
