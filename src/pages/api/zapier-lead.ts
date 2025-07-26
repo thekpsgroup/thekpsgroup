@@ -3,7 +3,7 @@ import type { APIRoute } from 'astro';
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
-    // TODO: Save lead data to database or CRM storage
+    // TODO: Save lead data to external storage
     // For now, just log and return the received data
     console.log('Received lead from Zapier:', data);
     return new Response(JSON.stringify({ success: true, received: data }), {

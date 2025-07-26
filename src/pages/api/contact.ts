@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
 import { Resend } from 'resend';
-import { Database } from '../../utils/database.ts';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
@@ -81,47 +80,6 @@ export const POST: APIRoute = async ({ request }) => {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
       });
-    }
-
-    // Save to database (if available)
-    try {
-      const leadValue = estimateLeadValue(service || services.join(', '), budget || '');
-      
-      const leadData = {
-        name: fullName,
-        email,
-        phone: phone || '',
-        company: company || '',
-        service: service || services.join(', '),
-        timeline: timeline || '',
-        budget: parseFloat(budget?.replace(/[^0-9.]/g, '') || '0') || 0,
-        status: 'new' as const,
-        priority: (budget && budget.indexOf('$50,000+') !== -1) || services.indexOf('The Modern Suite') !== -1 ? 'high' as const : 'medium' as const,
-        source: 'website_form',
-        value: leadValue,
-        notes: message || ''
-      };
-
-      const database = new Database();
-      const newLead = database.createLead(leadData);
-
-      // Track analytics event
-      database.trackAnalyticsEvent({
-        event_type: 'lead_created',
-        page: '/contact',
-        action: 'form_submit',
-        value: newLead.id?.toString(),
-        user_agent: request.headers.get('user-agent') || '',
-        ip_address: request.headers.get('x-forwarded-for') || 
-                    request.headers.get('x-real-ip') || 
-                    'unknown',
-        session_id: Math.random().toString(36).substring(7)
-      });
-
-      console.log('Lead saved to database:', newLead.id);
-    } catch (databaseError) {
-      console.error('Failed to save lead to database:', databaseError);
-      // Continue with email sending even if database fails
     }
 
     // Enhanced email template
@@ -480,7 +438,7 @@ ${location ? `Location: ${location}` : ''}
     // Send email notification
     const { data, error } = await resend.emails.send({
       from: 'The KPS Group Website <noreply@thekpsgroup.com>',
-      to: [import.meta.env.LEAD_TO_EMAIL || 'info@thekpsgroup.com'],
+      to: [import.meta.env.LEAD_TO_EMAIL || 'karson@thekpsgroup.com'],
       replyTo: email,
       subject: `🚀 ${(budget && budget.indexOf('$50,000+') !== -1) ? 'HIGH PRIORITY ' : ''}New Lead: ${fullName} - ${service || services.join(', ') || 'General Inquiry'}`,
       html: htmlContent,
@@ -613,7 +571,7 @@ ${location ? `Location: ${location}` : ''}
       `;
 
       await resend.emails.send({
-        from: 'The KPS Group <info@thekpsgroup.com>',
+        from: 'The KPS Group <karson@thekpsgroup.com>',
         to: [email],
         subject: `Thank you for contacting The KPS Group, ${fullName}!`,
         html: autoReplyHtml,
@@ -629,7 +587,7 @@ What happens next:
 
 Need immediate assistance?
 Phone: (469) 534-3392
-Email: info@thekpsgroup.com
+Email: karson@thekpsgroup.com
 Hours: Monday-Friday, 8 AM - 6 PM CST
 
 Best regards,
