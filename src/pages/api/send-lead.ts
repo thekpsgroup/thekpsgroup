@@ -162,7 +162,7 @@ export const POST: APIRoute = async ({ request }) => {
       };
 
       const newLead = CRMDatabase.createLead(leadData);
-      
+
       // Also track as analytics event
       CRMDatabase.trackAnalyticsEvent({
         event_type: 'lead_created',
@@ -175,6 +175,8 @@ export const POST: APIRoute = async ({ request }) => {
                     'unknown',
         session_id: Math.random().toString(36).substring(7)
       });
+
+      // Zapier integration removed as requested
 
       console.log('Lead saved to database:', newLead.id);
     } catch (databaseError) {
