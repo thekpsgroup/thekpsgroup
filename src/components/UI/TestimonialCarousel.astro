@@ -353,7 +353,9 @@ const averageRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testi
     if (carousel && track && slides.length > 0) {
       function updateCarousel() {
         const translateX = -currentIndex * 100;
-        track.style.transform = `translateX(${translateX}%)`;
+        if (track) {
+          (track as HTMLElement).style.transform = `translateX(${translateX}%)`;
+        }
         
         // Update indicators
         indicators.forEach((indicator, index) => {
@@ -392,7 +394,7 @@ const averageRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testi
       // Autoplay
       if (autoplay) {
         function startAutoplay() {
-          autoplayInterval = setInterval(nextSlide, 5000);
+          autoplayInterval = setInterval(nextSlide, 5000) as any;
         }
         
         function stopAutoplay() {
@@ -410,20 +412,22 @@ const averageRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testi
       let startX = 0;
       let isDragging = false;
       
-      carousel.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
+      carousel.addEventListener('touchstart', (e: Event) => {
+        const touchEvent = e as TouchEvent;
+        startX = touchEvent.touches[0].clientX;
         isDragging = true;
       });
       
-      carousel.addEventListener('touchmove', (e) => {
+      carousel.addEventListener('touchmove', (e: Event) => {
         if (!isDragging) return;
         e.preventDefault();
       });
       
-      carousel.addEventListener('touchend', (e) => {
+      carousel.addEventListener('touchend', (e: Event) => {
         if (!isDragging) return;
         
-        const endX = e.changedTouches[0].clientX;
+        const touchEvent = e as TouchEvent;
+        const endX = touchEvent.changedTouches[0].clientX;
         const diffX = startX - endX;
         
         if (Math.abs(diffX) > 50) {
@@ -440,7 +444,7 @@ const averageRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testi
     
     // Service filtering
     serviceFilters.forEach(filter => {
-      filter.addEventListener('click', function() {
+      filter.addEventListener('click', function(this: HTMLElement) {
         const service = this.getAttribute('data-service');
         
         // Update active filter

@@ -1,0 +1,1920 @@
+---
+// filepath: src/components/Admin/AdminDashboard.astro
+interface Props {
+  user?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    avatar?: string;
+    department?: string;
+    lastLogin?: string;
+  };
+}
+
+const { user } = Astro.props;
+---
+
+<div class="admin-dashboard">
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <div class="welcome-section">
+        <h1>Welcome back, {user?.firstName || 'Admin'}!</h1>
+        <p>Here's what's happening with your business today.</p>
+      </div>
+      
+      <div class="header-actions">
+        <div class="quick-actions">
+          <button class="action-btn primary" id="addLeadBtn">
+            <span class="btn-icon">👤</span>
+            Add Lead
+          </button>
+          <button class="action-btn secondary" id="createTaskBtn">
+            <span class="btn-icon">✅</span>
+            Create Task
+          </button>
+          <button class="action-btn secondary" id="scheduleCallBtn">
+            <span class="btn-icon">📞</span>
+            Schedule Call
+          </button>
+        </div>
+        
+        <div class="user-menu">
+          <div class="user-avatar">
+            <img src={user?.avatar || '/avatars/default.jpg'} alt={`${user?.firstName} ${user?.lastName}`} />
+            <div class="status-indicator online"></div>
+          </div>
+          <div class="user-info">
+            <span class="user-name">{user?.firstName} {user?.lastName}</span>
+            <span class="user-role">{user?.role}</span>
+          </div>
+          <button class="user-menu-toggle" id="userMenuToggle">⚙️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Metrics Overview -->
+  <div class="metrics-overview">
+    <div class="metric-card revenue">
+      <div class="metric-header">
+        <h3>Total Revenue</h3>
+        <div class="metric-period">This Month</div>
+      </div>
+      <div class="metric-value">
+        <span class="amount" id="totalRevenue">$284,500</span>
+        <div class="metric-change positive">
+          <span class="change-icon">📈</span>
+          <span class="change-value">+12.5%</span>
+        </div>
+      </div>
+      <div class="metric-chart">
+        <canvas id="revenueSparkline" width="120" height="40"></canvas>
+      </div>
+    </div>
+
+    <div class="metric-card leads">
+      <div class="metric-header">
+        <h3>New Leads</h3>
+        <div class="metric-period">Last 7 Days</div>
+      </div>
+      <div class="metric-value">
+        <span class="amount" id="newLeads">147</span>
+        <div class="metric-change positive">
+          <span class="change-icon">🎯</span>
+          <span class="change-value">+8.3%</span>
+        </div>
+      </div>
+      <div class="metric-breakdown">
+        <div class="breakdown-item">
+          <span class="label">Qualified:</span>
+          <span class="value">89</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="label">Hot:</span>
+          <span class="value">23</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card deals">
+      <div class="metric-header">
+        <h3>Active Deals</h3>
+        <div class="metric-period">Pipeline</div>
+      </div>
+      <div class="metric-value">
+        <span class="amount" id="activeDeals">42</span>
+        <div class="metric-change neutral">
+          <span class="change-icon">💼</span>
+          <span class="change-value">+2</span>
+        </div>
+      </div>
+      <div class="metric-breakdown">
+        <div class="breakdown-item">
+          <span class="label">Close Rate:</span>
+          <span class="value">18.2%</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="label">Avg Deal:</span>
+          <span class="value">$12.4K</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-card performance">
+      <div class="metric-header">
+        <h3>Team Performance</h3>
+        <div class="metric-period">This Week</div>
+      </div>
+      <div class="metric-value">
+        <span class="amount" id="teamScore">92%</span>
+        <div class="metric-change positive">
+          <span class="change-icon">⭐</span>
+          <span class="change-value">+5.2%</span>
+        </div>
+      </div>
+      <div class="metric-breakdown">
+        <div class="breakdown-item">
+          <span class="label">Calls Made:</span>
+          <span class="value">1,247</span>
+        </div>
+        <div class="breakdown-item">
+          <span class="label">Emails Sent:</span>
+          <span class="value">892</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-content">
+    <!-- Left Column -->
+    <div class="content-left">
+      <!-- Sales Pipeline -->
+      <div class="dashboard-widget">
+        <div class="widget-header">
+          <h3>Sales Pipeline</h3>
+          <div class="widget-actions">
+            <select id="pipelineFilter" class="filter-select">
+              <option value="all">All Deals</option>
+              <option value="hot">Hot Prospects</option>
+              <option value="closing">Closing Soon</option>
+              <option value="stalled">Stalled</option>
+            </select>
+            <button class="widget-action" id="refreshPipeline">🔄</button>
+          </div>
+        </div>
+        
+        <div class="pipeline-stages">
+          <div class="pipeline-stage" data-stage="prospect">
+            <div class="stage-header">
+              <h4>Prospects</h4>
+              <span class="stage-count">23</span>
+              <span class="stage-value">$125K</span>
+            </div>
+            <div class="stage-deals" id="prospectDeals">
+              <!-- Deals populated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="pipeline-stage" data-stage="qualified">
+            <div class="stage-header">
+              <h4>Qualified</h4>
+              <span class="stage-count">15</span>
+              <span class="stage-value">$89K</span>
+            </div>
+            <div class="stage-deals" id="qualifiedDeals">
+              <!-- Deals populated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="pipeline-stage" data-stage="proposal">
+            <div class="stage-header">
+              <h4>Proposal</h4>
+              <span class="stage-count">8</span>
+              <span class="stage-value">$156K</span>
+            </div>
+            <div class="stage-deals" id="proposalDeals">
+              <!-- Deals populated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="pipeline-stage" data-stage="negotiation">
+            <div class="stage-header">
+              <h4>Negotiation</h4>
+              <span class="stage-count">5</span>
+              <span class="stage-value">$78K</span>
+            </div>
+            <div class="stage-deals" id="negotiationDeals">
+              <!-- Deals populated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="pipeline-stage" data-stage="closed">
+            <div class="stage-header">
+              <h4>Closed Won</h4>
+              <span class="stage-count">12</span>
+              <span class="stage-value">$234K</span>
+            </div>
+            <div class="stage-deals" id="closedDeals">
+              <!-- Deals populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activities -->
+      <div class="dashboard-widget">
+        <div class="widget-header">
+          <h3>Recent Activities</h3>
+          <div class="widget-actions">
+            <button class="widget-action" id="viewAllActivities">View All</button>
+          </div>
+        </div>
+        
+        <div class="activities-list" id="activitiesList">
+          <!-- Activities populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="content-right">
+      <!-- Today's Schedule -->
+      <div class="dashboard-widget">
+        <div class="widget-header">
+          <h3>Today's Schedule</h3>
+          <div class="widget-actions">
+            <button class="widget-action primary" id="addEventBtn">+ Add Event</button>
+          </div>
+        </div>
+        
+        <div class="schedule-list" id="scheduleList">
+          <!-- Schedule items populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Top Performers -->
+      <div class="dashboard-widget">
+        <div class="widget-header">
+          <h3>Top Performers</h3>
+          <div class="widget-actions">
+            <select id="performanceMetric" class="filter-select">
+              <option value="revenue">Revenue</option>
+              <option value="deals">Deals</option>
+              <option value="calls">Calls</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="performers-list" id="performersList">
+          <!-- Top performers populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="dashboard-widget">
+        <div class="widget-header">
+          <h3>Quick Stats</h3>
+          <div class="widget-actions">
+            <button class="widget-action" id="exportStats">📊</button>
+          </div>
+        </div>
+        
+        <div class="quick-stats">
+          <div class="stat-item">
+            <div class="stat-icon">📞</div>
+            <div class="stat-content">
+              <div class="stat-value">234</div>
+              <div class="stat-label">Calls Today</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">📧</div>
+            <div class="stat-content">
+              <div class="stat-value">89</div>
+              <div class="stat-label">Emails Sent</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">📅</div>
+            <div class="stat-content">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Meetings Scheduled</div>
+            </div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-icon">🎯</div>
+            <div class="stat-content">
+              <div class="stat-value">67%</div>
+              <div class="stat-label">Goal Progress</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Health -->
+      <div class="dashboard-widget">
+        <div class="widget-header">
+          <h3>System Health</h3>
+          <div class="widget-actions">
+            <div class="health-indicator healthy" id="systemStatus">🟢</div>
+          </div>
+        </div>
+        
+        <div class="health-metrics">
+          <div class="health-item">
+            <div class="health-label">Database</div>
+            <div class="health-status healthy">Optimal</div>
+            <div class="health-value">98.5%</div>
+          </div>
+
+          <div class="health-item">
+            <div class="health-label">Email Service</div>
+            <div class="health-status healthy">Running</div>
+            <div class="health-value">99.2%</div>
+          </div>
+
+          <div class="health-item">
+            <div class="health-label">API Response</div>
+            <div class="health-status warning">Slow</div>
+            <div class="health-value">1.2s</div>
+          </div>
+
+          <div class="health-item">
+            <div class="health-label">Storage</div>
+            <div class="health-status healthy">Normal</div>
+            <div class="health-value">67%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Modals -->
+  <div id="addLeadModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Lead</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="addLeadForm" class="form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="leadFirstName">First Name</label>
+              <input type="text" id="leadFirstName" name="firstName" required>
+            </div>
+            <div class="form-group">
+              <label for="leadLastName">Last Name</label>
+              <input type="text" id="leadLastName" name="lastName" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="leadEmail">Email</label>
+              <input type="email" id="leadEmail" name="email" required>
+            </div>
+            <div class="form-group">
+              <label for="leadPhone">Phone</label>
+              <input type="tel" id="leadPhone" name="phone">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="leadCompany">Company</label>
+              <input type="text" id="leadCompany" name="company">
+            </div>
+            <div class="form-group">
+              <label for="leadSource">Lead Source</label>
+              <select id="leadSource" name="source" required>
+                <option value="">Select Source</option>
+                <option value="website">Website</option>
+                <option value="referral">Referral</option>
+                <option value="social">Social Media</option>
+                <option value="event">Event</option>
+                <option value="cold-call">Cold Call</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="leadNotes">Notes</label>
+            <textarea id="leadNotes" name="notes" rows="3"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn secondary" id="cancelAddLead">Cancel</button>
+            <button type="submit" class="btn primary">Add Lead</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Menu Dropdown -->
+  <div id="userMenuDropdown" class="dropdown-menu">
+    <div class="dropdown-item" id="viewProfile">
+      <span class="item-icon">👤</span>
+      View Profile
+    </div>
+    <div class="dropdown-item" id="accountSettings">
+      <span class="item-icon">⚙️</span>
+      Account Settings
+    </div>
+    <div class="dropdown-item" id="systemSettings">
+      <span class="item-icon">🔧</span>
+      System Settings
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="dropdown-item" id="helpSupport">
+      <span class="item-icon">❓</span>
+      Help & Support
+    </div>
+    <div class="dropdown-item danger" id="logoutBtn">
+      <span class="item-icon">🚪</span>
+      Logout
+    </div>
+  </div>
+</div>
+
+<script>
+  declare global {
+    interface Window {
+      adminDashboard?: AdminDashboard;
+    }
+  }
+
+  class AdminDashboard {
+    currentUser: any = null;
+    refreshInterval: ReturnType<typeof setInterval> | null = null;
+
+    constructor() {
+      this.currentUser = null;
+      this.refreshInterval = null;
+      this.init();
+    }
+
+    async init() {
+      this.currentUser = this.getCurrentUser();
+      this.loadDashboardData();
+      this.attachEventListeners();
+      this.startAutoRefresh();
+      this.initializeCharts();
+    }
+
+    getCurrentUser() {
+      const userData = localStorage.getItem('kps_user_data');
+      return userData ? JSON.parse(userData) : null;
+    }
+
+    attachEventListeners() {
+      // Quick action buttons
+      document.getElementById('addLeadBtn')?.addEventListener('click', () => this.showAddLeadModal());
+      document.getElementById('createTaskBtn')?.addEventListener('click', () => this.createTask());
+      document.getElementById('scheduleCallBtn')?.addEventListener('click', () => this.scheduleCall());
+
+      // User menu
+      document.getElementById('userMenuToggle')?.addEventListener('click', () => this.toggleUserMenu());
+      document.getElementById('logoutBtn')?.addEventListener('click', () => this.logout());
+
+      // Modal controls
+      document.getElementById('cancelAddLead')?.addEventListener('click', () => this.hideAddLeadModal());
+      document.querySelector('.modal-close')?.addEventListener('click', () => this.hideAddLeadModal());
+      document.getElementById('addLeadForm')?.addEventListener('submit', (e) => this.handleAddLead(e));
+
+      // Filter controls
+      document.getElementById('pipelineFilter')?.addEventListener('change', (e) => this.filterPipeline((e.target as HTMLSelectElement).value));
+      document.getElementById('performanceMetric')?.addEventListener('change', (e) => this.updatePerformanceMetric((e.target as HTMLSelectElement).value));
+
+      // Refresh buttons
+      document.getElementById('refreshPipeline')?.addEventListener('click', () => this.refreshPipeline());
+
+      // Click outside to close modals
+      window.addEventListener('click', (e) => {
+        if ((e.target as HTMLElement)?.classList?.contains('modal')) {
+          this.hideAddLeadModal();
+        }
+      });
+    }
+
+    async loadDashboardData() {
+      try {
+        // Load metrics
+        await this.loadMetrics();
+        
+        // Load pipeline data
+        await this.loadPipelineData();
+        
+        // Load recent activities
+        await this.loadRecentActivities();
+        
+        // Load today's schedule
+        await this.loadTodaysSchedule();
+        
+        // Load top performers
+        await this.loadTopPerformers();
+
+      } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+        this.showNotification('Failed to load dashboard data', 'error');
+      }
+    }
+
+    async loadMetrics() {
+      // Simulate API call - replace with actual API
+      const metrics = {
+        totalRevenue: 284500,
+        revenueChange: 12.5,
+        newLeads: 147,
+        leadsChange: 8.3,
+        activeDeals: 42,
+        dealsChange: 2,
+        teamScore: 92,
+        teamChange: 5.2
+      };
+
+      this.updateMetricDisplay('totalRevenue', metrics.totalRevenue, metrics.revenueChange);
+      this.updateMetricDisplay('newLeads', metrics.newLeads, metrics.leadsChange);
+      this.updateMetricDisplay('activeDeals', metrics.activeDeals, metrics.dealsChange);
+      this.updateMetricDisplay('teamScore', metrics.teamScore, metrics.teamChange, '%');
+    }
+
+    updateMetricDisplay(elementId: string, value: number, change: number, suffix = '') {
+      const element = document.getElementById(elementId);
+      if (element) {
+        if (elementId === 'totalRevenue') {
+          element.textContent = this.formatCurrency(value);
+        } else {
+          element.textContent = value + suffix;
+        }
+      }
+    }
+
+    async loadPipelineData() {
+      // Simulate pipeline data
+      const pipelineData = {
+        prospect: [
+          { id: 1, company: 'Acme Corp', value: 25000, contact: 'John Smith', lastActivity: '2 hours ago' },
+          { id: 2, company: 'Tech Solutions', value: 18000, contact: 'Sarah Johnson', lastActivity: '1 day ago' },
+          { id: 3, company: 'Global Industries', value: 32000, contact: 'Mike Chen', lastActivity: '3 hours ago' }
+        ],
+        qualified: [
+          { id: 4, company: 'StartupXYZ', value: 15000, contact: 'Lisa Wang', lastActivity: '30 min ago' },
+          { id: 5, company: 'Enterprise Ltd', value: 45000, contact: 'David Brown', lastActivity: '2 hours ago' }
+        ],
+        proposal: [
+          { id: 6, company: 'Innovation Hub', value: 28000, contact: 'Anna Garcia', lastActivity: '1 hour ago' },
+          { id: 7, company: 'Future Tech', value: 38000, contact: 'Tom Wilson', lastActivity: '4 hours ago' }
+        ],
+        negotiation: [
+          { id: 8, company: 'MegaCorp', value: 55000, contact: 'Rachel Davis', lastActivity: '45 min ago' }
+        ],
+        closed: [
+          { id: 9, company: 'Success Stories', value: 42000, contact: 'Mark Taylor', lastActivity: 'Today' }
+        ]
+      };
+
+      Object.keys(pipelineData).forEach(stage => {
+        this.updatePipelineStage(stage, (pipelineData as any)[stage]);
+      });
+    }
+
+    updatePipelineStage(stage: string, deals: any[]) {
+      const stageElement = document.getElementById(`${stage}Deals`);
+      if (!stageElement) return;
+
+      stageElement.innerHTML = deals.map((deal: any) => `
+        <div class="deal-card" data-deal-id="${deal.id}">
+          <div class="deal-header">
+            <div class="deal-company">${deal.company}</div>
+            <div class="deal-value">${this.formatCurrency(deal.value)}</div>
+          </div>
+          <div class="deal-contact">${deal.contact}</div>
+          <div class="deal-activity">${deal.lastActivity}</div>
+        </div>
+      `).join('');
+    }
+
+    async loadRecentActivities() {
+      const activities = [
+        { type: 'call', user: 'Sarah Chen', action: 'Called Acme Corp', time: '15 min ago', icon: '📞' },
+        { type: 'email', user: 'Mike Rodriguez', action: 'Sent proposal to Tech Solutions', time: '1 hour ago', icon: '📧' },
+        { type: 'meeting', user: 'Jessica Thompson', action: 'Meeting with Global Industries', time: '2 hours ago', icon: '🤝' },
+        { type: 'deal', user: 'Sarah Chen', action: 'Moved StartupXYZ to negotiation', time: '3 hours ago', icon: '💼' },
+        { type: 'lead', user: 'System', action: 'New lead from website form', time: '4 hours ago', icon: '🎯' }
+      ];
+
+      const activitiesList = document.getElementById('activitiesList');
+      if (activitiesList) {
+        activitiesList.innerHTML = activities.map(activity => `
+          <div class="activity-item">
+            <div class="activity-icon">${activity.icon}</div>
+            <div class="activity-content">
+              <div class="activity-text">
+                <strong>${activity.user}</strong> ${activity.action}
+              </div>
+              <div class="activity-time">${activity.time}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    async loadTodaysSchedule() {
+      const schedule = [
+        { time: '09:00', title: 'Team Standup', type: 'meeting', attendees: 5 },
+        { time: '10:30', title: 'Call with Acme Corp', type: 'call', attendees: 2 },
+        { time: '14:00', title: 'Proposal Review', type: 'task', attendees: 1 },
+        { time: '15:30', title: 'Demo for Tech Solutions', type: 'demo', attendees: 3 },
+        { time: '17:00', title: 'Weekly Sales Review', type: 'meeting', attendees: 8 }
+      ];
+
+      const scheduleList = document.getElementById('scheduleList');
+      if (scheduleList) {
+        scheduleList.innerHTML = schedule.map(event => `
+          <div class="schedule-item">
+            <div class="schedule-time">${event.time}</div>
+            <div class="schedule-content">
+              <div class="schedule-title">${event.title}</div>
+              <div class="schedule-meta">
+                <span class="event-type ${event.type}">${event.type}</span>
+                <span class="attendees">${event.attendees} attendees</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    async loadTopPerformers() {
+      const performers = [
+        { name: 'Sarah Chen', revenue: 89500, deals: 12, avatar: '/avatars/sarah.jpg', change: 15.2 },
+        { name: 'Mike Rodriguez', revenue: 76200, deals: 9, avatar: '/avatars/mike.jpg', change: 8.7 },
+        { name: 'Jessica Thompson', revenue: 68900, deals: 8, avatar: '/avatars/jessica.jpg', change: 12.1 },
+        { name: 'David Kim', revenue: 54300, deals: 7, avatar: '/avatars/david.jpg', change: -2.3 }
+      ];
+
+      const performersList = document.getElementById('performersList');
+      if (performersList) {
+        performersList.innerHTML = performers.map((performer, index) => `
+          <div class="performer-item">
+            <div class="performer-rank">${index + 1}</div>
+            <div class="performer-avatar">
+              <img src="${performer.avatar}" alt="${performer.name}" onerror="this.src='/avatars/default.jpg'">
+            </div>
+            <div class="performer-info">
+              <div class="performer-name">${performer.name}</div>
+              <div class="performer-stats">
+                ${this.formatCurrency(performer.revenue)} • ${performer.deals} deals
+              </div>
+            </div>
+            <div class="performer-change ${performer.change > 0 ? 'positive' : 'negative'}">
+              ${performer.change > 0 ? '+' : ''}${performer.change}%
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    initializeCharts() {
+      // Initialize revenue sparkline
+      this.initializeRevenueSparkline();
+    }
+
+    initializeRevenueSparkline() {
+      const canvas = document.getElementById('revenueSparkline') as HTMLCanvasElement;
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      
+      const data = [65, 72, 68, 85, 92, 78, 89, 95, 87, 91, 96, 89];
+      
+      const width = canvas.width;
+      const height = canvas.height;
+      const padding = 4;
+      
+      ctx.clearRect(0, 0, width, height);
+      
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+      const range = max - min;
+      
+      // Draw line
+      ctx.strokeStyle = '#D4AF37';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      data.forEach((value, index) => {
+        const x = (index / (data.length - 1)) * (width - padding * 2) + padding;
+        const y = height - padding - ((value - min) / range) * (height - padding * 2);
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      
+      ctx.stroke();
+      
+      // Draw area under curve
+      ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+      ctx.beginPath();
+      
+      data.forEach((value, index) => {
+        const x = (index / (data.length - 1)) * (width - padding * 2) + padding;
+        const y = height - padding - ((value - min) / range) * (height - padding * 2);
+        
+        if (index === 0) {
+          ctx.moveTo(x, height - padding);
+          ctx.lineTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      
+      ctx.lineTo(width - padding, height - padding);
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    showAddLeadModal() {
+      const modal = document.getElementById('addLeadModal');
+      if (modal) {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    hideAddLeadModal() {
+      const modal = document.getElementById('addLeadModal');
+      if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        (document.getElementById('addLeadForm') as HTMLFormElement)?.reset();
+      }
+    }
+
+    async handleAddLead(e: Event) {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target as HTMLFormElement);
+      const leadData = Object.fromEntries(formData.entries());
+      
+      try {
+        // Simulate API call
+        console.log('Adding lead:', leadData);
+        
+        this.showNotification('Lead added successfully!', 'success');
+        this.hideAddLeadModal();
+        
+        // Refresh relevant data
+        await this.loadMetrics();
+        await this.loadPipelineData();
+        
+      } catch (error) {
+        console.error('Failed to add lead:', error);
+        this.showNotification('Failed to add lead', 'error');
+      }
+    }
+
+    toggleUserMenu() {
+      const dropdown = document.getElementById('userMenuDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('show');
+      }
+    }
+
+    createTask() {
+      this.showNotification('Task creation feature coming soon!', 'info');
+    }
+
+    scheduleCall() {
+      this.showNotification('Call scheduling feature coming soon!', 'info');
+    }
+
+    filterPipeline(filter: string) {
+      console.log('Filtering pipeline by:', filter);
+      // Implement pipeline filtering logic
+    }
+
+    updatePerformanceMetric(metric: any) {
+      console.log('Updating performance metric:', metric);
+      // Implement performance metric switching
+    }
+
+    refreshPipeline() {
+      this.loadPipelineData();
+      this.showNotification('Pipeline refreshed', 'success');
+    }
+
+    logout() {
+      localStorage.removeItem('kps_auth_token');
+      localStorage.removeItem('kps_refresh_token');
+      localStorage.removeItem('kps_user_data');
+      window.location.href = '/admin/login';
+    }
+
+    startAutoRefresh() {
+      // Refresh dashboard data every 5 minutes
+      this.refreshInterval = setInterval(() => {
+        this.loadDashboardData();
+      }, 5 * 60 * 1000);
+    }
+
+    showNotification(message: string, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 3000);
+    }
+
+    formatCurrency(amount: number) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(amount);
+    }
+
+    destroy() {
+      if (this.refreshInterval) {
+        clearInterval(this.refreshInterval);
+      }
+    }
+  }
+
+  // Initialize dashboard when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    window.adminDashboard = new AdminDashboard();
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!(e.target as HTMLElement)?.closest('.user-menu')) {
+      const dropdown = document.getElementById('userMenuDropdown');
+      if (dropdown) {
+        dropdown.classList.remove('show');
+      }
+    }
+  });
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    if (window.adminDashboard) {
+      window.adminDashboard.destroy();
+    }
+  });
+</script>
+
+<style>
+  .admin-dashboard {
+    min-height: 100vh;
+    background: #f8fafc;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .dashboard-header {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 1.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .welcome-section h1 {
+    margin: 0 0 0.25rem 0;
+    color: #1e293b;
+    font-size: 1.875rem;
+    font-weight: 700;
+  }
+
+  .welcome-section p {
+    margin: 0;
+    color: #64748b;
+    font-size: 1rem;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+  }
+
+  .action-btn.primary {
+    background: #D4AF37;
+    color: white;
+  }
+
+  .action-btn.primary:hover {
+    background: #b8941f;
+    transform: translateY(-1px);
+  }
+
+  .action-btn.secondary {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+
+  .action-btn.secondary:hover {
+    background: #e2e8f0;
+  }
+
+  .user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+  }
+
+  .user-avatar {
+    position: relative;
+    width: 40px;
+    height: 40px;
+  }
+
+  .user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .status-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  .status-indicator.online {
+    background: #10b981;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.875rem;
+  }
+
+  .user-role {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: capitalize;
+  }
+
+  .user-menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+  }
+
+  .user-menu-toggle:hover {
+    background: #f1f5f9;
+  }
+
+  .metrics-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .metric-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #f1f5f9;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .metric-card.revenue {
+    border-left: 4px solid #10b981;
+  }
+
+  .metric-card.leads {
+    border-left: 4px solid #3b82f6;
+  }
+
+  .metric-card.deals {
+    border-left: 4px solid #f59e0b;
+  }
+
+  .metric-card.performance {
+    border-left: 4px solid #8b5cf6;
+  }
+
+  .metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .metric-header h3 {
+    margin: 0;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metric-period {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+
+  .metric-value {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .metric-value .amount {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .metric-change {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .metric-change.positive {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .metric-change.negative {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  .metric-change.neutral {
+    background: #f3f4f6;
+    color: #374151;
+  }
+
+  .metric-breakdown {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+
+  .breakdown-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .breakdown-item .label {
+    color: #6b7280;
+    font-size: 0.75rem;
+  }
+
+  .breakdown-item .value {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .metric-chart {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0.3;
+  }
+
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    padding: 0 2rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .dashboard-widget {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #f1f5f9;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .widget-header h3 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .widget-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .widget-action {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+  }
+
+  .widget-action:hover {
+    background: #f8fafc;
+  }
+
+  .widget-action.primary {
+    background: #D4AF37;
+    color: white;
+    border-color: #D4AF37;
+  }
+
+  .widget-action.primary:hover {
+    background: #b8941f;
+  }
+
+  .filter-select {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.875rem;
+  }
+
+  .pipeline-stages {
+    display: flex;
+    overflow-x: auto;
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .pipeline-stage {
+    min-width: 250px;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .stage-header h4 {
+    margin: 0;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .stage-count {
+    background: #D4AF37;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .stage-value {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 600;
+  }
+
+  .stage-deals {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .deal-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .deal-card:hover {
+    border-color: #D4AF37;
+    transform: translateY(-1px);
+  }
+
+  .deal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .deal-company {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 0.875rem;
+  }
+
+  .deal-value {
+    font-weight: 600;
+    color: #D4AF37;
+    font-size: 0.875rem;
+  }
+
+  .deal-contact {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+  }
+
+  .deal-activity {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+
+  .activities-list {
+    padding: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .activity-item {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .activity-item:last-child {
+    border-bottom: none;
+  }
+
+  .activity-icon {
+    width: 32px;
+    height: 32px;
+    background: #f8fafc;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+  }
+
+  .activity-content {
+    flex: 1;
+  }
+
+  .activity-text {
+    color: #374151;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .activity-time {
+    color: #9ca3af;
+    font-size: 0.75rem;
+  }
+
+  .schedule-list {
+    padding: 1.5rem;
+  }
+
+  .schedule-item {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .schedule-item:last-child {
+    border-bottom: none;
+  }
+
+  .schedule-time {
+    color: #D4AF37;
+    font-weight: 600;
+    font-size: 0.875rem;
+    min-width: 60px;
+  }
+
+  .schedule-content {
+    flex: 1;
+  }
+
+  .schedule-title {
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .schedule-meta {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .event-type {
+    padding: 0.125rem 0.375rem;
+    border-radius: 4px;
+    text-transform: capitalize;
+    font-weight: 500;
+  }
+
+  .event-type.meeting {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .event-type.call {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .event-type.task {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .event-type.demo {
+    background: #ede9fe;
+    color: #7c3aed;
+  }
+
+  .attendees {
+    color: #6b7280;
+  }
+
+  .performers-list {
+    padding: 1.5rem;
+  }
+
+  .performer-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .performer-item:last-child {
+    border-bottom: none;
+  }
+
+  .performer-rank {
+    width: 24px;
+    height: 24px;
+    background: #D4AF37;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .performer-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .performer-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .performer-info {
+    flex: 1;
+  }
+
+  .performer-name {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+
+  .performer-stats {
+    color: #6b7280;
+    font-size: 0.75rem;
+  }
+
+  .performer-change {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .performer-change.positive {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .performer-change.negative {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  .quick-stats {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    background: #f8fafc;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+  }
+
+  .stat-content {
+    flex: 1;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  .stat-label {
+    color: #6b7280;
+    font-size: 0.75rem;
+  }
+
+  .health-metrics {
+    padding: 1.5rem;
+  }
+
+  .health-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .health-item:last-child {
+    border-bottom: none;
+  }
+
+  .health-label {
+    color: #374151;
+    font-size: 0.875rem;
+  }
+
+  .health-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .health-status.healthy {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .health-status.warning {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .health-status.critical {
+    background: #fee2e2;
+    color: #dc2626;
+  }
+
+  .health-value {
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .health-indicator {
+    font-size: 0.75rem;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-content {
+    background-color: white;
+    margin: 5% auto;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 0.25rem;
+  }
+
+  .modal-close:hover {
+    color: #374151;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+  }
+
+  .btn.primary {
+    background: #D4AF37;
+    color: white;
+  }
+
+  .btn.primary:hover {
+    background: #b8941f;
+  }
+
+  .btn.secondary {
+    background: #f8fafc;
+    color: #374151;
+    border: 1px solid #e2e8f0;
+  }
+
+  .btn.secondary:hover {
+    background: #f1f5f9;
+  }
+
+  /* Dropdown Menu */
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 200px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+  }
+
+  .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    font-size: 0.875rem;
+    color: #374151;
+  }
+
+  .dropdown-item:hover {
+    background: #f8fafc;
+  }
+
+  .dropdown-item.danger {
+    color: #dc2626;
+  }
+
+  .dropdown-item.danger:hover {
+    background: #fee2e2;
+  }
+
+  .dropdown-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 0.5rem 0;
+  }
+
+  .item-icon {
+    font-size: 1rem;
+  }
+
+  /* Notifications */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+    max-width: 400px;
+  }
+
+  .notification.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .notification.success {
+    border-left: 4px solid #10b981;
+    color: #065f46;
+  }
+
+  .notification.error {
+    border-left: 4px solid #ef4444;
+    color: #991b1b;
+  }
+
+  .notification.info {
+    border-left: 4px solid #3b82f6;
+    color: #1e40af;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .dashboard-content {
+      grid-template-columns: 1fr;
+    }
+
+    .pipeline-stages {
+      flex-direction: column;
+    }
+
+    .pipeline-stage {
+      min-width: auto;
+    }
+
+    .header-actions {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .quick-actions {
+      order: 2;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-header {
+      padding: 1rem;
+    }
+
+    .header-content {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .metrics-overview {
+      padding: 1rem;
+      grid-template-columns: 1fr;
+    }
+
+    .dashboard-content {
+      padding: 0 1rem 1rem;
+    }
+
+    .quick-actions {
+      flex-direction: column;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+      margin: 2% auto;
+      width: 95%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .welcome-section h1 {
+      font-size: 1.5rem;
+    }
+
+    .metric-value .amount {
+      font-size: 1.5rem;
+    }
+
+    .widget-header {
+      padding: 1rem;
+    }
+
+    .activities-list,
+    .schedule-list,
+    .performers-list,
+    .quick-stats,
+    .health-metrics {
+      padding: 1rem;
+    }
+  }
+</style>

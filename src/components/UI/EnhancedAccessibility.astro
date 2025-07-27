@@ -33,7 +33,7 @@ class AccessibilityManager {
     // Enhanced focus visibility
     document.addEventListener('focusin', (e) => {
       const target = e.target;
-      if (target instanceof Element && target.matches('button, a, input, textarea, select, [tabindex]')) {
+      if (target instanceof HTMLElement && target.matches('button, a, input, textarea, select, [tabindex]')) {
         this.showFocusOutline(target);
       }
     });
@@ -54,9 +54,9 @@ class AccessibilityManager {
     });
   }
 
-  showFocusOutline(element) {
+  showFocusOutline(element: HTMLElement) {
     const rect = element.getBoundingClientRect();
-    const outline = document.querySelector('.focus-outline');
+    const outline = document.querySelector('.focus-outline') as HTMLElement;
     if (!outline) return;
 
     const o = outline;
@@ -68,7 +68,7 @@ class AccessibilityManager {
   }
 
   hideFocusOutline() {
-    const outline = document.querySelector('.focus-outline');
+    const outline = document.querySelector('.focus-outline') as HTMLElement;
     if (outline) {
       outline.style.display = 'none';
     }
@@ -117,9 +117,9 @@ class AccessibilityManager {
       }
 
       // Enter/Space for button activation
-      if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role="button"]')) {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target && (e.target as HTMLElement).matches('[role="button"]')) {
         e.preventDefault();
-        e.target.click();
+        (e.target as HTMLElement).click();
       }
     });
   }
@@ -146,19 +146,21 @@ class AccessibilityManager {
     const openModal = document.querySelector('.modal[style*="block"], .modal.open');
     if (openModal) {
       const closeBtn = openModal.querySelector('[data-modal-close], .modal-close');
-      if (closeBtn) closeBtn.click();
+      if (closeBtn) (closeBtn as HTMLElement).click();
     }
 
     // Close mobile menu
     const mobileMenu = document.querySelector('.mobile-menu.open');
     if (mobileMenu) {
-      const closeBtn = mobileMenu.querySelector('[data-menu-close]');
+      const closeBtn = mobileMenu.querySelector('[data-menu-close]') as HTMLElement;
       if (closeBtn) closeBtn.click();
     }
   }
 
-  handleArrowNavigation(e) {
-    const currentElement = e.target;
+  handleArrowNavigation(e: KeyboardEvent) {
+    const currentElement = e.target as HTMLElement;
+    if (!currentElement) return;
+    
     const container = currentElement.closest('[role="grid"], [role="listbox"], .navigation-grid');
     
     if (!container) return;
@@ -188,11 +190,11 @@ class AccessibilityManager {
 
     if (typeof nextIndex === 'number' && nextIndex >= 0 && nextIndex < focusableElements.length) {
       e.preventDefault();
-      focusableElements[nextIndex].focus();
+      (focusableElements[nextIndex] as HTMLElement).focus();
     }
   }
 
-  announceChange(message) {
+  announceChange(message: string) {
     if (this.liveRegion) {
       this.liveRegion.textContent = message;
     }

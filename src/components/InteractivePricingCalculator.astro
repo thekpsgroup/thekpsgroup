@@ -145,7 +145,7 @@ const serviceConfig = {
               <p class="service-description">{service.description}</p>
               <div class="service-price">
                 Starting at <span class="price">${service.basePrice}</span>
-                {service.options[0].description && 
+                {service.options[0] && 'description' in service.options[0] && service.options[0].description && 
                   <span class="price-note">/{service.options[0].description.includes('hour') ? 'hour' : 'month'}</span>
                 }
               </div>
@@ -167,7 +167,7 @@ const serviceConfig = {
                     />
                     <span class="option-content">
                       <span class="option-name">{option.name}</span>
-                      {option.description && <span class="option-description">{option.description}</span>}
+                      {'description' in option && option.description && <span class="option-description">{option.description}</span>}
                       <span class="option-price">
                         {option.price > 0 ? `+$${option.price}` : 'Included'}
                       </span>

@@ -98,8 +98,10 @@ const {
           if (entry.isIntersecting) {
             const element = entry.target as HTMLElement;
             // Add animation class
-            const l = link as HTMLLinkElement;
-            this.prefetchLink(l.href);
+            if (element.tagName === 'A') {
+              const l = element as HTMLAnchorElement;
+              this.prefetchLink(l.href);
+            }
             
             // Unobserve after animation
             animationObserver.unobserve(element);
@@ -149,7 +151,7 @@ const {
       }
     }
 
-    sendToAnalytics(metric) {
+    sendToAnalytics(metric: any) {
       // Send metric to Google Analytics
       gtag('event', metric.name, {
         event_category: metric.label,
@@ -164,7 +166,7 @@ const {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const link = entry.target;
-            this.prefetchLink(link.href);
+            this.prefetchLink((link as HTMLAnchorElement).href);
           }
         });
       });
@@ -173,7 +175,7 @@ const {
       document.querySelectorAll('a[href^="/"], a[href^="https://thekpsgroup.com"]').forEach(link => {
         // Prefetch on hover
         link.addEventListener('mouseenter', () => {
-          this.prefetchLink(link.href);
+          this.prefetchLink((link as HTMLAnchorElement).href);
         }, { once: true });
 
         // Also observe for viewport intersection
@@ -181,7 +183,7 @@ const {
       });
     }
 
-    prefetchLink(url) {
+    prefetchLink(url: string) {
       if (!url || url === window.location.href) return;
       
       // Check if already prefetched

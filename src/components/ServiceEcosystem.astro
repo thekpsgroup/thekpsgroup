@@ -10,13 +10,13 @@ const portfolioEntries = Object.entries(portfolioCompanies);
   <div class="text-center mb-16">
     <div class="inline-flex items-center gap-3 glass-card px-6 py-3 mb-8">
       <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
-      <span class="text-sm font-medium text-gold/90 tracking-wide uppercase">The KPS Ecosystem</span>
+      <span class="text-sm font-medium text-warning-400/90 tracking-wide uppercase">The KPS Ecosystem</span>
       <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
     </div>
     
     <h2 class="text-4xl md:text-5xl font-bold text-gradient-gold mb-8 leading-tight">
       One Platform. Six Specialized Teams.<br/>
-      <span class="text-goldLight">Infinite Possibilities.</span>
+      <span class="text-warning-400Light">Infinite Possibilities.</span>
     </h2>
     
     <p class="text-xl text-white/80 max-w-4xl mx-auto leading-relaxed mb-12">
@@ -30,7 +30,7 @@ const portfolioEntries = Object.entries(portfolioCompanies);
     <div class="flex flex-wrap justify-center gap-4 mb-8">
       {Object.entries(CLIENT_JOURNEYS).map(([key, journey]) => (
         <button 
-          class="journey-btn px-6 py-3 rounded-xl bg-gray-800/50 border border-gold/20 text-white/80 hover:text-gold hover:border-gold/50 transition-all duration-300"
+          class="journey-btn px-6 py-3 rounded-xl bg-gray-800/50 border border-warning-400/20 text-white/80 hover:text-warning-400 hover:border-warning-400/50 transition-all duration-300"
           data-journey={key}
         >
           <span class="font-medium">{journey.name}</span>
@@ -50,12 +50,12 @@ const portfolioEntries = Object.entries(portfolioCompanies);
           class={`service-card relative group cursor-pointer transition-all duration-500 hover:scale-105`}
           data-company={key}
         >
-        <div class="h-full p-8 rounded-2xl bg-gradient-to-br from-gray-900/80 to-gray-800/60 border border-gold/20 backdrop-blur-sm hover:border-gold/50 transition-all duration-300">
+        <div class="h-full p-8 rounded-2xl bg-gradient-to-br from-gray-900/80 to-gray-800/60 border border-warning-400/20 backdrop-blur-sm hover:border-warning-400/50 transition-all duration-300">
           <!-- Company Header -->
           <div class="flex items-center gap-4 mb-6">
             <div class="text-4xl">{company.icon}</div>
             <div>
-              <h3 class="text-xl font-bold text-goldLight">{company.name}</h3>
+              <h3 class="text-xl font-bold text-warning-400Light">{company.name}</h3>
               <div class={`h-1 w-16 bg-gradient-to-r ${company.color} rounded-full mt-2`}></div>
             </div>
           </div>
@@ -63,12 +63,12 @@ const portfolioEntries = Object.entries(portfolioCompanies);
           <!-- Description -->
           <p class="text-gray-300 leading-relaxed mb-6">{company.description}</p>
 
-          <!-- Specialties -->
+          <!-- Services -->
           <div class="space-y-2 mb-6">
-            {company.specialties.map((specialty) => (
+            {company.services.map((service: string) => (
               <div class="flex items-center gap-2 text-sm">
-                <div class="w-1.5 h-1.5 bg-gold rounded-full"></div>
-                <span class="text-gray-400">{specialty}</span>
+                <div class="w-1.5 h-1.5 bg-warning-400 rounded-full"></div>
+                <span class="text-gray-400">{service}</span>
               </div>
             ))}
           </div>
@@ -83,7 +83,7 @@ const portfolioEntries = Object.entries(portfolioCompanies);
             href={company.url} 
             target="_blank" 
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-2 text-gold hover:text-goldLight transition-colors duration-300 text-sm font-medium"
+            class="inline-flex items-center gap-2 text-warning-400 hover:text-warning-400Light transition-colors duration-300 text-sm font-medium"
           >
             Learn More
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,7 +94,7 @@ const portfolioEntries = Object.entries(portfolioCompanies);
 
         <!-- Flow Arrows (hidden by default) -->
         <div class="flow-arrow absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 transition-all duration-500">
-          <svg class="w-8 h-8 text-gold animate-bounce" fill="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-warning-400 animate-bounce" fill="currentColor" viewBox="0 0 24 24">
             <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
           </svg>
         </div>
@@ -105,8 +105,8 @@ const portfolioEntries = Object.entries(portfolioCompanies);
 
   <!-- Journey Visualization -->
   <div class="relative">
-    <div class="bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-3xl p-8 border border-gold/20 backdrop-blur-sm">
-      <h3 class="text-2xl font-bold text-goldLight mb-6 text-center">Your Success Journey</h3>
+    <div class="bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-3xl p-8 border border-warning-400/20 backdrop-blur-sm">
+      <h3 class="text-2xl font-bold text-warning-400Light mb-6 text-center">Your Success Journey</h3>
       
       <!-- Journey Path -->
       <div id="journey-path" class="flex flex-wrap justify-center items-center gap-4 min-h-[120px]">
@@ -117,17 +117,17 @@ const portfolioEntries = Object.entries(portfolioCompanies);
       </div>
 
       <!-- Success Metrics -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-gold/20">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 pt-8 border-t border-warning-400/20">
         <div class="text-center">
-          <div class="text-3xl font-bold text-gold mb-2">300+</div>
+          <div class="text-3xl font-bold text-warning-400 mb-2">300+</div>
           <div class="text-gray-400 text-sm">Successful Implementations</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl font-bold text-gold mb-2">95%</div>
+          <div class="text-3xl font-bold text-warning-400 mb-2">95%</div>
           <div class="text-gray-400 text-sm">Client Retention Rate</div>
         </div>
         <div class="text-center">
-          <div class="text-3xl font-bold text-gold mb-2">180%</div>
+          <div class="text-3xl font-bold text-warning-400 mb-2">180%</div>
           <div class="text-gray-400 text-sm">Average ROI Improvement</div>
         </div>
       </div>
@@ -137,7 +137,7 @@ const portfolioEntries = Object.entries(portfolioCompanies);
 
 <style>
   .service-card.active {
-    @apply border-gold/80 bg-gradient-to-br from-gold/10 to-goldLight/5;
+    @apply border-warning-400/80 bg-gradient-to-br from-warning-400/10 to-warning-300/5;
   }
   
   .service-card.active .connection-indicator {
@@ -149,11 +149,11 @@ const portfolioEntries = Object.entries(portfolioCompanies);
   }
   
   .journey-btn.active {
-    @apply bg-gradient-to-r from-gold/20 to-goldLight/20 border-gold text-gold;
+    @apply bg-gradient-to-r from-warning-400/20 to-warning-300/20 border-gold text-warning-400;
   }
   
   .text-gradient-gold {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-gold to-goldLight;
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-gold to-warning-300;
   }
 </style>
 
@@ -208,23 +208,25 @@ const portfolioEntries = Object.entries(portfolioCompanies);
       modernOS: 'from-indigo-500 to-indigo-700'
     };
 
-    function showJourney(journeyKey) {
+    function showJourney(journeyKey: string) {
       // Reset all states
       journeyButtons.forEach(btn => btn.classList.remove('active'));
       serviceCards.forEach(card => {
         card.classList.remove('active');
-        card.querySelector('.flow-arrow').style.opacity = '0';
+        const arrow = card.querySelector('.flow-arrow') as HTMLElement;
+        if (arrow) arrow.style.opacity = '0';
       });
 
       // Activate selected journey button
-      document.querySelector(`[data-journey="${journeyKey}"]`).classList.add('active');
+      const selectedJourney = document.querySelector(`[data-journey="${journeyKey}"]`);
+      if (selectedJourney) selectedJourney.classList.add('active');
 
-      const journey = journeyData[journeyKey];
+      const journey = journeyData[journeyKey as keyof typeof journeyData];
       
       // Create journey visualization
-      journeyPath.innerHTML = '';
+      if (journeyPath) journeyPath.innerHTML = '';
       
-      journey.steps.forEach((step, index) => {
+      journey.steps.forEach((step: any, index: number) => {
         // Create step container
         const stepElement = document.createElement('div');
         stepElement.className = 'flex flex-col items-center text-center max-w-xs mx-2 mb-4';
@@ -232,12 +234,12 @@ const portfolioEntries = Object.entries(portfolioCompanies);
         // Company circle with icon
         const companyData = getCompanyData(step.company);
         const circleElement = document.createElement('div');
-        circleElement.className = `w-16 h-16 rounded-full bg-gradient-to-br ${companyColors[step.company]} flex items-center justify-center text-2xl text-white mb-3 transform hover:scale-110 transition-transform duration-300`;
+        circleElement.className = `w-16 h-16 rounded-full bg-gradient-to-br ${companyColors[step.company as keyof typeof companyColors]} flex items-center justify-center text-2xl text-white mb-3 transform hover:scale-110 transition-transform duration-300`;
         circleElement.innerHTML = companyData.icon;
         
         // Company name
         const nameElement = document.createElement('div');
-        nameElement.className = 'text-goldLight font-semibold text-sm mb-2';
+        nameElement.className = 'text-warning-400Light font-semibold text-sm mb-2';
         nameElement.textContent = companyData.name;
         
         // Action description
@@ -249,36 +251,37 @@ const portfolioEntries = Object.entries(portfolioCompanies);
         stepElement.appendChild(nameElement);
         stepElement.appendChild(actionElement);
         
-        journeyPath.appendChild(stepElement);
+        if (journeyPath) journeyPath.appendChild(stepElement);
         
         // Add arrow between steps (except for last step)
         if (index < journey.steps.length - 1) {
           const arrowElement = document.createElement('div');
           arrowElement.className = 'flex items-center mx-2';
           arrowElement.innerHTML = `
-            <svg class="w-6 h-6 text-gold/60" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="w-6 h-6 text-warning-400/60" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
             </svg>
           `;
-          journeyPath.appendChild(arrowElement);
+          if (journeyPath) journeyPath.appendChild(arrowElement);
         }
       });
 
       // Highlight active service cards
-      journey.path.forEach((companyKey, index) => {
+      journey.path.forEach((companyKey: string, index: number) => {
         const card = document.querySelector(`[data-company="${companyKey}"]`);
         if (card) {
           setTimeout(() => {
             card.classList.add('active');
             if (index < journey.path.length - 1) {
-              card.querySelector('.flow-arrow').style.opacity = '1';
+              const arrow = card.querySelector('.flow-arrow') as HTMLElement;
+              if (arrow) arrow.style.opacity = '1';
             }
           }, index * 200);
         }
       });
     }
 
-    function getCompanyData(companyKey) {
+    function getCompanyData(companyKey: string) {
       const companies = {
         modernBrands: { name: 'Modern Brands', icon: '🎨' },
         modernLedger: { name: 'Modern Ledger', icon: '📊' },
@@ -287,14 +290,14 @@ const portfolioEntries = Object.entries(portfolioCompanies);
         modernStack: { name: 'Modern Stack', icon: '🚀' },
         modernOS: { name: 'Modern OS', icon: '🎯' }
       };
-      return companies[companyKey];
+      return companies[companyKey as keyof typeof companies];
     }
 
     // Add click handlers
     journeyButtons.forEach(button => {
       button.addEventListener('click', () => {
         const journeyKey = button.getAttribute('data-journey');
-        showJourney(journeyKey);
+        if (journeyKey) showJourney(journeyKey);
       });
     });
 

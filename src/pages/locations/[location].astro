@@ -474,8 +474,9 @@ const pageDescription = `Professional business consulting, QuickBooks setup, and
     const faqToggles = document.querySelectorAll('.faq-toggle');
     
     faqToggles.forEach(toggle => {
-      toggle.addEventListener('click', function() {
+      toggle.addEventListener('click', function(this: HTMLElement) {
         const targetId = this.getAttribute('data-target');
+        if (!targetId) return;
         const content = document.getElementById(targetId);
         const icon = this.querySelector('svg');
         

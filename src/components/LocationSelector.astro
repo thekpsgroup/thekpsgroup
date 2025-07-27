@@ -90,7 +90,7 @@ Object.keys(citiesByState).forEach(state => {
           {STATES.map(state => (
             <a href={`/locations/${state.name.toLowerCase()}`} class="location-item">
               <div class="location-item-icon state-icon">
-                {state.abbreviation}
+                {state.code}
               </div>
               <div class="location-details">
                 <div class="location-name">{state.name}</div>
@@ -139,21 +139,21 @@ Object.keys(citiesByState).forEach(state => {
       if (!trigger || !dropdown || !chevron) return;
       
       function openDropdown() {
-        trigger.setAttribute('aria-expanded', 'true');
-        dropdown.setAttribute('aria-hidden', 'false');
-        dropdown.classList.add('show');
-        chevron.style.transform = 'rotate(180deg)';
+        if (trigger) trigger.setAttribute('aria-expanded', 'true');
+        if (dropdown) dropdown.setAttribute('aria-hidden', 'false');
+        if (dropdown) dropdown.classList.add('show');
+        if (chevron) (chevron as HTMLElement).style.transform = 'rotate(180deg)';
       }
       
       function closeDropdown() {
-        trigger.setAttribute('aria-expanded', 'false');
-        dropdown.setAttribute('aria-hidden', 'true');
-        dropdown.classList.remove('show');
-        chevron.style.transform = 'rotate(0deg)';
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        if (dropdown) dropdown.setAttribute('aria-hidden', 'true');
+        if (dropdown) dropdown.classList.remove('show');
+        if (chevron) (chevron as HTMLElement).style.transform = 'rotate(0deg)';
       }
       
       function toggleDropdown() {
-        if (dropdown.classList.contains('show')) {
+        if (dropdown && dropdown.classList.contains('show')) {
           closeDropdown();
         } else {
           openDropdown();
@@ -176,10 +176,11 @@ Object.keys(citiesByState).forEach(state => {
       
       // Handle keyboard navigation
       trigger.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
+        const event = e as KeyboardEvent;
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
           toggleDropdown();
-        } else if (e.key === 'Escape') {
+        } else if (event.key === 'Escape') {
           closeDropdown();
         }
       });

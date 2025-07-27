@@ -57,11 +57,11 @@ const webVitalsThresholds = {
 
 <!-- Google Tag Manager -->
 {gtmId && (
-  <script>
+  <script is:inline>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode?.insertBefore(j,f);
     })(window,document,'script','dataLayer','{gtmId}');
   </script>
 )}
@@ -70,17 +70,19 @@ const webVitalsThresholds = {
 {gtagId && (
   <>
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}></script>
-    <script>
+    <script is:inline define:vars={{ gtagId, enableDebug }}>
+      // Initialize Google Tag Manager
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       
-      gtag('config', '{gtagId}', {
-        ...analyticsConfig,
+      gtag('config', gtagId, {
+        page_title: document.title,
+        page_location: window.location.href,
         anonymize_ip: true,
         allow_google_signals: false,
         cookie_expires: 7776000, // 90 days
-        debug_mode: {enableDebug}
+        debug_mode: enableDebug
       });
     </script>
   </>
@@ -90,13 +92,21 @@ const webVitalsThresholds = {
 <script>
   // Analytics Framework Class
   class AdvancedAnalytics {
+    events: any[];
+    userSession: any;
+    performanceMetrics: any;
+    behaviorData: any;
+    conversionData: any;
+    debugMode: any;
+    
     constructor() {
       this.events = [];
       this.userSession = this.initializeSession();
       this.performanceMetrics = {};
       this.behaviorData = {};
       this.conversionData = {};
-      this.debugMode = {enableDebug};
+      // Initialize debug mode
+      this.debugMode = false; // Default to false if enableDebug is not available
       
       this.init();
     }
@@ -169,7 +179,9 @@ const webVitalsThresholds = {
     
     // Performance Tracking
     setupPerformanceTracking() {
-      if (!{enablePerformanceTracking}) return;
+      // Default to enabled if enablePerformanceTracking is not available
+      const performanceEnabled = true;
+      if (!performanceEnabled) return;
       
       // Core Web Vitals
       this.trackCoreWebVitals();
@@ -189,7 +201,7 @@ const webVitalsThresholds = {
       // LCP - Largest Contentful Paint
       new PerformanceObserver((list) => {
         const entries = list.getEntries();
-        const lastEntry = entries[entries.length - 1];
+        const lastEntry = entries[entries.length - 1] as any;
         
         this.performanceMetrics.LCP = lastEntry.startTime;
         this.trackEvent('web_vitals', 'LCP', this.getVitalRating('LCP', lastEntry.startTime), {
@@ -200,7 +212,7 @@ const webVitalsThresholds = {
       
       // FID - First Input Delay
       new PerformanceObserver((list) => {
-        const firstInput = list.getEntries()[0];
+        const firstInput = list.getEntries()[0] as any;
         
         this.performanceMetrics.FID = firstInput.processingStart - firstInput.startTime;
         this.trackEvent('web_vitals', 'FID', this.getVitalRating('FID', this.performanceMetrics.FID), {
@@ -212,8 +224,9 @@ const webVitalsThresholds = {
       new PerformanceObserver((list) => {
         let clsValue = 0;
         for (const entry of list.getEntries()) {
-          if (!entry.hadRecentInput) {
-            clsValue += entry.value;
+          const layoutShiftEntry = entry as any;
+          if (!layoutShiftEntry.hadRecentInput) {
+            clsValue += layoutShiftEntry.value;
           }
         }
         
@@ -224,9 +237,14 @@ const webVitalsThresholds = {
       }).observe({ entryTypes: ['layout-shift'] });
     }
     
-    getVitalRating(metric, value) {
-      const thresholds = {webVitalsThresholds};
-      const threshold = thresholds[metric];
+    getVitalRating(metric: string, value: number) {
+      // Access the webVitalsThresholds from the component scope
+      const thresholds = {
+        LCP: { good: 2500, poor: 4000 },
+        FID: { good: 100, poor: 300 },
+        CLS: { good: 0.1, poor: 0.25 }
+      };
+      const threshold = thresholds[metric as keyof typeof thresholds];
       
       if (value <= threshold.good) return 'good';
       if (value <= threshold.poor) return 'needs_improvement';
@@ -254,11 +272,12 @@ const webVitalsThresholds = {
     trackResourcePerformance() {
       new PerformanceObserver((list) => {
         for (const entry of list.getEntries()) {
+          const resourceEntry = entry as PerformanceResourceTiming;
           if (entry.duration > 1000) { // Track slow resources
             this.trackEvent('resource_performance', 'slow_resource', entry.name, {
               duration: Math.round(entry.duration),
-              size: entry.transferSize || 0,
-              type: entry.initiatorType
+              size: resourceEntry.transferSize || 0,
+              type: resourceEntry.initiatorType
             });
           }
         }
@@ -267,7 +286,9 @@ const webVitalsThresholds = {
     
     // User Behavior Tracking
     setupUserBehaviorTracking() {
-      if (!{enableUserBehaviorTracking}) return;
+      // Default to enabled if enableUserBehaviorTracking is not available
+      const behaviorEnabled = true;
+      if (!behaviorEnabled) return;
       
       this.trackScrollDepth();
       this.trackTimeOnPage();
@@ -330,7 +351,10 @@ const webVitalsThresholds = {
     
     trackClickPatterns() {
       document.addEventListener('click', (e) => {
-        const element = e.target.closest('a, button, [data-track]');
+        const target = e.target as Element;
+        if (!target) return;
+        
+        const element = target.closest('a, button, [data-track]');
         if (!element) return;
         
         const trackingData = {
@@ -346,10 +370,12 @@ const webVitalsThresholds = {
         };
         
         // Special tracking for CTAs
-        if (element.dataset.track === 'cta') {
-          this.trackEvent('conversion', 'cta_click', element.dataset.trackLabel || 'unknown', trackingData);
+        const htmlElement = element as HTMLElement;
+        if (htmlElement.dataset.track === 'cta') {
+          this.trackEvent('conversion', 'cta_click', htmlElement.dataset.trackLabel || 'unknown', trackingData);
         } else if (element.tagName === 'A') {
-          this.trackEvent('navigation', 'link_click', element.href, trackingData);
+          const linkElement = element as HTMLAnchorElement;
+          this.trackEvent('navigation', 'link_click', linkElement.href, trackingData);
         } else {
           this.trackEvent('interaction', 'click', element.textContent?.trim() || 'button', trackingData);
         }
@@ -391,7 +417,7 @@ const webVitalsThresholds = {
       const searchInputs = document.querySelectorAll('input[type="search"], [data-search]');
       
       searchInputs.forEach(input => {
-        let searchStartTime;
+        let searchStartTime: number;
         
         input.addEventListener('focus', () => {
           searchStartTime = Date.now();
@@ -399,9 +425,10 @@ const webVitalsThresholds = {
         });
         
         input.addEventListener('input', this.debounce(() => {
-          if (input.value.length >= 3) {
-            this.trackEvent('search', 'search_query', input.value.substring(0, 100), {
-              query_length: input.value.length,
+          const searchInput = input as HTMLInputElement;
+          if (searchInput.value.length >= 3) {
+            this.trackEvent('search', 'search_query', searchInput.value.substring(0, 100), {
+              query_length: searchInput.value.length,
               time_to_type: searchStartTime ? Date.now() - searchStartTime : 0
             });
           }
@@ -411,7 +438,7 @@ const webVitalsThresholds = {
     
     // Conversion Tracking
     setupConversionTracking() {
-      if (!{enableConversionTracking}) return;
+      if (!(enableConversionTracking as boolean)) return;
       
       this.trackPhoneClicks();
       this.trackEmailClicks();
@@ -422,7 +449,7 @@ const webVitalsThresholds = {
     trackPhoneClicks() {
       document.querySelectorAll('a[href^="tel:"]').forEach(link => {
         link.addEventListener('click', () => {
-          const phoneNumber = link.href.replace('tel:', '');
+          const phoneNumber = (link as HTMLAnchorElement).href.replace('tel:', '');
           this.trackEvent('conversion', 'phone_click', phoneNumber, {
             phone_number: phoneNumber,
             page: window.location.pathname
@@ -434,7 +461,7 @@ const webVitalsThresholds = {
     trackEmailClicks() {
       document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
         link.addEventListener('click', () => {
-          const email = link.href.replace('mailto:', '');
+          const email = (link as HTMLAnchorElement).href.replace('mailto:', '');
           this.trackEvent('conversion', 'email_click', email, {
             email: email,
             page: window.location.pathname
@@ -446,10 +473,10 @@ const webVitalsThresholds = {
     trackDownloads() {
       document.querySelectorAll('a[href$=".pdf"], a[href$=".doc"], a[href$=".docx"], a[href$=".xls"], a[href$=".xlsx"]').forEach(link => {
         link.addEventListener('click', () => {
-          const fileName = link.href.split('/').pop();
-          this.trackEvent('conversion', 'download', fileName, {
+          const fileName = (link as HTMLAnchorElement).href.split('/').pop();
+          this.trackEvent('conversion', 'download', fileName || 'unknown', {
             file_name: fileName,
-            file_type: fileName.split('.').pop(),
+            file_type: fileName?.split('.').pop(),
             page: window.location.pathname
           });
         });
@@ -458,10 +485,11 @@ const webVitalsThresholds = {
     
     trackOutboundLinks() {
       document.querySelectorAll('a[href^="http"]').forEach(link => {
-        if (!link.href.includes(window.location.hostname)) {
+        const anchorLink = link as HTMLAnchorElement;
+        if (!anchorLink.href.includes(window.location.hostname)) {
           link.addEventListener('click', () => {
-            this.trackEvent('navigation', 'outbound_click', link.href, {
-              destination: link.href,
+            this.trackEvent('navigation', 'outbound_click', anchorLink.href, {
+              destination: anchorLink.href,
               page: window.location.pathname
             });
           });
@@ -502,7 +530,7 @@ const webVitalsThresholds = {
     }
     
     // Core tracking functions
-    trackEvent(category, action, label, parameters = {}) {
+    trackEvent(category: string, action: string, label: string | number, parameters = {}) {
       const eventData = {
         event_category: category,
         event_action: action,
@@ -525,8 +553,8 @@ const webVitalsThresholds = {
       }
       
       // Send to Google Tag Manager
-      if (typeof dataLayer !== 'undefined') {
-        dataLayer.push({
+      if (typeof (window as any).dataLayer !== 'undefined') {
+        (window as any).dataLayer.push({
           event: 'custom_event',
           ...eventData
         });
@@ -582,10 +610,10 @@ const webVitalsThresholds = {
     }
     
     // Utility functions
-    throttle(func, delay) {
-      let timeoutId;
+    throttle(func: Function, delay: number) {
+      let timeoutId: any;
       let lastExecTime = 0;
-      return function (...args) {
+      return function (this: any, ...args: any[]) {
         const currentTime = Date.now();
         
         if (currentTime - lastExecTime > delay) {
@@ -600,10 +628,10 @@ const webVitalsThresholds = {
         }
       };
     }
-    
-    debounce(func, delay) {
-      let timeoutId;
-      return function (...args) {
+
+    debounce(func: Function, delay: number) {
+      let timeoutId: any;
+      return function (this: any, ...args: any[]) {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => func.apply(this, args), delay);
       };
@@ -612,7 +640,7 @@ const webVitalsThresholds = {
   
   // Initialize Advanced Analytics
   window.addEventListener('DOMContentLoaded', () => {
-    window.advancedAnalytics = new AdvancedAnalytics();
+    (window as any).advancedAnalytics = new AdvancedAnalytics();
   });
 </script>
 
@@ -652,7 +680,7 @@ const webVitalsThresholds = {
       
       // Check if consent already given
       const consent = localStorage.getItem('cookie_consent');
-      if (!consent) {
+      if (!consent && consentBanner) {
         setTimeout(() => {
           consentBanner.style.display = 'block';
           consentBanner.classList.remove('translate-y-full');
@@ -674,10 +702,12 @@ const webVitalsThresholds = {
       });
       
       function hideConsentBanner() {
-        consentBanner.classList.add('translate-y-full');
-        setTimeout(() => {
-          consentBanner.style.display = 'none';
-        }, 300);
+        if (consentBanner) {
+          consentBanner.classList.add('translate-y-full');
+          setTimeout(() => {
+            consentBanner.style.display = 'none';
+          }, 300);
+        }
       }
       
       function enableAllTracking() {

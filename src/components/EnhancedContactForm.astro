@@ -50,7 +50,7 @@ const getFormConfig = (type: string) => {
       submitText: "Submit Request"
     }
   };
-  return configs[type] || configs.contact;
+  return configs[type as keyof typeof configs] || configs.contact;
 };
 
 const config = getFormConfig(formType);

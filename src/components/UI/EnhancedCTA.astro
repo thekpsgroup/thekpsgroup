@@ -25,38 +25,8 @@ const {
   trackingEvent = 'cta_click'
 } = Astro.props;
 
-// Generate dynamic messaging based on context
-const generateMessage = () => {
-  if (customMessage) return customMessage;
-  
-  const location = city ? ` in ${city.name}, ${city.state}` : '';
-  const service = serviceName ? ` for ${serviceName}` : '';
-  
-  const messages = {
-    low: [
-      `Get expert business consulting${service}${location}`,
-      `Professional solutions${service} available${location}`,
-      `Transform your business${service}${location}`
-    ],
-    medium: [
-      `Ready to streamline your business${service}${location}?`,
-      `Start optimizing your operations${service}${location} today`,
-      `Get professional help${service}${location} now`
-    ],
-    high: [
-      `Don't wait - get expert help${service}${location} today!`,
-      `Limited availability${location} - contact us now!`,
-      `Transform your business${service}${location} this week!`
-    ]
-  };
-  
-  const messageArray = messages[urgency];
-  return messageArray[Math.floor(Math.random() * messageArray.length)];
-};
+const ctaMessage = customMessage || 'Get your business on track today!';
 
-const ctaMessage = generateMessage();
-
-// Trust signals
 const trustSignals = [
   { icon: '⭐', text: '100+ Satisfied Clients' },
   { icon: '🏆', text: 'QuickBooks Certified' },
@@ -64,9 +34,8 @@ const trustSignals = [
   { icon: '📞', text: 'Same-Day Response' }
 ];
 
-// Contact methods
 const contactMethods = [
-  { 
+  {
     type: 'phone',
     value: '(469) 534-3392',
     icon: '📞',
@@ -74,7 +43,7 @@ const contactMethods = [
     primary: true
   },
   {
-    type: 'email', 
+    type: 'email',
     value: 'sales@thekpsgroup.com',
     icon: '✉️',
     label: 'Email Us',
@@ -89,23 +58,19 @@ const contactMethods = [
   }
 ];
 
-// Style classes based on variant and size
 const getClasses = () => {
   const baseClasses = 'cta-container relative overflow-hidden transition-all duration-300';
-  
   const variantClasses = {
-    primary: 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-xl',
-    secondary: 'bg-white border-2 border-blue-600 text-blue-600 shadow-lg',
-    gradient: 'bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white shadow-2xl',
-    minimal: 'bg-gray-50 border border-gray-200 text-gray-900 shadow-md'
+    primary: 'bg-blue-600 text-white hover:bg-blue-700',
+    secondary: 'bg-gray-600 text-white hover:bg-gray-700', 
+    gradient: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white',
+    minimal: 'bg-white border-2 border-blue-600 text-blue-600'
   };
-  
   const sizeClasses = {
-    small: 'p-4 rounded-lg',
-    medium: 'p-6 rounded-xl',
-    large: 'p-8 rounded-2xl'
+    small: 'p-6 rounded-lg',
+    medium: 'p-8 rounded-xl',
+    large: 'p-12 rounded-2xl'
   };
-  
   return `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`;
 };
 ---
@@ -259,7 +224,7 @@ const getClasses = () => {
     
     // Contact link interactions
     contactLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+      link.addEventListener('click', function(this: HTMLElement, e) {
         const trackingEvent = this.getAttribute('data-tracking');
         const method = this.getAttribute('data-method');
         
@@ -273,49 +238,47 @@ const getClasses = () => {
         if (typeof gtag === 'function') {
           gtag('event', trackingEvent, {
             'contact_method': method,
-            'cta_variant': '${variant}',
+            'cta_variant': 'primary',
             'cta_location': window.location.pathname
           });
         }
         
         // Custom event for other tracking systems
         window.dispatchEvent(new CustomEvent('ctaClick', {
-          detail: { method, variant: '${variant}', location: window.location.pathname }
+          detail: { method, variant: 'primary', location: window.location.pathname }
         }));
       });
       
       // Hover effects
-      link.addEventListener('mouseenter', function() {
+      link.addEventListener('mouseenter', function(this: HTMLElement) {
         this.style.transform = 'translateY(-2px) scale(1.02)';
       });
       
-      link.addEventListener('mouseleave', function() {
+      link.addEventListener('mouseleave', function(this: HTMLElement) {
         this.style.transform = 'translateY(0) scale(1)';
       });
     });
     
     // Auto-rotate messaging for high urgency
-    if ('${urgency}' === 'high') {
-      const messages = [
-        '${ctaMessage}',
-        'Limited spots available - contact us now!',
-        'Expert help just one call away!',
-        'Don\'t miss out - get started today!'
-      ];
-      
-      let messageIndex = 0;
-      const titleElement = ctaContainer?.querySelector('h3');
-      
-      if (titleElement) {
-        setInterval(() => {
-          messageIndex = (messageIndex + 1) % messages.length;
-          titleElement.style.opacity = '0';
-          setTimeout(() => {
-            titleElement.textContent = messages[messageIndex];
-            titleElement.style.opacity = '1';
-          }, 200);
-        }, 5000);
-      }
+    const messages = [
+      'Get your business on track today!',
+      'Limited spots available - contact us now!',
+      'Expert help just one call away!',
+      "Don't miss out - get started today!"
+    ];
+    
+    let messageIndex = 0;
+    const titleElement = ctaContainer?.querySelector('h3');
+    
+    if (titleElement) {
+      setInterval(() => {
+        messageIndex = (messageIndex + 1) % messages.length;
+        titleElement.style.opacity = '0';
+        setTimeout(() => {
+          titleElement.textContent = messages[messageIndex];
+          titleElement.style.opacity = '1';
+        }, 200);
+      }, 5000);
     }
   });
 </script>

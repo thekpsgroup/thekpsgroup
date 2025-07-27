@@ -318,11 +318,11 @@ const displayTestimonials = relevantTestimonials.slice(0, maxTestimonials);
             </div>
             <div class="testimonial-meta">
               <div class="rating">
-                {Array(testimonial.rating).fill().map(() => (
+                {Array(testimonial.rating).fill(null).map(() => (
                   <i class="fas fa-star"></i>
                 ))}
               </div>
-              <span class="service-badge">{serviceNames[testimonial.service]}</span>
+              <span class="service-badge">{serviceNames[testimonial.service as keyof typeof serviceNames]}</span>
             </div>
           </div>
 
@@ -366,11 +366,11 @@ const displayTestimonials = relevantTestimonials.slice(0, maxTestimonials);
             
             <div class="card-header">
               <div class="rating">
-                {Array(testimonial.rating).fill().map(() => (
+                {Array(testimonial.rating).fill(null).map(() => (
                   <i class="fas fa-star"></i>
                 ))}
               </div>
-              <span class="service-tag">{serviceNames[testimonial.service]}</span>
+              <span class="service-tag">{serviceNames[testimonial.service as keyof typeof serviceNames]}</span>
             </div>
 
             <blockquote class="card-text">
@@ -388,7 +388,7 @@ const displayTestimonials = relevantTestimonials.slice(0, maxTestimonials);
               </div>
               
               <div class="industry-tag">
-                {industryNames[testimonial.industry]}
+                {industryNames[testimonial.industry as keyof typeof industryNames]}
               </div>
             </div>
 

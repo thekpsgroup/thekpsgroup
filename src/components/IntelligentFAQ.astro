@@ -365,7 +365,7 @@ const displayFaqs = faqDatabase.slice(0, maxFaqs);
   <div class="faq-content">
     <div class="faq-list" data-faq-list>
       {displayFaqs.map(faq => {
-        const category = categoryConfig[faq.category];
+        const category = categoryConfig[faq.category as keyof typeof categoryConfig];
         const processedAnswer = faq.locationSpecific && cityData ? 
           faq.answer.replace(faq.dynamicContent?.withCity || '', 
             (faq.dynamicContent?.withCity || '').replace('{cityName}', cityData.name)

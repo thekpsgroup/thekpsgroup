@@ -161,9 +161,9 @@ const categories = [...new Set(services.map(s => s.category))];
   </div>
 </div>
 
-<script>
+<script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('service-search') as HTMLInputElement;
+    const searchInput = document.getElementById('service-search');
     const categoryFilters = document.querySelectorAll('.category-filter');
     const serviceCards = document.querySelectorAll('.service-card');
     const noResults = document.getElementById('no-results');
@@ -192,18 +192,20 @@ const categories = [...new Set(services.map(s => s.category))];
     }
 
     // Category filtering
-    categoryFilters.forEach(filter => {
-      filter.addEventListener('click', function() {
+    categoryFilters.forEach((filter) => {
+      filter.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        
         // Update active state
         categoryFilters.forEach(f => {
           f.classList.remove('bg-blue-600', 'text-white', 'shadow-md');
           f.classList.add('bg-gray-100', 'text-gray-700');
         });
         
-        this.classList.remove('bg-gray-100', 'text-gray-700');
-        this.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+        target.classList.remove('bg-gray-100', 'text-gray-700');
+        target.classList.add('bg-blue-600', 'text-white', 'shadow-md');
         
-        currentCategory = this.getAttribute('data-category') || 'all';
+        currentCategory = target.getAttribute('data-category') || 'all';
         filterServices();
       });
     });
@@ -215,8 +217,8 @@ const categories = [...new Set(services.map(s => s.category))];
         
         if (showingAll) {
           serviceCards.forEach((card, index) => {
-            if (index >= parseInt('${maxDisplay}')) {
-              (card as HTMLElement).style.display = 'block';
+            if (index >= 20) {
+              card.style.display = 'block';
             }
           });
           this.innerHTML = `
@@ -227,12 +229,12 @@ const categories = [...new Set(services.map(s => s.category))];
           `;
         } else {
           serviceCards.forEach((card, index) => {
-            if (index >= parseInt('${maxDisplay}')) {
-              (card as HTMLElement).style.display = 'none';
+            if (index >= 20) {
+              card.style.display = 'none';
             }
           });
           this.innerHTML = `
-            View All ${services.length} Services
+            View All Services
             <svg class="ml-2 -mr-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
@@ -272,12 +274,12 @@ const categories = [...new Set(services.map(s => s.category))];
       let visibleCount = 0;
       
       serviceCards.forEach((card, index) => {
-        const cardElement = card as HTMLElement;
+        const cardElement = card;
         const cardCategory = cardElement.getAttribute('data-category') || '';
         const cardService = cardElement.getAttribute('data-service') || '';
         
         // Check if should be shown based on pagination
-        const shouldShowByPagination = showingAll || index < parseInt('${maxDisplay}');
+        const shouldShowByPagination = showingAll || index < 20;
         
         // Check category filter
         const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;

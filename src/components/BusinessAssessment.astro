@@ -157,7 +157,7 @@ const assessmentQuestions = [
       { value: 'none', label: 'No employees yet', weight: 0 }
     ],
     priority: 'medium',
-    conditional: (answers) => answers['employee-count'] !== '0'
+    conditional: (answers: any) => answers['employee-count'] !== '0'
   },
   {
     id: 'financial-reports',
@@ -264,7 +264,7 @@ const serviceRecommendations = {
     basePrice: 497,
     description: 'Professional QuickBooks setup with training',
     triggers: ['accounting-software:none', 'accounting-software:other', 'bookkeeping-frequency:never|annually'],
-    priority: (score) => score >= 3 ? 'high' : 'medium'
+    priority: (score: number) => score >= 3 ? 'high' : 'medium'
   },
   bookkeeping: {
     name: 'Monthly Bookkeeping',
@@ -273,7 +273,7 @@ const serviceRecommendations = {
     basePrice: 350,
     description: 'Professional monthly bookkeeping and reconciliation',
     triggers: ['time-spent-admin:significant|excessive', 'bookkeeping-frequency:never|annually|quarterly'],
-    priority: (score) => score >= 4 ? 'high' : 'medium'
+    priority: (score: number) => score >= 4 ? 'high' : 'medium'
   },
   payroll: {
     name: 'Payroll Services',
@@ -282,7 +282,7 @@ const serviceRecommendations = {
     basePrice: 150,
     description: 'Complete payroll processing and tax filing',
     triggers: ['employee-count:1-5|6-15|16-50|50+', 'payroll-method:manual'],
-    priority: (score) => score >= 2 ? 'high' : 'low'
+    priority: (score: number) => score >= 2 ? 'high' : 'low'
   },
   consulting: {
     name: 'Business Consulting',
@@ -291,7 +291,7 @@ const serviceRecommendations = {
     basePrice: 200,
     description: 'Strategic planning and business optimization',
     triggers: ['growth-goals:significant|aggressive', 'biggest-challenge:growth'],
-    priority: (score) => score >= 3 ? 'high' : 'medium'
+    priority: (score: number) => score >= 3 ? 'high' : 'medium'
   },
   tax: {
     name: 'Tax Preparation & Planning',
@@ -300,7 +300,7 @@ const serviceRecommendations = {
     basePrice: 700,
     description: 'Business tax preparation and strategic planning',
     triggers: ['tax-preparation:self|software|varies', 'current-pain-points:tax-stress'],
-    priority: (score) => score >= 2 ? 'high' : 'medium'
+    priority: (score: number) => score >= 2 ? 'high' : 'medium'
   },
   hr: {
     name: 'HR Services',
@@ -309,7 +309,7 @@ const serviceRecommendations = {
     basePrice: 275,
     description: 'Employee handbook, policies, and compliance',
     triggers: ['employee-count:6-15|16-50|50+', 'current-pain-points:compliance-worry'],
-    priority: (score) => score >= 3 ? 'high' : 'low'
+    priority: (score: number) => score >= 3 ? 'high' : 'low'
   }
 };
 ---
