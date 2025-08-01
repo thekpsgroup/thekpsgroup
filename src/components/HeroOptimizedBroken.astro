@@ -23,7 +23,25 @@ const heroVariants = {
   consultation: {
     headline: "Discover $10K+ in Hidden Business Savings",
     subheadline: "Free 30-minute consultation reveals profit leaks and growth opportunities most business owners miss",
-    ctaText: "Book My FREE Consultation",
+    ctaText: "Book My FREE Consultation", 
+    ctaSubtext: "Next available: Today at 3 PM",
+    benefits: [
+      "Find hidden revenue streams",
+      "Eliminate profit leaks",
+      "Automate manual processes", 
+      "Get custom growth roadmap"
+    ]
+  },
+  results: {
+    headline: "Join 300+ Businesses Growing 3X Faster",
+    subheadline: "Our clients average 40% profit increases and 50% time savings within 90 days",
+    ctaText: "See How We Can Help You",
+    ctaSubtext: "Free consultation includes ROI projection",
+    benefits: [
+      "Average 40% profit increase",
+      "50% reduction in admin time",
+      "3X faster growth rate",
+      "90-day results guarantee"
     ctaSubtext: "Usually $500 - FREE for a limited time",
     benefits: [
       "Book your free consultation",
@@ -47,6 +65,7 @@ const heroVariants = {
 };
 
 const hero = heroVariants[variant];
+---
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black">
@@ -87,7 +106,6 @@ const hero = heroVariants[variant];
             </div>
           ))}
         </div>
-
         <!-- Primary CTA -->
         <div class="text-center mb-16 animate-fade-in" style="animation-delay: 0.6s;">
           <div class="max-w-md mx-auto">
@@ -118,6 +136,47 @@ const hero = heroVariants[variant];
           </div>
         </div>
       </div>
+          
+          <!-- Benefits Grid -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 animate-fade-in" style="animation-delay: 0.4s;">
+            {hero.benefits.map((benefit, index) => (
+              <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center hover:border-warning-400/30 transition-all">
+                <div class="text-warning-400 font-semibold text-sm mb-1">✓</div>
+                <div class="text-white text-sm">{benefit}</div>
+              </div>
+            ))}
+          </div>
+
+          <!-- Primary CTA -->
+          <div class="text-center mb-16 animate-fade-in" style="animation-delay: 0.6s;">
+            <div class="max-w-md mx-auto">
+              <!-- Value Proposition Box -->
+              <div class="bg-gradient-to-r from-warning-400/20 to-warning-300/20 rounded-2xl p-6 mb-6 border border-warning-400/30">
+                <div class="text-warning-400 font-bold text-2xl mb-2">FREE</div>
+                <div class="text-white font-semibold mb-1">Business Assessment</div>
+                <div class="text-gray-300 text-sm mb-3">{hero.ctaSubtext}</div>
+                
+                <a 
+                  href="/contact"
+                  class="block w-full bg-warning-400 hover:bg-warning-300 text-black font-bold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg mb-3 cta-button"
+                  id="hero-cta"
+                >
+                  🚀 {hero.ctaText}
+                </a>
+                
+                <div class="text-xs text-gray-400">
+                  ✓ No spam &nbsp;•&nbsp; ✓ Same-day response &nbsp;•&nbsp; ✓ 24/7 support
+                </div>
+              </div>
+            </div>
+
+            <!-- Urgency Indicator -->
+            <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 rounded-full px-4 py-2 text-sm text-red-400">
+              <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+              <span>🔥 Only 3 consultation slots left this week</span>
+            </div>
+          </div>
+        </div>
 
       <!-- Social Proof -->
       <div class="text-center animate-fade-in" style="animation-delay: 0.8s;">
@@ -142,7 +201,7 @@ const hero = heroVariants[variant];
             <div class="text-white text-sm">Time Savings</div>
           </div>
           <div class="bg-gray-900/50 border border-gray-700/50 rounded-xl p-6 text-center">
-            <div class="text-warning-400 text-2xl font-bold mb-2">7-14</div>
+            <div class="text-warning-400 text-2xl font-bold mb-2">90</div>
             <div class="text-white text-sm">Days to Results</div>
           </div>
         </div>
@@ -152,15 +211,8 @@ const hero = heroVariants[variant];
 </section>
 
 <style>
-  .cta-button {
-    box-shadow: 0 4px 14px rgba(248, 214, 115, 0.4);
-  }
-  
-  .cta-button:hover {
-    box-shadow: 0 8px 25px rgba(248, 214, 115, 0.6);
-  }
-
-  @keyframes fade-in {
+  /* Enhanced animations */
+  @keyframes fadeInUp {
     from {
       opacity: 0;
       transform: translateY(30px);
@@ -172,24 +224,62 @@ const hero = heroVariants[variant];
   }
 
   .animate-fade-in {
-    animation: fade-in 0.8s ease-out forwards;
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  /* CTA hover effects */
+  #hero-cta:hover {
+    box-shadow: 0 10px 25px rgba(248, 214, 115, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Pulse animation for urgency */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
   }
 </style>
 
 <script>
-  // Track CTA clicks
+  // Track hero CTA clicks
   document.addEventListener('DOMContentLoaded', () => {
-    const ctaButton = document.getElementById('hero-cta');
-    if (ctaButton) {
-      ctaButton.addEventListener('click', () => {
-        // Track conversion event
+    const heroCTA = document.getElementById('hero-cta');
+    
+    if (heroCTA) {
+      heroCTA.addEventListener('click', (e) => {
+        // Track CTA click
         if (typeof gtag !== 'undefined') {
-          gtag('event', 'hero_cta_click', {
+          gtag('event', 'cta_click', {
             event_category: 'Hero',
-            event_label: 'Free Assessment CTA'
+            event_label: 'Primary CTA',
+            cta_location: 'hero_section'
           });
         }
       });
     }
+
+    // Track scroll depth
+    let maxScroll = 0;
+    window.addEventListener('scroll', () => {
+      const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      if (scrollPercent > maxScroll) {
+        maxScroll = scrollPercent;
+        
+        // Track milestone scrolls
+        if (maxScroll === 25 || maxScroll === 50 || maxScroll === 75 || maxScroll === 100) {
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_depth', {
+              event_category: 'Engagement',
+              event_label: `${maxScroll}%`,
+              value: maxScroll
+            });
+          }
+        }
+      }
+    });
   });
 </script>
