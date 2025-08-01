@@ -1,0 +1,195 @@
+---
+// Simple, high-converting contact form for landing page
+export interface Props {
+  title?: string;
+  subtitle?: string;
+  showValue?: boolean;
+}
+
+const {
+  title = "Get Your FREE Business Assessment",
+  subtitle = "Discover $10K+ in hidden savings in your business",
+  showValue = true
+} = Astro.props;
+---
+
+<div class="contact-form-container bg-gradient-to-br from-gray-900/95 to-gray-800/95 border border-warning-400/30 rounded-2xl p-8 backdrop-blur-sm">
+  <!-- Form Header -->
+  <div class="text-center mb-8">
+    {showValue && (
+      <div class="inline-flex items-center gap-3 bg-green-500/10 border border-green-500/30 rounded-full px-4 py-2 mb-4">
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+        <span class="text-sm font-medium text-green-400">FREE - Usually $500</span>
+        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+      </div>
+    )}
+    
+    <h2 class="text-2xl lg:text-3xl font-bold text-white mb-3">{title}</h2>
+    <p class="text-gray-300">{subtitle}</p>
+  </div>
+
+  <!-- Simple Form -->
+  <form action="/api/contact" method="POST" class="space-y-4" id="contact-form">
+    <!-- Name & Email Row -->
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+          placeholder="Your full name"
+        />
+      </div>
+      
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+          placeholder="your@email.com"
+        />
+      </div>
+    </div>
+
+    <!-- Phone & Service Row -->
+    <div class="grid md:grid-cols-2 gap-4">
+      <div>
+        <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+          placeholder="(555) 123-4567"
+        />
+      </div>
+      
+      <div>
+        <label for="service" class="block text-sm font-medium text-gray-300 mb-2">Service Interest *</label>
+        <select
+          id="service"
+          name="service"
+          required
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all cursor-pointer"
+        >
+          <option value="">Select a service</option>
+          <option value="QuickBooks Consulting">QuickBooks Consulting</option>
+          <option value="Payroll Services">Payroll Services</option>
+          <option value="Business Consulting">Business Consulting</option>
+          <option value="Technology Consulting">Technology Consulting</option>
+          <option value="HVAC/Electrical">HVAC/Electrical Consulting</option>
+          <option value="Full Suite">Complete Modern Suite</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div>
+      <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Tell us about your business *</label>
+      <textarea
+        id="message"
+        name="message"
+        required
+        rows="4"
+        class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all resize-none"
+        placeholder="What challenges are you facing? What results are you looking for?"
+      ></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="w-full bg-warning-400 hover:bg-warning-300 text-black font-bold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 focus:ring-4 focus:ring-warning-400/30 disabled:opacity-50 disabled:cursor-not-allowed"
+      id="submit-btn"
+    >
+      <span id="submit-text">Get My FREE Assessment</span>
+      <span id="submit-loading" class="hidden">Sending...</span>
+    </button>
+
+    <!-- Trust Signals -->
+    <div class="text-center pt-4">
+      <p class="text-sm text-gray-400">
+        ✓ No spam, ever &nbsp;•&nbsp; ✓ Free consultation &nbsp;•&nbsp; ✓ Same-day response
+      </p>
+    </div>
+  </form>
+</div>
+
+<script>
+  // Simple form enhancement
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const submitLoading = document.getElementById('submit-loading');
+
+    if (form && submitBtn && submitText && submitLoading) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Show loading state
+        submitBtn.disabled = true;
+        submitText.classList.add('hidden');
+        submitLoading.classList.remove('hidden');
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            // Success - redirect to thank you page
+            window.location.href = '/thank-you';
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          console.error('Form error:', error);
+          alert('There was an error sending your message. Please try again or call us directly at (469) 534-3392.');
+        } finally {
+          // Reset button state
+          submitBtn.disabled = false;
+          submitText.classList.remove('hidden');
+          submitLoading.classList.add('hidden');
+        }
+      });
+    }
+  });
+</script>
+
+<style>
+  .contact-form-container {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Smooth focus transitions */
+  input:focus, select:focus, textarea:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(248, 214, 115, 0.15);
+  }
+
+  /* Loading animation */
+  #submit-loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>

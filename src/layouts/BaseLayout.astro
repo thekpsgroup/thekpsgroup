@@ -6,6 +6,7 @@ import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import VercelAnalytics from '../components/VercelAnalytics.astro';
 import EnhancedAccessibility from '../components/UI/EnhancedAccessibility.astro';
 import CoreWebVitals from '../components/Performance/CoreWebVitals.astro';
+import LiveChat from '../components/LiveChat.astro';
 import { BUSINESS, CITIES } from '../data/constants';
 import { MAJOR_CITIES } from '../data/cities';
 
@@ -1075,6 +1076,9 @@ if (isServicePage) {
     </main>
     
     <Footer />
+    
+    <!-- Live Chat Widget -->
+    <LiveChat position="bottom-right" theme="dark" showOnMobile={true} />
     
     <!-- Analytics Tracker -->
     <AnalyticsTracker />

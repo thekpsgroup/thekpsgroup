@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
-import Hero from '../components/Hero.astro';
+import HeroOptimized from '../components/HeroOptimized.astro';
+import Testimonials from '../components/Testimonials.astro';
 import { BUSINESS } from '../data/constants';
 
 const seoProps = {
@@ -72,7 +73,10 @@ const seoProps = {
 
 <BaseLayout>
   <AdvancedSEOHead {...seoProps} slot="head" />
-  <Hero />
+  <HeroOptimized enableABTest={true} variant="results" />
+  
+  <!-- Testimonials Section -->
+  <Testimonials limit={6} />
   
   <!-- The Modern Suite Overview -->
   <section class="relative section-mobile overflow-hidden" role="region" aria-labelledby="modern-suite-heading">

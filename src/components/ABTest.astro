@@ -1,0 +1,204 @@
+---
+// A/B Testing component for headlines and conversion optimization
+// Simple client-side A/B testing for landing page optimization
+
+export interface ABTestVariant {
+  id: string;
+  weight: number;
+  headline: string;
+  subheadline?: string;
+  ctaText?: string;
+  description?: string;
+}
+
+export interface Props {
+  testName: string;
+  variants: ABTestVariant[];
+  defaultVariant?: string;
+  storageKey?: string;
+  trackingEnabled?: boolean;
+}
+
+const {
+  testName,
+  variants = [],
+  defaultVariant,
+  storageKey = `ab-test-${testName}`,
+  trackingEnabled = true
+} = Astro.props;
+
+// Server-side variant selection for better performance
+let selectedVariant: ABTestVariant;
+
+if (defaultVariant) {
+  selectedVariant = variants.find(v => v.id === defaultVariant) || variants[0];
+} else {
+  // Simple weighted random selection
+  const totalWeight = variants.reduce((sum, variant) => sum + variant.weight, 0);
+  const random = Math.random() * totalWeight;
+  let currentWeight = 0;
+  
+  selectedVariant = variants.find(variant => {
+    currentWeight += variant.weight;
+    return random <= currentWeight;
+  }) || variants[0];
+}
+---
+
+<div id={`ab-test-${testName}`} class="ab-test-container" data-test-name={testName} data-variant={selectedVariant?.id}>
+  <slot variant={selectedVariant} />
+</div>
+
+<script define:vars={{ testName, selectedVariant, storageKey, trackingEnabled, variants }}>
+  // A/B Testing Client-side functionality
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById(`ab-test-${testName}`);
+    if (!container) return;
+
+    // Check for existing test assignment
+    let assignedVariant = localStorage.getItem(storageKey);
+    
+    if (!assignedVariant) {
+      // Assign variant based on weighted distribution
+      const totalWeight = variants.reduce((sum, variant) => sum + variant.weight, 0);
+      const random = Math.random() * totalWeight;
+      let currentWeight = 0;
+      
+      const variant = variants.find(v => {
+        currentWeight += v.weight;
+        return random <= currentWeight;
+      }) || variants[0];
+      
+      assignedVariant = variant.id;
+      localStorage.setItem(storageKey, assignedVariant);
+      
+      // Track assignment
+      if (trackingEnabled && typeof gtag !== 'undefined') {
+        gtag('event', 'ab_test_assigned', {
+          event_category: 'A/B Testing',
+          event_label: `${testName}_${assignedVariant}`,
+          custom_map: {
+            test_name: testName,
+            variant: assignedVariant
+          }
+        });
+      }
+    }
+
+    // Update container with assigned variant
+    container.setAttribute('data-variant', assignedVariant);
+    container.classList.add(`variant-${assignedVariant}`);
+
+    // Track interactions with the variant
+    function trackConversion(action, value = 1) {
+      if (trackingEnabled && typeof gtag !== 'undefined') {
+        gtag('event', 'ab_test_conversion', {
+          event_category: 'A/B Testing',
+          event_label: `${testName}_${assignedVariant}_${action}`,
+          value: value,
+          custom_map: {
+            test_name: testName,
+            variant: assignedVariant,
+            action: action
+          }
+        });
+      }
+      
+      // Store conversion data
+      const conversions = JSON.parse(localStorage.getItem(`${storageKey}_conversions`) || '[]');
+      conversions.push({
+        timestamp: Date.now(),
+        action: action,
+        value: value,
+        variant: assignedVariant
+      });
+      localStorage.setItem(`${storageKey}_conversions`, JSON.stringify(conversions));
+    }
+
+    // Auto-track common conversion events
+    container.addEventListener('click', (e) => {
+      const target = e.target;
+      
+      // Track CTA clicks
+      if (target.matches('button, .btn, [role="button"], .cta-button')) {
+        trackConversion('cta_click');
+      }
+      
+      // Track link clicks
+      if (target.matches('a[href]')) {
+        trackConversion('link_click');
+      }
+    });
+
+    // Track form submissions
+    const forms = container.querySelectorAll('form');
+    forms.forEach(form => {
+      form.addEventListener('submit', () => {
+        trackConversion('form_submit', 10); // Higher value for form submissions
+      });
+    });
+
+    // Track phone number clicks
+    const phoneLinks = container.querySelectorAll('a[href^="tel:"]');
+    phoneLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        trackConversion('phone_click', 20); // High value for phone calls
+      });
+    });
+
+    // Track scroll engagement
+    let hasScrolled = false;
+    function trackScroll() {
+      if (!hasScrolled && window.scrollY > 300) {
+        hasScrolled = true;
+        trackConversion('scroll_engagement');
+      }
+    }
+    
+    window.addEventListener('scroll', trackScroll, { passive: true });
+
+    // Track time on page
+    let startTime = Date.now();
+    let tracked30s = false;
+    let tracked60s = false;
+    
+    setInterval(() => {
+      const timeSpent = Date.now() - startTime;
+      
+      if (!tracked30s && timeSpent > 30000) {
+        tracked30s = true;
+        trackConversion('time_30s');
+      }
+      
+      if (!tracked60s && timeSpent > 60000) {
+        tracked60s = true;
+        trackConversion('time_60s');
+      }
+    }, 5000);
+
+    // Expose tracking function globally
+    if (typeof window !== 'undefined') {
+      (window as any).abTestTrack = (window as any).abTestTrack || {};
+      (window as any).abTestTrack[testName] = trackConversion;
+    }
+  });
+</script>
+
+<style>
+  .ab-test-container {
+    /* Base styles for A/B test container */
+  }
+
+  /* Variant-specific styles can be added here */
+  .variant-control {
+    /* Control variant styles */
+  }
+
+  .variant-treatment-a {
+    /* Treatment A styles */
+  }
+
+  .variant-treatment-b {
+    /* Treatment B styles */
+  }
+</style>

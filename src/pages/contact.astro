@@ -157,158 +157,108 @@ const seoProps = {
           </ul>
         </div>
 
-        <form action="/api/contact" method="POST" class="space-y-6" role="form" aria-labelledby="contact-form-title">
-          <h2 id="contact-form-title" class="sr-only">Contact Form</h2>
-          <div class="space-y-4 sm:space-y-6">
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div class="group">
-                <label for="name" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Full Name *</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  aria-required="true"
-                  aria-describedby="name-help"
-                  class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 hover:border-gold/50 hover:bg-gray-800"
-                  placeholder="John Smith"
-                />
-                <div id="name-help" class="sr-only">Enter your full name for the consultation</div>
-              </div>
-              
-              <div class="group">
-                <label for="email" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Business Email *</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  aria-required="true"
-                  aria-describedby="email-help"
-                  autocomplete="email"
-                  class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 hover:border-gold/50 hover:bg-gray-800"
-                  placeholder="john@company.com"
-                />
-                <div id="email-help" class="sr-only">Enter your business email address for contact</div>
-              </div>
+        <!-- High-Converting Contact Form -->
+        <form action="/api/contact" method="POST" class="space-y-4" id="contact-form" role="form" aria-labelledby="contact-form-title">
+          <h2 id="contact-form-title" class="sr-only">Contact Information Form</h2>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name *</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                aria-required="true"
+                aria-describedby="name-error"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+                placeholder="Your full name"
+              />
+              <div id="name-error" class="text-red-400 text-sm mt-1 hidden" role="alert"></div>
             </div>
             
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div class="group">
-                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  aria-describedby="phone-help"
-                  autocomplete="tel"
-                  class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 hover:border-gold/50 hover:bg-gray-800"
-                  placeholder="(555) 123-4567"
-                />
-                <div id="phone-help" class="sr-only">Optional phone number for direct contact</div>
-              </div>
-              
-              <div class="group">
-                <label for="service" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Primary Interest *</label>
-                <select
-                  id="service"
-                  name="service"
-                  required
-                  aria-required="true"
-                  aria-describedby="service-help"
-                  class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 hover:border-gold/50 hover:bg-gray-800 cursor-pointer"
-                >
-                  <option value="">Select your focus</option>
-                  <option value="Technology Consulting">💻 Technology Consulting</option>
-                  <option value="Bookkeeping Services">📊 Bookkeeping Services</option>
-                  <option value="Payroll & HR Services">💼 Payroll & HR Services</option>
-                  <option value="Business Operations Consulting">🚀 Business Operations Consulting</option>
-                  <option value="HVAC/Electrical Consulting">⚡ HVAC/Electrical Consulting</option>
-                  <option value="The Modern Suite Integration">🌟 The Modern Suite Integration</option>
-                  <option value="Other/Custom Solution">💡 Other/Custom Solution</option>
-                </select>
-                <div id="service-help" class="sr-only">Select the service you're most interested in</div>
-              </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                aria-required="true"
+                aria-describedby="email-error"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+                placeholder="your@email.com"
+              />
+              <div id="email-error" class="text-red-400 text-sm mt-1 hidden" role="alert"></div>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">Phone</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                aria-describedby="phone-error"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+                placeholder="(555) 123-4567"
+              />
+              <div id="phone-error" class="text-red-400 text-sm mt-1 hidden" role="alert"></div>
             </div>
             
-            <div class="grid sm:grid-cols-2 gap-4">
-              <div class="group">
-                <label for="timeline" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Project Timeline</label>
-                <select
-                  id="timeline"
-                  name="timeline"
-                  aria-describedby="timeline-help"
-                  class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 hover:border-gold/50 hover:bg-gray-800 cursor-pointer"
-                >
-                  <option value="">When do you need this?</option>
-                  <option value="ASAP (Rush - 1-2 weeks)">🔥 ASAP (Rush - 1-2 weeks)</option>
-                  <option value="Soon (2-4 weeks)">⚡ Soon (2-4 weeks)</option>
-                  <option value="Standard (1-2 months)">📅 Standard (1-2 months)</option>
-                  <option value="Flexible (2+ months)">🕐 Flexible (2+ months)</option>
-                </select>
-                <div id="timeline-help" class="sr-only">Optional project timeline preference</div>
-              </div>
-              
-              <div class="group">
-                <label for="budget" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Investment Range</label>
-                <select
-                  id="budget"
-                  name="budget"
-                  aria-describedby="budget-help"
-                  class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 hover:border-gold/50 hover:bg-gray-800 cursor-pointer"
-                >
-                  <option value="">What's your budget?</option>
-                  <option value="$500-$1,500">💰 $500-$1,500</option>
-                  <option value="$1,500-$5,000">💳 $1,500-$5,000</option>
-                  <option value="$5,000-$15,000">💎 $5,000-$15,000</option>
-                  <option value="$15,000+">🏆 $15,000+</option>
-                  <option value="Let's discuss">🤝 Let's discuss</option>
-                </select>
-                <div id="budget-help" class="sr-only">Optional budget range for your project</div>
-              </div>
+            <div>
+              <label for="service" class="block text-sm font-medium text-gray-300 mb-2">Primary Interest *</label>
+              <select
+                id="service"
+                name="service"
+                required
+                aria-required="true"
+                aria-describedby="service-error"
+                class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all cursor-pointer"
+              >
+                <option value="">Select a service</option>
+                <option value="QuickBooks Consulting">💻 QuickBooks Consulting</option>
+                <option value="Payroll Services">💼 Payroll Services</option>
+                <option value="Business Consulting">🚀 Business Consulting</option>
+                <option value="Technology Consulting">⚡ Technology Consulting</option>
+                <option value="HVAC/Electrical">🔧 HVAC/Electrical Consulting</option>
+                <option value="Complete Modern Suite">🌟 Complete Modern Suite</option>
+              </select>
+              <div id="service-error" class="text-red-400 text-sm mt-1 hidden" role="alert"></div>
             </div>
-          
-            <div class="group">
-              <label for="message" class="block text-sm font-medium text-gray-300 mb-2 group-focus-within:text-gold transition-colors">Tell us about your vision</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="4"
-                aria-describedby="message-help"
-                class="w-full px-4 py-3 bg-gray-800/80 border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all duration-300 resize-none hover:border-gold/50 hover:bg-gray-800"
-                placeholder="Describe your business, goals, and what success looks like to you..."
-              ></textarea>
-              <div id="message-help" class="sr-only">Optional detailed description of your project needs and goals</div>
-            </div>
-          
-            <div class="bg-gray-800/50 rounded-xl p-4 text-center">
-              <div class="flex items-center justify-center gap-2 text-sm text-gray-300 mb-2">
-                <svg class="w-4 h-4 text-gold" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span><strong>100% Free Consultation</strong> • No Obligations • Instant Confirmation</span>
-              </div>
-              <p class="text-xs text-gray-400">⏰ Only 3 strategy sessions available this week</p>
-            </div>
-          
-            <button
-              type="submit"
-              aria-describedby="submit-help"
-              class="w-full bg-gradient-to-r from-gold to-goldLight text-black font-bold py-4 px-6 rounded-xl hover:from-goldLight hover:to-gold transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-gold/20 active:scale-95 text-lg focus:ring-2 focus:ring-gold focus:ring-offset-2 focus:ring-offset-black focus:outline-none"
-            >
-              <span class="flex items-center justify-center gap-2">
-                🚀 Book My FREE Strategy Session Now
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                </svg>
-              </span>
-            </button>
-            <div id="submit-help" class="sr-only">Submit the form to book your free strategy session</div>
-            
-            <p class="text-xs text-gray-400 text-center">
-              By submitting this form, you agree to receive communications from The KPS Group. 
-              <br />We respect your privacy and will never spam you.
+          </div>
+
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-300 mb-2">Tell us about your business *</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              aria-required="true"
+              aria-describedby="message-error"
+              rows="4"
+              class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all resize-none"
+              placeholder="What challenges are you facing? What results are you looking for?"
+            ></textarea>
+            <div id="message-error" class="text-red-400 text-sm mt-1 hidden" role="alert"></div>
+          </div>
+
+          <!-- Submit Button with Loading State -->
+          <button
+            type="submit"
+            class="w-full bg-warning-400 hover:bg-warning-300 text-black font-bold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 focus:ring-4 focus:ring-warning-400/30 disabled:opacity-50 disabled:cursor-not-allowed"
+            id="submit-btn"
+          >
+            <span id="submit-text">� Get My FREE Assessment</span>
+            <span id="submit-loading" class="hidden">� Sending...</span>
+          </button>
+
+          <!-- Trust Signals -->
+          <div class="text-center pt-4">
+            <p class="text-sm text-gray-400">
+              ✓ No spam, ever &nbsp;•&nbsp; ✓ Free consultation &nbsp;•&nbsp; ✓ Same-day response
             </p>
+          </div>
         </form>
       </div>
 
@@ -451,3 +401,189 @@ const seoProps = {
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Enhanced form submission with loading states and conversion tracking
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitText = document.getElementById('submit-text');
+    const submitLoading = document.getElementById('submit-loading');
+    const submitStatus = document.getElementById('submit-status');
+
+    if (form && submitBtn && submitText && submitLoading) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Show loading state with accessibility announcements
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitText.classList.add('hidden');
+        submitLoading.classList.remove('hidden');
+        if (submitStatus) {
+          submitStatus.textContent = 'Submitting form, please wait...';
+        }
+
+        try {
+          const formData = new FormData(form);
+          
+          // Track form submission attempt
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submit_attempt', {
+              event_category: 'Contact',
+              event_label: 'Contact Form'
+            });
+          }
+
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            body: formData
+          });
+
+          if (response.ok) {
+            // Track successful submission
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'form_submit_success', {
+                event_category: 'Contact',
+                event_label: 'Contact Form',
+                value: 1
+              });
+            }
+            
+            // Success - redirect to thank you page
+            window.location.href = '/thank-you?source=contact';
+          } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          console.error('Form error:', error);
+          
+          // Track form error
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'form_submit_error', {
+              event_category: 'Contact',
+              event_label: 'Contact Form'
+            });
+          }
+          
+          alert('There was an error sending your message. Please try again or call us directly at (469) 534-3392.');
+        } finally {
+          // Reset button state with accessibility announcements
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+          submitText.classList.remove('hidden');
+          submitLoading.classList.add('hidden');
+          if (submitStatus) {
+            submitStatus.textContent = '';
+          }
+        }
+      });
+
+      // Real-time form validation
+      const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+      inputs.forEach(input => {
+        input.addEventListener('blur', validateField);
+        input.addEventListener('input', clearErrors);
+      });
+
+      function validateField(e) {
+        const field = e.target;
+        const value = field.value.trim();
+        const errorDiv = document.getElementById(`${field.name}-error`);
+        
+        // Clear existing errors
+        field.classList.remove('border-red-500', 'ring-red-500');
+        if (errorDiv) {
+          errorDiv.classList.add('hidden');
+          errorDiv.textContent = '';
+        }
+        
+        // Required field validation
+        if (!value && field.required) {
+          showFieldError(field, errorDiv, 'This field is required');
+          return false;
+        }
+        
+        // Email validation
+        if (field.type === 'email' && value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            showFieldError(field, errorDiv, 'Please enter a valid email address');
+            return false;
+          }
+        }
+        
+        // Phone validation (basic)
+        if (field.type === 'tel' && value) {
+          const phoneRegex = /^[\(\)\d\s\-\+\.]{10,}$/;
+          if (!phoneRegex.test(value)) {
+            showFieldError(field, errorDiv, 'Please enter a valid phone number');
+            return false;
+          }
+        }
+        
+        // Select validation
+        if (field.tagName === 'SELECT' && field.required && !value) {
+          showFieldError(field, errorDiv, 'Please make a selection');
+          return false;
+        }
+        
+        return true;
+      }
+
+      function showFieldError(field, errorDiv, message) {
+        field.classList.add('border-red-500', 'ring-red-500');
+        if (errorDiv) {
+          errorDiv.textContent = message;
+          errorDiv.classList.remove('hidden');
+        }
+      }
+
+      function clearErrors(e) {
+        const field = e.target;
+        const errorDiv = document.getElementById(`${field.name}-error`);
+        field.classList.remove('border-red-500', 'ring-red-500');
+        if (errorDiv) {
+          errorDiv.classList.add('hidden');
+          errorDiv.textContent = '';
+        }
+      }
+    }
+  });
+</script>
+
+<style>
+  /* Enhanced form styling */
+  #contact-form input:focus, 
+  #contact-form select:focus, 
+  #contact-form textarea:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(248, 214, 115, 0.15);
+  }
+
+  /* Loading animation */
+  #submit-loading::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 8px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Error state styling */
+  .border-red-500 {
+    border-color: #ef4444 !important;
+  }
+  
+  .ring-red-500 {
+    --tw-ring-color: rgba(239, 68, 68, 0.2) !important;
+  }
+</style>

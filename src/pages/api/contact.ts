@@ -3,6 +3,47 @@ import { Resend } from 'resend';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
+// Input sanitization function
+function sanitizeInput(input: string): string {
+  if (!input) return '';
+  return input
+    .toString()
+    .trim()
+    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .replace(/javascript:/gi, '') // Remove javascript: protocol
+    .replace(/data:/gi, '') // Remove data: protocol
+    .slice(0, 1000); // Limit length
+}
+
+// Enhanced email validation
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  return emailRegex.test(email) && email.length <= 254;
+}
+
+// Rate limiting storage (in production, use Redis or database)
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const windowMs = 15 * 60 * 1000; // 15 minutes
+  const maxRequests = 5; // Max 5 requests per 15 minutes
+
+  const record = rateLimitStore.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + windowMs });
+    return true;
+  }
+  
+  if (record.count >= maxRequests) {
+    return false;
+  }
+  
+  record.count++;
+  return true;
+}
+
 // Helper function to estimate lead value
 function estimateLeadValue(service: string, budget: string): number {
   const serviceMultipliers: Record<string, number> = {
@@ -35,19 +76,36 @@ function estimateLeadValue(service: string, budget: string): number {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    // Get client IP for rate limiting
+    const clientIP = request.headers.get('cf-connecting-ip') || 
+                     request.headers.get('x-forwarded-for') || 
+                     request.headers.get('x-real-ip') || 
+                     'unknown';
+
+    // Check rate limit
+    if (!checkRateLimit(clientIP)) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'Too many requests. Please try again later.' 
+      }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     const formData = await request.formData();
     
-    // Extract form fields with better handling
-    const name = formData.get('name') as string;
-    const firstName = formData.get('firstName') as string;
-    const lastName = formData.get('lastName') as string;
-    const email = formData.get('email') as string;
-    const phone = formData.get('phone') as string;
-    const company = formData.get('company') as string;
-    const service = formData.get('service') as string;
-    const services = formData.getAll('services') as string[];
-    const timeline = formData.get('timeline') as string;
-    const budget = formData.get('budget') as string;
+    // Extract and sanitize form fields
+    const name = sanitizeInput(formData.get('name') as string);
+    const firstName = sanitizeInput(formData.get('firstName') as string);
+    const lastName = sanitizeInput(formData.get('lastName') as string);
+    const email = sanitizeInput(formData.get('email') as string);
+    const phone = sanitizeInput(formData.get('phone') as string);
+    const company = sanitizeInput(formData.get('company') as string);
+    const service = sanitizeInput(formData.get('service') as string);
+    const services = formData.getAll('services').map(s => sanitizeInput(s as string));
+    const timeline = sanitizeInput(formData.get('timeline') as string);
+    const budget = sanitizeInput(formData.get('budget') as string);
     const industry = formData.get('industry') as string;
     const employees = formData.get('employees') as string;
     const message = formData.get('message') as string;
@@ -58,6 +116,32 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Combine name fields if using multi-step form
     const fullName = name || (firstName && lastName ? `${firstName} ${lastName}` : firstName || lastName);
+
+    // Enhanced lead tracking and analytics
+    const leadData = {
+      timestamp: new Date().toISOString(),
+      name: fullName,
+      email,
+      phone: phone || 'Not provided',
+      company: company || 'Not specified',
+      service: service || services.join(', ') || 'General inquiry',
+      timeline: timeline || 'Not specified',
+      budget: budget || 'Not specified',
+      industry: industry || 'Not specified',
+      employees: employees || 'Not specified',
+      message: message || 'No message provided',
+      formType,
+      location: location || 'Not specified',
+      preferredContact: preferredContact || 'Email',
+      bestTime: bestTime || 'Any time',
+      estimatedValue: estimateLeadValue(service || 'General', budget || 'Not specified'),
+      source: 'Website Contact Form',
+      userAgent: request.headers.get('user-agent') || 'Unknown',
+      ipAddress: request.headers.get('cf-connecting-ip') || 
+                 request.headers.get('x-forwarded-for') || 
+                 request.headers.get('x-real-ip') || 'Unknown',
+      referer: request.headers.get('referer') || 'Direct'
+    };
 
     // Validate required fields
     if (!fullName || !email) {
@@ -70,12 +154,43 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    // Enhanced email validation
+    if (!isValidEmail(email)) {
       return new Response(JSON.stringify({ 
         success: false, 
         error: 'Please enter a valid email address' 
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Validate name length
+    if (fullName.length < 2 || fullName.length > 100) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'Name must be between 2 and 100 characters' 
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Check for suspicious content
+    const suspiciousPatterns = [
+      /<script/i,
+      /javascript:/i,
+      /data:text\/html/i,
+      /vbscript:/i,
+      /@import/i,
+      /expression\(/i
+    ];
+
+    const allInputs = [fullName, email, message, company, phone].join(' ');
+    if (suspiciousPatterns.some(pattern => pattern.test(allInputs))) {
+      return new Response(JSON.stringify({ 
+        success: false, 
+        error: 'Invalid input detected' 
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
