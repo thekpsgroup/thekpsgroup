@@ -4,22 +4,40 @@ import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import HeroOptimized from '../components/HeroOptimized.astro';
 import Testimonials from '../components/Testimonials.astro';
 import { BUSINESS } from '../data/constants';
+import { generateAreaServed, generateStateKeywords, US_STATES } from '../data/us-geography';
+
+// Generate comprehensive SEO coverage for all 50 states
+const baseKeywords = [
+  'holding company', 'small business solutions', 'integrated business services', 'modern suite',
+  'business consulting', 'technology solutions', 'financial services', 'branding services',
+  'HR services', 'operations consulting', 'business empowerment', 'professional services',
+  'small business support', 'enterprise solutions', 'business integration', 'QuickBooks consulting',
+  'payroll services', 'technology consulting', 'digital transformation', 'small business accounting'
+];
+
+// Add state-specific keywords for top-performing business keywords
+const priorityKeywords = [
+  'business consulting', 'QuickBooks consulting', 'payroll services', 'HR services',
+  'technology consulting', 'small business solutions', 'business services'
+];
+const stateKeywords = generateStateKeywords(priorityKeywords);
 
 const seoProps = {
-  title: 'The KPS Group | The Modern Suite - Empowering Small Business Success',
-  description: 'The KPS Group brings together six specialized companies under The Modern Suite, providing small businesses with integrated solutions for operations, technology, finance, branding, consulting, and HR. Professional holding company serving businesses nationwide.',
+  title: 'The KPS Group | The Modern Suite - Empowering Small Business Success Nationwide',
+  description: 'The KPS Group serves small businesses across all 50 states with integrated solutions for operations, technology, finance, branding, consulting, and HR. Professional holding company providing nationwide business support through The Modern Suite platform.',
   keywords: [
-    'holding company', 'small business solutions', 'integrated business services', 'modern suite',
-    'business consulting', 'technology solutions', 'financial services', 'branding services',
-    'HR services', 'operations consulting', 'business empowerment', 'professional services',
-    'small business support', 'enterprise solutions', 'business integration', 'QuickBooks consulting',
-    'payroll services', 'technology consulting', 'digital transformation', 'small business accounting'
+    ...baseKeywords,
+    ...stateKeywords.slice(0, 100), // Limit to avoid overly long meta keywords
+    // National coverage keywords
+    'nationwide business consulting', 'remote business services', 'virtual business support',
+    'online business consulting', 'cloud-based business solutions', 'digital business transformation',
+    'multi-state business services', 'interstate business consulting', 'national small business support'
   ],
   serviceSchema: {
     name: 'The Modern Suite - Integrated Business Solutions',
-    description: 'Comprehensive business solutions including technology consulting, financial services, HR support, and operational excellence for small and medium businesses',
+    description: 'Comprehensive business solutions including technology consulting, financial services, HR support, and operational excellence for small and medium businesses across all 50 US states',
     provider: 'The KPS Group',
-    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    areaServed: generateAreaServed(true, false), // All states, no cities to keep manageable
     serviceType: 'Business Consulting Services',
     priceRange: '$$'
   },
@@ -60,8 +78,8 @@ const seoProps = {
       answer: 'The Modern Suite provides integrated solutions that streamline your operations, enhance technology infrastructure, ensure compliance, and drive growth. Our services are designed to work together seamlessly, providing you with comprehensive business support.'
     },
     {
-      question: 'Do you work with businesses nationwide?',
-      answer: 'Yes, while we are based in Austin, Texas, we serve businesses nationwide through remote consulting, cloud-based solutions, and virtual support services. We have expertise in various state and federal requirements.'
+      question: 'Do you work with businesses in all 50 states?',
+      answer: 'Yes! The KPS Group proudly serves small and medium businesses across all 50 US states and the District of Columbia. Through our Modern Suite platform, we provide remote consulting, cloud-based solutions, and virtual support services. Our team has expertise in state-specific regulations, multi-state compliance requirements, and federal business standards nationwide.'
     },
     {
       question: 'What makes The KPS Group different from other business consulting firms?',

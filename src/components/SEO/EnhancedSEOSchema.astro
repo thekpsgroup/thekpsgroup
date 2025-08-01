@@ -1,5 +1,6 @@
 ---
 import type { CityData } from '../../data/cities';
+import { generateAreaServed, US_STATES } from '../../data/us-geography';
 
 interface BusinessHours {
   dayOfWeek: string[];
@@ -86,17 +87,13 @@ const generateSchema = () => {
     },
     "areaServed": [
       {
-        "@type": "State",
-        "name": "Texas"
-      },
-      {
-        "@type": "State", 
-        "name": "Oklahoma"
-      },
-      {
         "@type": "Country",
         "name": "United States"
-      }
+      },
+      ...US_STATES.map(state => ({
+        "@type": "State",
+        "name": state.name
+      }))
     ],
     "serviceType": [
       "Business Consulting",

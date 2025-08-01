@@ -2,21 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import { BUSINESS } from '../data/constants';
+import { generateAreaServed, generateStateKeywords } from '../data/us-geography';
+
+// Generate state-specific contact keywords  
+const contactKeywords = generateStateKeywords([
+  'business consultation', 'QuickBooks consulting contact', 'payroll services inquiry',
+  'HR services contact', 'technology consulting contact', 'business services consultation'
+]);
 
 const seoProps = {
-  title: 'Contact The KPS Group | Free Business Consultation | Call (469) 534-3392',
-  description: 'Get your free business consultation with The KPS Group. Expert QuickBooks consulting, payroll services, HR solutions, and technology consulting. Same-day response guaranteed. Call (469) 534-3392 or email sales@thekpsgroup.com.',
+  title: 'Contact The KPS Group | Free Business Consultation Nationwide | Call (469) 534-3392',
+  description: 'Get your free business consultation with The KPS Group. Expert QuickBooks consulting, payroll services, HR solutions, and technology consulting available in all 50 states. Same-day response guaranteed. Call (469) 534-3392 or email sales@thekpsgroup.com.',
   keywords: [
     'contact KPS Group', 'free business consultation', 'QuickBooks consulting contact', 'payroll services inquiry',
-    'HR services contact', 'technology consulting contact', 'business services consultation', 'Austin business consulting',
+    'HR services contact', 'technology consulting contact', 'business services consultation', 'nationwide business consulting',
     'small business support contact', 'free consultation call', 'business operations consulting', 'The Modern Suite contact',
-    'professional business services', 'certified QuickBooks ProAdvisor', 'business transformation consultation'
+    'professional business services', 'certified QuickBooks ProAdvisor', 'business transformation consultation',
+    'remote business consultation', 'virtual business services', 'multi-state business support',
+    ...contactKeywords.slice(0, 50) // Add state-specific keywords
   ],
   serviceSchema: {
     name: 'Free Business Consultation',
-    description: 'Complimentary business consultation covering QuickBooks setup, payroll services, HR solutions, and technology consulting',
+    description: 'Complimentary business consultation covering QuickBooks setup, payroll services, HR solutions, and technology consulting available nationwide',
     provider: 'The KPS Group',
-    areaServed: ['United States', 'Texas', 'Austin', 'Dallas', 'Houston'],
+    areaServed: generateAreaServed(true, false), // All states
     serviceType: 'Business Consultation Services',
     priceRange: 'Free'
   },
@@ -61,8 +70,8 @@ const seoProps = {
       answer: 'Come as you are! We\'ll discuss your current challenges, business goals, and how our services can help. If you have specific questions about QuickBooks, payroll, or technology needs, feel free to bring those up.'
     },
     {
-      question: 'Can you work with businesses outside of Texas?',
-      answer: 'Yes! While we\'re based in Austin, Texas, we provide remote services to small and medium businesses across the United States through our Modern Suite platform.'
+      question: 'Do you serve businesses in all 50 states?',
+      answer: 'Absolutely! The KPS Group provides comprehensive business services to small and medium businesses across all 50 US states and the District of Columbia. While we\'re headquartered in Austin, Texas, our Modern Suite platform enables us to deliver expert consulting, technology solutions, and business support services remotely to clients nationwide.'
     }
   ]
 };
