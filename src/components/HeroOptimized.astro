@@ -1,61 +1,12 @@
 ---
-// A/B tested hero component for maximum conversion optimization
-import ABTest from './ABTest.astro';
-
+// Optimized hero component for maximum conversion
 export interface Props {
-  enableABTest?: boolean;
   variant?: 'default' | 'consultation' | 'results';
 }
 
-const { enableABTest = true, variant = 'default' } = Astro.props;
+const { variant = 'default' } = Astro.props;
 
-// A/B test variants for hero headlines
-const abTestVariants = [
-  {
-    id: 'control',
-    weight: 34,
-    headline: "Transform Your Business with Enterprise-Level Solutions",
-    subheadline: "Get the same sophisticated systems Fortune 500 companies use - designed for small business budgets",
-    ctaText: "Get My FREE Business Assessment",
-    ctaSubtext: "Usually $500 - FREE for a limited time",
-    benefits: [
-      "Increase profits by 25-40%",
-      "Cut admin time in half", 
-      "Scale without stress",
-      "Same-day setup available"
-    ]
-  },
-  {
-    id: 'urgency',
-    weight: 33,
-    headline: "Discover $10K+ in Hidden Business Savings",
-    subheadline: "Free 30-minute consultation reveals profit leaks and growth opportunities most business owners miss",
-    ctaText: "Book My FREE Consultation", 
-    ctaSubtext: "Next available: Today at 3 PM",
-    benefits: [
-      "Find hidden revenue streams",
-      "Eliminate profit leaks",
-      "Automate manual processes", 
-      "Get custom growth roadmap"
-    ]
-  },
-  {
-    id: 'social-proof',
-    weight: 33,
-    headline: "Join 300+ Businesses Growing 3X Faster",
-    subheadline: "Our clients average 40% profit increases and 50% time savings within 90 days",
-    ctaText: "See How We Can Help You",
-    ctaSubtext: "Free consultation includes ROI projection",
-    benefits: [
-      "Average 40% profit increase",
-      "50% reduction in admin time",
-      "3X faster growth rate",
-      "90-day results guarantee"
-    ]
-  }
-];
-
-// Fallback variants (original structure)
+// Hero content variants
 const heroVariants = {
   default: {
     headline: "Transform Your Business with Enterprise-Level Solutions",
@@ -91,6 +42,24 @@ const heroVariants = {
       "50% reduction in admin time",
       "3X faster growth rate",
       "90-day results guarantee"
+    ctaSubtext: "Usually $500 - FREE for a limited time",
+    benefits: [
+      "Book your free consultation",
+      "Identify profit opportunities", 
+      "Get custom recommendations",
+      "Same-day response guaranteed"
+    ]
+  },
+  results: {
+    headline: "See Real Results in 30 Days",
+    subheadline: "Join 300+ businesses already saving $10K+ annually with our proven systems",
+    ctaText: "Get My Results Roadmap",
+    ctaSubtext: "Free consultation + implementation plan",
+    benefits: [
+      "Proven 25-40% profit increase",
+      "50% reduction in admin time",
+      "3X faster growth rate",
+      "90-day results guarantee"
     ]
   }
 };
@@ -118,70 +87,55 @@ const hero = heroVariants[variant];
         </div>
       </div>
 
-      <!-- Main Headlines with A/B Testing -->
-      {enableABTest ? (
-        <ABTest testName="hero-headlines" variants={abTestVariants} trackingEnabled={true}>
-          {(variant) => (
-            <div class="text-center mb-12 animate-fade-in" style="animation-delay: 0.2s;">
-              <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
-                {variant.headline}
-              </h1>
+      <!-- Main Headlines -->
+      <div class="text-center mb-12 animate-fade-in" style="animation-delay: 0.2s;">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
+          {hero.headline}
+        </h1>
+        
+        <p class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+          {hero.subheadline}
+        </p>
+        
+        <!-- Benefits Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 animate-fade-in" style="animation-delay: 0.4s;">
+          {hero.benefits.map((benefit, index) => (
+            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center hover:border-warning-400/30 transition-all">
+              <div class="text-warning-400 font-semibold text-sm mb-1">✓</div>
+              <div class="text-white text-sm">{benefit}</div>
+            </div>
+          ))}
+        </div>
+        <!-- Primary CTA -->
+        <div class="text-center mb-16 animate-fade-in" style="animation-delay: 0.6s;">
+          <div class="max-w-md mx-auto">
+            <!-- Value Proposition Box -->
+            <div class="bg-gradient-to-r from-warning-400/20 to-warning-300/20 rounded-2xl p-6 mb-6 border border-warning-400/30">
+              <div class="text-warning-400 font-bold text-2xl mb-2">FREE</div>
+              <div class="text-white font-semibold mb-1">Business Assessment</div>
+              <div class="text-gray-300 text-sm mb-3">{hero.ctaSubtext}</div>
               
-              <p class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-                {variant.subheadline}
-              </p>
+              <a 
+                href="/contact"
+                class="block w-full bg-warning-400 hover:bg-warning-300 text-black font-bold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg mb-3 cta-button"
+                id="hero-cta"
+              >
+                🚀 {hero.ctaText}
+              </a>
               
-              <!-- Benefits Grid -->
-              <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 animate-fade-in" style="animation-delay: 0.4s;">
-                {variant.benefits.map((benefit, index) => (
-                  <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center hover:border-warning-400/30 transition-all">
-                    <div class="text-warning-400 font-semibold text-sm mb-1">✓</div>
-                    <div class="text-white text-sm">{benefit}</div>
-                  </div>
-                ))}
-              </div>
-
-              <!-- Primary CTA -->
-              <div class="text-center mb-16 animate-fade-in" style="animation-delay: 0.6s;">
-                <div class="max-w-md mx-auto">
-                  <!-- Value Proposition Box -->
-                  <div class="bg-gradient-to-r from-warning-400/20 to-warning-300/20 rounded-2xl p-6 mb-6 border border-warning-400/30">
-                    <div class="text-warning-400 font-bold text-2xl mb-2">FREE</div>
-                    <div class="text-white font-semibold mb-1">Business Assessment</div>
-                    <div class="text-gray-300 text-sm mb-3">{variant.ctaSubtext}</div>
-                    
-                    <a 
-                      href="/contact"
-                      class="block w-full bg-warning-400 hover:bg-warning-300 text-black font-bold py-4 px-8 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg mb-3 cta-button"
-                      id="hero-cta"
-                    >
-                      🚀 {variant.ctaText}
-                    </a>
-                    
-                    <div class="text-xs text-gray-400">
-                      ✓ No spam &nbsp;•&nbsp; ✓ Same-day response &nbsp;•&nbsp; ✓ 24/7 support
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Urgency Indicator -->
-                <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 rounded-full px-4 py-2 text-sm text-red-400">
-                  <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                  <span>🔥 Only 3 consultation slots left this week</span>
-                </div>
+              <div class="text-xs text-gray-400">
+                ✓ No spam &nbsp;•&nbsp; ✓ Same-day response &nbsp;•&nbsp; ✓ 24/7 support
               </div>
             </div>
-          )}
-        </ABTest>
-      ) : (
-        <div class="text-center mb-12 animate-fade-in" style="animation-delay: 0.2s;">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
-            {hero.headline}
-          </h1>
-          
-          <p class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
-            {hero.subheadline}
-          </p>
+          </div>
+
+          <!-- Urgency Indicator -->
+          <div class="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 rounded-full px-4 py-2 text-sm text-red-400">
+            <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+            <span>🔥 Only 3 consultation slots left this week</span>
+          </div>
+        </div>
+      </div>
           
           <!-- Benefits Grid -->
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 animate-fade-in" style="animation-delay: 0.4s;">
@@ -223,7 +177,6 @@ const hero = heroVariants[variant];
             </div>
           </div>
         </div>
-      )}
 
       <!-- Social Proof -->
       <div class="text-center animate-fade-in" style="animation-delay: 0.8s;">
