@@ -7,4 +7,10 @@ export default defineConfig({
   adapter: vercel(),
   integrations: [tailwind()],
   site: 'https://thekpsgroup.com',
+  
+  vite: {
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }
+  }
 });

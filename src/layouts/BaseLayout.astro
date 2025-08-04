@@ -326,6 +326,15 @@ if (isServicePage) {
     <meta name="keywords" content={metaKeywords} />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="theme-color" content="#f8d673" />
+    
+    <!-- SECURITY & PERFORMANCE HEADERS -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
+    <meta http-equiv="Cache-Control" content="public, max-age=3600, stale-while-revalidate=86400" />
+    
     <meta name="author" content="The KPS Group LLC - Karson Lawrence, CEO" />
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
     
