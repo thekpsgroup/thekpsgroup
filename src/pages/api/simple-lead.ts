@@ -69,7 +69,7 @@ export const POST: APIRoute = async ({ request }) => {
     // Send notification email to you
     const { data, error } = await resend.emails.send({
       from: 'KPS Group Leads <onboarding@resend.dev>',
-      to: ['karson@thekpsgroup.com'],
+      to: [import.meta.env.LEAD_TO_EMAIL || 'Karson@thekpsgroup.com'],
       replyTo: email,
       subject: `New Lead from ${name} - ${phone}`,
       html: emailHtml,
