@@ -2,10 +2,10 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import AnalyticsTracker from '../components/AnalyticsTracker.astro';
+// import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import VercelAnalytics from '../components/VercelAnalytics.astro';
 import EnhancedAccessibility from '../components/UI/EnhancedAccessibility.astro';
-import CoreWebVitals from '../components/Performance/CoreWebVitals.astro';
+// import CoreWebVitals from '../components/Performance/CoreWebVitals.astro';
 import LiveChat from '../components/LiveChat.astro';
 import { BUSINESS, CITIES } from '../data/constants';
 import { MAJOR_CITIES } from '../data/cities';
@@ -1069,7 +1069,7 @@ if (isServicePage) {
   <body class="antialiased font-sans bg-black text-white">
     <!-- Enhanced Accessibility & Performance Components -->
     <EnhancedAccessibility skipToContent={true} />
-    <CoreWebVitals enableLazyLoading={true} enableImageOptimization={true} />
+    <!-- <CoreWebVitals enableLazyLoading={true} enableImageOptimization={true} /> -->
     
     <Header />
     
@@ -1083,7 +1083,7 @@ if (isServicePage) {
     <LiveChat position="bottom-right" theme="dark" showOnMobile={true} />
     
     <!-- Analytics Tracker -->
-    <AnalyticsTracker />
+    <!-- <AnalyticsTracker /> -->
     
     <!-- Progressive Enhancement Script -->
     <script>
