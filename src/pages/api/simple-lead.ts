@@ -68,8 +68,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Send notification email to you
     const { data, error } = await resend.emails.send({
-      from: 'KPS Group Leads <onboarding@resend.dev>',
-      to: [import.meta.env.LEAD_TO_EMAIL || 'Karson@thekpsgroup.com'],
+      from: 'KPS Group <onboarding@resend.dev>',
+      to: [import.meta.env.LEAD_TO_EMAIL || 'karson@thekpsgroup.com'],
       replyTo: email,
       subject: `New Lead from ${name} - ${phone}`,
       html: emailHtml,
@@ -85,9 +85,12 @@ Call within 24 hours for best conversion!`,
     });
 
     if (error) {
-      console.error('Resend error:', error);
+      console.error('Resend error details:', JSON.stringify(error, null, 2));
       return new Response(
-        JSON.stringify({ error: 'Failed to send notification email' }), 
+        JSON.stringify({ 
+          error: 'Failed to send notification email',
+          details: error.message || 'Unknown error'
+        }), 
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
