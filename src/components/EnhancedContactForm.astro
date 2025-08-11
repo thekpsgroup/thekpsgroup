@@ -1368,9 +1368,16 @@ const config = getFormConfig(formType);
 
     sendFormData: async function(formData) {
       try {
-        const response = await fetch('/api/contact', {
+        const response = await fetch('/api/simple-lead', {
           method: 'POST',
-          body: formData
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone')
+          })
         });
 
         if (!response.ok) {
