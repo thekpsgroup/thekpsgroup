@@ -1,0 +1,180 @@
+---
+// Social Proof & Trust Indicators
+interface Props {
+  showRecentActivity?: boolean;
+  showSecurityBadge?: boolean;
+  showStats?: boolean;
+}
+
+const { showRecentActivity = true, showSecurityBadge = true, showStats = true } = Astro.props;
+
+// Simulated recent activity for social proof
+const recentActivities = [
+  { name: "Sarah M.", action: "scheduled a consultation", time: "2 minutes ago", location: "Dallas, TX" },
+  { name: "Mike R.", action: "downloaded our guide", time: "8 minutes ago", location: "Austin, TX" },
+  { name: "Jennifer L.", action: "signed up for Modern Pay", time: "15 minutes ago", location: "Houston, TX" },
+  { name: "David K.", action: "started their assessment", time: "23 minutes ago", location: "San Antonio, TX" }
+];
+---
+
+<div class="trust-indicators space-y-6">
+  
+  {showStats && (
+    <div class="stats-grid grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+      <div class="stat-item bg-white/5 backdrop-blur-sm border border-warning-400/20 rounded-xl p-6">
+        <div class="text-3xl font-bold text-gold mb-2">300+</div>
+        <div class="text-sm text-gray-300">Businesses Transformed</div>
+      </div>
+      <div class="stat-item bg-white/5 backdrop-blur-sm border border-warning-400/20 rounded-xl p-6">
+        <div class="text-3xl font-bold text-gold mb-2">99%</div>
+        <div class="text-sm text-gray-300">Client Retention Rate</div>
+      </div>
+      <div class="stat-item bg-white/5 backdrop-blur-sm border border-warning-400/20 rounded-xl p-6">
+        <div class="text-3xl font-bold text-gold mb-2">$10K+</div>
+        <div class="text-sm text-gray-300">Average Savings</div>
+      </div>
+    </div>
+  )}
+
+  {showSecurityBadge && (
+    <div class="security-badges flex flex-wrap items-center justify-center gap-4 text-center">
+      <div class="flex items-center gap-2 bg-green-500/10 border border-green-500/30 rounded-full px-4 py-2">
+        <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+        <span class="text-sm text-green-400">SSL Secured</span>
+      </div>
+      
+      <div class="flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 rounded-full px-4 py-2">
+        <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <span class="text-sm text-blue-400">No Spam Policy</span>
+      </div>
+      
+      <div class="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 rounded-full px-4 py-2">
+        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        <span class="text-sm text-purple-400">GDPR Compliant</span>
+      </div>
+    </div>
+  )}
+
+  {showRecentActivity && (
+    <div class="recent-activity bg-white/5 backdrop-blur-sm border border-warning-400/20 rounded-xl p-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+        <h4 class="text-white font-semibold">Recent Activity</h4>
+      </div>
+      
+      <div id="activity-list" class="space-y-3">
+        {recentActivities.slice(0, 2).map((activity, index) => (
+          <div key={index} class="activity-item flex items-center justify-between text-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-gradient-to-r from-gold to-warning-400 rounded-full flex items-center justify-center">
+                <span class="text-black font-semibold text-xs">{activity.name.split(' ')[0][0]}</span>
+              </div>
+              <div>
+                <div class="text-white">
+                  <span class="font-medium">{activity.name}</span> {activity.action}
+                </div>
+                <div class="text-gray-400 text-xs">{activity.location}</div>
+              </div>
+            </div>
+            <div class="text-gray-400 text-xs">{activity.time}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</div>
+
+{showRecentActivity && (
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const activities = [
+        { name: "Sarah M.", action: "scheduled a consultation", time: "2 minutes ago", location: "Dallas, TX" },
+        { name: "Mike R.", action: "downloaded our guide", time: "8 minutes ago", location: "Austin, TX" },
+        { name: "Jennifer L.", action: "signed up for Modern Pay", time: "15 minutes ago", location: "Houston, TX" },
+        { name: "David K.", action: "started their assessment", time: "23 minutes ago", location: "San Antonio, TX" },
+        { name: "Lisa C.", action: "completed onboarding", time: "31 minutes ago", location: "Fort Worth, TX" },
+        { name: "Robert P.", action: "upgraded to Modern Suite", time: "45 minutes ago", location: "Plano, TX" }
+      ];
+
+      const activityList = document.getElementById('activity-list');
+      let currentIndex = 0;
+
+      if (activityList) {
+        // Rotate activities every 15 seconds
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % activities.length;
+          const nextActivity = activities[currentIndex];
+          const secondActivity = activities[(currentIndex + 1) % activities.length];
+          
+          activityList.innerHTML = `
+            <div class="activity-item flex items-center justify-between text-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-r from-gold to-warning-400 rounded-full flex items-center justify-center">
+                  <span class="text-black font-semibold text-xs">${nextActivity.name.split(' ')[0][0]}</span>
+                </div>
+                <div>
+                  <div class="text-white">
+                    <span class="font-medium">${nextActivity.name}</span> ${nextActivity.action}
+                  </div>
+                  <div class="text-gray-400 text-xs">${nextActivity.location}</div>
+                </div>
+              </div>
+              <div class="text-gray-400 text-xs">${nextActivity.time}</div>
+            </div>
+            <div class="activity-item flex items-center justify-between text-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-r from-gold to-warning-400 rounded-full flex items-center justify-center">
+                  <span class="text-black font-semibold text-xs">${secondActivity.name.split(' ')[0][0]}</span>
+                </div>
+                <div>
+                  <div class="text-white">
+                    <span class="font-medium">${secondActivity.name}</span> ${secondActivity.action}
+                  </div>
+                  <div class="text-gray-400 text-xs">${secondActivity.location}</div>
+                </div>
+              </div>
+              <div class="text-gray-400 text-xs">${secondActivity.time}</div>
+            </div>
+          `;
+        }, 15000);
+      }
+    });
+  </script>
+)}
+
+<style>
+  .stat-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.15);
+  }
+  
+  .activity-item {
+    opacity: 0;
+    animation: slideInUp 0.5s ease forwards;
+  }
+  
+  .activity-item:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

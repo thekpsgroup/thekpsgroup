@@ -1,0 +1,121 @@
+---
+// Mobile Debug Component - helps identify mobile-specific issues
+---
+
+<div id="mobile-debug" class="fixed bottom-4 left-4 z-50 bg-red-600 text-white p-2 rounded text-xs max-w-xs" style="display: none;">
+  <div id="debug-info"></div>
+</div>
+
+<script>
+  // Mobile debugging script
+  function updateDebugInfo() {
+    const debugEl = document.getElementById('debug-info');
+    const debugContainer = document.getElementById('mobile-debug');
+    
+    if (!debugEl || !debugContainer) return;
+    
+    const viewport = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      devicePixelRatio: window.devicePixelRatio || 1,
+      orientation: screen.orientation?.angle || 'unknown'
+    };
+    
+    const userAgent = navigator.userAgent;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+    const isSafari = /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
+    
+    debugEl.innerHTML = `
+      <strong>Mobile Debug:</strong><br>
+      Viewport: ${viewport.width}x${viewport.height}<br>
+      DPR: ${viewport.devicePixelRatio}<br>
+      Is Mobile: ${isMobile}<br>
+      Is iOS: ${isIOS}<br>
+      Is Safari: ${isSafari}<br>
+      Orientation: ${viewport.orientation}°<br>
+      User Agent: ${userAgent.substring(0, 50)}...
+    `;
+    
+    // Show debug panel on mobile only
+    if (isMobile || viewport.width < 768) {
+      debugContainer.style.display = 'block';
+    }
+  }
+  
+  // Update on load and resize
+  window.addEventListener('load', updateDebugInfo);
+  window.addEventListener('resize', updateDebugInfo);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(updateDebugInfo, 100);
+  });
+  
+  // Check for common mobile issues
+  function checkMobileIssues() {
+    const issues = [];
+    
+    // Check for horizontal scroll
+    if (document.body.scrollWidth > window.innerWidth) {
+      issues.push('Horizontal scroll detected');
+    }
+    
+    // Check viewport meta tag
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      issues.push('No viewport meta tag');
+    } else if (!viewport.content.includes('width=device-width')) {
+      issues.push('Viewport not set to device-width');
+    }
+    
+    // Check for touch-friendly buttons
+    const buttons = document.querySelectorAll('button, a');
+    let smallButtons = 0;
+    buttons.forEach(btn => {
+      const rect = btn.getBoundingClientRect();
+      if (rect.width < 44 || rect.height < 44) {
+        smallButtons++;
+      }
+    });
+    
+    if (smallButtons > 0) {
+      issues.push(`${smallButtons} buttons too small for touch`);
+    }
+    
+    // Check for fixed positioning issues
+    const fixedElements = document.querySelectorAll('[style*="fixed"], .fixed');
+    if (fixedElements.length > 3) {
+      issues.push('Many fixed elements may cause issues');
+    }
+    
+    if (issues.length > 0) {
+      console.warn('Mobile Issues Detected:', issues);
+      
+      // Add issues to debug panel
+      const debugEl = document.getElementById('debug-info');
+      if (debugEl) {
+        debugEl.innerHTML += `<br><strong>Issues:</strong><br>${issues.join('<br>')}`;
+      }
+    }
+  }
+  
+  // Run checks after page loads
+  setTimeout(checkMobileIssues, 1000);
+</script>
+
+<style>
+  #mobile-debug {
+    font-family: monospace;
+    font-size: 10px;
+    line-height: 1.2;
+    z-index: 9999;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  
+  @media (min-width: 768px) {
+    #mobile-debug {
+      display: none !important;
+    }
+  }
+</style>

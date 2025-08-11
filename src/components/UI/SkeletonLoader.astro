@@ -1,0 +1,33 @@
+---
+interface Props {
+  lines?: number;
+  height?: string;
+  className?: string;
+}
+
+const { lines = 3, height = 'h-4', className = '' } = Astro.props;
+---
+
+<div class={`animate-pulse space-y-3 ${className}`}>
+  {Array.from({ length: lines }).map((_, index) => (
+    <div 
+      key={index}
+      class={`bg-gray-300 rounded ${height} ${index === lines - 1 ? 'w-3/4' : 'w-full'}`}
+    ></div>
+  ))}
+</div>
+
+<style>
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: .5;
+    }
+  }
+  
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+</style>

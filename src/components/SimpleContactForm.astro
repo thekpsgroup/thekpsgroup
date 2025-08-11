@@ -30,24 +30,46 @@ const {
 
   <!-- Simple Form -->
   <form action="/api/simple-lead" method="POST" class="space-y-4" id="contact-form">
-    <!-- Name & Email Row -->
-    <div class="grid md:grid-cols-2 gap-4">
-      <div>
-        <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name *</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          required
-          class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
-          placeholder="Your full name"
-        />
+    <!-- Loading State -->
+    <div id="loading-state" class="hidden text-center py-8">
+      <div class="inline-flex items-center gap-3 text-warning-400">
+        <div class="animate-spin rounded-full h-6 w-6 border-2 border-warning-400 border-t-transparent"></div>
+        <span>Submitting your request...</span>
       </div>
-      
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
-        <input
-          type="email"
+    </div>
+    
+    <!-- Success State -->
+    <div id="success-state" class="hidden text-center py-8">
+      <div class="inline-flex items-center gap-3 text-green-400 mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span class="font-semibold">Thank you!</span>
+      </div>
+      <p class="text-gray-300">We'll be in touch within 24 hours to schedule your FREE assessment.</p>
+    </div>
+    
+    <!-- Form Fields -->
+    <div id="form-fields">
+      <!-- Name & Email Row -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Name *</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            class="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-warning-400 focus:ring-2 focus:ring-warning-400/20 transition-all"
+            placeholder="Your full name"
+          />
+          <div class="error-message text-red-400 text-sm mt-1 hidden"></div>
+        </div>
+        
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email *</label>
+          <input
+            type="email"
           id="email"
           name="email"
           required
@@ -122,40 +144,118 @@ const {
 </div>
 
 <script>
-  // Simple form enhancement
+  // Enhanced form with better UX
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contact-form') as HTMLFormElement;
-    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-    const submitText = document.getElementById('submit-text');
-    const submitLoading = document.getElementById('submit-loading');
+    const loadingState = document.getElementById('loading-state');
+    const successState = document.getElementById('success-state');
+    const formFields = document.getElementById('form-fields');
 
-    if (form && submitBtn && submitText && submitLoading) {
+    if (form && loadingState && successState && formFields) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Clear previous errors
+        const errorMessages = form.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => {
+          msg.classList.add('hidden');
+          msg.textContent = '';
+        });
+
+        // Validate form
+        const formData = new FormData(form);
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const phone = formData.get('phone') as string;
+
+        let hasErrors = false;
+
+        // Name validation
+        if (!name || name.trim().length < 2) {
+          showError('name', 'Please enter a valid name');
+          hasErrors = true;
+        }
+
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email || !emailRegex.test(email)) {
+          showError('email', 'Please enter a valid email address');
+          hasErrors = true;
+        }
+
+        if (hasErrors) return;
+        
         // Show loading state
-        submitBtn.disabled = true;
-        submitText.classList.add('hidden');
-        submitLoading.classList.remove('hidden');
+        formFields.classList.add('hidden');
+        loadingState.classList.remove('hidden');
 
         try {
-          const formData = new FormData(form);
           const response = await fetch('/api/simple-lead', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              name: formData.get('name'),
-              email: formData.get('email'),
-              phone: formData.get('phone')
+              name: name.trim(),
+              email: email.trim(),
+              phone: phone?.trim() || ''
             })
           });
 
           if (response.ok) {
-            // Success - redirect to thank you page
-            window.location.href = '/thank-you';
+            // Show success state
+            loadingState.classList.add('hidden');
+            successState.classList.remove('hidden');
+            
+            // Reset form after 4 seconds
+            setTimeout(() => {
+              form.reset();
+              successState.classList.add('hidden');
+              formFields.classList.remove('hidden');
+            }, 4000);
           } else {
+            throw new Error('Form submission failed');
+          }
+        } catch (error) {
+          console.error('Form error:', error);
+          // Hide loading and show form again
+          loadingState.classList.add('hidden');
+          formFields.classList.remove('hidden');
+          
+          // Show error message
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'text-red-400 text-sm text-center mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg';
+          errorDiv.textContent = 'There was an error sending your message. Please try again or call us directly at (469) 534-3392.';
+          formFields.appendChild(errorDiv);
+          setTimeout(() => errorDiv.remove(), 5000);
+        }
+      });
+
+      function showError(fieldName: string, message: string) {
+        const field = form.querySelector(`[name="${fieldName}"]`) as HTMLInputElement;
+        if (field) {
+          field.classList.add('border-red-500');
+          const errorDiv = field.parentNode?.querySelector('.error-message') as HTMLElement;
+          if (errorDiv) {
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+          }
+        }
+      }
+
+      // Clear error states on input
+      const inputs = form.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          this.classList.remove('border-red-500');
+          const errorMsg = this.parentNode?.querySelector('.error-message') as HTMLElement;
+          if (errorMsg) {
+            errorMsg.classList.add('hidden');
+          }
+        });
+      });
+    }
+  });
             throw new Error('Form submission failed');
           }
         } catch (error) {

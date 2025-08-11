@@ -1,0 +1,82 @@
+---
+// Scroll-triggered animations component
+interface Props {
+  className?: string;
+  delay?: number;
+  direction?: 'up' | 'down' | 'left' | 'right' | 'fade';
+  threshold?: number;
+}
+
+const { 
+  className = '',
+  delay = 0,
+  direction = 'up',
+  threshold = 0.1
+} = Astro.props;
+
+const animationClasses = {
+  up: 'translate-y-10 opacity-0',
+  down: '-translate-y-10 opacity-0',
+  left: 'translate-x-10 opacity-0',
+  right: '-translate-x-10 opacity-0',
+  fade: 'opacity-0'
+};
+
+const targetClasses = {
+  up: 'translate-y-0 opacity-100',
+  down: 'translate-y-0 opacity-100',
+  left: 'translate-x-0 opacity-100',
+  right: 'translate-x-0 opacity-100',
+  fade: 'opacity-100'
+};
+---
+
+<div 
+  class={`scroll-animate transition-all duration-700 ease-out ${animationClasses[direction]} ${className}`}
+  data-direction={direction}
+  data-delay={delay}
+  data-threshold={threshold}
+>
+  <slot />
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const element = entry.target as HTMLElement;
+          const delay = parseInt(element.dataset.delay || '0');
+          const direction = element.dataset.direction || 'up';
+          
+          setTimeout(() => {
+            element.classList.remove('translate-y-10', '-translate-y-10', 'translate-x-10', '-translate-x-10', 'opacity-0');
+            element.classList.add('translate-y-0', 'translate-x-0', 'opacity-100');
+            
+            // Add a subtle bounce effect
+            element.style.transform = 'scale(1.02)';
+            setTimeout(() => {
+              element.style.transform = 'scale(1)';
+            }, 150);
+          }, delay);
+          
+          observer.unobserve(element);
+        }
+      });
+    }, observerOptions);
+
+    const animatedElements = document.querySelectorAll('.scroll-animate');
+    animatedElements.forEach(el => observer.observe(el));
+  });
+</script>
+
+<style>
+  .scroll-animate {
+    will-change: transform, opacity;
+  }
+</style>

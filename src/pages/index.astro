@@ -3,6 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import HeroOptimized from '../components/HeroOptimized.astro';
 import Testimonials from '../components/Testimonials.astro';
+import BackToTop from '../components/UI/BackToTop.astro';
+import SocialProof from '../components/UI/SocialProof.astro';
+import ScrollAnimate from '../components/UI/ScrollAnimate.astro';
+import ProgressIndicator from '../components/UI/ProgressIndicator.astro';
+import MobileButton from '../components/UI/MobileButton.astro';
 import { BUSINESS } from '../data/constants';
 import { generateAreaServed, generateStateKeywords, US_STATES } from '../data/us-geography';
 
@@ -458,30 +463,73 @@ const seoProps = {
 
       </div>
 
+      <!-- Social Proof Section -->
+      <ScrollAnimate direction="fade" delay={200}>
+        <SocialProof showStats={true} showRecentActivity={true} showSecurityBadge={false} />
+      </ScrollAnimate>
+
       <!-- CTA Section -->
-      <div class="text-center">
-        <h3 class="text-3xl font-bold text-white mb-6">Ready to Transform Your Business?</h3>
-        <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-          Schedule a free consultation to discover how The Modern Suite can empower your business to compete at the next level.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contact" class="inline-flex items-center gap-3 bg-gold hover:bg-warning-300 text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105">
-            <span>Schedule Free Consultation</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-            </svg>
-          </a>
-          <a href="/services" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg border border-white/20 hover:border-warning-400/50 transition-all duration-300">
-            <span>Learn More</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </a>
+      <ScrollAnimate direction="up" delay={300}>
+        <div class="text-center">
+          <h3 class="text-3xl font-bold text-white mb-6">Ready to Transform Your Business?</h3>
+          <p class="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+            Schedule a free consultation to discover how The Modern Suite can empower your business to compete at the next level.
+          </p>
+          
+          <!-- Progress Indicator for Getting Started -->
+          <div class="mb-8">
+            <ProgressIndicator 
+              variant="dots" 
+              steps={["Contact", "Discovery", "Proposal", "Implementation"]}
+              currentStep={0}
+              showProgress={false}
+            />
+          </div>
+
+          <!-- Desktop Buttons -->
+          <div class="hidden sm:flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-flex items-center gap-3 bg-gold hover:bg-warning-300 text-black font-semibold px-8 py-4 rounded-lg transition-all duration-300 hover:scale-105">
+              <span>Schedule Free Consultation</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+              </svg>
+            </a>
+            <a href="/services" class="inline-flex items-center gap-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-4 rounded-lg border border-white/20 hover:border-warning-400/50 transition-all duration-300">
+              <span>Learn More</span>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Mobile Optimized Buttons -->
+          <div class="sm:hidden space-y-4">
+            <MobileButton 
+              href="/contact"
+              variant="primary"
+              size="large"
+              fullWidth={true}
+            >
+              Schedule Free Consultation
+            </MobileButton>
+            
+            <MobileButton 
+              href="/services"
+              variant="secondary"
+              size="large"
+              fullWidth={true}
+            >
+              Learn More About Our Services
+            </MobileButton>
+          </div>
         </div>
-      </div>
+      </ScrollAnimate>
 
     </div>
   </section>
+
+  <!-- Back to Top Button -->
+  <BackToTop />
 
 </BaseLayout>
 
@@ -507,4 +555,164 @@ const seoProps = {
 .animate-fade-in {
   animation: fade-in 1s ease-out forwards;
 }
+
+/* Enhanced Mobile Experience */
+@media (max-width: 768px) {
+  .modern-suite-card {
+    margin-bottom: 2rem;
+    padding: 2rem 1.5rem;
+  }
+  
+  .modern-suite-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .modern-suite-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Optimized Hover States */
+.modern-suite-card:hover {
+  box-shadow: 0 25px 50px rgba(248, 214, 115, 0.15);
+  border-color: rgba(248, 214, 115, 0.5);
+}
+
+/* Performance Optimized Animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
 </style>
+
+<script>
+  // Enhanced Performance Monitoring & UI/UX Analytics
+  document.addEventListener('DOMContentLoaded', function() {
+    // Track Modern Suite card interactions
+    const modernSuiteCards = document.querySelectorAll('a[href*="modern"]');
+    modernSuiteCards.forEach((card, index) => {
+      card.addEventListener('click', function(e) {
+        const cardName = this.querySelector('h3')?.textContent || 'Unknown';
+        
+        // Track engagement
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'modern_suite_click', {
+            card_name: cardName,
+            card_position: index + 1,
+            event_category: 'engagement',
+            event_label: 'modern_suite_cards'
+          });
+        }
+        
+        console.log(`Modern Suite Card Clicked: ${cardName}`);
+      });
+      
+      // Track hover events for engagement analysis
+      card.addEventListener('mouseenter', function() {
+        const cardName = this.querySelector('h3')?.textContent || 'Unknown';
+        console.log(`Card Hovered: ${cardName}`);
+      });
+    });
+
+    // Monitor scroll depth for social proof effectiveness
+    let maxScrollDepth = 0;
+    window.addEventListener('scroll', function() {
+      const scrollDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+      if (scrollDepth > maxScrollDepth) {
+        maxScrollDepth = scrollDepth;
+        
+        // Track key scroll milestones
+        if ([25, 50, 75, 90].includes(scrollDepth)) {
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_depth', {
+              scroll_depth: scrollDepth,
+              event_category: 'engagement'
+            });
+          }
+        }
+      }
+    });
+
+    // Track CTA button interactions
+    const ctaButtons = document.querySelectorAll('a[href="/contact"], a[href="/services"]');
+    ctaButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        const buttonText = this.textContent.trim();
+        const buttonType = this.href.includes('/contact') ? 'primary_cta' : 'secondary_cta';
+        
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'cta_click', {
+            button_text: buttonText,
+            button_type: buttonType,
+            event_category: 'conversion'
+          });
+        }
+        
+        console.log(`CTA Clicked: ${buttonText} (${buttonType})`);
+      });
+    });
+
+    // Performance monitoring
+    if ('performance' in window) {
+      window.addEventListener('load', function() {
+        setTimeout(() => {
+          const perfData = performance.getEntriesByType('navigation')[0];
+          const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+          
+          console.log('Page Performance Metrics:', {
+            loadTime: loadTime,
+            domContentLoaded: perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart,
+            firstPaint: performance.getEntriesByName('first-paint')[0]?.startTime || 'N/A',
+            firstContentfulPaint: performance.getEntriesByName('first-contentful-paint')[0]?.startTime || 'N/A'
+          });
+          
+          // Track performance
+          if (typeof gtag !== 'undefined' && loadTime) {
+            gtag('event', 'page_load_time', {
+              value: Math.round(loadTime),
+              event_category: 'performance'
+            });
+          }
+        }, 0);
+      });
+    }
+
+    // Monitor form interactions (if contact form is present)
+    const contactForms = document.querySelectorAll('form');
+    contactForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'form_submit', {
+            form_id: this.id || 'contact_form',
+            event_category: 'conversion'
+          });
+        }
+      });
+    });
+
+    // Track social proof visibility
+    const socialProofElements = document.querySelectorAll('[data-social-proof]');
+    if (socialProofElements.length > 0 && 'IntersectionObserver' in window) {
+      const socialProofObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'social_proof_view', {
+                event_category: 'engagement'
+              });
+            }
+            socialProofObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      socialProofElements.forEach(el => socialProofObserver.observe(el));
+    }
+  });
+</script>

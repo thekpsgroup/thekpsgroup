@@ -1,0 +1,112 @@
+---
+// Progress indicator for multi-step processes
+interface Props {
+  currentStep: number;
+  totalSteps: number;
+  steps?: string[];
+  variant?: 'line' | 'dots' | 'numbered';
+}
+
+const { 
+  currentStep, 
+  totalSteps, 
+  steps = [],
+  variant = 'line'
+} = Astro.props;
+
+const progressPercentage = (currentStep / totalSteps) * 100;
+---
+
+<div class="progress-indicator w-full">
+  
+  {variant === 'line' && (
+    <div class="relative">
+      <!-- Progress Bar -->
+      <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+        <div 
+          class="bg-gradient-to-r from-gold to-warning-400 h-2 rounded-full transition-all duration-500 ease-out"
+          style={`width: ${progressPercentage}%`}
+        ></div>
+      </div>
+      
+      <!-- Step Counter -->
+      <div class="flex justify-between items-center text-sm">
+        <span class="text-gray-400">Step {currentStep} of {totalSteps}</span>
+        <span class="text-gold font-medium">{Math.round(progressPercentage)}% Complete</span>
+      </div>
+    </div>
+  )}
+
+  {variant === 'dots' && (
+    <div class="flex items-center justify-center space-x-3 mb-6">
+      {Array.from({ length: totalSteps }).map((_, index) => (
+        <div 
+          key={index}
+          class={`w-3 h-3 rounded-full transition-all duration-300 ${
+            index < currentStep 
+              ? 'bg-gold scale-110' 
+              : index === currentStep - 1
+              ? 'bg-warning-400 scale-125'
+              : 'bg-gray-600'
+          }`}
+        ></div>
+      ))}
+    </div>
+  )}
+
+  {variant === 'numbered' && steps.length > 0 && (
+    <div class="flex items-center justify-between mb-8 relative">
+      <!-- Background Line -->
+      <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-700 -translate-y-1/2"></div>
+      <div 
+        class="absolute top-1/2 left-0 h-0.5 bg-gradient-to-r from-gold to-warning-400 -translate-y-1/2 transition-all duration-500"
+        style={`width: ${(currentStep - 1) / (totalSteps - 1) * 100}%`}
+      ></div>
+      
+      {steps.map((step, index) => (
+        <div key={index} class="flex flex-col items-center relative z-10">
+          <div 
+            class={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 ${
+              index < currentStep 
+                ? 'bg-gold text-black' 
+                : index === currentStep - 1
+                ? 'bg-warning-400 text-black ring-4 ring-warning-400/30'
+                : 'bg-gray-700 text-gray-400'
+            }`}
+          >
+            {index < currentStep ? (
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            ) : (
+              index + 1
+            )}
+          </div>
+          <span 
+            class={`text-xs mt-2 transition-colors duration-300 ${
+              index <= currentStep - 1 ? 'text-white' : 'text-gray-500'
+            }`}
+          >
+            {step}
+          </span>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
+<style>
+  .progress-indicator {
+    user-select: none;
+  }
+  
+  @media (max-width: 640px) {
+    .progress-indicator .flex {
+      gap: 0.5rem;
+    }
+    
+    .progress-indicator span {
+      font-size: 0.75rem;
+    }
+  }
+</style>
