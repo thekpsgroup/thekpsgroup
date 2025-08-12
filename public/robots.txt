@@ -1,7 +1,22 @@
 User-agent: *
 Disallow: /admin/
+
 Disallow: /crm
 Disallow: /login
 Disallow: /user-management
+=======
+Disallow: /.netlify/
+Disallow: /.vercel/
+Disallow: /dist/
+
+# Allow important pages
+Allow: /services/
+Allow: /locations/
+Allow: /about
+Allow: /leadership
+Allow: /contact
+Allow: /team
+Allow: /services/bookkeeping
+Allow: /services/technology-consulting
 
 Sitemap: https://thekpsgroup.com/sitemap.xml

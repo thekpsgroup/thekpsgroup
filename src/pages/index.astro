@@ -1,4 +1,3 @@
----
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import HeroOptimized from '../components/HeroOptimized.astro';
@@ -28,8 +27,13 @@ const priorityKeywords = [
 const stateKeywords = generateStateKeywords(priorityKeywords);
 
 const seoProps = {
+
   title: 'The KPS Group – Small Business Support',
   description: 'Ops, finance, and tech help for small businesses. Book a free consult.',
+
+  title: 'The KPS Group | Modern Business Support',
+  description: 'Operations, finance and tech help for small businesses. Get systems that save time and boost profits.',
+
   keywords: [
     ...baseKeywords,
     ...stateKeywords.slice(0, 100), // Limit to avoid overly long meta keywords
@@ -92,7 +96,7 @@ const seoProps = {
     }
   ]
 };
----
+
 
 <BaseLayout>
   <AdvancedSEOHead {...seoProps} slot="head" />

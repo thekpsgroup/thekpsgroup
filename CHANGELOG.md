@@ -85,3 +85,4 @@
 - Consolidated contact into a single page with server-side email handler to sales@thekpsgroup.com and response-time note
 - Updated homepage metadata + footer CTA for clearer guidance
 - Documented route structure, redirects, and test steps
+
