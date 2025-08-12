@@ -1,26 +1,7 @@
 User-agent: *
-Allow: /
-
-# Block admin and private areas
 Disallow: /admin/
-Disallow: /.netlify/
-Disallow: /.vercel/
-Disallow: /dist/
+Disallow: /crm
+Disallow: /login
+Disallow: /user-management
 
-# Allow important pages
-Allow: /services/
-Allow: /locations/
-Allow: /about
-Allow: /leadership
-Allow: /contact
-Allow: /team
-Allow: /bookkeeping-services
-Allow: /technology-consulting
-Allow: /hvac-consulting
-Allow: /electrical-consulting
-
-# Point to sitemap
 Sitemap: https://thekpsgroup.com/sitemap.xml
-
-# Crawl delay for polite behavior
-Crawl-delay: 1

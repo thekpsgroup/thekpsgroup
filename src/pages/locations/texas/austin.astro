@@ -23,13 +23,14 @@ const pageKeywords = [
 ];
 ---
 
-<BaseLayout 
+<BaseLayout
   title={pageTitle}
   description={pageDescription}
   keywords={pageKeywords}
   isLocationPage={true}
   cityName="Austin"
   pageType="LocalBusiness"
+  canonical="https://thekpsgroup.com/locations/texas/austin"
 >
   <!-- Hero Section -->
   <section class="relative py-24 lg:py-32 bg-gradient-to-b from-black to-gray-950">
@@ -51,7 +52,7 @@ const pageKeywords = [
         
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <a href="/contact" class="btn-primary">
-            <span>Schedule Free Austin Consultation</span>
+            <span>Book My Free Consult</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
@@ -106,7 +107,7 @@ const pageKeywords = [
           </div>
           <h3 class="text-lg font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Technology Consulting</h3>
           <p class="text-white/70 text-sm leading-relaxed">Business technology consulting, CRM implementation, automation, and digital transformation solutions for Austin organizations seeking operational excellence.</p>
-          <a href="/technology-consulting" class="text-gold text-sm hover:text-gold-light mt-3 inline-block">Learn More →</a>
+          <a href="/services/technology-consulting" class="text-gold text-sm hover:text-gold-light mt-3 inline-block">Request Pricing →</a>
         </div>
 
         <div class="card-premium hover-lift group">
@@ -117,7 +118,7 @@ const pageKeywords = [
           </div>
           <h3 class="text-lg font-bold text-white mb-3 group-hover:text-gradient-gold transition-all duration-300">Business Consulting</h3>
           <p class="text-white/70 text-sm leading-relaxed">Operations consulting, SOP development, and business automation for growing Austin companies.</p>
-          <a href="/contact" class="text-gold text-sm hover:text-gold-light mt-3 inline-block">Learn More →</a>
+          <a href="/contact" class="text-gold text-sm hover:text-gold-light mt-3 inline-block">Book My Free Consult</a>
         </div>
       </div>
     </div>
@@ -287,7 +288,7 @@ const pageKeywords = [
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h8a2 2 0 012 2v4m0 0V7a2 2 0 00-2 2H10a2 2 0 00-2-2V7"/>
               </svg>
-              <span>Book Free Consultation</span>
+              <span>Book My Free Consult</span>
             </a>
             
             <a href={`tel:+1-${BUSINESS.phone}`} class="btn-secondary w-full flex items-center justify-center gap-3">

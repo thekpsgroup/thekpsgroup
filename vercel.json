@@ -1,4 +1,23 @@
 {
+  "redirects": [
+    { "source": "/about-us", "destination": "/about", "permanent": true },
+    { "source": "/about-new", "destination": "/about", "permanent": true },
+    { "source": "/bookkeeping-services", "destination": "/services/bookkeeping", "permanent": true },
+    { "source": "/technology-consulting", "destination": "/services/technology-consulting", "permanent": true },
+    { "source": "/electrical-consulting", "destination": "/services/consulting", "permanent": true },
+    { "source": "/hvac-consulting", "destination": "/services/consulting", "permanent": true },
+    { "source": "/services-old", "destination": "/services", "permanent": true },
+    { "source": "/contact-simple", "destination": "/contact", "permanent": true },
+    { "source": "/contact-backup", "destination": "/contact", "permanent": true },
+    { "source": "/contact-debug", "destination": "/contact", "permanent": true },
+    { "source": "/contact-test", "destination": "/contact", "permanent": true },
+    { "source": "/contact-minimal", "destination": "/contact", "permanent": true },
+    { "source": "/contact-new", "destination": "/contact", "permanent": true },
+    { "source": "/leadership", "destination": "/team", "permanent": true },
+    { "source": "/austin", "destination": "/locations/texas/austin", "permanent": true },
+    { "source": "/dallas", "destination": "/locations/texas/dallas", "permanent": true },
+    { "source": "/houston", "destination": "/locations/texas/houston", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",

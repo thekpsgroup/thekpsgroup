@@ -13,7 +13,7 @@ const heroData = {
   title: 'Professional Bookkeeping Services',
   subtitle: 'Modern Books Division',
   description: 'Accurate, timely bookkeeping and accounting services that keep your finances organized and your business compliant.',
-  ctaText: 'Get Bookkeeping Help',
+  ctaText: 'Book My Free Consult',
   ctaUrl: '/contact',
   backgroundImage: '/img/ui/hero-bg.svg'
 };
@@ -45,7 +45,7 @@ const structuredDataProps = {
   description: description,
   provider: BUSINESS.name,
   areaServed: 'United States',
-  serviceType: 'Accounting Services'
+  serviceType: heroData.title
 };
 ---
 
@@ -105,11 +105,11 @@ const structuredDataProps = {
           
           <div class="text-gold font-semibold text-lg mb-4">{service.price}</div>
           
-          <a 
-            href="/contact" 
+          <a
+            href="/contact"
             class="inline-flex items-center justify-center w-full px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold-light transition-colors duration-300"
           >
-            Get Started
+            Book My Free Consult
           </a>
         </div>
       ))}
@@ -174,11 +174,11 @@ const structuredDataProps = {
         </div>
         
         <div class="space-y-4">
-          <a 
-            href="/contact" 
+          <a
+            href="/contact"
             class="block w-full text-center px-6 py-3 bg-gold text-black font-semibold rounded-lg hover:bg-gold-light transition-colors duration-300"
           >
-            Start Your Bookkeeping
+            Book My Free Consult
           </a>
           <a 
             href={`tel:${BUSINESS.phone}`}

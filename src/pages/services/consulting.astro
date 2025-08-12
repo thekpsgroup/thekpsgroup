@@ -4,7 +4,7 @@ import { BUSINESS } from '../../data/constants';
 
 const title = 'Business Consulting Services | Modern Consulting | The KPS Group';
 const description = 'Strategic business consulting and operational excellence solutions. From process optimization to growth strategy, we help businesses scale efficiently and profitably.';
-const keywords = 'business consulting, operational consulting, strategy consulting, process optimization, business growth, management consulting, Austin consulting';
+const keywords = ['business consulting', 'operational consulting', 'strategy consulting', 'process optimization', 'business growth', 'management consulting', 'Austin consulting'];
 ---
 
 <BaseLayout {title} {description} {keywords}>
@@ -31,7 +31,7 @@ const keywords = 'business consulting, operational consulting, strategy consulti
       
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/contact" class="btn-primary">
-          Get Strategy Session
+          Book My Free Consult
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
           </svg>
@@ -127,7 +127,7 @@ const keywords = 'business consulting, operational consulting, strategy consulti
         Schedule a free consultation to discuss your challenges and discover how our consulting expertise can drive your success.
       </p>
       <a href="/contact" class="btn-primary bg-white text-blue-600 hover:bg-gray-100">
-        Get Free Consultation
+        Book My Free Consult
       </a>
     </div>
   </section>
@@ -140,14 +140,11 @@ const keywords = 'business consulting, operational consulting, strategy consulti
   "name": "Business Consulting Services",
   "provider": {
     "@type": "Organization",
-    "name": "The KPS Group",
+    "name": "The KPS Group LLC",
     "url": "https://thekpsgroup.com"
   },
   "description": "Strategic business consulting and operational excellence solutions for growing businesses.",
-  "areaServed": {
-    "@type": "State",
-    "name": "Texas"
-  },
+  "areaServed": "United States",
   "serviceType": "Business Consulting"
 }
 </script>
