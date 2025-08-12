@@ -354,7 +354,7 @@ const webVitalsThresholds = {
         const target = e.target as Element;
         if (!target) return;
         
-        const element = target.closest('a, button, [data-track]');
+        const element = target.closest('a, button, [data-cta]');
         if (!element) return;
         
         const trackingData = {

@@ -10,14 +10,12 @@
     "lint": "echo 'lint ok'",
     "test": "playwright test",
     "check": "npm run build && npm run test",
-    "check:links": "linkinator http://localhost:4321 --silent --recurse --timeout 30000 --skip '.*'"
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@vercel/analytics": "^1.5.0",
     "astro": "^5.12.2",
-    "resend": "^4.7.0",
-    "nodemailer": "^6.9.11",
     "typescript": "^5.8.3",
     "web-vitals": "^4.2.4",
     "zod": "^3.25.76"
@@ -33,7 +31,6 @@
     "sharp": "^0.34.3",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.20.3",
-    "@playwright/test": "^1.49.0",
-    "linkinator": "^6.0.0"
+    "@playwright/test": "^1.49.0"
   }
 }

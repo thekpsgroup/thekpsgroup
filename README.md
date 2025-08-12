@@ -30,3 +30,38 @@ npm run check:links
 ## Accessibility
 
 The site includes a skip-to-content link and enhanced focus styles. Use `npm run lint` to run accessibility checks.
+
+## Forms & Analytics
+
+Lead forms submit directly to [Router.so](https://router.so/) using the following payload and headers:
+
+```json
+{
+  "name": "Jane Doe",
+  "phoneNumber": "469-534-3392",
+  "email": "jane@example.com",
+  "services": "Bookkeeping"
+}
+```
+
+Headers:
+
+```
+Authorization: Bearer <ROUTER_SO_API_KEY>
+Content-Type: application/json
+```
+
+The Plausible tracker (enabled when `PUBLIC_PLAUSIBLE_ENABLED=true`) records:
+
+- `cta_click` for elements with `data-cta` or any `tel:`/`mailto:` links
+- `form_submit_click`, `form_submit_success`, `form_submit_error`, `form_submit_invalid`
+
+Before deploying, ensure the environment contains:
+
+```
+PUBLIC_PLAUSIBLE_ENABLED
+PUBLIC_PLAUSIBLE_DOMAIN
+GTM_ID
+ROUTER_SO_ENDPOINT
+ROUTER_SO_API_KEY
+```

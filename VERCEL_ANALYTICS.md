@@ -34,7 +34,7 @@ The VercelAnalytics component is included in the BaseLayout.astro file and loads
 1. **Contact Form Submit** - Triggered when any form with `data-form="contact"` is submitted
 2. **Phone Call** - Triggered when `tel:` links are clicked
 3. **Email Click** - Triggered when `mailto:` links are clicked
-4. **CTA Click** - Triggered when elements with `data-track="cta"` or `.btn-primary`/`.btn-secondary` classes are clicked
+4. **CTA Click** - Triggered when elements with `data-cta` or `.btn-primary`/`.btn-secondary` classes are clicked
 5. **Scroll Depth** - Triggered at 25%, 50%, 75%, and 100% scroll positions
 6. **Page Navigation** - Triggered on client-side navigation events
 
@@ -45,7 +45,7 @@ The VercelAnalytics component is included in the BaseLayout.astro file and loads
 To ensure proper tracking, the following data attributes have been added:
 
 - **Contact Forms**: `data-form="contact"`
-- **CTA Buttons**: `data-track="cta"`
+- **CTA Buttons**: `data-cta`
 - **Phone Links**: Standard `tel:` href format (automatically detected)
 - **Email Links**: Standard `mailto:` href format (automatically detected)
 
@@ -53,8 +53,8 @@ To ensure proper tracking, the following data attributes have been added:
 
 1. **BaseLayout.astro** - Added VercelAnalytics import and component
 2. **EnhancedContactForm.astro** - Added `data-form="contact"` attribute
-3. **Hero.astro** - Added `data-track="cta"` to CTA buttons
-4. **Header.astro** - Added `data-track="cta"` to Contact Sales buttons
+3. **Hero.astro** - Added `data-cta` to CTA buttons
+4. **Header.astro** - Added `data-cta` to Contact Sales buttons
 
 ## Viewing Analytics
 

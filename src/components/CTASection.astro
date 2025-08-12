@@ -25,9 +25,23 @@ const {
     <h2 id="cta-heading">{heading}</h2>
     <p>{subtext}</p>
     <div class="actions">
-      <a id={`${id}-primary`} href={primaryHref} class="btn btn-primary" data-track="cta">{primaryLabel}</a>
+      <a
+        id={`${id}-primary`}
+        href={primaryHref}
+        class="btn btn-primary"
+        data-cta={primaryLabel}
+      >
+        {primaryLabel}
+      </a>
       {secondaryHref && secondaryLabel && (
-        <a id={`${id}-secondary`} href={secondaryHref} class="btn btn-secondary" data-track="cta">{secondaryLabel}</a>
+        <a
+          id={`${id}-secondary`}
+          href={secondaryHref}
+          class="btn btn-secondary"
+          data-cta={secondaryLabel}
+        >
+          {secondaryLabel}
+        </a>
       )}
     </div>
   </div>

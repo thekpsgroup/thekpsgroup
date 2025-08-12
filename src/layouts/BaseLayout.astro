@@ -32,6 +32,7 @@ const {
 
 const siteUrl = Astro.site?.href ?? 'https://thekpsgroup.com';
 const currentUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
+const GTM_ID = import.meta.env.GTM_ID;
 
 // Dynamic geographic data for location pages
 let geoData = {
@@ -320,6 +321,14 @@ if (isServicePage) {
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
+    {GTM_ID && (
+      <script is:inline define:vars={{ GTM_ID }}>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',GTM_ID);
+      </script>
+    )}
     <!-- PRIMARY SEO META -->
     <meta charset="utf-8" />
     <title>{optimizedTitle}</title>
@@ -1069,6 +1078,9 @@ if (isServicePage) {
   </head>
 
   <body class="antialiased font-sans bg-black text-white">
+    {GTM_ID && (
+      <noscript><iframe src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`} height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    )}
     <!-- Enhanced Accessibility & Performance Components -->
     <EnhancedAccessibility skipToContent={true} />
     <!-- <CoreWebVitals enableLazyLoading={true} enableImageOptimization={true} /> -->

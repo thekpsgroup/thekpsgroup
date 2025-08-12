@@ -49,7 +49,7 @@
       });
       
       // Track CTA button clicks
-      const ctaButtons = document.querySelectorAll('.btn-primary, .btn-secondary, [data-track="cta"]');
+      const ctaButtons = document.querySelectorAll('.btn-primary, .btn-secondary, [data-cta]');
       ctaButtons.forEach(button => {
         button.addEventListener('click', () => {
           if (window.va) {
