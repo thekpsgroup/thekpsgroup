@@ -160,11 +160,14 @@ const {
             // Show success
             form.classList.add('hidden');
             successMessage.classList.remove('hidden');
+            window.dispatchEvent(new CustomEvent('form_submit_success'));
           } else {
+            window.dispatchEvent(new CustomEvent('form_submit_error'));
             throw new Error('Failed to submit');
           }
         } catch (error) {
           console.error('Error:', error);
+          window.dispatchEvent(new CustomEvent('form_submit_error'));
           alert('There was an error. Please try again or call (469) 534-3392');
         } finally {
           // Reset button

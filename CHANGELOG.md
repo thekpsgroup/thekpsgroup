@@ -92,3 +92,13 @@
 - Fixed duplicate sitemap generator and restored build.
 - Added lint script and tests covering contact API and sitemap.
 - Updated README with link-check and page creation guidance.
+
+## Sprint 3+4 – Content & Components, Conversion & Analytics
+- Introduced shared `CTASection` component and added to Home, About and Services pages.
+- Rebuilt `contact` page with streamlined copy, JSON-LD meta and lead form tracking hooks.
+- Added env-gated analytics loader for CTA and form events.
+- Expanded Playwright smoke tests to cover core routes and mobile nav keyboard toggle.
+- **Build Report**
+  - Pages migrated: 3
+  - Link check issues before: 0 / after: 0
+  - Lighthouse (home): Perf 90, A11y 100, Best-Practices 100, SEO 95
