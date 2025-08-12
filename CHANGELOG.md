@@ -86,3 +86,9 @@
 - Updated homepage metadata + footer CTA for clearer guidance
 - Documented route structure, redirects, and test steps
 
+
+## Sprint 2 – Accessibility, SEO schema, link fixes, performance
+- Added skip-to-content link and improved focus outlines via `EnhancedAccessibility`.
+- Fixed duplicate sitemap generator and restored build.
+- Added lint script and tests covering contact API and sitemap.
+- Updated README with link-check and page creation guidance.

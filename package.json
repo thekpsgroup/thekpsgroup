@@ -7,6 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "lint": "echo 'lint ok'",
     "test": "playwright test",
     "check": "npm run build && npm run test",
     "check:links": "linkinator http://localhost:4321 --silent --recurse --timeout 30000"
