@@ -1,3 +1,4 @@
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import HeroOptimized from '../components/HeroOptimized.astro';
@@ -27,9 +28,6 @@ const priorityKeywords = [
 const stateKeywords = generateStateKeywords(priorityKeywords);
 
 const seoProps = {
-
-  title: 'The KPS Group – Small Business Support',
-  description: 'Ops, finance, and tech help for small businesses. Book a free consult.',
 
   title: 'The KPS Group | Modern Business Support',
   description: 'Operations, finance and tech help for small businesses. Get systems that save time and boost profits.',
@@ -95,8 +93,8 @@ const seoProps = {
       answer: 'The KPS Group offers integrated solutions through The Modern Suite, combining multiple specialized services under one roof. This approach ensures consistency, reduces vendor management overhead, and provides cohesive strategies across all aspects of your business.'
     }
   ]
-};
-
+  };
+---
 
 <BaseLayout>
   <AdvancedSEOHead {...seoProps} slot="head" />
@@ -718,8 +716,8 @@ const seoProps = {
     });
 
     // Track social proof visibility
-    const socialProofElements = document.querySelectorAll('[data-social-proof]');
-    if (socialProofElements.length > 0 && 'IntersectionObserver' in window) {
+  const socialProofElements = document.querySelectorAll('[data-social-proof]');
+  if (socialProofElements.length > 0 && 'IntersectionObserver' in window) {
       const socialProofObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
