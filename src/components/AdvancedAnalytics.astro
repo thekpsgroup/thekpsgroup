@@ -214,7 +214,7 @@ const trackingId = generateTrackingId();
     // Click tracking
     trackClicks: function() {
       document.addEventListener('click', (e) => {
-        const target = e.target.closest('a, button, [data-track]');
+        const target = e.target.closest('a, button, [data-cta]');
         if (!target) return;
 
         const trackingData = {

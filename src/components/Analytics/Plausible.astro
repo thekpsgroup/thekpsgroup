@@ -20,23 +20,32 @@ const DOMAIN = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || "thekpsgroup.com";
         } catch {}
       };
 
-      // Track CTA clicks on [data-track="cta"]
+      // Track CTA clicks
       document.addEventListener("click", (e) => {
-        const t = e.target.closest?.("[data-track='cta']");
-        if (!t) return;
+        const cta = e.target.closest?.("[data-cta]");
+        const tel = e.target.closest?.("a[href^='tel:']");
+        const mail = e.target.closest?.("a[href^='mailto:']");
+        const target = cta || tel || mail;
+        if (!target) return;
         const props = {
-          id: t.id || "",
-          text: (t.innerText || "").trim(),
-          href: t.getAttribute("href") || "",
+          id: target.id || "",
+          text: (target.innerText || "").trim(),
+          href: target.getAttribute("href") || "",
           location: window.location.pathname,
         };
         window.plausibleTrack("cta_click", props);
       });
 
-      // Track form events via CustomEvents:
-      //  document.dispatchEvent(new CustomEvent("form:submit:success", { detail: {...} }))
-      //  document.dispatchEvent(new CustomEvent("form:submit:error", { detail: {...} }))
-      document.addEventListener("form:submit:success", (e) => {
+      // Track form events via CustomEvents
+      document.addEventListener("form_submit_click", (e) => {
+        const d = (e && e.detail) || {};
+        window.plausibleTrack("form_submit_click", {
+          location: window.location.pathname,
+          ...d,
+        });
+      });
+
+      document.addEventListener("form_submit_success", (e) => {
         const d = (e && e.detail) || {};
         window.plausibleTrack("form_submit_success", {
           location: window.location.pathname,
@@ -44,9 +53,17 @@ const DOMAIN = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || "thekpsgroup.com";
         });
       });
 
-      document.addEventListener("form:submit:error", (e) => {
+      document.addEventListener("form_submit_error", (e) => {
         const d = (e && e.detail) || {};
         window.plausibleTrack("form_submit_error", {
+          location: window.location.pathname,
+          ...d,
+        });
+      });
+
+      document.addEventListener("form_submit_invalid", (e) => {
+        const d = (e && e.detail) || {};
+        window.plausibleTrack("form_submit_invalid", {
           location: window.location.pathname,
           ...d,
         });

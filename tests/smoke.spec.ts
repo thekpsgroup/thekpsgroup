@@ -8,7 +8,7 @@ test("core routes load and CTA present", async ({ page }) => {
 
   // CTA sections render
   await page.goto("/");
-  const ctaCount = await page.locator("[data-track='cta']").count();
+  const ctaCount = await page.locator("[data-cta]").count();
   expect(ctaCount).toBeGreaterThan(0);
 
   // Mobile nav keyboard accessibility (basic toggle test if nav exists)

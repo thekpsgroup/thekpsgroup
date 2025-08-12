@@ -1,3 +1,9 @@
+## 2025-08-14 – Production polish
+
+- Switched lead forms to Router.so with front-end validation and analytics events.
+- Added Plausible tracking for `data-cta`, `tel:` and `mailto:` links plus form outcomes.
+- Created Node-based `check-links` script and updated environment/README documentation.
+
 ## 2025-08-12 – Sprint 3+4 (Plausible + tracked CTAs + Contact page)
 
 - Env-gated Plausible loader with event hooks for CTA clicks and lead form success/error.

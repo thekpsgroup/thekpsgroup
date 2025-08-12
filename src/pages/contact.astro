@@ -28,8 +28,8 @@ const jsonLd = {
     <section>
       <h2>Reach us</h2>
       <p>
-        <a id="contact-email" href="mailto:sales@thekpsgroup.com" data-track="cta">sales@thekpsgroup.com</a><br />
-        <a id="contact-phone" href="tel:+14695343392" data-track="cta">469-534-3392</a>
+        <a id="contact-email" href="mailto:sales@thekpsgroup.com" data-cta="email">sales@thekpsgroup.com</a><br />
+        <a id="contact-phone" href="tel:+14695343392" data-cta="phone">469-534-3392</a>
       </p>
     </section>
 
@@ -37,4 +37,12 @@ const jsonLd = {
   </main>
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: 'The KPS Group LLC',
+    url: canonical,
+    email: 'sales@thekpsgroup.com',
+    telephone: '+1-469-534-3392'
+  })} />
 </BaseLayout>
