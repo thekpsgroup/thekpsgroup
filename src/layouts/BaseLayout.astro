@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 // import AnalyticsTracker from '../components/AnalyticsTracker.astro';
 import VercelAnalytics from '../components/VercelAnalytics.astro';
+import Plausible from '../components/Analytics/Plausible.astro';
 import EnhancedAccessibility from '../components/UI/EnhancedAccessibility.astro';
 // import CoreWebVitals from '../components/Performance/CoreWebVitals.astro';
 import LiveChat from '../components/LiveChat.astro';
@@ -1064,6 +1065,7 @@ if (isServicePage) {
     
     <!-- Vercel Analytics Integration -->
     <VercelAnalytics />
+    <Plausible />
   </head>
 
   <body class="antialiased font-sans bg-black text-white">

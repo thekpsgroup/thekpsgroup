@@ -1,54 +1,22 @@
-import BaseLayout from '../layouts/BaseLayout.astro';
-
-const pageTitle = 'Contact The KPS Group | Free Consult';
-const pageDescription = 'Get answers fast. We usually reply within one business day.';
-const error = Astro.url.searchParams.get('error');
 ---
-<BaseLayout title={pageTitle} description={pageDescription}>
-  <section class="py-16 bg-gray-900 min-h-screen">
-    <div class="max-w-2xl mx-auto px-4">
-      <h1 class="text-4xl font-bold text-white mb-4 text-center">Talk with a Specialist</h1>
-      <p class="text-lg text-gray-300 mb-8 text-center">We usually reply within one business day.</p>
-      {error && (
-        <div class="mb-6 p-4 bg-red-500/10 border border-red-500/30 text-red-400 rounded">Something went wrong. Please try again.</div>
-      )}
-      <form method="POST" action="/api/contact" class="space-y-6">
-        <input type="text" name="company_website" class="hidden" tabindex="-1" autocomplete="off" />
-        <div>
-          <label for="name" class="block text-sm font-medium text-gray-200 mb-1">Name *</label>
-          <input id="name" name="name" required class="w-full px-4 py-3 rounded bg-gray-800 border border-gray-700 text-white" />
-        </div>
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-200 mb-1">Email *</label>
-          <input id="email" type="email" name="email" required class="w-full px-4 py-3 rounded bg-gray-800 border border-gray-700 text-white" />
-        </div>
-        <div>
-          <label for="phone" class="block text-sm font-medium text-gray-200 mb-1">Phone</label>
-          <input id="phone" type="tel" name="phone" class="w-full px-4 py-3 rounded bg-gray-800 border border-gray-700 text-white" />
-        </div>
-        <div>
-          <label for="message" class="block text-sm font-medium text-gray-200 mb-1">How can we help? *</label>
-          <textarea id="message" name="message" required rows="5" class="w-full px-4 py-3 rounded bg-gray-800 border border-gray-700 text-white"></textarea>
-        </div>
-        <button type="submit" class="w-full bg-warning-400 hover:bg-warning-300 text-black font-bold py-4 px-6 rounded transition-colors">Book My Free Consult</button>
-      </form>
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
 import SimpleLead from '../components/SimpleLead.astro';
 
-const pageTitle = 'Contact The KPS Group | Free Business Consultation';
-const pageDescription = 'Request a free assessment and pricing review. We respond within one business day.';
+const seoProps = {
+  title: 'Contact The KPS Group | Free Business Consultation',
+  description: 'Request a free assessment and pricing review. We respond within one business day.',
+  canonical: 'https://thekpsgroup.com/contact'
+};
+---
+<BaseLayout>
+  <AdvancedSEOHead {...seoProps} slot="head" />
 
-
-<BaseLayout title={pageTitle} description={pageDescription}>
   <section class="py-16 bg-gray-900 min-h-screen">
     <div class="max-w-4xl mx-auto px-4">
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-white mb-4">
-          Talk with a Specialist
-        </h1>
-        <p class="text-xl text-gray-300">
-          Tell us about your business and we’ll show you how we can help.
-        </p>
+        <h1 class="text-4xl font-bold text-white mb-4">Talk with a Specialist</h1>
+        <p class="text-xl text-gray-300">Tell us about your business and we’ll show you how we can help.</p>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-12 items-start">
@@ -69,9 +37,7 @@ const pageDescription = 'Request a free assessment and pricing review. We respon
                 </div>
                 <div>
                   <h3 class="font-semibold text-white">Phone</h3>
-                  <a href="tel:4695343392" class="text-yellow-400 hover:text-yellow-300 font-medium">
-                    (469) 534-3392
-                  </a>
+                  <a href="tel:4695343392" class="text-yellow-400 hover:text-yellow-300 font-medium" data-track="cta" data-label="Call">(469) 534-3392</a>
                   <p class="text-sm text-gray-400">Call or text anytime</p>
                 </div>
               </div>
@@ -82,9 +48,7 @@ const pageDescription = 'Request a free assessment and pricing review. We respon
                 </div>
                 <div>
                   <h3 class="font-semibold text-white">Email</h3>
-                  <a href="mailto:sales@thekpsgroup.com" class="text-yellow-400 hover:text-yellow-300 font-medium">
-                    sales@thekpsgroup.com
-                  </a>
+                  <a href="mailto:sales@thekpsgroup.com" class="text-yellow-400 hover:text-yellow-300 font-medium" data-track="cta" data-label="Email">sales@thekpsgroup.com</a>
                   <p class="text-sm text-gray-400">Response within 24 hours</p>
                 </div>
               </div>
@@ -93,35 +57,29 @@ const pageDescription = 'Request a free assessment and pricing review. We respon
 
           <div class="bg-gray-800/50 border border-yellow-400/30 rounded-xl p-6">
             <h2 class="text-xl font-bold text-white mb-6 text-center">What You Get</h2>
-            <div class="space-y-4">
-              <div class="flex items-center gap-3">
-                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                  <span class="text-white text-sm font-bold">✓</span>
-                </div>
+            <ul class="space-y-4">
+              <li class="flex items-center gap-3">
+                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"><span class="text-white text-sm font-bold">✓</span></div>
                 <div>
                   <h3 class="text-white font-medium text-sm">Free Business Assessment</h3>
                   <p class="text-gray-300 text-xs">Complete analysis of your operations</p>
                 </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                  <span class="text-white text-sm font-bold">✓</span>
-                </div>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"><span class="text-white text-sm font-bold">✓</span></div>
                 <div>
                   <h3 class="text-white font-medium text-sm">Custom Strategy Plan</h3>
                   <p class="text-gray-300 text-xs">Tailored roadmap for growth</p>
                 </div>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                  <span class="text-white text-sm font-bold">✓</span>
-                </div>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"><span class="text-white text-sm font-bold">✓</span></div>
                 <div>
                   <h3 class="text-white font-medium text-sm">Fast Implementation</h3>
                   <p class="text-gray-300 text-xs">Get started within 48 hours</p>
                 </div>
-              </div>
-            </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

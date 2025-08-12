@@ -1,0 +1,29 @@
+---
+const scriptUrl = import.meta.env.ANALYTICS_SCRIPT_URL;
+const domain = import.meta.env.ANALYTICS_DOMAIN;
+const enabled = scriptUrl && domain;
+---
+{enabled && (
+  <>
+    <script defer data-domain={domain} src={scriptUrl}></script>
+    <script is:inline>
+      document.addEventListener('click', (e) => {
+        const target = (e.target as HTMLElement)?.closest?.('[data-track="cta"]');
+        if (target && window.plausible) {
+          const label = target.getAttribute('data-label') || target.textContent?.trim() || 'CTA';
+          window.plausible('cta_click', { props: { label, page: location.pathname } });
+        }
+      });
+      window.addEventListener('form_submit_success', () => {
+        if (window.plausible) {
+          window.plausible('form_submit_success');
+        }
+      });
+      window.addEventListener('form_submit_error', () => {
+        if (window.plausible) {
+          window.plausible('form_submit_error');
+        }
+      });
+    </script>
+  </>
+)}
