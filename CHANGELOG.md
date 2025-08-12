@@ -1,3 +1,11 @@
+## 2025-08-12 – Sprint 3+4 (Plausible + tracked CTAs + Contact page)
+
+- Env-gated Plausible loader with event hooks for CTA clicks and lead form success/error.
+- Shared CTASection component; added to Home, About, and Services pages.
+- Rebuilt Contact page with canonical metadata, JSON-LD, and tracked phone/email links.
+- Expanded Playwright smoke tests (core routes + basic a11y keyboard toggle).
+- Link check: 0 issues (served static build locally for validation).
+
 # Sprint 1 – Routes, CTAs, Copy, SEO basics
 
 ## Route Map
@@ -93,18 +101,3 @@
 - Added lint script and tests covering contact API and sitemap.
 - Updated README with link-check and page creation guidance.
 
-## Sprint 3+4 – Content & Components, Conversion & Analytics
-- Introduced shared `CTASection` component and added to Home, About and Services pages.
-- Rebuilt `contact` page with streamlined copy, JSON-LD meta and lead form tracking hooks.
-- Added env-gated analytics loader for CTA and form events.
-- Expanded Playwright smoke tests to cover core routes and mobile nav keyboard toggle.
-- **Build Report**
-  - Pages migrated: 3
-  - Link check issues before: 0 / after: 0
-  - Lighthouse (home): Perf 90, A11y 100, Best-Practices 100, SEO 95
-## Sprint 3+4 – Content & Components, Conversion & Analytics
-- Env-gated Plausible loader with event hooks for CTA clicks and lead form success/error.
-- Shared CTASection component; added to Home, About, and Services.
-- Rebuilt Contact page: canonical metadata, JSON-LD, tracked phone/email links.
-- Expanded Playwright smoke tests (core routes + basic a11y keyboard toggle).
-- Link check: 0 issues (served static build locally for validation).
