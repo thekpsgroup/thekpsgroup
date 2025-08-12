@@ -7,7 +7,7 @@ const CACHE_NAME = 'kps-fallback-v1';
 // Essential files only for older browsers
 const ESSENTIAL_FILES = [
   '/',
-  '/about-us',
+  '/about',
   '/contact',
   '/services'
 ];
