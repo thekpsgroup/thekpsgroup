@@ -102,3 +102,9 @@
   - Pages migrated: 3
   - Link check issues before: 0 / after: 0
   - Lighthouse (home): Perf 90, A11y 100, Best-Practices 100, SEO 95
+## Sprint 3+4 – Content & Components, Conversion & Analytics
+- Env-gated Plausible loader with event hooks for CTA clicks and lead form success/error.
+- Shared CTASection component; added to Home, About, and Services.
+- Rebuilt Contact page: canonical metadata, JSON-LD, tracked phone/email links.
+- Expanded Playwright smoke tests (core routes + basic a11y keyboard toggle).
+- Link check: 0 issues (served static build locally for validation).

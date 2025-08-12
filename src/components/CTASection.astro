@@ -1,24 +1,43 @@
 ---
 export interface Props {
   heading?: string;
-  subheading?: string;
-  primaryHref?: string;
-  primaryText?: string;
+  subtext?: string;
+  primaryHref?: string;    // default: /contact
+  primaryLabel?: string;   // default: "Book a Consult"
+  secondaryHref?: string;  // optional
+  secondaryLabel?: string; // optional
+  id?: string;             // useful for analytics props
 }
 
 const {
-  heading = 'Ready to streamline your operations?',
-  subheading = 'Book a quick consult and see options.',
-  primaryHref = '/contact',
-  primaryText = 'Book a Consult'
-} = Astro.props;
+  heading = "Ready to get unstuck?",
+  subtext = "Book a consult. We’ll cut the chaos and get your ops moving.",
+  primaryHref = "/contact",
+  primaryLabel = "Book a Consult",
+  secondaryHref,
+  secondaryLabel,
+  id = "cta-band",
+} = Astro.props as Props;
 ---
-<section class="bg-warning-400 text-black py-16 text-center">
-  <div class="container mx-auto px-6">
-    <h2 class="text-3xl font-bold mb-4">{heading}</h2>
-    <p class="text-lg mb-8">{subheading}</p>
-    <a href={primaryHref} data-track="cta" data-label={primaryText} class="inline-block bg-black text-white px-8 py-4 rounded-lg font-semibold">
-      {primaryText}
-    </a>
+
+<section class="cta-band" aria-labelledby="cta-heading">
+  <div class="wrap">
+    <h2 id="cta-heading">{heading}</h2>
+    <p>{subtext}</p>
+    <div class="actions">
+      <a id={`${id}-primary`} href={primaryHref} class="btn btn-primary" data-track="cta">{primaryLabel}</a>
+      {secondaryHref && secondaryLabel && (
+        <a id={`${id}-secondary`} href={secondaryHref} class="btn btn-secondary" data-track="cta">{secondaryLabel}</a>
+      )}
+    </div>
   </div>
 </section>
+
+<style>
+.cta-band { padding: 3rem 1rem; border-radius: 1rem; }
+.wrap { max-width: 1100px; margin: 0 auto; text-align: center; }
+.actions { margin-top: 1rem; display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; }
+.btn { padding: .75rem 1.25rem; border-radius: .75rem; text-decoration: none; display:inline-block; }
+.btn-primary { font-weight: 600; }
+.btn-secondary { opacity: .9; }
+</style>
