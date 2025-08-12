@@ -11,7 +11,6 @@ export async function GET() {
   const staticPages = [
     { path: '', priority: '1.0', changefreq: 'daily' },
     { path: '/about', priority: '0.9', changefreq: 'weekly' },
-    { path: '/about-us', priority: '0.9', changefreq: 'weekly' },
     { path: '/leadership', priority: '0.8', changefreq: 'monthly' },
     { path: '/team', priority: '0.8', changefreq: 'monthly' },
     { path: '/contact', priority: '0.9', changefreq: 'weekly' },
@@ -24,14 +23,11 @@ export async function GET() {
 
   // Premium service pages for SEO domination
   const servicePages = [
-    { path: '/quickbooks-consulting-premium', priority: '0.9', changefreq: 'weekly' },
-    { path: '/payroll-services', priority: '0.9', changefreq: 'weekly' },
-    { path: '/hr-services', priority: '0.9', changefreq: 'weekly' },
-    { path: '/technology-consulting', priority: '0.9', changefreq: 'weekly' },
-    { path: '/bookkeeping-services', priority: '0.9', changefreq: 'weekly' },
-    { path: '/hvac-consulting', priority: '0.9', changefreq: 'weekly' },
-    { path: '/electrical-consulting', priority: '0.9', changefreq: 'weekly' },
-    { path: '/plumbing-consulting', priority: '0.8', changefreq: 'weekly' },
+    { path: '/services/quickbooks-consulting-premium', priority: '0.9', changefreq: 'weekly' },
+    { path: '/services/payroll-services', priority: '0.9', changefreq: 'weekly' },
+    { path: '/services/hr-services', priority: '0.9', changefreq: 'weekly' },
+    { path: '/services/technology-consulting', priority: '0.9', changefreq: 'weekly' },
+    { path: '/services/bookkeeping', priority: '0.9', changefreq: 'weekly' },
     { path: '/services/quickbooks-consulting', priority: '0.9', changefreq: 'weekly' },
     { path: '/services/peo-payroll', priority: '0.9', changefreq: 'weekly' },
   ];
@@ -129,24 +125,8 @@ export async function GET() {
     changefreq: 'monthly'
   }));
 
-  // Industry-specific landing pages for targeted SEO
-  const industryPages = [
-    { path: '/industries/hvac-contractors', priority: '0.8', changefreq: 'weekly' },
-    { path: '/industries/plumbing-companies', priority: '0.8', changefreq: 'weekly' },
-    { path: '/industries/electrical-contractors', priority: '0.8', changefreq: 'weekly' },
-    { path: '/industries/general-contractors', priority: '0.8', changefreq: 'weekly' },
-    { path: '/industries/construction-companies', priority: '0.8', changefreq: 'weekly' },
-    { path: '/industries/home-services', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/professional-services', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/technology-companies', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/healthcare-providers', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/manufacturing', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/retail-businesses', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/restaurants-hospitality', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/legal-services', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/accounting-firms', priority: '0.7', changefreq: 'weekly' },
-    { path: '/industries/real-estate', priority: '0.7', changefreq: 'weekly' }
-  ];
+  // Industry-specific landing pages removed (no live pages yet)
+  const industryPages: { path: string; priority: string; changefreq: string }[] = [];
 
   // Service + Location combinations for hyper-local SEO
   const serviceLocationPages = [
@@ -171,24 +151,7 @@ export async function GET() {
   const serviceLandingPages = [
     { path: '/quickbooks-cleanup-services', priority: '0.8', changefreq: 'weekly' },
     { path: '/quickbooks-migration-experts', priority: '0.8', changefreq: 'weekly' },
-    { path: '/payroll-services-small-business', priority: '0.8', changefreq: 'weekly' },
-    { path: '/peo-services-contractors', priority: '0.8', changefreq: 'weekly' },
-    { path: '/website-design-contractors', priority: '0.7', changefreq: 'weekly' },
-    { path: '/business-consulting-austin', priority: '0.7', changefreq: 'weekly' },
-    { path: '/quickbooks-proadvisor-near-me', priority: '0.7', changefreq: 'weekly' },
-    { path: '/small-business-accounting-help', priority: '0.7', changefreq: 'weekly' },
-    { path: '/contractor-bookkeeping-services', priority: '0.7', changefreq: 'weekly' },
-    { path: '/hvac-business-consulting', priority: '0.7', changefreq: 'weekly' },
-    { path: '/plumbing-business-solutions', priority: '0.7', changefreq: 'weekly' },
-    { path: '/electrical-contractor-support', priority: '0.7', changefreq: 'weekly' },
-    { path: '/construction-company-consulting', priority: '0.7', changefreq: 'weekly' },
-    { path: '/remote-bookkeeping-services', priority: '0.7', changefreq: 'weekly' },
-    { path: '/virtual-cfo-services', priority: '0.7', changefreq: 'weekly' },
-    { path: '/business-process-automation', priority: '0.7', changefreq: 'weekly' },
-    { path: '/digital-transformation-consulting', priority: '0.7', changefreq: 'weekly' },
-    { path: '/it-support-small-business', priority: '0.7', changefreq: 'weekly' },
-    { path: '/cybersecurity-consulting', priority: '0.7', changefreq: 'weekly' },
-    { path: '/cloud-migration-services', priority: '0.7', changefreq: 'weekly' }
+    // Trimmed non-existent SEO placeholder routes to avoid 404s
   ];
 
   const allPages = [
