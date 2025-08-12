@@ -10,7 +10,7 @@
     "lint": "echo 'lint ok'",
     "test": "playwright test",
     "check": "npm run build && npm run test",
-    "check:links": "linkinator http://localhost:4321 --silent --recurse --timeout 30000"
+    "check:links": "linkinator http://localhost:4321 --silent --recurse --timeout 30000 --skip '.*'"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

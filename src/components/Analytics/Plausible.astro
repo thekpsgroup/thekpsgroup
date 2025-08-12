@@ -1,29 +1,56 @@
 ---
-const scriptUrl = import.meta.env.ANALYTICS_SCRIPT_URL;
-const domain = import.meta.env.ANALYTICS_DOMAIN;
-const enabled = scriptUrl && domain;
+const ENABLED = import.meta.env.PUBLIC_PLAUSIBLE_ENABLED === "true";
+const DOMAIN = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || "thekpsgroup.com";
 ---
-{enabled && (
-  <>
-    <script defer data-domain={domain} src={scriptUrl}></script>
-    <script is:inline>
-      document.addEventListener('click', (e) => {
-        const target = (e.target as HTMLElement)?.closest?.('[data-track="cta"]');
-        if (target && window.plausible) {
-          const label = target.getAttribute('data-label') || target.textContent?.trim() || 'CTA';
-          window.plausible('cta_click', { props: { label, page: location.pathname } });
-        }
+
+{ENABLED && (
+  <Fragment>
+    <script
+      defer
+      data-domain={DOMAIN}
+      src="https://plausible.io/js/script.js"
+    ></script>
+    <script>
+      // helper to safely call plausible
+      window.plausibleTrack = function (name, props = {}) {
+        try {
+          if (typeof window.plausible === "function") {
+            window.plausible(name, { props });
+          }
+        } catch {}
+      };
+
+      // Track CTA clicks on [data-track="cta"]
+      document.addEventListener("click", (e) => {
+        const t = e.target.closest?.("[data-track='cta']");
+        if (!t) return;
+        const props = {
+          id: t.id || "",
+          text: (t.innerText || "").trim(),
+          href: t.getAttribute("href") || "",
+          location: window.location.pathname,
+        };
+        window.plausibleTrack("cta_click", props);
       });
-      window.addEventListener('form_submit_success', () => {
-        if (window.plausible) {
-          window.plausible('form_submit_success');
-        }
+
+      // Track form events via CustomEvents:
+      //  document.dispatchEvent(new CustomEvent("form:submit:success", { detail: {...} }))
+      //  document.dispatchEvent(new CustomEvent("form:submit:error", { detail: {...} }))
+      document.addEventListener("form:submit:success", (e) => {
+        const d = (e && e.detail) || {};
+        window.plausibleTrack("form_submit_success", {
+          location: window.location.pathname,
+          ...d,
+        });
       });
-      window.addEventListener('form_submit_error', () => {
-        if (window.plausible) {
-          window.plausible('form_submit_error');
-        }
+
+      document.addEventListener("form:submit:error", (e) => {
+        const d = (e && e.detail) || {};
+        window.plausibleTrack("form_submit_error", {
+          location: window.location.pathname,
+          ...d,
+        });
       });
     </script>
-  </>
+  </Fragment>
 )}
