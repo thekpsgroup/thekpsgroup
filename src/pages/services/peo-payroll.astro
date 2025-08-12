@@ -50,7 +50,7 @@ const pageKeywords = [
         
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <a href="/contact" class="btn-primary">
-            <span>Get Free Payroll Quote</span>
+            <span>Book My Free Consult</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
@@ -249,12 +249,12 @@ const pageKeywords = [
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center">
           <a href="/contact" class="btn-primary">
-            <span>Get Free Payroll Analysis</span>
+            <span>Book My Free Consult</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
             </svg>
           </a>
-          <a href="/" class="btn-secondary">
+  <a href="/" class="btn-secondary">
             <span>Explore All Services</span>
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -264,6 +264,16 @@ const pageKeywords = [
       </div>
     </div>
   </section>
+
+  <script type="application/ld+json">
+    {JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      serviceType: 'PEO Payroll Services',
+      provider: { '@type': 'Organization', name: 'The KPS Group LLC', url: 'https://thekpsgroup.com' },
+      areaServed: 'United States'
+    })}
+  </script>
 </BaseLayout>
 
 <!-- PEO Services Specific Structured Data -->

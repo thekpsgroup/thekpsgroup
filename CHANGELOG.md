@@ -78,3 +78,11 @@
 - Review performance of large images and implement lazy loading where missing.
 - Create content for any planned but empty location or service pages.
 - Expand form validation and add unit tests.
+
+## 2025-08-12 – Routes, CTAs, SEO Baseline
+- Streamlined sitemap and robots directives to match live routes
+- Rewrote home hero with plain-language benefits and unified CTA
+- Consolidated contact into a single page with server-side email handler to sales@thekpsgroup.com and response-time note
+- Updated homepage metadata + footer CTA for clearer guidance
+- Documented route structure, redirects, and test steps
+
