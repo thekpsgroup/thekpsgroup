@@ -1,6 +1,11 @@
+import { getBrand } from '../lib/brands';
+
+const brand = getBrand();
+const digits = brand.phone.replace(/[^0-9]/g, '');
+
 export const CONTACT = {
-  email: 'sales@thekpsgroup.com',
-  phoneRaw: '469-458-6966',
-  phoneE164: '+14694586966',
-  phoneHref: 'tel:+14694586966',
+  email: brand.email,
+  phoneRaw: brand.phone,
+  phoneE164: `+1${digits}`,
+  phoneHref: `tel:+1${digits}`,
 };

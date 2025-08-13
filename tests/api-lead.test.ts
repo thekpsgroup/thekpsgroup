@@ -1,32 +1,29 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import fs from 'fs/promises';
+import nodemailer from 'nodemailer';
 import { POST } from '../src/pages/api/lead';
 
-const goodBody = { name: 'A', phoneNumber: '123', email: 'a@b.com' };
+const goodBody = { brandKey: 'kps', name: 'A', phone: '123', email: 'a@b.com' };
 
 describe('api lead', () => {
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.restoreAllMocks();
-    await fs.writeFile('lead-queue.json', '[]').catch(() => {});
+    process.env.SMTP_HOST = 'smtp.test';
+    process.env.SMTP_USER = 'user';
+    process.env.SMTP_PASS = 'pass';
   });
 
   it('returns 200 on success', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
-      ok: true,
-      json: async () => ({ id: '1' }),
+    vi.spyOn(nodemailer, 'createTransport').mockReturnValue({
+      sendMail: vi.fn().mockResolvedValue(undefined),
     } as any);
-    const res = await POST({ request: new Request('http://test', { method: 'POST', body: JSON.stringify(goodBody) }) } as any);
+    const req = new Request('http://test', { method: 'POST', body: JSON.stringify(goodBody), headers: { origin: 'https://thekpsgroup.com' } });
+    const res = await POST({ request: req } as any);
     expect(res.status).toBe(200);
   });
 
   it('validates input', async () => {
-    const res = await POST({ request: new Request('http://test', { method: 'POST', body: '{}' }) } as any);
+    const req = new Request('http://test', { method: 'POST', body: '{}', headers: { origin: 'https://thekpsgroup.com' } });
+    const res = await POST({ request: req } as any);
     expect(res.status).toBe(400);
-  });
-
-  it('queues on failure', async () => {
-    vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('fail'));
-    const res = await POST({ request: new Request('http://test', { method: 'POST', body: JSON.stringify(goodBody) }) } as any);
-    expect(res.status).toBe(202);
   });
 });

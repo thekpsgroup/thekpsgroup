@@ -1,0 +1,19 @@
+---
+import { BRANDS } from '../lib/brands';
+const order = ["modern-pay","modern-ledger","modern-brands","modern-consulting","modern-stack","kps"] as const;
+const { current } = Astro.props;
+---
+<section class="max-w-6xl mx-auto px-4 py-16 border-t border-neutral-200">
+  <h3 class="text-xl font-semibold mb-6">Part of The Modern Suite</h3>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {order.filter(k => k !== current).map(k => {
+      const b = BRANDS[k];
+      return (
+        <a href={`${b.domain}?utm_source=${current}&utm_medium=referral`} class="block rounded-lg border border-neutral-200 p-4 hover:bg-neutral-50" key={k}>
+          <div class="text-lg font-medium">{b.name}</div>
+          <div class="text-sm text-neutral-600">{b.domain.replace(/^https?:\/\//,'')}</div>
+        </a>
+      );
+    })}
+  </div>
+</section>
