@@ -78,10 +78,10 @@ CREATE INDEX IF NOT EXISTS idx_analytics_metric_name ON analytics(metric_name);
 -- INSERT DEFAULT TEAM MEMBERS
 -- ===============================
 INSERT INTO team_members (name, role, email, phone, specialties) VALUES
-    ('Karson Lawrence', 'CEO', 'karson@kpsgroup.com', '+1-469-534-3392', ARRAY['Business Strategy', 'Technology Leadership', 'Client Relations']),
-    ('Brandon Gibson', 'CRO', 'brandon@kpsgroup.com', '+1-469-534-3392', ARRAY['Revenue Operations', 'Sales Strategy', 'Business Development']),
-    ('Jorge Quiros', 'BDR', 'jorge@kpsgroup.com', '+1-469-534-3392', ARRAY['Lead Generation', 'Business Development', 'Client Outreach']),
-    ('Allie Banks', 'CAO', 'allie@kpsgroup.com', '+1-469-534-3392', ARRAY['Operations Management', 'Process Optimization', 'Administrative Leadership'])
+    ('Karson Lawrence', 'CEO', 'karson@kpsgroup.com', '+1-469-458-6966', ARRAY['Business Strategy', 'Technology Leadership', 'Client Relations']),
+    ('Brandon Gibson', 'CRO', 'brandon@kpsgroup.com', '+1-469-458-6966', ARRAY['Revenue Operations', 'Sales Strategy', 'Business Development']),
+    ('Jorge Quiros', 'BDR', 'jorge@kpsgroup.com', '+1-469-458-6966', ARRAY['Lead Generation', 'Business Development', 'Client Outreach']),
+    ('Allie Banks', 'CAO', 'allie@kpsgroup.com', '+1-469-458-6966', ARRAY['Operations Management', 'Process Optimization', 'Administrative Leadership'])
 ON CONFLICT (email) DO NOTHING;
 
 -- ===============================

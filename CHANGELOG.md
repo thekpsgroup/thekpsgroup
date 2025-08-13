@@ -1,3 +1,10 @@
+## 2025-08-15 – Lead form hardening
+
+- Standardized contact constants and updated phone number to 469-458-6966.
+- Added shared LeadForm component with client validation and offline queue.
+- Implemented `/api/lead` proxy to Router.so with durable retry endpoint.
+- Added Plausible event tracking for `cta_phone_click` and form events.
+
 ## 2025-08-14 – Production polish
 
 - Switched lead forms to Router.so with front-end validation and analytics events.

@@ -7,7 +7,7 @@ export const organizationSchema = {
   "url": "https://thekpsgroup.com",
   "logo": "https://thekpsgroup.com/logos/the-kps-group.png",
   "image": "https://thekpsgroup.com/logos/the-kps-group.png",
-  "telephone": "+1-469-534-3392",
+  "telephone": "+1-469-458-6966",
   "email": "sales@thekpsgroup.com",
   "address": {
     "@type": "PostalAddress",
@@ -28,21 +28,21 @@ export const organizationSchema = {
       "@type": "Person",
       "name": "Karson Lawrence",
       "jobTitle": "Founder & CEO",
-      "telephone": "+1-469-534-3392",
+      "telephone": "+1-469-458-6966",
       "email": "karson@thekpsgroup.com"
     },
     {
       "@type": "Person",
       "name": "Brandon Gibson",
       "jobTitle": "Chief Revenue Officer",
-      "telephone": "+1-903-603-4515",
+      "telephone": "+1-469-458-6966",
       "email": "brandon@thekpsgroup.com"
     },
     {
       "@type": "Person",
       "name": "Allie Banks",
       "jobTitle": "Chief Administrative Officer",
-      "telephone": "+1-678-233-4625",
+      "telephone": "+1-469-458-6966",
       "email": "allie@thekpsgroup.com"
     }
   ],
@@ -141,7 +141,7 @@ export const localBusinessSchema = {
   "name": "The KPS Group",
   "description": "Professional business consulting services including QuickBooks consulting, payroll management, HR solutions, and technology consulting",
   "url": "https://thekpsgroup.com",
-  "telephone": "+1-469-534-3392",
+  "telephone": "+1-469-458-6966",
   "email": "sales@thekpsgroup.com",
   "address": {
     "@type": "PostalAddress",
