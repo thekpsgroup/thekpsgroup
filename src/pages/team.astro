@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdvancedSEOHead from '../components/SEO/AdvancedSEOHead.astro';
+import { CONTACT } from '../constants/contact';
 
 const seoProps = {
   title: 'Leadership Team | The KPS Group | Meet Our Business Solutions Experts',
@@ -23,8 +24,8 @@ const seoProps = {
     name: 'The KPS Group Leadership Team',
     description: 'Experienced business leaders dedicated to helping small businesses achieve sustainable growth through professional consulting and support services.',
     url: 'https://thekpsgroup.com/team',
-    telephone: '+1-469-534-3392',
-    email: 'sales@thekpsgroup.com',
+    telephone: CONTACT.phoneE164,
+    email: CONTACT.email,
     address: {
       streetAddress: '',
       addressLocality: 'Austin',
@@ -73,7 +74,7 @@ const team = [
     image: '/team/karson/karson.jpg',
     bio: 'Karson founded The KPS Group to help small businesses get the professional support they deserve. With years of experience in business operations and consulting, he leads our team in delivering practical solutions that drive real results for our clients.',
     skills: ['Business Strategy', 'Operations', 'Leadership', 'Consulting'],
-    phone: '469-534-3392',
+    phone: '469-458-6966',
     email: 'karson@thekpsgroup.com'
   },
   {
@@ -82,7 +83,7 @@ const team = [
     image: '/team/brandon/brandon.jpg',
     bio: 'Brandon brings extensive experience in business development and client relationships. He works closely with clients to understand their needs and ensures they receive the right solutions to help their businesses grow and thrive.',
     skills: ['Business Development', 'Client Relations', 'Sales Strategy', 'Growth Planning'],
-    phone: '903-603-4515',
+    phone: '469-458-6966',
     email: 'brandon@thekpsgroup.com'
   },
   {
@@ -91,7 +92,7 @@ const team = [
     image: '/team/allie/CAO-Allie.jpg',
     bio: 'Allie ensures smooth operations and exceptional service delivery. With nearly a decade of experience at ADP, she brings deep expertise in payroll, compliance, and operational excellence to help our clients succeed.',
     skills: ['Operations', 'Compliance', 'Service Delivery', 'Process Management'],
-    phone: '678-233-4625',
+    phone: '469-458-6966',
     email: 'allie@thekpsgroup.com'
   }
 ];
@@ -165,7 +166,7 @@ const team = [
                   </svg>
                 </a>
                 <a
-                  href={`tel:${member.phone}`}
+                  href={CONTACT.phoneHref}
                   class="w-10 h-10 bg-gold/20 rounded-full flex items-center justify-center text-gold hover:bg-gold hover:text-black transition-all duration-200"
                   aria-label={`Call ${member.name}`}
                 >

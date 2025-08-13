@@ -13,7 +13,7 @@ interface Props {
 const { city } = Astro.props;
 
 const pageTitle = `Business Services ${city.name} ${city.stateCode} | QuickBooks & Payroll | The KPS Group`;
-const pageDescription = `Expert business consulting in ${city.name}, ${city.state}. QuickBooks setup, payroll services, HR solutions, and technology consulting. Serving ${city.metro} area. Call (469) 534-3392 for free consultation.`;
+const pageDescription = `Expert business consulting in ${city.name}, ${city.state}. QuickBooks setup, payroll services, HR solutions, and technology consulting. Serving ${city.metro} area. Call 469-458-6966 for free consultation.`;
 
 const cityKeywords = [
   `business services ${city.name} ${city.stateCode}`,
@@ -52,7 +52,7 @@ const seoProps = {
     name: `The KPS Group - ${city.name} Business Services`,
     description: `Local business consulting services in ${city.name}, ${city.state}`,
     url: `https://thekpsgroup.com/locations/${city.stateCode.toLowerCase()}/${city.name.toLowerCase().replace(/\s+/g, '-')}`,
-    telephone: '+1-469-534-3392',
+    telephone: '+1-469-458-6966',
     email: 'sales@thekpsgroup.com',
     address: {
       streetAddress: '',
@@ -165,11 +165,11 @@ const breadcrumbItems = [
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
           </a>
-          <a href={`tel:+1-${BUSINESS.phone}`} class="btn-secondary">
+          <a href={BUSINESS.phoneHref} class="btn-secondary">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
             </svg>
-            Call (469) 534-3392
+            Call 469-458-6966
           </a>
         </div>
 
@@ -506,7 +506,7 @@ const breadcrumbItems = [
                   </svg>
                 </div>
                 <div>
-                  <div class="text-white font-semibold">(469) 534-3392</div>
+                  <div class="text-white font-semibold">469-458-6966</div>
                   <div class="text-white/60 text-sm">Monday - Friday: 8 AM - 8 PM CST</div>
                 </div>
               </div>
@@ -553,11 +553,11 @@ const breadcrumbItems = [
                 <span>Get Free Consultation</span>
               </a>
               
-              <a href={`tel:+1-${BUSINESS.phone}`} class="btn-secondary w-full flex items-center justify-center gap-3">
+              <a href={BUSINESS.phoneHref} class="btn-secondary w-full flex items-center justify-center gap-3">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
-                <span>Call (469) 534-3392</span>
+                <span>Call 469-458-6966</span>
               </a>
 
               <div class="text-center text-sm text-white/60">
@@ -661,7 +661,7 @@ const breadcrumbItems = [
       "longitude": city.longitude
     },
     "url": `https://thekpsgroup.com/locations/${city.stateCode.toLowerCase()}/${city.name.toLowerCase().replace(/\s+/g, '-')}`,
-    "telephone": "+1-469-534-3392",
+    "telephone": "+1-469-458-6966",
     "email": "sales@thekpsgroup.com",
     "openingHoursSpecification": {
       "@type": "OpeningHoursSpecification",

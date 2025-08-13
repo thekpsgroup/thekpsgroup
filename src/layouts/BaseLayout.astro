@@ -313,9 +313,9 @@ if (isServicePage && serviceName) {
 // Enhanced meta description with CTAs
 let optimizedDescription = description;
 if (isServicePage) {
-  optimizedDescription = `Expert ${serviceName || service} nationwide. Call 469-534-3392 for consultation. ${description.substring(0, 100)}...`;
+  optimizedDescription = `Expert ${serviceName || service} nationwide. Call 469-458-6966 for consultation. ${description.substring(0, 100)}...`;
 } else if (isLocationPage) {
-  optimizedDescription = `Professional business services in ${cityName || location}. QuickBooks, payroll, branding & consulting. Call 469-534-3392 today.`;
+  optimizedDescription = `Professional business services in ${cityName || location}. QuickBooks, payroll, branding & consulting. Call 469-458-6966 today.`;
 }
 ---
 <!DOCTYPE html>
@@ -381,7 +381,7 @@ if (isServicePage) {
     <meta name="business:contact_data:postal_code" content={isLocationPage ? geoData.zipcode : "78731"} />
     <meta name="business:contact_data:country_name" content="United States" />
     <meta name="business:contact_data:email" content={BUSINESS.email} />
-    <meta name="business:contact_data:phone_number" content={`+1-${BUSINESS.phone}`} />
+    <meta name="business:contact_data:phone_number" content={BUSINESS.phoneE164} />
     <meta name="business:contact_data:website" content={siteUrl} />
     <meta name="contact" content={BUSINESS.email} />
     <meta name="reply-to" content={BUSINESS.email} />
@@ -494,11 +494,11 @@ if (isServicePage) {
           "width": "1200",
           "height": "630"
         },
-        "telephone": "${BUSINESS.phone}",
+        "telephone": "${BUSINESS.phoneE164}",
         "email": "${BUSINESS.email}",
         "contactPoint": [{
           "@type": "ContactPoint",
-          "telephone": "${BUSINESS.phone}",
+          "telephone": "${BUSINESS.phoneE164}",
           "contactType": "customer service",
           "availableLanguage": "English",
           "hoursAvailable": "Mo-Fr 08:00-20:00 CT"
@@ -604,7 +604,7 @@ if (isServicePage) {
     <meta property="business:contact_data:postal_code" content="78731" />
     <meta property="business:contact_data:country_name" content="United States" />
     <meta property="business:contact_data:email" content={BUSINESS.email} />
-    <meta property="business:contact_data:phone_number" content={`+1-${BUSINESS.phone}`} />
+    <meta property="business:contact_data:phone_number" content={BUSINESS.phoneE164} />
     <meta property="business:contact_data:website" content={siteUrl} />
     
     <!-- ENHANCED TWITTER CARD -->
@@ -664,7 +664,7 @@ if (isServicePage) {
             },
             'contactPoint': [{
               '@type': 'ContactPoint',
-              'telephone': '+1-469-534-3392',
+              'telephone': '+1-469-458-6966',
               'contactType': 'customer service',
               'email': 'sales@thekpsgroup.com',
               'availableLanguage': 'English',
@@ -829,7 +829,7 @@ if (isServicePage) {
             'contactPoint': [
               {
                 '@type': 'ContactPoint',
-                'telephone': `+1-${BUSINESS.phone}`,
+                'telephone': BUSINESS.phoneE164,
                 'contactType': 'customer service',
                 'email': BUSINESS.email,
                 'availableLanguage': 'English',
@@ -838,7 +838,7 @@ if (isServicePage) {
               },
               {
                 '@type': 'ContactPoint',
-                'telephone': `+1-${BUSINESS.phone}`,
+                'telephone': BUSINESS.phoneE164,
                 'contactType': 'sales',
                 'email': BUSINESS.email,
                 'availableLanguage': 'English',
@@ -901,7 +901,7 @@ if (isServicePage) {
             '@id': `${siteUrl}#localbusiness`,
             'name': 'The KPS Group LLC',
             'image': new URL('/img/branding/kps-group-logo.png', siteUrl).href,
-            'telephone': `+1-${BUSINESS.phone}`,
+            'telephone': BUSINESS.phoneE164,
             'email': BUSINESS.email,
             'url': siteUrl,
             'address': {
@@ -1528,7 +1528,7 @@ if (isServicePage) {
     
     <!-- HIDDEN SEO CONTENT FOR ADDITIONAL KEYWORD TARGETING -->
     <div style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;">
-      <p>The KPS Group LLC serves Austin, Dallas, Houston, San Antonio, Fort Worth, and all Texas cities with professional workforce leadership development, organizational psychology, and business infrastructure consulting. Call 469-534-3392 for expert leadership transformation solutions.</p>
+      <p>The KPS Group LLC serves Austin, Dallas, Houston, San Antonio, Fort Worth, and all Texas cities with professional workforce leadership development, organizational psychology, and business infrastructure consulting. Call 469-458-6966 for expert leadership transformation solutions.</p>
       <p>Nationwide workforce leadership experts specializing in positive psychology methodologies, team accountability systems, leadership development for next-generation workforce, and organizational culture transformation.</p>
       <p>Modern Pay provides PEO services, payroll processing, HR compliance, workers compensation, and employee benefits administration across all 50 states. Enterprise-grade solutions for small businesses.</p>
       <p>Modern Ledger offers QuickBooks cleanup, financial migrations, job costing optimization, multi-entity consolidation, and CFO-level financial reporting for growing service businesses.</p>

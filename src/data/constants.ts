@@ -1,8 +1,12 @@
+import { CONTACT } from "../constants/contact";
+
 export const BUSINESS = {
   name:       'The KPS Group LLC',
   brand:      'The KPS Group',
-  phone:      '469-534-3392',
-  email:      'sales@thekpsgroup.com',
+  phone:      CONTACT.phoneRaw,
+  phoneE164:  CONTACT.phoneE164,
+  phoneHref:  CONTACT.phoneHref,
+  email:      CONTACT.email,
   street:     '5900 Balcones Drive, Suite 15292',
   cityState:  'Austin, TX 78731',
   hours:      '8 AM – 8 PM CST',

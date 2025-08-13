@@ -4,6 +4,8 @@ test("core routes load and CTA present", async ({ page }) => {
   for (const path of ["/", "/about", "/services", "/contact"]) {
     await page.goto(path);
     await expect(page.locator("body")).toBeVisible();
+    await expect(page.getByText("469-458-6966")).toBeVisible();
+    await expect(page.locator('a[href="tel:+14694586966"]')).toHaveCount(1);
   }
 
   // CTA sections render
