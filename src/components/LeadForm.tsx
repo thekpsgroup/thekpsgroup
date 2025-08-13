@@ -1,5 +1,7 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import { leadSchema, submitLead, LeadInput } from '../lib/lead';
+import React, { useState, useEffect } from 'react';
+import type { FormEvent } from 'react';
+import { leadSchema, submitLead } from '../lib/lead';
+import type { LeadInput } from '../lib/lead';
 
 interface Props {
   formId?: string;
