@@ -1,72 +1,104 @@
 import type { APIRoute } from 'astro';
-import { leadSchema, buildLeadPayload } from '../../lib/lead';
-import fs from 'fs/promises';
+import nodemailer from 'nodemailer';
+import { BRANDS, ALLOWED_ORIGINS } from '../../lib/brands';
 
-const ROUTER_ENDPOINT = 'https://app.router.so/api/endpoints/wfk5gdct';
-const QUEUE_PATH = './lead-queue.json';
+const RATE_LIMIT = 10; // per IP per hour
+const bucket = new Map<string, { count: number; reset: number }>();
 
-async function queueLead(payload: any) {
-  try {
-    const existing = JSON.parse(await fs.readFile(QUEUE_PATH, 'utf-8').catch(() => '[]')) as any[];
-    existing.push(payload);
-    await fs.writeFile(QUEUE_PATH, JSON.stringify(existing));
-  } catch {}
+function corsHeaders(origin: string) {
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "content-type",
+  } as Record<string, string>;
 }
 
-async function postToRouter(payload: any) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
-  try {
-    const res = await fetch(ROUTER_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.ROUTER_API_KEY}`,
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    });
-    clearTimeout(timeout);
-    if (!res.ok) throw new Error('router');
-    return await res.json();
-  } catch (e) {
-    clearTimeout(timeout);
-    throw e;
-  }
-}
+export const OPTIONS: APIRoute = async ({ request }) => {
+  const origin = request.headers.get('origin') || '';
+  const allow = ALLOWED_ORIGINS.includes(origin) ? origin : '';
+  return new Response(null, { status: 204, headers: corsHeaders(allow) });
+};
 
 export const POST: APIRoute = async ({ request }) => {
-  let data: any;
-  try {
-    data = await request.json();
-  } catch {
-    return new Response(JSON.stringify({ error: 'invalid_json' }), { status: 400 });
-  }
-  const parsed = leadSchema.safeParse(data);
-  if (!parsed.success) {
-    return new Response(JSON.stringify({ error: 'validation_error' }), { status: 400 });
-  }
+  const origin = request.headers.get('origin') || '';
+  const allow = ALLOWED_ORIGINS.includes(origin) ? origin : '';
+  if (!allow) return new Response('Forbidden origin', { status: 403 });
 
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
-  const ua = request.headers.get('user-agent') || undefined;
-  const ref = request.headers.get('referer') || undefined;
+  const ip = request.headers.get('x-forwarded-for') || 'unknown';
+  const now = Date.now();
+  const entry = bucket.get(ip) || { count: 0, reset: now + 60 * 60 * 1000 };
+  if (now > entry.reset) { entry.count = 0; entry.reset = now + 60 * 60 * 1000; }
+  if (++entry.count > RATE_LIMIT) {
+    return new Response('Rate limit', { status: 429, headers: corsHeaders(allow) });
+  }
+  bucket.set(ip, entry);
 
-  const payload = buildLeadPayload({
-    ...parsed.data,
-    telemetry: {
-      ...parsed.data.telemetry,
-      ip,
-      ua,
-      referrer: parsed.data.telemetry?.referrer || ref,
-      page: parsed.data.telemetry?.page || ref,
-    },
+  const payload = await request.json().catch(() => null);
+  if (!payload) return new Response('Invalid JSON', { status: 400, headers: corsHeaders(allow) });
+
+  const { brandKey, name, company, email, phone, employees, service, message, website } = payload as Record<string, string>;
+
+  if (website) return new Response('OK', { status: 200, headers: corsHeaders(allow) });
+
+  if (!brandKey || !(brandKey in BRANDS)) return new Response('Unknown brand', { status: 400, headers: corsHeaders(allow) });
+  if (!name || !email || !phone) return new Response('Missing fields', { status: 400, headers: corsHeaders(allow) });
+
+  const brand = BRANDS[brandKey as keyof typeof BRANDS];
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST!,
+    port: Number(process.env.SMTP_PORT || 587),
+    secure: false,
+    auth: { user: process.env.SMTP_USER!, pass: process.env.SMTP_PASS! },
   });
 
+  const subject = `[${brand.name} Lead] ${name} – ${service || 'inquiry'}`;
+  const html = `
+    <h2>New Lead for ${brand.name}</h2>
+    <p><b>Name:</b> ${name}</p>
+    <p><b>Company:</b> ${company || '-'}</p>
+    <p><b>Email:</b> ${email}</p>
+    <p><b>Phone:</b> ${phone}</p>
+    <p><b>Employees:</b> ${employees || '-'}</p>
+    <p><b>Service:</b> ${service || '-'}</p>
+    <p><b>Message:</b><br/>${(message || '').replace(/\n/g, '<br/>')}</p>
+    <hr/>
+    <p><small>Origin: ${origin}</small></p>
+  `;
+
   try {
-    const result = await postToRouter(payload);
-    return new Response(JSON.stringify({ ok: true, id: result.id }), { status: 200 });
+    await transporter.sendMail({
+      from: `Leads <no-reply@thekpsgroup.com>`,
+      to: brand.email,
+      subject,
+      html,
+    });
   } catch (e) {
-    await queueLead(payload);
-    return new Response(JSON.stringify({ ok: false, error: 'queued' }), { status: 202 });
+    console.error('Email failed:', e);
+    try {
+      const fs = await import('fs/promises');
+      await fs.appendFile('/tmp/lead-fallback.log', JSON.stringify({ at: new Date().toISOString(), brand: brandKey, payload }) + "\n");
+    } catch {}
+    return new Response('Delivery issue', { status: 202, headers: corsHeaders(allow) });
   }
+
+  if (brandKey === 'kps' && process.env.ROUTER_ENDPOINT && process.env.ROUTER_API_KEY) {
+    try {
+      await fetch(process.env.ROUTER_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': process.env.ROUTER_API_KEY!,
+        },
+        body: JSON.stringify({ Name: name, "Phone Number": phone, Email: email, "Service(s) interested in?)": service || 'N/A' }),
+      });
+    } catch (e) {
+      console.warn('Router.so forward failed:', e);
+    }
+  }
+
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json', ...corsHeaders(allow) },
+  });
 };

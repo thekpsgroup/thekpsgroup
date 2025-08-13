@@ -1,0 +1,13 @@
+---
+import { getBrand } from '../lib/brands';
+const brand = getBrand();
+---
+<header class="w-full bg-white/95 backdrop-blur border-b border-neutral-200">
+  <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+    <a href="/" class="text-xl font-semibold tracking-tight">{brand.name}</a>
+    <nav class="flex items-center gap-3">
+      <a href="#lead" class="btn-primary" data-track="cta_click" data-label="header_quote">Get My Quote</a>
+      <a href={`tel:${brand.phone}`} class="btn-ghost" data-track="cta_click" data-label="header_call">Call Us</a>
+    </nav>
+  </div>
+</header>
