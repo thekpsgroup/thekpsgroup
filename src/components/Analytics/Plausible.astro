@@ -1,4 +1,6 @@
 ---
+import { CONTACT } from "../../constants/contact";
+
 const ENABLED = import.meta.env.PUBLIC_PLAUSIBLE_ENABLED === "true";
 const DOMAIN = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || "thekpsgroup.com";
 ---
@@ -21,11 +23,21 @@ const DOMAIN = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN || "thekpsgroup.com";
       };
 
       // Track CTA clicks
+      const PHONE_HREF = "${CONTACT.phoneHref}";
       document.addEventListener("click", (e) => {
-        const cta = e.target.closest?.("[data-cta]");
         const tel = e.target.closest?.("a[href^='tel:']");
+        if (tel && tel.getAttribute("href") === PHONE_HREF) {
+          const props = {
+            text: (tel.innerText || "").trim(),
+            href: PHONE_HREF,
+            location: window.location.pathname,
+          };
+          window.plausibleTrack("cta_phone_click", props);
+        }
+
+        const cta = e.target.closest?.("[data-cta]");
         const mail = e.target.closest?.("a[href^='mailto:']");
-        const target = cta || tel || mail;
+        const target = cta || mail;
         if (!target) return;
         const props = {
           id: target.id || "",

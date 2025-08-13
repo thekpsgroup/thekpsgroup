@@ -28,7 +28,7 @@ const structuredData = {
     "@type": "Organization",
     "name": "The KPS Group",
     "url": "https://thekpsgroup.com",
-    "telephone": "(469) 534-3392",
+    "telephone": "469-458-6966",
     "email": "info@thekpsgroup.com"
   },
   "areaServed": {
@@ -274,8 +274,8 @@ const structuredData = {
           <a href="/contact" class="btn-primary bg-yellow-500 hover:bg-yellow-600 text-blue-900">
             Get Free Consultation
           </a>
-          <a href="tel:(469) 534-3392" class="btn-secondary border-white text-white hover:bg-white hover:text-blue-900">
-            Call (469) 534-3392
+          <a href="tel:+14694586966" class="btn-secondary border-white text-white hover:bg-white hover:text-blue-900">
+            Call 469-458-6966
           </a>
         </div>
       </div>

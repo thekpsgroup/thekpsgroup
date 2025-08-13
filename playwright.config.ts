@@ -7,6 +7,7 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
   },
   testDir: './tests',
+  testMatch: /.*\.spec\.ts/,
   timeout: 30000,
   use: {
     baseURL: 'http://localhost:4321',

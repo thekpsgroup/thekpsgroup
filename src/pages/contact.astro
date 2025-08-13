@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SimpleLead from "../components/SimpleLead.astro";
+import LeadForm from "../components/LeadForm";
+import { CONTACT } from "../constants/contact";
 const title = "Contact The KPS Group";
 const description = "Book a consult or reach sales. We respond fast.";
 const canonical = "https://thekpsgroup.com/contact";
@@ -14,8 +15,8 @@ const jsonLd = {
     "@type": "Organization",
     name: "The KPS Group LLC",
     url: "https://thekpsgroup.com",
-    email: "sales@thekpsgroup.com",
-    telephone: "+1-469-534-3392"
+    email: CONTACT.email,
+    telephone: CONTACT.phoneE164
   }
 };
 ---
@@ -28,12 +29,12 @@ const jsonLd = {
     <section>
       <h2>Reach us</h2>
       <p>
-        <a id="contact-email" href="mailto:sales@thekpsgroup.com" data-cta="email">sales@thekpsgroup.com</a><br />
-        <a id="contact-phone" href="tel:+14695343392" data-cta="phone">469-534-3392</a>
+        <a id="contact-email" href={`mailto:${CONTACT.email}`} data-cta="email">{CONTACT.email}</a><br />
+        <a id="contact-phone" href={CONTACT.phoneHref} data-cta="phone">{CONTACT.phoneRaw}</a>
       </p>
     </section>
 
-    <SimpleLead />
+    <LeadForm formId="contact" />
   </main>
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -42,7 +43,7 @@ const jsonLd = {
     '@type': 'LocalBusiness',
     name: 'The KPS Group LLC',
     url: canonical,
-    email: 'sales@thekpsgroup.com',
-    telephone: '+1-469-534-3392'
+    email: CONTACT.email,
+    telephone: CONTACT.phoneE164
   })} />
 </BaseLayout>
